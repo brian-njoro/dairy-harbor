@@ -17,6 +17,8 @@ from models.product import Product
 from models.rawmaterials import RawMaterial
 from models.treatment import Treatment
 from models.vaccination import Vaccination
+from models.worker import Worker
+from models.cattleWorkerAssociation import cattle_worker_association
 
 
 

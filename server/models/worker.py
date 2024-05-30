@@ -6,4 +6,6 @@ class Worker(db.Model):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     role = db.Column(db.String(100))
+    admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
 
+    admin = db.relationship('Admin', back_populates='workers')
