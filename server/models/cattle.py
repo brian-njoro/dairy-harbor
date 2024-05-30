@@ -9,3 +9,6 @@ class Cattle(db.Model):
     father_breed = db.Column(db.String(100))
     mother_breed = db.Column(db.String(100))
     method_bred = db.Column(db.String(100))
+    admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
+
+    admin = db.relationship('Admin', back_populates='cattle')

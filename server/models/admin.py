@@ -7,3 +7,4 @@ class Admin(db.Model):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
 
+    cattle = db.relationship('Cattle', back_populates='admin')
