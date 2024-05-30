@@ -16,3 +16,4 @@ class Cattle(db.Model):
     admin = db.relationship('Admin', back_populates='cattle')
     dehorning = db.relationship('Dehorning', uselist=False, back_populates='cattle')
     periodic_treatments = db.relationship('PeriodicTreatment', back_populates='cattle')
+    pest_controls = db.relationship('PestControl', back_populates='cattle')
