@@ -15,4 +15,4 @@ class Cattle(db.Model):
     #relationships
     admin = db.relationship('Admin', back_populates='cattle')
     dehorning = db.relationship('Dehorning', uselist=False, back_populates='cattle')
-
+    periodic_treatments = db.relationship('PeriodicTreatment', back_populates='cattle')
