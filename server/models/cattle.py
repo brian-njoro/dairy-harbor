@@ -18,3 +18,4 @@ class Cattle(db.Model):
     periodic_treatments = db.relationship('PeriodicTreatment', back_populates='cattle')
     pest_controls = db.relationship('PestControl', back_populates='cattle')
     treatments = db.relationship('Treatment', back_populates='cattle')
+    vaccinations = db.relationship('Vaccination', back_populates = 'cattle')
