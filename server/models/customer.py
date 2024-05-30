@@ -7,3 +7,5 @@ class Customer(db.Model):
     billing_address = db.Column(db.String(255))
     credit_limit = db.Column(db.Float)
     shipping_address = db.Column(db.String(255))
+    
+    payments = db.relationship('Payment', back_populates='customer')
