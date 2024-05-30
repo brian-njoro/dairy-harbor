@@ -11,4 +11,8 @@ class Cattle(db.Model):
     method_bred = db.Column(db.String(100))
     admin_id = db.Column(db.Integer, db.ForeignKey('admin.id'))
 
+
+    #relationships
     admin = db.relationship('Admin', back_populates='cattle')
+    dehorning = db.relationship('Dehorning', uselist=False, back_populates='cattle')
+
