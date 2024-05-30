@@ -8,4 +8,3 @@ class Admin(db.Model):
     password = db.Column(db.String(100))
 
     cattle = db.relationship('Cattle', back_populates='admin')
-    workers = db.relationship('Worker', back_populates='admin')
