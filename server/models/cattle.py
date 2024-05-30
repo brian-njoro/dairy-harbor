@@ -19,3 +19,4 @@ class Cattle(db.Model):
     pest_controls = db.relationship('PestControl', back_populates='cattle')
     treatments = db.relationship('Treatment', back_populates='cattle')
     vaccinations = db.relationship('Vaccination', back_populates = 'cattle')
+    workers = db.relationship('Worker', secondary='cattle_worker_association', backref='cattles')
