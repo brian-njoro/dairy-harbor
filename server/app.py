@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask import Flask,request,jsonify,session,make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from datetime import datetime
 from models.admin import Admin
 from models.cattle import Cattle
 from models.customer import Customer
@@ -19,7 +20,6 @@ from models.treatment import Treatment
 from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
-from datetime import datetime
 
 
 
@@ -114,3 +114,4 @@ api.add_resource(CattleGetResource, '/cattle') # GET cattle
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+
