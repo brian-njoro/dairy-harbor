@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask import Flask,request,jsonify,session,make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from datetime import datetime
 from models.admin import Admin
 from models.cattle import Cattle
 from models.customer import Customer
@@ -19,9 +20,6 @@ from models.treatment import Treatment
 from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
-from datetime import datetime
-
-
 
 
 app = Flask(__name__)
@@ -35,6 +33,11 @@ app.config['DEBUG'] = True
 migrate = Migrate(app, db)
 api = Api(app)
 db.init_app(app)
+
+
+
+
+### CATTLE ROUTES ##
 
 
 # POST cattle
@@ -106,11 +109,59 @@ class CattleGetResource(Resource):
                     'admin_id': cattle.admin_id
                 })
             return cattle_data, 200
+        
+        
+# GET cattle by id.
+class CattleByIdResource(Resource):
+    def get(self, serial_number):
+        cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+        if cattle:
+            return {
+                'serial_number': cattle.serial_number,
+                'name': cattle.name,
+                'date_of_birth': str(cattle.date_of_birth),
+                'photo': cattle.photo,
+                'breed': cattle.breed,
+                'father_breed': cattle.father_breed,
+                'mother_breed': cattle.mother_breed,
+                'method_bred': cattle.method_bred,
+                'admin_id': cattle.admin_id
+            }, 200
+        else:
+            return {'message': 'Cattle not found'}, 404
+        
+
+    # #DELETE by id
+    # def delete(self, serial_number):
+    #     cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+    #     if cattle:
+    #         db.session.delete(cattle)
+    #         db.session.commit()
+    #         return {'message': 'Cattle deleted successfully'}, 200
+    #     else:
+    #         return {'message': 'Cattle not found'}, 404
+
+
+
+class CattleDeleteByIdResource(Resource):
+    def delete(self, serial_number):
+        cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+        if cattle:
+            db.session.delete(cattle)
+            db.session.commit()
+            return {'message': 'Cattle deleted successfully'}, 200
+        else:
+            return {'message': 'Cattle not found'}, 404
+        
+
 
 
 # Resources
 api.add_resource(CattleResource, '/cattle') # POST cattle
 api.add_resource(CattleGetResource, '/cattle') # GET cattle
+api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
+api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
+
