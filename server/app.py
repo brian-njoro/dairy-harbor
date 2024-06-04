@@ -37,7 +37,9 @@ db.init_app(app)
 
 
 
-#### CATTLE ROUTES
+### CATTLE ROUTES ##
+
+
 # POST cattle
 class CattleResource(Resource):
     def post(self):
@@ -127,8 +129,29 @@ class CattleByIdResource(Resource):
             }, 200
         else:
             return {'message': 'Cattle not found'}, 404
+        
+
+    # #DELETE by id
+    # def delete(self, serial_number):
+    #     cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+    #     if cattle:
+    #         db.session.delete(cattle)
+    #         db.session.commit()
+    #         return {'message': 'Cattle deleted successfully'}, 200
+    #     else:
+    #         return {'message': 'Cattle not found'}, 404
 
 
+
+class CattleDeleteByIdResource(Resource):
+    def delete(self, serial_number):
+        cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+        if cattle:
+            db.session.delete(cattle)
+            db.session.commit()
+            return {'message': 'Cattle deleted successfully'}, 200
+        else:
+            return {'message': 'Cattle not found'}, 404
         
 
 
@@ -137,7 +160,7 @@ class CattleByIdResource(Resource):
 api.add_resource(CattleResource, '/cattle') # POST cattle
 api.add_resource(CattleGetResource, '/cattle') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
-
+api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
