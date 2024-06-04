@@ -22,8 +22,6 @@ from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
 
 
-
-
 app = Flask(__name__)
 CORS(app)
 
@@ -37,6 +35,9 @@ api = Api(app)
 db.init_app(app)
 
 
+
+
+#### CATTLE ROUTES
 # POST cattle
 class CattleResource(Resource):
     def post(self):
@@ -106,11 +107,37 @@ class CattleGetResource(Resource):
                     'admin_id': cattle.admin_id
                 })
             return cattle_data, 200
+        
+        
+# GET cattle by id.
+class CattleByIdResource(Resource):
+    def get(self, serial_number):
+        cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+        if cattle:
+            return {
+                'serial_number': cattle.serial_number,
+                'name': cattle.name,
+                'date_of_birth': str(cattle.date_of_birth),
+                'photo': cattle.photo,
+                'breed': cattle.breed,
+                'father_breed': cattle.father_breed,
+                'mother_breed': cattle.mother_breed,
+                'method_bred': cattle.method_bred,
+                'admin_id': cattle.admin_id
+            }, 200
+        else:
+            return {'message': 'Cattle not found'}, 404
+
+
+        
+
 
 
 # Resources
 api.add_resource(CattleResource, '/cattle') # POST cattle
 api.add_resource(CattleGetResource, '/cattle') # GET cattle
+api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
