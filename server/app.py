@@ -305,6 +305,83 @@ class VaccinationByIdResource(Resource):
         db.session.commit()
 
         return {'message': 'Vaccination record updated successfully'}, 200
+
+
+# GET dehorning records 
+class GetDehorningResource(Resource):
+    def get(self):
+        dehorning_records = Dehorning.query.all()
+        result = []
+        for record in dehorning_records:
+            result.append({
+                'dehorning_id': record.dehorning_id,
+                'date': str(record.date),
+                'vet_name': record.vet_name,
+                'method': record.method,
+                'cattle_id': record.cattle_id
+            })
+        return result, 200
+
+
+
+#GET dehorning records by cattle id
+class GetDehorningByCattleIdResource(Resource):
+    def get(self, cattle_id):
+        dehorning_records = Dehorning.query.filter_by(cattle_id=cattle_id).all()
+        if dehorning_records:
+            result = []
+            for record in dehorning_records:
+                result.append({
+                    'dehorning_id': record.dehorning_id,
+                    'date': str(record.date),
+                    'vet_name': record.vet_name,
+                    'method': record.method,
+                    'cattle_id': record.cattle_id
+                })
+            return result, 200
+        else:
+            return {'message': 'Dehorning records not found for this cattle ID'}, 404
+
+
+#GET Vaccination records
+# Vaccination general GET request
+class GetVaccinationResource(Resource):
+    def get(self):
+        vaccination_records = Vaccination.query.all()
+        result = []
+        for record in vaccination_records:
+            result.append({
+                'vaccination_id': record.vaccination_id,
+                'date': str(record.date),
+                'vet_name': record.vet_name,
+                'method': record.method,
+                'drug': record.drug,
+                'disease': record.disease,
+                'cattle_id': record.cattle_id
+            })
+        return result, 200
+    
+
+# Vaccination by cattle ID GET request
+class GetVaccinationByCattleIdResource(Resource):
+    def get(self, cattle_id):
+        vaccination_records = Vaccination.query.filter_by(cattle_id=cattle_id).all()
+        if vaccination_records:
+            result = []
+            for record in vaccination_records:
+                result.append({
+                    'vaccination_id': record.vaccination_id,
+                    'date': str(record.date),
+                    'vet_name': record.vet_name,
+                    'method': record.method,
+                    'drug': record.drug,
+                    'disease': record.disease,
+                    'cattle_id': record.cattle_id
+                })
+            return result, 200
+        else:
+            return {'message': 'Vaccination records not found for this cattle ID'}, 404
+
     
 
 
@@ -318,8 +395,13 @@ api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
 api.add_resource(DehorningResource, "/dehorning") #POST dehorning
 api.add_resource(DehorningByIdResource, '/dehorning/<int:dehorning_id>') #PATCH dehorning by id
 api.add_resource(VaccinationByIdResource, '/vaccination/<int:vaccination_id>') #PATCH vaccination by id
-api.add_resource(DehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning')
-api.add_resource(VaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination')
+api.add_resource(DehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') #Post dehorning record for a specific cattle
+api.add_resource(VaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') #post vaccination record for a specific cattle
+# api.add_resource(DehorningResource,"/dehorning")
+api.add_resource(GetVaccinationResource, "/vaccination") #Get vaccination records
+api.add_resource(GetDehorningResource, "/dehorning")# get dehorning records
+api.add_resource(GetDehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') 
+api.add_resource(GetVaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') 
 
 
 
