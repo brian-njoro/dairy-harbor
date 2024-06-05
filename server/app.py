@@ -185,6 +185,32 @@ class VaccinationResource(Resource):
         db.session.commit()
 
         return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
+    
+
+# POST Dehorning record
+class DehorningResource(Resource):
+    def post(self):
+        data = request.get_json()
+
+        date = data.get('date')
+        vet_name = data.get('vet_name')
+        method = data.get('method')
+        cattle_id = data.get('cattle_id')
+
+        # Convert date from string to date object
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+
+        new_dehorning = Dehorning(
+            date=date,
+            vet_name=vet_name,
+            method=method,
+            cattle_id=cattle_id
+        )
+
+        db.session.add(new_dehorning)
+        db.session.commit()
+
+        return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
  
         
 
@@ -196,6 +222,7 @@ api.add_resource(CattleGetResource, '/cattle') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
 api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
 api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
+api.add_resource(DehorningResource, "/dehorning")
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
