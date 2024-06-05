@@ -187,6 +187,37 @@ class VaccinationResource(Resource):
         return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
     
 
+# POST Vaccination by cattle id
+class VaccinationByCattleIdResource(Resource):
+    def post(self, cattle_id):
+        data = request.get_json()
+
+        date = data.get('date')
+        vet_name = data.get('vet_name')
+        method = data.get('method')
+        drug = data.get('drug')
+        disease = data.get('disease')
+
+        # Convert date from string to date object
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+
+        new_vaccination = Vaccination(
+            date=date,
+            vet_name=vet_name,
+            method=method,
+            drug=drug,
+            disease=disease,
+            cattle_id=cattle_id
+        )
+
+        db.session.add(new_vaccination)
+        db.session.commit()
+
+        return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
+
+    
+    
+
 # POST Dehorning record
 class DehorningResource(Resource):
     def post(self):
@@ -211,8 +242,70 @@ class DehorningResource(Resource):
         db.session.commit()
 
         return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
- 
-        
+    
+#POST dehorning by cattle id
+class DehorningByCattleIdResource(Resource):
+    def post(self, cattle_id):
+        data = request.get_json()
+
+        date = data.get('date')
+        vet_name = data.get('vet_name')
+        method = data.get('method')
+
+        # Convert date from string to date object
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+
+        new_dehorning = Dehorning(
+            date=date,
+            vet_name=vet_name,
+            method=method,
+            cattle_id=cattle_id
+        )
+
+        db.session.add(new_dehorning)
+        db.session.commit()
+
+        return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
+    
+
+    
+# PATCH dehorning and vaccination by id
+class DehorningByIdResource(Resource):
+    def put(self, dehorning_id):
+        data = request.get_json()
+
+        dehorning = Dehorning.query.filter_by(dehorning_id=dehorning_id).first()
+        if not dehorning:
+            return {'message': 'Dehorning record not found'}, 404
+
+        dehorning.date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
+        dehorning.vet_name = data.get('vet_name')
+        dehorning.method = data.get('method')
+        dehorning.cattle_id = data.get('cattle_id')
+
+        db.session.commit()
+
+        return {'message': 'Dehorning record updated successfully'}, 200
+
+class VaccinationByIdResource(Resource):
+    def put(self, vaccination_id):
+        data = request.get_json()
+
+        vaccination = Vaccination.query.filter_by(vaccination_id=vaccination_id).first()
+        if not vaccination:
+            return {'message': 'Vaccination record not found'}, 404
+
+        vaccination.date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
+        vaccination.vet_name = data.get('vet_name')
+        vaccination.method = data.get('method')
+        vaccination.drug = data.get('drug')
+        vaccination.disease = data.get('disease')
+        vaccination.cattle_id = data.get('cattle_id')
+
+        db.session.commit()
+
+        return {'message': 'Vaccination record updated successfully'}, 200
+    
 
 
 
@@ -222,7 +315,15 @@ api.add_resource(CattleGetResource, '/cattle') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
 api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
 api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
-api.add_resource(DehorningResource, "/dehorning")
+api.add_resource(DehorningResource, "/dehorning") #POST dehorning
+api.add_resource(DehorningByIdResource, '/dehorning/<int:dehorning_id>') #PATCH dehorning by id
+api.add_resource(VaccinationByIdResource, '/vaccination/<int:vaccination_id>') #PATCH vaccination by id
+api.add_resource(DehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning')
+api.add_resource(VaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination')
+
+
+
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
