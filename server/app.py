@@ -155,12 +155,47 @@ class CattleDeleteByIdResource(Resource):
         
 
 
+## PROCEDURE ROUTES ##
+
+# POST vaccination record
+class VaccinationResource(Resource):
+    def post(self):
+        data = request.get_json()
+
+        date = data.get('date')
+        vet_name = data.get('vet_name')
+        method = data.get('method')
+        drug = data.get('drug')
+        disease = data.get('disease')
+        cattle_id = data.get('cattle_id')
+
+        # Convert date from string to date object
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+
+        new_vaccination = Vaccination(
+            date=date,
+            vet_name=vet_name,
+            method=method,
+            drug=drug,
+            disease=disease,
+            cattle_id=cattle_id
+        )
+
+        db.session.add(new_vaccination)
+        db.session.commit()
+
+        return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
+ 
+        
+
+
 
 # Resources
 api.add_resource(CattleResource, '/cattle') # POST cattle
 api.add_resource(CattleGetResource, '/cattle') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
 api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
+api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
