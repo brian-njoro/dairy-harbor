@@ -381,12 +381,174 @@ class GetVaccinationByCattleIdResource(Resource):
             return result, 200
         else:
             return {'message': 'Vaccination records not found for this cattle ID'}, 404
+        
 
+
+
+# PERIODIC PROCEDURES ROUTES
+
+# POST 
+class PostPeriodicTreatmentResource(Resource):
+    def post(self):
+        data = request.get_json()
+        
+        date = data.get('date')
+        cattle_id = data.get('cattle_id')
+        vet_name = data.get('vet_name')
+        disease = data.get('disease')
+        method_of_administration = data.get('method_of_administration')
+        
+        # Convert date from string to date object
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+        
+        new_treatment = PeriodicTreatment(
+            date=date,
+            cattle_id=cattle_id,
+            vet_name=vet_name,
+            disease=disease,
+            method_of_administration=method_of_administration
+        )
+
+        db.session.add(new_treatment)
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment created successfully', 'treatment': new_treatment.id}, 201
     
 
+#POST by id
+class PeriodicTreatmentByCattleIdResource(Resource):
+    def post(self, cattle_id):
+        data = request.get_json()
+        
+        date = data.get('date')
+        vet_name = data.get('vet_name')
+        disease = data.get('disease')
+        method_of_administration = data.get('method_of_administration')
+        
+        # Convert date from string to date object
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+        
+        new_treatment = PeriodicTreatment(
+            date=date,
+            cattle_id=cattle_id,
+            vet_name=vet_name,
+            disease=disease,
+            method_of_administration=method_of_administration
+        )
+
+        db.session.add(new_treatment)
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment created successfully', 'treatment': new_treatment.id}, 201
+    
+
+# PATCH
+
+#PATCH by treatment id
+class PeriodicTreatmentPatchResource(Resource):
+    def patch(self, treatment_id):
+        data = request.get_json()
+        treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
+
+        if not treatment:
+            return {'message': 'Periodic Treatment record not found'}, 404
+        
+        if 'date' in data:
+            treatment.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+        if 'cattle_id' in data:
+            treatment.cattle_id = data['cattle_id']
+        if 'vet_name' in data:
+            treatment.vet_name = data['vet_name']
+        if 'disease' in data:
+            treatment.disease = data['disease']
+        if 'method_of_administration' in data:
+            treatment.method_of_administration = data['method_of_administration']
+
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment updated successfully'}, 200
+    
+
+#PATCH by cattle id
+class PeriodicTreatmentPatchByCattleIdResource(Resource):
+    def patch(self, cattle_id):
+        data = request.get_json()
+        treatment = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).first()
+
+        if not treatment:
+            return {'message': 'Periodic Treatment record not found'}, 404
+        
+        if 'date' in data:
+            treatment.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+        if 'cattle_id' in data:
+            treatment.cattle_id = data['cattle_id']
+        if 'vet_name' in data:
+            treatment.vet_name = data['vet_name']
+        if 'disease' in data:
+            treatment.disease = data['disease']
+        if 'method_of_administration' in data:
+            treatment.method_of_administration = data['method_of_administration']
+
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment updated successfully'}, 200
 
 
-# Resources
+#GET
+class PeriodicTreatmentListResource(Resource):
+    def get(self):
+        treatments = PeriodicTreatment.query.all()
+        result = []
+        for treatment in treatments:
+            result.append({
+                'id': treatment.id,
+                'date': str(treatment.date),
+                'cattle_id': treatment.cattle_id,
+                'vet_name': treatment.vet_name,
+                'disease': treatment.disease,
+                'method_of_administration': treatment.method_of_administration
+            })
+        return result, 200
+    
+
+#GET BY id
+class PeriodicTreatmentByCattleIdListResource(Resource):
+    def get(self, cattle_id):
+        treatments = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).all()
+        result = []
+        for treatment in treatments:
+            result.append({
+                'id': treatment.id,
+                'date': str(treatment.date),
+                'cattle_id': treatment.cattle_id,
+                'vet_name': treatment.vet_name,
+                'disease': treatment.disease,
+                'method_of_administration': treatment.method_of_administration
+            })
+        return result, 200
+    
+
+    
+# DELETE by id
+class PeriodicTreatmentDeleteResource(Resource):
+    def delete(self, treatment_id):
+        treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
+
+        if not treatment:
+            return {'message': 'Periodic Treatment record not found'}, 404
+        
+        db.session.delete(treatment)
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment deleted successfully'}, 200
+
+
+
+
+
+
+## RESOURCES ##
+
 api.add_resource(CattleResource, '/cattle') # POST cattle
 api.add_resource(CattleGetResource, '/cattle') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
@@ -400,8 +562,24 @@ api.add_resource(VaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccina
 # api.add_resource(DehorningResource,"/dehorning")
 api.add_resource(GetVaccinationResource, "/vaccination") #Get vaccination records
 api.add_resource(GetDehorningResource, "/dehorning")# get dehorning records
-api.add_resource(GetDehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') 
-api.add_resource(GetVaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') 
+api.add_resource(GetDehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') # get dehorning record for a specific cattle
+api.add_resource(GetVaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') # Get vaccination record for a specific cattle
+api.add_resource(PostPeriodicTreatmentResource, '/periodic_treatment') # Add a record for periodic treatment
+api.add_resource(PeriodicTreatmentByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #POST BY cattle id
+api.add_resource(PeriodicTreatmentPatchResource, '/periodic_treatment/<int:treatment_id>') #patch periodic treatment by treatment id
+api.add_resource(PeriodicTreatmentPatchByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #PATCH periodic treatment record by cattle id
+api.add_resource(PeriodicTreatmentListResource, '/periodic_treatments') #GET all periodic treatment record
+api.add_resource(PeriodicTreatmentByCattleIdListResource, '/cattle/<int:cattle_id>/periodic_treatments') #Get periodic treatment record for specific cattle using cattle id
+api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:treatment_id>') #Delete periodic treatment record for a specific cattle
+
+
+
+
+
+
+
+
+
 
 
 
