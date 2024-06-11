@@ -440,6 +440,60 @@ class PeriodicTreatmentByCattleIdResource(Resource):
         db.session.commit()
 
         return {'message': 'Periodic Treatment created successfully', 'treatment': new_treatment.id}, 201
+    
+
+# PATCH
+
+#PATCH by treatment id
+class PeriodicTreatmentPatchResource(Resource):
+    def patch(self, treatment_id):
+        data = request.get_json()
+        treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
+
+        if not treatment:
+            return {'message': 'Periodic Treatment record not found'}, 404
+        
+        if 'date' in data:
+            treatment.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+        if 'cattle_id' in data:
+            treatment.cattle_id = data['cattle_id']
+        if 'vet_name' in data:
+            treatment.vet_name = data['vet_name']
+        if 'disease' in data:
+            treatment.disease = data['disease']
+        if 'method_of_administration' in data:
+            treatment.method_of_administration = data['method_of_administration']
+
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment updated successfully'}, 200
+    
+
+#PATCH by cattle id
+class PeriodicTreatmentPatchByCattleIdResource(Resource):
+    def patch(self, cattle_id):
+        data = request.get_json()
+        treatment = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).first()
+
+        if not treatment:
+            return {'message': 'Periodic Treatment record not found'}, 404
+        
+        if 'date' in data:
+            treatment.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
+        if 'cattle_id' in data:
+            treatment.cattle_id = data['cattle_id']
+        if 'vet_name' in data:
+            treatment.vet_name = data['vet_name']
+        if 'disease' in data:
+            treatment.disease = data['disease']
+        if 'method_of_administration' in data:
+            treatment.method_of_administration = data['method_of_administration']
+
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment updated successfully'}, 200
+
+
 
 
 
@@ -464,7 +518,12 @@ api.add_resource(GetDehorningResource, "/dehorning")# get dehorning records
 api.add_resource(GetDehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') # get dehorning record for a specific cattle
 api.add_resource(GetVaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') # Get vaccination record for a specific cattle
 api.add_resource(PostPeriodicTreatmentResource, '/periodic_treatment') # Add a record for periodic treatment
-api.add_resource(PeriodicTreatmentByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #POST BY ID
+api.add_resource(PeriodicTreatmentByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #POST BY cattle id
+api.add_resource(PeriodicTreatmentPatchResource, '/periodic_treatment/<int:treatment_id>') #patch periodic treatment by treatment id
+api.add_resource(PeriodicTreatmentPatchByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #PATCH periodic treatment record by cattle id
+
+
+
 
 
 
