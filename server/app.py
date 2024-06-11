@@ -494,6 +494,53 @@ class PeriodicTreatmentPatchByCattleIdResource(Resource):
         return {'message': 'Periodic Treatment updated successfully'}, 200
 
 
+#GET
+class PeriodicTreatmentListResource(Resource):
+    def get(self):
+        treatments = PeriodicTreatment.query.all()
+        result = []
+        for treatment in treatments:
+            result.append({
+                'id': treatment.id,
+                'date': str(treatment.date),
+                'cattle_id': treatment.cattle_id,
+                'vet_name': treatment.vet_name,
+                'disease': treatment.disease,
+                'method_of_administration': treatment.method_of_administration
+            })
+        return result, 200
+    
+
+#GET BY id
+class PeriodicTreatmentByCattleIdListResource(Resource):
+    def get(self, cattle_id):
+        treatments = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).all()
+        result = []
+        for treatment in treatments:
+            result.append({
+                'id': treatment.id,
+                'date': str(treatment.date),
+                'cattle_id': treatment.cattle_id,
+                'vet_name': treatment.vet_name,
+                'disease': treatment.disease,
+                'method_of_administration': treatment.method_of_administration
+            })
+        return result, 200
+    
+
+    
+# DELETE by id
+class PeriodicTreatmentDeleteResource(Resource):
+    def delete(self, treatment_id):
+        treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
+
+        if not treatment:
+            return {'message': 'Periodic Treatment record not found'}, 404
+        
+        db.session.delete(treatment)
+        db.session.commit()
+
+        return {'message': 'Periodic Treatment deleted successfully'}, 200
 
 
 
@@ -521,6 +568,12 @@ api.add_resource(PostPeriodicTreatmentResource, '/periodic_treatment') # Add a r
 api.add_resource(PeriodicTreatmentByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #POST BY cattle id
 api.add_resource(PeriodicTreatmentPatchResource, '/periodic_treatment/<int:treatment_id>') #patch periodic treatment by treatment id
 api.add_resource(PeriodicTreatmentPatchByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #PATCH periodic treatment record by cattle id
+api.add_resource(PeriodicTreatmentListResource, '/periodic_treatments') #GET all periodic treatment record
+api.add_resource(PeriodicTreatmentByCattleIdListResource, '/cattle/<int:cattle_id>/periodic_treatments') #Get periodic treatment record for specific cattle using cattle id
+api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:treatment_id>') #Delete periodic treatment record for a specific cattle
+
+
+
 
 
 
