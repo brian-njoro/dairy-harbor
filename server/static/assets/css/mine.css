@@ -9,8 +9,9 @@
 /* User image styles */
 .user-img {
     height: 100px;
-    border: 1px solid black;
     border-radius: 50%;
+    border: 2px solid rgb(0,162,255);
+    border-bottom: 8px solid rgb(0, 162, 255 );
 }
 
 /* Sidebar styles */
@@ -92,12 +93,16 @@
     line-height: 50px;
 }
 
+.sidebar ul {
+    padding-left: 1px;
+}
+
 .sidebar ul li a {
-    align-items: center;
     display: flex;
+    align-items: center;
     text-decoration: none;
-    color: azure;   
-    border-radius: 0.8rem;
+    color: azure;
+    border-radius: 10%;
 }
 
 .sidebar ul li a:hover {
@@ -106,7 +111,7 @@
 }
 
 .sidebar ul li a i {
-    margin-right: 1rem;
+    display: flex;
     align-items: center;
     line-height: 50px;
 }
@@ -176,4 +181,30 @@
 .sidebar.active ~ .navbar {
     left: 225px; /* Adjusted left position when sidebar is active */
     width: calc(100% - 305px); /* Adjusted width to fill remaining space when sidebar is active */
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+.navbar-left h2 {
+    margin-right: 20px;
+}
+.btn {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.btn i {
+    margin-right: 8px;
+}
+.btn:hover {
+    background-color: #e0e0e0;
 }

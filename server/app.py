@@ -1,7 +1,7 @@
 from models.config import db
 from flask_restful import Api, Resource
 from flask_cors import CORS
-from flask import Flask,request,jsonify,session,make_response
+from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
@@ -20,6 +20,7 @@ from models.treatment import Treatment
 from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -35,8 +36,62 @@ db.init_app(app)
 
 
 
+# ADMIN AUTHENTICATION ROUTES
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        # Check if username already exists
+        if Admin.query.filter_by(username=username).first():
+            return render_template('signup.html', message='Username already exists')
+
+        # For testing, save the password as plain text
+        new_admin = Admin(username=username, password=password)
+        
+        # Add the new admin to the database
+        db.session.add(new_admin)
+        db.session.commit()
+
+        return redirect(url_for('login'))
+
+    # If method is GET, render the signup form
+    return render_template('signup.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        admin = Admin.query.filter_by(username=username).first()
+
+        if not admin or not check_password_hash(admin.password, password):
+            return render_template('login.html', message='Invalid username or password')
+
+        session['admin_id'] = admin.id
+        return redirect(url_for('home'))
+
+    return render_template('login.html')
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('admin_id', None)
+    return redirect(url_for('login'))
+
+@app.route('/home', methods=['GET'])
+def home():
+    return render_template('home.html')
+
+
 
 ### CATTLE ROUTES ##
+@app.route('/cattle')
+def cattle():
+    # You can pass any necessary data to cattle.html here
+    return render_template('cattle.html')
 
 
 # POST cattle
@@ -548,12 +603,12 @@ class PeriodicTreatmentDeleteResource(Resource):
 
 ## RESOURCES ##
 
-api.add_resource(CattleResource, '/cattle') # POST cattle
-api.add_resource(CattleGetResource, '/cattle') # GET cattle
+api.add_resource(CattleResource, '/cattle/post') # POST cattle
+api.add_resource(CattleGetResource, '/cattle/get') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
 api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
 api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
-api.add_resource(DehorningResource, "/dehorning") #POST dehorning
+api.add_resource(DehorningResource, "/dehorning") #POST dehorning)
 api.add_resource(DehorningByIdResource, '/dehorning/<int:dehorning_id>') #PATCH dehorning by id
 api.add_resource(VaccinationByIdResource, '/vaccination/<int:vaccination_id>') #PATCH vaccination by id
 api.add_resource(DehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') #Post dehorning record for a specific cattle
