@@ -36,50 +36,7 @@ db.init_app(app)
 
 
 
-# ADMIN AUTHENTICATION ROUTES
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        
-        # Check if username already exists
-        if Admin.query.filter_by(username=username).first():
-            return render_template('signup.html', message='Username already exists')
-
-        # For testing, save the password as plain text
-        new_admin = Admin(username=username, password=password)
-        
-        # Add the new admin to the database
-        db.session.add(new_admin)
-        db.session.commit()
-
-        return redirect(url_for('login'))
-
-    # If method is GET, render the signup form
-    return render_template('signup.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-
-        admin = Admin.query.filter_by(username=username).first()
-
-        if not admin or not check_password_hash(admin.password, password):
-            return render_template('login.html', message='Invalid username or password')
-
-        session['admin_id'] = admin.id
-        return redirect(url_for('home'))
-
-    return render_template('login.html')
-
-@app.route('/logout', methods=['POST'])
-def logout():
-    session.pop('admin_id', None)
-    return redirect(url_for('login'))
 
 @app.route('/home', methods=['GET'])
 def home():
