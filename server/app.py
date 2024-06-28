@@ -1,7 +1,7 @@
 from models.config import db
 from flask_restful import Api, Resource
 from flask_cors import CORS
-from flask import Flask,request,jsonify,session,make_response
+from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
@@ -20,6 +20,7 @@ from models.treatment import Treatment
 from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 app = Flask(__name__)
@@ -36,7 +37,18 @@ db.init_app(app)
 
 
 
+
+@app.route('/home', methods=['GET'])
+def home():
+    return render_template('home.html')
+
+
+
 ### CATTLE ROUTES ##
+@app.route('/cattle')
+def cattle():
+    # You can pass any necessary data to cattle.html here
+    return render_template('cattle.html')
 
 
 # POST cattle
@@ -548,12 +560,12 @@ class PeriodicTreatmentDeleteResource(Resource):
 
 ## RESOURCES ##
 
-api.add_resource(CattleResource, '/cattle') # POST cattle
-api.add_resource(CattleGetResource, '/cattle') # GET cattle
+api.add_resource(CattleResource, '/cattle/post') # POST cattle
+api.add_resource(CattleGetResource, '/cattle/get') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
 api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
 api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
-api.add_resource(DehorningResource, "/dehorning") #POST dehorning
+api.add_resource(DehorningResource, "/dehorning") #POST dehorning)
 api.add_resource(DehorningByIdResource, '/dehorning/<int:dehorning_id>') #PATCH dehorning by id
 api.add_resource(VaccinationByIdResource, '/vaccination/<int:vaccination_id>') #PATCH vaccination by id
 api.add_resource(DehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') #Post dehorning record for a specific cattle
