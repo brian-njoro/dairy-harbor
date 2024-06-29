@@ -1,0 +1,7 @@
+.logo-Title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 6px;
+}

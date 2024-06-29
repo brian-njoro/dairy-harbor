@@ -1,0 +1,39 @@
+.header{
+    margin-bottom: 50px;
+}
+.sign-up-container{
+    margin: 150px auto;
+    border: 2px solid rgba(0, 162, 255, 0);
+    border-radius: 16px;
+    
+}
+.sign-up-redirect{
+    width: 300px;
+    background-color: rgb(0, 162, 255);
+    color: white;
+    padding: 10px;
+    margin-right: 0;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    box-shadow: 5px 10px 6px rgba(0, 0, 0, .15);
+}
+.sign-up-form{
+    width: 300px;
+    padding: 20px;
+    margin-left: 0;
+    box-shadow: 5px 10px 6px rgba(0, 0, 0, .15);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+@media(max-width:1000px){
+    .sign-up-container{
+        align-items: center;
+        margin-right: 20px;
+    }
+    .sign-up-form{
+        align-items: center;
+        margin: 10px auto 10px;
+        border: 2px solid rgb(0, 162, 255);
+        border-radius: 16px;
+    }
+}

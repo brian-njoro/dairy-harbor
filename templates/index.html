@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dairy Harbor Web App</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="{{url_for('static',filename='auth/static/assets/img/favicon.icon')}}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">   
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ url_for('static', filename='auth/lib/animate/animate.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='auth/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='auth/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{url_for('static',filename='auth/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- Template Stylesheet -->
+    <link href="{{url_for('static',filename='auth/css/style.css') }}" rel="stylesheet">
+    <link href="{{url_for('static',filename='auth/css/modified.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='auth/css/header.css') }}" rel="stylesheet">
+
+    <style>
+        
+        
+    </style>
+</head>
+
+<body>
+    <!-- Navbar Start -->
+    <nav class="nav-container shadow-lg navbar navbar-expand-lg bg-white navbar-light sticky-top  ">
+        <a href="index.html" class="navbar-brand d-flex align-items-center">
+            <div class="logo-1-container">
+                <img class="logo-1-icon d-none d-md-block d-lg-block d-xl-block" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}" />
+            </div>
+            <h1 class="m-0" style="color:rgb(23, 180, 233);">Dairy Harbor</h1>
+            
+        </a>
+        <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" style="color:rgb(23, 180, 233);" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="#Home" class="nav-item nav-link active" style="color:rgb(23, 180, 233);">HOME</a>
+                <a href="#About" class="nav-item nav-link" style="color:rgb(23, 180, 233);">ABOUT</a>
+                <a href="#Contacts" class="nav-item nav-link" style="color:rgb(23, 180, 233);">CONTACTS</a>
+            </div>
+        </div>
+        <form class="d-flex authButtons d-sm-none d-md-block" role="search">
+            <a href="signup1.html" target="_blank">
+                <button type="button" class="sign-up">
+                    Sign Up
+                </button>
+            </a>
+            <a href="login1.html" target="_blank">
+                <button type="button" class="login-1">
+                    Log In
+                </button>
+            </a>
+        </form>
+    </nav>   
+    <!-- Navbar End -->
+
+
+    <!-- Carousel Start -->
+    <div class="container-fluid px-0 mb-5 h3">
+        <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                </div>
+
+
+                <div class="carousel-item active image">
+                    <img class="w-100 img" style="filter:brightness(20%)" src="{{ url_for('static', filename='auth/img/carousel-11.jpg') }}" alt="Image">
+                    <div class="carousel-caption">
+
+                        <!--Get started-->
+                        <div class="container-xxl py-5 text-center">
+                            <div class="text-center justify-content-center ms-5">
+                                <p class="justify-content-center text-light lh-lg">
+                                    At Dairy Harbor, we aim to provide dairy farmers with the best tools to manage their farms efficiently and effectively. Our platform is designed to help you monitor and optimize every aspect of your dairy farm operations, from livestock tracking to milk production and feed schedules.Whether you are an experienced farmer or just starting, Dairy Harbor is here to support you. Join our community of forward-thinking dairy farmers and take your farm management to the next level.
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <form class="d-flex authButtons" role="search">
+                                    <a href="signup1.html'" target="_blank">
+                                        <button type="button" class="sighup">
+                                            Sign Up
+                                        </button>
+                                    </a>
+
+                                    <a href="login1.html" target="_blank">
+                                        <button type="button" class="login ms-5">
+                                            Log In
+                                            </button>
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                        <!--Get Started End-->
+
+                    </div>
+                </div>
+                
+
+                
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="prev">
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
+                data-bs-slide="next">
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <!-- Carousel End -->
+
+    <!-- About Start -->
+    <div class="container-xxl py-5 d-flex flex-row mb-3" id="About">
+        <div class="container d-flex flex-row mb-3">
+
+                <div class="col-lg-6 wow fadeIn justify-content-center mx-auto" data-wow-delay="0.5s">
+
+                    <h1 class="bg-white text-center mb-4 justify-content-center" align="center" style="color:rgb(20, 185, 240);">About Us</h1>
+                    <p class="mb-4 ">
+                        Dairy Harbor is a comprehensive dairy farm management app designed to streamline dairy farm operations and maximize productivity. With innovative features that cover every aspect of dairy farming, Dairy Delight empowers you to efficiently manage your herd, optimize breeding, and monitor production and sales.
+                        Our goal is to develop a dairy farm management app that offers a user-friendly interface and robust functionality, enabling farmers to efficiently oversee their operations, enhance productivity, and optimize profitability through streamlined livestock management, accurate production tracking, and sales monitoring.
+
+                    </p>
+                    <div class="row g-5 pt-2 mb-5">
+                        <div class="col-sm-6">
+                            <div class="image1 mb-4">
+                                <img class="img-fluid mb-4 img Image" src="{{ url_for('static', filename='auth/img/service1.png') }}" alt="">
+                            </div>
+                            
+                            <h5 class="mb-3" style="color:rgb(20, 185, 240);">Comprehensive Data Capture
+                            </h5>
+                            <span style="color:rgb(0,0,0);">Record essential details such as serial number, name, date of birth, and parent information for each of your cattle.
+                            </span>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="image1 mb-4">
+                                <img class="img-fluid mb-4 img Image" src="{{ url_for('static', filename='auth/img/product1.jpg') }}" alt="">
+                            </div>
+
+                                <h5 class="mb-3" style="color:rgb(20, 185, 240);">
+                            Herd Visualization</h5>
+                            <span style="color:rgb(0,0,0);">Visualize your herd with photos and other identifying details, providing a comprehensive overview of your cattle at a glance.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s" data-parallax="scroll" data-image-src="{{ url_for('static', filename='auth/img/b1.jpg') }}" id="Contacts">
+        
+        <div class="container py-5">
+            <div class="row g-5">
+                
+                <div class="col-lg-3 col-md-3">
+                    <h5 class="mb-4" style="color:rgb(39, 188, 238)">Our Partners</h5>
+
+                    <div class="mb-3 image-container">
+                        <a href="https://jhubafrica.com/" target="_blank"><img style="background:white;" src="{{ url_for('static', filename='auth/img/jhub.png') }}" class="w-20 h-20 scale-150 img-fluid rounded image-container" style="border-radius:100px;"></a>
+                    </div>
+
+                    <div class="mt-3 image-container">
+                        <a href="https://jhubafrica.com/" target="_blank"><img style="background:white;" src="{{ url_for('static', filename='auth/img/jhub.png') }}" class="w-20 h-20 scale-150 img-fluid rounded jHub-logo" style="border-radius:100px;"></a>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-4" style="color:rgb(39, 188, 238)">Quick Links</h5>
+                    <a class="btn btn-link" style="color:rgb(255, 255, 255)" href="index.html">Home</a>
+                    <a class="btn btn-link" style="color:rgb(255, 255, 255)" href="#About">About Us</a>
+                    <a class="btn btn-link" style="color:rgb(255, 255, 255)" href="#Services">Our Services</a>
+                    <a class="btn btn-link" style="color:rgb(255, 255, 255)" href="#Team">Our Team</a>
+                    
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-4" style="color:rgb(31, 181, 231)">Our Office</h5>
+                    <p class="mb-2" style="color:rgb(255, 255, 255)" ><i class="fa fa-map-marker-alt me-3" style="color:rgb(38, 175, 221)"></i>P.O. BOX 6200, NAIROBI, KENYA</p>
+                    <p class="mb-2" style="color:rgb(255, 255, 255)" ><i class="fa fa-phone-alt me-3" style="color:rgb(39, 188, 238)"></i>Tel:<br>Brian Irunguh: 0705375277,<br>Kelvin Mwenda: 0746917394
+                    <p class="mb-2" style="color:rgb(255, 255, 255)"><i class="fa fa-envelope me-3" style="color:rgb(39, 188, 238)"></i>Email: registrar@aa.jkuat.ac.ke</p>
+                    <div class="d-flex pt-3">
+                        <a class="btn btn-square rounded-circle me-2" href="" style="background-color:#27bcee; color:white;" ><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-square rounded-circle me-2" href="" style="background-color:rgb(39, 188, 238);color:white;"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-square rounded-circle me-2" href="" style="background-color:rgb(39, 188, 238);color:white;"><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-square rounded-circle me-2" href="" style="background-color:#27bcee; color:white;"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                
+
+                <div class="col-lg-3 col-md-3">
+                    <div class="logo-container justify-content-center">
+                        <a href="https://jhubafrica.com/" target="_blank"><img style="background:white;" src="{{ url_for('static', filename='auth/img/jhub.png') }}" class="w-20 h-20 scale-150 img-fluid rounded jHub-logo" style="border-radius:100px;"></a>
+                    </div>
+                    
+                    <div class="d-flex pt-3">
+                        <a class="btn btn-square rounded-circle me-2" href="" style="background-color:#27bcee; color:white;" target="_blank"><i class="fab fa-twitter"></i></a>
+                        
+                        <a class="btn btn-square rounded-circle me-2" href="https://jhubafrica.com/about" style="background-color:#27bcee; color:white;" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        <a class="btn btn-square rounded-circle me-2" href="https://www.tiktok.com/@jhubafrica" target="_blank"style="background-color:#27bcee; color:white;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
+                            <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/>
+                        </svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Copyright Start -->
+    <div class="container-fluid text-body copyright py-4" style="background-color:rgb(7, 100, 131);color:white;">
+        <div class="container">
+            <div class="row" style="color:white">
+                
+                <div class="col-md-12 text-center text-md-center mb-3 mb-md-0">
+                    <a class="fw-semi-bold" href="#" style="color:white">&copy; All rights reserved</a> &#124; <a class="fw-semi-bold" href="#" style="color:white">Terms of service</a>
+                </div>
+
+                <div class="col-md-6 text-center text-md-end" style="color:rgb(201, 184, 184);font-weight:bold;">
+                    Designed By <a class="fw-semi-bold" href="https://htmlcodex.com" style="color:rgb(212, 197, 197); font-weight:bold;">Chocs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-lg-square rounded-circle back-to-top" style="background-color:rgb(3, 38, 49)"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='auth/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/lib/parallax/parallax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='auth/lib/lightbox/js/lightbox.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ url_for('static', filename='auth/js/main.js') }}"></script>
+</body>
+
+</html>
