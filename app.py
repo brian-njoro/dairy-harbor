@@ -50,6 +50,11 @@ def sign_up():
 def login():
     return render_template('login1.html')
 
+#forgot page
+@app.route('/forgot', methods=['GET'])
+def forgot():
+    return render_template('forgot.html')
+
 #home page
 @app.route('/home', methods=['GET'])
 def home():

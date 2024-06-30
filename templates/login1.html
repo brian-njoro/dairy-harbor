@@ -20,7 +20,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../static/auth/static/assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{url_for('static',filename='auth/static/assets/img/favicon/favicon.ico')}}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -173,7 +173,7 @@
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label text-info" for="password">Password</label>
-                    <a href="auth-forgot-password-basic.html">
+                    <a href="/forgot" target="_self">
                       <small>Forgot Password?</small>
                     </a>
                   </div>
