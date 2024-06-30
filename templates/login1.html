@@ -7,6 +7,8 @@
   data-theme="theme-default"
   data-assets-path="{{url_for('static',filename='auth/static/assets')}}"
   data-template="vertical-menu-template-free">
+
+
   <head>
     <meta charset="utf-8" />
     <meta
@@ -64,11 +66,11 @@
 
       <div class="collapse navbar-collapse" id="navbarCollapse">
           <div class="navbar-nav ms-auto p-4 p-lg-0">
-              <a href="index.html" target="_blank" class="nav-item nav-link active" style="color:rgb(23, 180, 233);">HOME</a>
+              <a href="/index" target="_blank" class="nav-item nav-link active" style="color:rgb(23, 180, 233);">HOME</a>
           </div>
 
           <form class="d-flex authButtons d-none d-lg-block d-xl-block px-5" role="search">
-            <a href="auth_register_basic.html" target="_blank">
+            <a href="/sign-up" target="_blank">
                 <button type="button" class="btn btn-primary d-grid w-100">
                     Sign Up
                 </button>
@@ -144,7 +146,7 @@
                   
                 </a>
                 <h1 class="text-primary-info link-offset-2 link-underline link-underline-opacity-0 text-info ms-2">Dairy Harbor</h1>
-                <hr>
+                <hr class="border border-info">
               </div>
               <!--Logo end-->
               
@@ -197,7 +199,7 @@
 
                 
                 <div class="mb-3">
-                  <a href="#">
+                  <a href="/home">
                   <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                   </a>
                 </div>
@@ -206,7 +208,7 @@
 
               <p class="text-center text-dark">
                 <span>New on our platform?</span>
-                <a href="auth-register-basic.html">
+                <a href="/sign-up">
                   <span>Create an account</span>
                 </a>
               </p>
@@ -220,6 +222,7 @@
 
     <!-- / Content -->
 
+    <!--upgrade-->
     <div class="buy-now">
       <a
         href="https://themeselection.com/item/sneat-bootstrap-html-admin-template/"

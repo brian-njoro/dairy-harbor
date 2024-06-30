@@ -3,213 +3,214 @@
 <div class="container text-center">
     <div class="d-flex justify-content-between row">
         {% block sidebar %}
-            <div class="sidebar p-2 col-3 ">
+            <div class="sidebar p-2 col-3 flex-row sidebar1">
 
-            <div class="user">
-                <img src="/static/assets/img/avatars/logo.png" class="user-img" alt="Logo">
-            </div>
+                <div class="user">
+                    <img src="/static/assets/img/avatars/logo.png" class="user-img" alt="Logo">
+                </div>
 
-            <div class="top">
-                <i class="bx bx-menu" id="btn"></i>        
-            </div>
+                <div class="top">
+                    <i class="bx bx-menu" id="btn"></i>        
+                </div>
 
-            <ul>
-                <li>
-                    <a href="#" class="menu-link" data-target="homeContent" onclick="toggleSidebar(); showContent('homeContent')">
-                        <i class="bx bxs-home"></i>
-                        <span class="nav-item">Home</span>
-                    </a>
-                </li>
+                <ul>
+                    <li>
+                        <a href="#" class="menu-link" data-target="homeContent" onclick="toggleSidebar(); showContent('homeContent')">
+                            <i class="bx bxs-home"></i>
+                            <span class="nav-item">Home</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="#" class="menu-link" data-target="myCattleContent" onclick="toggleSidebar(); showContent('myCattleContent')">
-                        <i class="bx bxs-grid-alt"></i>
-                        <span class="nav-item">Cattle</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="#" class="menu-link" data-target="myCattleContent" onclick="toggleSidebar(); showContent('myCattleContent')">
+                            <i class="bx bxs-grid-alt"></i>
+                            <span class="nav-item">Cattle</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="#" class="menu-link" data-target="myWorkersContent" onclick="toggleSidebar(); showContent('myWorkersContent')">
-                        <i class="bx bxs-group"></i>
-                        <span class="nav-item">Workers</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="#" class="menu-link" data-target="myWorkersContent" onclick="toggleSidebar(); showContent('myWorkersContent')">
+                            <i class="bx bxs-group"></i>
+                            <span class="nav-item">Workers</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="#" class="menu-link" data-target="productionContent" onclick="toggleSidebar(); showContent('productionContent')">
-                        <i class="bx bxs-shopping-bag"></i>
-                        <span class="nav-item">Production</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="#" class="menu-link" data-target="productionContent" onclick="toggleSidebar(); showContent('productionContent')">
+                            <i class="bx bxs-shopping-bag"></i>
+                            <span class="nav-item">Production</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="#" class="menu-link" data-target="salesContent" onclick="toggleSidebar(); showContent('salesContent')">
-                        <i class="bx bxs-dollar-circle"></i>
-                        <span class="nav-item">Sales</span>
-                    </a>
-                </li>
+                    <li>
+                        <a href="#" class="menu-link" data-target="salesContent" onclick="toggleSidebar(); showContent('salesContent')">
+                            <i class="bx bxs-dollar-circle"></i>
+                            <span class="nav-item">Sales</span>
+                        </a>
+                    </li>
 
-                <li>
-                    <a href="#" class="menu-link" data-target="reportsContent" onclick="toggleSidebar(); showContent('reportsContent')">
-                        <i class="bx bxs-report"></i>
-                        <span class="nav-item">Reports</span>
-                    </a>
-                </li>
-            </ul>
+                    <li>
+                        <a href="#" class="menu-link" data-target="reportsContent" onclick="toggleSidebar(); showContent('reportsContent')">
+                            <i class="bx bxs-report"></i>
+                            <span class="nav-item">Reports</span>
+                        </a>
+                    </li>
+                </ul>
 
             </div>
         {% endblock %}
 
         {% block main_content %}
-        <div class="d-flex justify-content-evenly flex-row ms-5 p-2 col-9">
-            <div class="d-flex flex-column justify-content-evenly w-100">
-                
-                <!--worker header-->
-                <div class="d-flex justify-content-around flex-row p-2">
-                    <!--worker profile-->
-                    <div class="p-2 col-3">
-                        <h1>Worker Profile</h1>
-                    </div>
-                    <!--worker profile-->
+            <div class= "main-content">
+                <!--d-flex flexrow justify-content-end flex-row p-2 col-9-->
+                <div class="d-flex flex-column justify-content-evenly w-100">
+                    
+                    <!--worker header-->
+                    <div class="d-flex justify-content-around flex-row p-2">
+                        <!--worker profile-->
+                        <div class="p-2 col-3">
+                            <h1>Worker Profile</h1>
+                        </div>
+                        <!--worker profile-->
 
-                    <!--search-->
-                    <div class="container w-90 p-2 col-6">
-                        <nav class="navbar bg-body-tertiary">
-                            <div class="container-fluid">
-                            <form class="d-flex" role="search" method="POST">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                            </div>
-                        </nav>
-                    </div>
-                    <!--search-->
-
-                    <!-- User -->
-                    <div class="navbar-right p-2 container col-3">
-                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                <div class="avatar">
-                                    <img src="/static/assets/img/avatars/6.jpg" alt class="w-px-75 h-auto rounded-circle" />
+                        <!--search-->
+                        <div class="container w-90 p-2 col-6">
+                            <nav class="navbar bg-body-tertiary">
+                                <div class="container-fluid">
+                                <form class="d-flex" role="search" method="POST">
+                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
                                 </div>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar avatar-online">
-                                                    <img src="/static/assets/img/avatars/6.jpg" alt class="w-px-40 h-auto rounded-circle" />
+                            </nav>
+                        </div>
+                        <!--search-->
+
+                        <!-- User --
+                        <div class="navbar-right p-2 container col-3">
+                            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                    <div class="avatar">
+                                        <img src="/static/assets/img/avatars/6.jpg" alt class="w-px-75 h-auto rounded-circle" />
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar avatar-online">
+                                                        <img src="/static/assets/img/avatars/6.jpg" alt class="w-px-40 h-auto rounded-circle" />
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <span class="fw-medium d-block">Eliud Marierie</span>
+                                                    <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
-                                            <div class="flex-grow-1">
-                                                <span class="fw-medium d-block">Eliud Marierie</span>
-                                                <small class="text-muted">Admin</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bx bx-user me-2"></i>
-                                        <span class="align-middle">My Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bx bx-cog me-2"></i>
-                                        <span class="align-middle">Settings</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <span class="d-flex align-items-center align-middle">
-                                            <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="bx bx-power-off me-2"></i>
-                                        <span class="align-middle">Log Out</span>
-                                    </a>
-                                </li>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bx bx-user me-2"></i>
+                                            <span class="align-middle">My Profile</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bx bx-cog me-2"></i>
+                                            <span class="align-middle">Settings</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <span class="d-flex align-items-center align-middle">
+                                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:void(0);">
+                                            <i class="bx bx-power-off me-2"></i>
+                                            <span class="align-middle">Log Out</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                        </div>
+                        --/ User -->
+                    </div>
+                    <!--/worker header-->
+
+                    <!--worker body-->
+                    <div class="d-flex justify-content-evenly flex-row ms-5 p-2">
+
+                        <!--worker card-->
+                        <div class="card p-2 col-4" style="width: 18rem;">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                            <h5 class="card-title">Worker Name</h5>
+                            <p class="card-text">Rank: His work rank</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Gender: Male or Female</li>
+                            <li class="list-group-item">Date Hired: mm/dd/yy</li>
+                            <li class="list-group-item">Department</li>
                             </ul>
-                        </li>
-                        
+
+
+                            <div class="card-body">
+                                <form class="d-flex" role="search" method="POST">
+                                    <button class="btn btn-outline-success" type="submit">Edit</button>
+                                    <button class="btn btn-outline-success" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                        <!--worker card-->
+
+                        <!--worker details-->
+                        <div class="container d-flex flex-column col-4 p-2 text-dark">
+
+                            <!--work description-->
+                            <div class="p-2 mb-3">
+                                <p><span>DEPARTMENT:</span></p>
+                                <p><span>WORK:</span></p>
+                                <p><span>PERFORMANCE:</span></p>
+                            </div>
+                            <!--/work description-->
+
+                            <!--worker report-->
+                            <div class="p-2 col-4">
+                                <table class="table table-striped text-dark">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Work Number</th>
+                                            <th>Date</th>
+                                            <th>Department</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="workersList">
+                                        <!-- workers daily  will be dynamically added here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--/worker report-->
+                            
+                        </div>
+                        <!--worker details-->
                     </div>
-                    <!--/ User -->
-                </div>
-                <!--/worker header-->
-
-                <!--worker body-->
-                <div class="d-flex justify-content-evenly flex-row ms-5 p-2">
-
-                    <!--worker card-->
-                    <div class="card p-2" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                        </ul>
-
-
-                        <div class="card-body">
-                            <form class="d-flex" role="search" method="POST">
-                                <button class="btn btn-outline-success" type="submit">Edit</button>
-                                <button class="btn btn-outline-success" type="submit">Delete</button>
-                            </form>
-                        </div>
-                    </div>
-                    <!--worker card-->
-
-                    <!--worker details-->
-                    <div class="container d-flex flex-column p-2">
-
-                        <!--work description-->
-                        <div class="p-2 mb-3">
-                            <p><span>DEPARTMENT:</span></p>
-                            <p><span>WORK:</span></p>
-                            <p><span>PERFORMANCE:</span></p>
-                        </div>
-                        <!--/work description-->
-
-                        <!--worker report-->
-                        <div class="p-2">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Work Number</th>
-                                        <th>Date</th>
-                                        <th>Department</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="workersList">
-                                    <!-- workers daily  will be dynamically added here -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <!--/worker report-->
-                        
-                    </div>
-                    <!--worker details-->
                 </div>
             </div>
-        </div>
         {% endblock %}
     </div>
 </div>

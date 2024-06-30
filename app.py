@@ -35,33 +35,34 @@ api = Api(app)
 db.init_app(app)
 
 
-
+#index page 
 @app.route('/index', methods=['GET'])
 def index():
     return render_template('index.html')
 
+#sign up page
 @app.route('/sign-up', methods=['GET'])
 def sign_up():
     return render_template('signup1.html')
 
+#login page
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login1.html')
 
-
+#home page
 @app.route('/home', methods=['GET'])
 def home():
     return render_template('home.html')
 
 ## WORKERS ROUTES ##
-
 ## workers List ##
 @app.route('/workers-List', methods=['GET'])
 def workers_List():
     return render_template('workers_List.html')
 
 ## workers Profile ##
-@app.route('/worker-Profile', methods=['GET'])
+@app.route('/workerProfile', methods=['GET'])
 def worker_Profile():
     return render_template('workerProfile.html')
 
