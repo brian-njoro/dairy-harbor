@@ -1,5 +1,5 @@
 from models.config import db
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS
 from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -558,6 +558,55 @@ class PeriodicTreatmentDeleteResource(Resource):
         return {'message': 'Periodic Treatment deleted successfully'}, 200
 
 
+# WORKER REGISTRATION ROUTES
+
+# signup route
+class WorkerSignupResource(Resource):
+    def post(self):
+        data = request.get_json()
+        name = data.get('name')
+        username = data.get('username')
+        password = data.get('password')
+        role = data.get('role')
+
+        if Worker.query.filter_by(username=username).first():
+            return {'message': 'Username already exists'}, 400
+
+        hashed_password = generate_password_hash(password, method='sha256')
+        new_worker = Worker(name=name, username=username, password=hashed_password, role=role)
+        
+        db.session.add(new_worker)
+        db.session.commit()
+
+        return {'message': 'Worker registered successfully'}, 201
+    
+
+# login route
+class WorkerLoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        worker = Worker.query.filter_by(username=username).first()
+
+        if not worker or not check_password_hash(worker.password, password):
+            return {'message': 'Invalid credentials'}, 401
+
+        session['worker_id'] = worker.id
+        session['username'] = worker.username
+        session['role'] = worker.role
+
+        return {'message': 'Logged in successfully'}, 200
+    
+#Log out
+class WorkerLogoutResource(Resource):
+    def post(self):
+        session.pop('worker_id', None)
+        session.pop('username', None)
+        session.pop('role', None)
+        return {'message': 'Logged out successfully'}, 200
+
 
 
 
@@ -586,13 +635,9 @@ api.add_resource(PeriodicTreatmentPatchByCattleIdResource, '/cattle/<int:cattle_
 api.add_resource(PeriodicTreatmentListResource, '/periodic_treatments') #GET all periodic treatment record
 api.add_resource(PeriodicTreatmentByCattleIdListResource, '/cattle/<int:cattle_id>/periodic_treatments') #Get periodic treatment record for specific cattle using cattle id
 api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:treatment_id>') #Delete periodic treatment record for a specific cattle
-
-
-
-
-
-
-
+api.add_resource(WorkerSignupResource, '/signup') # signup for workers
+api.add_resource(WorkerLoginResource, '/login') # Log in for workers
+api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
 
 
 
