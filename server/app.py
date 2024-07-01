@@ -42,6 +42,10 @@ db.init_app(app)
 def home():
     return render_template('home.html')
 
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
 
 
 ### CATTLE ROUTES ##
