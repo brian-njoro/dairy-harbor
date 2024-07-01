@@ -1,0 +1,133 @@
+.logo-1-container{
+    padding: 6px;
+    margin-right: 10px;
+}
+.logo-1-icon{
+    margin-bottom: -50px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid rgb(0, 162, 255);;
+    border-bottom: 10px solid rgb(0, 162, 255);
+    border-radius: 100px;
+}
+.dairy-harbor-container{
+    margin-left: 6px;
+    white-space: nowrap;
+}
+.dairy-harbor{
+    color:rgb(0, 162, 255);
+}
+
+.navbar-item
+{
+    height:70px;
+    margin-left: 100px;
+}
+.navBar{
+    background-color: white;
+    font-size: 18px;
+    columns: rgb(0, 162, 255);
+}
+.nav-container{
+    color: rgb(3,183,194);
+    font-weight: bold;
+    background-color: white;
+    border-bottom: 2px solid rgb(0, 162, 255);
+}
+
+.sighup{
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 10px;
+    margin-left: 6px;
+    height: 50px;
+    width: 150px;
+    color: white;
+    background-color: transparent;
+    padding: 4px 2px;
+    border: 2px solid white;
+    border-radius: 24px;
+    transition: all 0.3s ease-in-out;
+}
+.sighup:hover{
+    color: white;
+    transform-origin: left start; /* Origin at the left side, vertically centered */
+    transform: scale(1.05);
+    color: white;
+    background-color: rgb(7, 122, 188);
+    border:none;
+}
+.sign-up{
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 10px;
+    margin-left: 6px;
+    height: 50px;
+    width: 110px;
+    color: white;
+    background-color: black;
+    padding: 4px 2px;
+    border: none;
+    border-radius: 24px;
+    transition: all 0.3s ease-in-out;
+}
+.sign-up:hover{
+    color: white;
+    transform-origin: left start; /* Origin at the left side, vertically centered */
+    transform: scale(1.05);
+    color: white;
+    background-color: rgb(0, 162, 255);
+    border:none;
+}
+
+.login{
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 12px;
+    height: 48px;
+    width: 150px;
+    padding: 2px 2px;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    background-color: rgb(7, 122, 188);
+    transition: all 0.5s ease-in-out;
+}
+.login:hover{
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    transform: scale(1.05);
+}
+.login-1{
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 12px;
+    height: 48px;
+    width: 100px;
+    padding: 2px 2px;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    background-color: rgb(7, 122, 188);
+    transition: all 0.5s ease-in-out;
+}
+.login-1:hover{
+    color: white;
+    background-color: black;
+    transform: scale(1.05);
+}
+
+.authButtons{
+    align-items: center;
+    justify-content: center; /* Centers items horizontally */
+    align-items: center;     /* Centers items vertically (optional) */
+}
+
+.authButtons1{
+    align-items: center;
+    justify-content: right; /* Centers items vertically (optional) */
+    margin-right: -20px;
+}

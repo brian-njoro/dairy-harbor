@@ -206,6 +206,5 @@ function clearFormFields() {
     document.getElementById('adminId').value = '';
 }
 
-
 // Show initial content (Home)
 showContent('homeContent');
