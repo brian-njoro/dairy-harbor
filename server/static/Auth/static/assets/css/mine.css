@@ -1,0 +1,179 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* User image styles */
+.user-img {
+    height: 100px;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80px;
+    background-color: rgba(9, 9, 9, 0.881);
+    padding: 0.4rem 0.8rem;
+    transition: all 0.5s ease;
+    z-index: 100; /* Ensure sidebar is above content */
+}
+
+.sidebar.active {
+    width: 225px; /* Expanded width when active */
+}
+
+.sidebar #btn {
+    position: absolute;
+    top: 0.4rem;
+    left: 50%;
+    color: bisque;
+    font-size: 1.2rem;
+    line-height: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+}
+
+.sidebar.active #btn {
+    left: 90%;
+}
+
+.sidebar .top .logo {
+    color: azure;
+    display: flex;
+    height: 50px;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.sidebar.active .top .logo {
+    opacity: 1;
+}
+
+.top .logo {
+    font-size: 2rem;
+    margin-right: 5px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p {
+    color: azure;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.sidebar p {
+    opacity: 0;
+}
+
+.sidebar.active p {
+    opacity: 1;
+}
+
+.sidebar ul li {
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 50%;
+    margin: 0.8rem auto;
+    line-height: 50px;
+}
+
+.sidebar ul li a {
+    align-items: center;
+    display: flex;
+    text-decoration: none;
+    color: azure;   
+    border-radius: 0.8rem;
+}
+
+.sidebar ul li a:hover {
+    background-color: azure;
+    color: black;
+}
+
+.sidebar ul li a i {
+    margin-right: 1rem;
+    align-items: center;
+    line-height: 50px;
+}
+
+.sidebar .nav-item {
+    opacity: 0;
+}
+
+.sidebar.active .nav-item {
+    opacity: 1;
+}
+
+.sidebar ul li .tooltip {
+    position: absolute;
+    left: 125px;
+    top: 0;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0.5rem 0.8rem rgba(32, 28, 28, 0.572);
+    border-radius: 20%;
+    padding: .4rem 1.2rem;
+    line-height: 1.6rem;
+    z-index: 20;
+    opacity: 0;
+}
+
+.sidebar ul li:hover .tooltip {
+    opacity: 1;
+}
+
+.sidebar.active ul li:hover .tooltip {
+    display: none;
+}
+
+/* Main content styles */
+.main-content {
+    margin-left: 80px; /* Initial margin to accommodate sidebar */
+    min-height: 100vh;
+    transition: margin-left 0.5s ease; /* Transition margin-left for smooth animation */
+    padding: 1rem;
+}
+
+.sidebar.active ~ .main-content {
+    margin-left: 225px; /* Adjusted margin when sidebar is active */
+}
+
+/* Navbar styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    bottom: 10px;
+    left: 80px; /* Initial left position matching sidebar width */
+    width: calc(100% - 160px); /* Adjusted width to fill remaining space */
+    height: 60px;
+    border-radius: 20px;
+    background-color: #7cdcf0be;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000; /* Ensure navbar stays above content */
+    transition: all 0.5s ease; /* Transition for smooth animation */
+    border: 1px solid black; /* Add solid border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.657); /* Add black shadow */
+}
+
+.sidebar.active ~ .navbar {
+    left: 225px; /* Adjusted left position when sidebar is active */
+    width: calc(100% - 305px); /* Adjusted width to fill remaining space when sidebar is active */
+}

@@ -1,0 +1,142 @@
+body{
+    background-color: aqua;
+    padding-top: -100px;
+    padding-bottom: 100px;
+    color:rgb(0, 162, 255)
+}
+hr{
+    width: 90%;
+    background-color: rgb(0, 162, 255);
+    border: 3px solid rgb(0, 162, 255);
+    border-radius: 6px;
+}
+.header{
+    margin-bottom: 100px;
+}
+.Login-container{
+    border: 2px solid rgba(0, 162, 255, 0);
+    border-radius: 16px;
+}
+.login-logo-container{
+    margin-bottom: 12px;
+}
+.login-logo-icon{
+    margin-bottom: -50px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid rgb(0, 162, 255);;
+    border-bottom: 10px solid rgb(0, 162, 255);
+    border-radius: 100px;
+}
+.login-background{
+    color: rgb(0, 162, 255);
+}
+
+.login-redirect{
+    width: 300px;
+    background-color: rgb(0, 162, 255);
+    color: white;
+    padding: 10px;
+    margin-right: 0;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    box-shadow: 5px 10px 6px rgba(0, 0, 0, .15);
+}
+.login1-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+    padding: 20px;
+    margin-left: 0;
+    box-shadow: 5px 10px 6px rgba(0, 0, 0, .15);
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+@media(max-width:1000px){
+    .Login-container{
+        width: 100%;
+        align-items: center;
+        padding: 0px;
+    }
+    .login1-form{
+        width: 90%;
+        align-items: center;
+        margin: 10px 10px 10px 30px;
+        border: 2px solid rgb(0, 162, 255);
+        border-radius: 16px;
+    }
+    .login-form{
+        width: 50%;
+    }
+}
+.login-goggle{
+    height: 40px;
+    margin-left: 6px;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(0, 162, 255);
+    border-radius: 16px;
+}
+.login-facebook{
+    height: 40px;
+    align-items: center;
+    background-color: rgb(20, 93, 156);
+    border: 2px solid rgb(250, 251, 252);
+    border-radius: 16px;
+}
+.google{
+    color: rgb(0, 162, 255);
+}
+.facebook{
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.login-box{
+    border: none;
+    border-radius: 20px;
+    box-shadow: 5px 10px 6px rgba(0, 0, 0, .15);
+}
+.login-messageBox{
+    border-radius: 16px;
+}
+
+.sign-up{
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 6px;
+    margin-left: 6px;
+    height: 44px;
+    width: 140px;
+    padding: 4px 2px;
+    border: 2px solid white;
+    border-radius: 20px;
+    background-color: rgb(0, 162, 255);
+    transition: all 0.5s ease-in-out;
+}
+.sign-up:hover{
+    color: rgb(1, 154, 214);
+    background-color: rgb(247, 249, 250);
+    border: 2px solid rgb(0, 162, 255);
+}
+.sign-in{
+    font-size: 20px;
+    margin-top: 2px;
+    margin-right: 6px;
+    margin-left: 6px;
+    color: rgb(0, 162, 255);
+    height: 44px;
+    width: 140px;
+    padding: 4px 2px;
+    border: 2px solid white;
+    border-radius: 10px;
+    transition: all 0.5s ease-in-out;
+}
+.sign-in:hover{
+    background-color: rgb(0, 162, 255);
+    transform-origin: right;
+    color: white;
+}

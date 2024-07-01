@@ -42,9 +42,24 @@ db.init_app(app)
 def home():
     return render_template('home.html')
 
-@app.route('/', methods=['GET'])
+@app.route('/index', methods=['GET'])
 def index():
     return render_template('index.html')
+
+#sign up page
+@app.route('/sign-up', methods=['GET'])
+def sign_up():
+    return render_template('signup.html')
+
+#login page
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
+
+#forgot page
+@app.route('/forgot', methods=['GET'])
+def forgot():
+    return render_template('forgot.html')
 
 
 
