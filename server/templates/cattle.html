@@ -1,172 +1,216 @@
 <div class="container-fluid">
-    <!-- Cattle management content -->
-    <h2 class="mt-5 mb-3">Cattle Management</h2>
-
-    <!-- Button to add new cattle -->
-    <div class="mb-3">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration">
-            Add New Cattle
-        </button>
-    </div>
-
-    <!-- Modal for Cattle Registration -->
-    <div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add New Cattle</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Button to add new cattle -->
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                <div class="card-title">
+                                    <h4 class="mb-2">My Cattle</h4>
+                                    <span class="badge bg-label-warning rounded-pill">Year 2024</span>
+                                </div>
+                                <div class="mt-sm-auto">
+                                    <small class="text-success text-nowrap fw-medium"><i class="bx bx-chevron-up"></i> +2%</small>
+                                    <h3 class="mb-0">210</h3>
+                                </div>
+                            </div>
+                            <div id="profileReportChart"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="cattleForm">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name:</label>
-                            <input type="text" id="name" class="form-control" required>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                <div class="card-title">
+                                    <h4 class="text-nowrap mb-2">Cattle on treatment</h4>
+                                    <span class="badge bg-label-warning rounded-pill">Year 2024</span>
+                                </div>
+                                <div class="mt-sm-auto">
+                                    <small class="text-danger text-nowrap fw-medium"><i class="bx bx-chevron-down"></i> -6%</small>
+                                    <h3 class="mb-0">12</h3>
+                                </div>
+                            </div>
+                            <div id="profileReportChart"></div>
                         </div>
-                        <div class="mb-3">
-                            <label for="dateOfBirth" class="form-label">Date of Birth:</label>
-                            <input type="date" id="dateOfBirth" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="photo" class="form-label">Photo URL:</label>
-                            <input type="text" id="photo" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="breed" class="form-label">Breed:</label>
-                            <input type="text" id="breed" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="fatherBreed" class="form-label">Father's Breed:</label>
-                            <input type="text" id="fatherBreed" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="motherBreed" class="form-label">Mother's Breed:</label>
-                            <input type="text" id="motherBreed" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="methodBred" class="form-label">Method Bred:</label>
-                            <input type="text" id="methodBred" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="adminId" class="form-label">Admin ID:</label>
-                            <input type="number" id="adminId" class="form-control" required>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addCattleButton">Add Cattle</button>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                            <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                <div class="card-title">
+                                    <h4 class="text-nowrap mb-2">My Calves</h4>
+                                    <span class="badge bg-label-warning rounded-pill">Year 2024</span>
+                                </div>
+                                <div class="mt-sm-auto">
+                                    <small class="text-success text-nowrap fw-medium"><i class="bx bx-chevron-up"></i> 68.2%</small>
+                                    <h3 class="mb-0">134</h3>
+                                </div>
+                            </div>
+                            <div id="profileReportChart"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Cattle List -->
-    <div class="mt-5">
-        <h3>Cattle List</h3>
-        <div class="card">
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Serial Number</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cattleList">
-                        <!-- Cattle items will be dynamically added here -->
-                    </tbody>
-                </table>
+        
+      
+    
+        <div class="container-fluid">
+            <!-- Button to add new cattle -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration">
+                    Add New Cattle
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTreatment">
+                    Record Treatment
+                </button>
+            </div>
+        
+            <!-- Modal for Cattle Registration -->
+            <div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add New Cattle</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="cattleForm">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" id="name" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dateOfBirth" class="form-label">Date of Birth:</label>
+                                    <input type="date" id="dateOfBirth" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="photo" class="form-label">Photo URL:</label>
+                                    <input type="text" id="photo" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="breed" class="form-label">Breed:</label>
+                                    <input type="text" id="breed" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fatherBreed" class="form-label">Father's Breed:</label>
+                                    <input type="text" id="fatherBreed" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="motherBreed" class="form-label">Mother's Breed:</label>
+                                    <input type="text" id="motherBreed" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="methodBred" class="form-label">Method Bred:</label>
+                                    <input type="text" id="methodBred" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="adminId" class="form-label">Admin ID:</label>
+                                    <input type="number" id="adminId" class="form-control" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="addCattleButton">Add Cattle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Modal for Treatment -->
+            <div class="modal fade" id="modalTreatment" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Treatment</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="treatmentForm">
+                                <div class="mb-3">
+                                    <label for="treatmentType" class="form-label">Treatment Type:</label>
+                                    <div id="treatmentType">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="treatmentType" id="dehorning" value="dehorning">
+                                            <label class="form-check-label" for="dehorning">Dehorning</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="treatmentType" id="deworming" value="deworming">
+                                            <label class="form-check-label" for="deworming">Deworming</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="treatmentType" id="vaccination" value="vaccination">
+                                            <label class="form-check-label" for="vaccination">Vaccination</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="treatmentType" id="other" value="other">
+                                            <label class="form-check-label" for="other">Other</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="treatmentDate" class="form-label">Treatment Date:</label>
+                                    <input type="date" id="treatmentDate" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cattleName" class="form-label">Cattle Name:</label>
+                                    <input type="text" id="cattleName" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="serialNumber" class="form-label">Serial Number:</label>
+                                    <input type="text" id="serialNumber" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="veterinaryName" class="form-label">Veterinary Name:</label>
+                                    <input type="text" id="veterinaryName" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="medicinesGiven" class="form-label">Medicines Given:</label>
+                                    <input type="text" id="medicinesGiven" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description:</label>
+                                    <textarea id="description" class="form-control" rows="3" required></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="addTreatmentButton">Add Treatment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Cattle List -->
+            <div class="mt-5">
+                <h3>Cattle List</h3>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Serial Number</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cattleList">
+                                <!-- Cattle items will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Bootstrap JS and Custom JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Function to fetch cattle list and populate the UI
-    function fetchCattleList() {
-        console.log('Fetching cattle list...');
-        fetch('/cattle/get')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                const cattleList = document.getElementById('cattleList');
-                cattleList.innerHTML = ''; // Clear existing list items
-
-                data.forEach(cattle => {
-                    const row = document.createElement('tr');
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = cattle.name;
-                    const serialNumberCell = document.createElement('td');
-                    serialNumberCell.textContent = cattle.serial_number;
-
-                    row.appendChild(nameCell);
-                    row.appendChild(serialNumberCell);
-                    cattleList.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching cattle list:', error);
-            });
-    }
-
-    // Function to add new cattle
-    function addCattle() {
-        console.log('Adding cattle ...');
-        const formData = {
-            name: document.getElementById('name').value,
-            date_of_birth: document.getElementById('dateOfBirth').value,
-            photo: document.getElementById('photo').value,
-            breed: document.getElementById('breed').value,
-            father_breed: document.getElementById('fatherBreed').value,
-            mother_breed: document.getElementById('motherBreed').value,
-            method_bred: document.getElementById('methodBred').value,
-            admin_id: parseInt(document.getElementById('adminId').value)
-        };
-
-        fetch('/cattle/post', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Cattle added successfully:', data);
-            // Close the modal after adding cattle
-            const modal = new bootstrap.Modal(document.getElementById('modalCattleRegistration'));
-            modal.hide();
-            // Refresh cattle list after adding new cattle
-            fetchCattleList();
-        })
-        .catch(error => {
-            console.error('Error adding cattle:', error);
-        });
-    }
-
-    // Initialize function after DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        // Fetch cattle list initially
-        fetchCattleList();
-
-        // Add event listener to "Add Cattle" button
-        const addCattleButton = document.getElementById('addCattleButton');
-        if (addCattleButton) {
-            addCattleButton.addEventListener('click', function() {
-                addCattle();
-            });
-        }
-    });
-</script>
+        
+        <!-- Bootstrap JS and Custom JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
+        

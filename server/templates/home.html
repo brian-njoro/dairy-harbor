@@ -1,129 +1,59 @@
 {% extends "base.html" %}
 
 <body>
-    {% block sidebar %}
-    <div class="sidebar">
+  {% block sidebar %}
+  <div class="sidebar">
       <div class="user">
           <img src="/static/assets/img/avatars/logo.png" class="user-img" alt="Logo">
       </div>
       <div class="top">
-          
-          <i class="bx bx-menu" id="btn"></i>        
+          <i class="bx bx-menu" id="btn"></i>
       </div>
       <ul>
-        <li>
-            <a href="#" class="menu-link" data-target="homeContent" onclick="toggleSidebar(); showContent('homeContent')">
-                <i class="bx bxs-home"></i>
-                <span class="nav-item">Home</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="menu-link" data-target="myCattleContent" onclick="toggleSidebar(); showContent('myCattleContent')">
-                <i class="bx bxs-grid-alt"></i>
-                <span class="nav-item">Cattle</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="menu-link" data-target="myWorkersContent" onclick="toggleSidebar(); showContent('myWorkersContent')">
-                <i class="bx bxs-group"></i>
-                <span class="nav-item">Workers</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="menu-link" data-target="productionContent" onclick="toggleSidebar(); showContent('productionContent')">
-                <i class="bx bxs-shopping-bag"></i>
-                <span class="nav-item">Production</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="menu-link" data-target="salesContent" onclick="toggleSidebar(); showContent('salesContent')">
-                <i class="bx bxs-dollar-circle"></i>
-                <span class="nav-item">Sales</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="menu-link" data-target="reportsContent" onclick="toggleSidebar(); showContent('reportsContent')">
-                <i class="bx bxs-report"></i>
-                <span class="nav-item">Reports</span>
-            </a>
-        </li>
-    </ul>
-    
+          <li>
+              <a href="#" class="menu-link" data-target="homeContent" onclick="toggleSidebar(); showContent('homeContent')">
+                  <i class="bx bxs-home"></i>
+                  <span class="nav-item">Home</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="menu-link" data-target="myCattleContent" onclick="toggleSidebar(); showContent('myCattleContent')">
+                  <i class="bx bxs-grid-alt"></i>
+                  <span class="nav-item">Cattle</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="menu-link" data-target="myWorkersContent" onclick="toggleSidebar(); showContent('myWorkersContent')">
+                  <i class="bx bxs-group"></i>
+                  <span class="nav-item">Workers</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="menu-link" data-target="productionContent" onclick="toggleSidebar(); showContent('productionContent')">
+                  <i class="bx bxs-shopping-bag"></i>
+                  <span class="nav-item">Production</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="menu-link" data-target="salesContent" onclick="toggleSidebar(); showContent('salesContent')">
+                  <i class="bx bxs-dollar-circle"></i>
+                  <span class="nav-item">Sales</span>
+              </a>
+          </li>
+          <li>
+              <a href="#" class="menu-link" data-target="reportsContent" onclick="toggleSidebar(); showContent('reportsContent')">
+                  <i class="bx bxs-report"></i>
+                  <span class="nav-item">Reports</span>
+              </a>
+          </li>
+      </ul>
   </div>
-    {% endblock %}
+{% endblock %}
+
     
-    {% block main_content %}
+{% block main_content %}
     <div class="main-content">
-      <div class="navbar">
-        <div class="navbar-left">
-          <button class="btn"><i class='bx bx-home'></i> Home</button>
-          <button class="btn"><i class='bx bx-bell'></i> Notifications</button>
-          <button class="btn"><i class='bx bx-envelope'></i> Message</button>
-        </div>
       
-      
-          <div class="navbar-right">
-              <!-- User -->
-              <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                      <div class="avatar">
-                          <img src="/static/assets/img/avatars/6.jpg" alt class="w-px-75 h-auto rounded-circle" />
-                      </div>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                      <li>
-                          <a class="dropdown-item" href="#">
-                              <div class="d-flex">
-                                  <div class="flex-shrink-0 me-3">
-                                      <div class="avatar avatar-online">
-                                          <img src="/static/assets/img/avatars/6.jpg" alt class="w-px-40 h-auto rounded-circle" />
-                                      </div>
-                                  </div>
-                                  <div class="flex-grow-1">
-                                      <span class="fw-medium d-block">Eliud Marierie</span>
-                                      <small class="text-muted">Admin</small>
-                                  </div>
-                              </div>
-                          </a>
-                      </li>
-                      <li>
-                          <div class="dropdown-divider"></div>
-                      </li>
-                      <li>
-                          <a class="dropdown-item" href="#">
-                              <i class="bx bx-user me-2"></i>
-                              <span class="align-middle">My Profile</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a class="dropdown-item" href="#">
-                              <i class="bx bx-cog me-2"></i>
-                              <span class="align-middle">Settings</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a class="dropdown-item" href="#">
-                              <span class="d-flex align-items-center align-middle">
-                                  <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                  <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                  <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                              </span>
-                          </a>
-                      </li>
-                      <li>
-                          <div class="dropdown-divider"></div>
-                      </li>
-                      <li>
-                          <a class="dropdown-item" href="javascript:void(0);">
-                              <i class="bx bx-power-off me-2"></i>
-                              <span class="align-middle">Log Out</span>
-                          </a>
-                      </li>
-                  </ul>
-              </li>
-              <!--/ User -->
-          </div>
-      </div>
       
       <div class="container">
           <div class="content-wrapper" id="homeContent">
@@ -138,13 +68,7 @@
                           <div class="card-body">
                             <h5 class="card-title text-primary">Congratulations John!</h5>
                             <p class="mb-4">
-                              Welcome to the Dairy Farm App!
-
-                              We're glad to have you here! Manage your cattle, monitor <strong>production</strong>, and track <strong>sales</strong> all in one place.
-
-                             Happy farming!
-                              The Dairy Farm App Team
-                              
+                              Manage your <strong>Cattle</strong>, monitor <strong>Production</strong>, and track <strong>Sales</strong> all in one place
                             </p>
           
                             <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
@@ -192,7 +116,7 @@
                               </div>
                             </div>
                             <span class="fw-medium d-block mb-1">Profit</span>
-                            <h3 class="card-title mb-2">$12,628</h3>
+                            <h6 class="card-title mb-2">Sh.23,680</h6>
                             <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
                           </div>
                         </div>
@@ -224,7 +148,7 @@
                               </div>
                             </div>
                             <span>Sales</span>
-                            <h3 class="card-title text-nowrap mb-1">$4,679</h3>
+                            <h6 class="card-title text-nowrap mb-1">Sh.4,679</h6>
                             <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
                           </div>
                         </div>
@@ -312,7 +236,7 @@
                               </div>
                             </div>
                             <span class="d-block mb-1">Losses</span>
-                            <h3 class="card-title text-nowrap mb-2">$2,456</h3>
+                            <h6 class="card-title text-nowrap mb-2">Sh.2,456</h6>
                             <small class="text-danger fw-medium"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
                           </div>
                         </div>
@@ -340,14 +264,14 @@
                                 </div>
                               </div>
                             </div>
-                            <span class="fw-medium d-block mb-1">Transactions</span>
-                            <h3 class="card-title mb-2">$14,857</h3>
-                            <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
+                            <span class="fw-medium d-block mb-1">Expenses</span>
+                            <h6 class="card-title mb-2">Sh.14,857</h6>
+                            <small class="text-danger fw-medium"><i class="bx bx-down-arrow-alt"></i> -28.14%</small>
                           </div>
                         </div>
                       </div>
-                      <!-- </div>
-          <div class="row"> -->
+                      </div>
+          <div class="row">
                       <div class="col-12 mb-4">
                         <div class="card">
                           <div class="card-body">
@@ -419,7 +343,7 @@
                                 <small class="text-muted">Milk in Litres</small>
                               </div>
                               <div class="user-progress">
-                                <small class="fw-medium">Ksh. 4500</small>
+                                <h6 class="fw-medium">Ksh.4500</h6>
                               </div>
                             </div>
                           </li>
@@ -658,65 +582,7 @@
               <div class="content-backdrop fade"></div>
             </div>
           <div id="myCattleContent" style="display: none;">
-              <div class="container-fluid mt-4px">
-                  <div class="row top-row bg-light mb-3 mt-3">
-                      <div class="col d-flex justify-content-start align-items-center">
-                          <a href="#cattle-list" class="mr-3">Cattle List</a>
-                          <a href="#procedures">Procedures</a>
-                      </div>
-                  </div>
-                  <div class="row middle-row mb-3 mt-3">
-                    <div class="col d-flex justify-content-between">
-                        <div class="card" style="height: 200px;">
-                            <div class="card-body">
-                                <h5 class="card-title">Card 1</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                        <div class="card" style=" height: 200px;">
-                            <div class="card-body">
-                                <h5 class="card-title">Card 2</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                        <div class="card" style=" height: 200px;">
-                            <div class="card-body">
-                                <h5 class="card-title">Card 3</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                  <div class="row bottom-row mb-3 mt-3">
-                    <div class="col d-flex justify-content-between" style="gap: 3px;">
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title">Cattle List</h5>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                      </div>
-                      <div class="card">
-                        <div class="card-body">
-                          <h5 class="card-title">Card 2</h5>
-                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <script>
-                      document.querySelector('a[href="#cattle-list"]').addEventListener('click', function () {
-                          document.getElementById('cattle-list').style.display = 'block';
-                          document.getElementById('procedures').style.display = 'none';
-                      });
-
-                      document.querySelector('a[href="#procedures"]').addEventListener('click', function () {
-                          document.getElementById('cattle-list').style.display = 'none';
-                          document.getElementById('procedures').style.display = 'block';
-                      });
-                  </script>
-              </div>
+              {% include "cattle.html" %}
           </div>
           <div id="myWorkersContent" style="display: none;">
               <h1>Workers</h1>

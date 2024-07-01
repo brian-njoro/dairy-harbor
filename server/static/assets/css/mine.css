@@ -27,7 +27,25 @@
     z-index: 100; /* Ensure sidebar is above content */
 }
 
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0; /* Hide sidebar completely */
+    }
+
+    .sidebar.active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%; /* Full width when active */
+    }
+
+}
+
+
 .sidebar.active {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 225px; /* Expanded width when active */
 }
 

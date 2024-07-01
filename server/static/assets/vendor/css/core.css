@@ -76,7 +76,7 @@
   --bs-body-line-height: 1.53;
   --bs-body-color: #050505;
   --bs-body-color-rgb: 105, 122, 141;
-  --bs-body-bg: #257885;
+  --bs-body-bg: #0680e3e6;
   --bs-body-bg-rgb: 245, 245, 249;
   --bs-emphasis-color: #111212;
   --bs-emphasis-color-rgb: 67, 89, 113;
@@ -3796,7 +3796,7 @@ textarea.form-control-lg {
   --bs-card-cap-color: ;
   --bs-card-height: ;
   --bs-card-color: ;
-  --bs-card-bg: #b5ecf8;
+  --bs-card-bg: #bbf1fded;
   --bs-card-img-overlay-padding: 1.5rem;
   --bs-card-group-margin: 0.8125rem;
   position: relative;
@@ -8321,8 +8321,10 @@ button:focus-visible {
 }
 
 .page-link.btn-primary {
-  box-shadow: none !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow to be visible */
+  border: 1px solid black; /* Add 1px black border */
 }
+
 
 .pagination-lg .page-link,
 .pagination-lg > li > a:not(.page-link) {
