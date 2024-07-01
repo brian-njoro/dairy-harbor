@@ -21,42 +21,124 @@ from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, create_refresh_token
+import jwt
+from datetime import datetime, timedelta, timezone
+import pytz
+
+import secrets
 
 
 app = Flask(__name__)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG'] = True
 
 migrate = Migrate(app, db)
 api = Api(app)
 db.init_app(app)
 
+secret_key = secrets.token_hex(32)
+expires = timedelta(days=1)
+app.config['SECRET_KEY'] = secret_key
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = expires
+app.config['SESSION_TYPE'] = 'null'
+jwt = JWTManager(app)
+
+# JWT Token functions
+def generate_token(worker_id):
+    utc_now = datetime.now(timezone.utc)
+    expiration = utc_now + timedelta(days=1)
+    payload = {
+        'exp': expiration,
+        'iat': utc_now,
+        'sub': worker_id
+    }
+    return jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+
+def decode_token(token):
+    try:
+        payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        return 'Expired token. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
+
+
+# WORKER REGISTRATION ROUTES
+
+# signup route
+class WorkerSignupResource(Resource):
+    def post(self):
+        data = request.get_json()
+        name = data.get('name')
+        username = data.get('username')
+        password = data.get('password')
+        role = data.get('role')
+
+        if Worker.query.filter_by(username=username).first():
+            return {'message': 'Username already exists'}, 400
+
+        hashed_password = generate_password_hash(password, method='sha256')
+        new_worker = Worker(name=name, username=username, password=hashed_password, role=role)
+
+        db.session.add(new_worker)
+        db.session.commit()
+
+        return {'message': 'Worker registered successfully'}, 201
+
+# login route
+class WorkerLoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        worker = Worker.query.filter_by(username=username).first()
+
+        if not worker or not check_password_hash(worker.password, password):
+            return {'message': 'Invalid credentials'}, 401
+
+        # Create JWT token
+        token = create_access_token(identity=worker.id)
+
+        return {'message': 'Logged in successfully', 'token': token}, 200
+
+    
+#Log out
+class WorkerLogoutResource(Resource):
+    @jwt_required
+    def post(self):
+        return {'message': 'Logged out successfully'}, 200
 
 
 
 
-@app.route('/home', methods=['GET'])
-def home():
-    return render_template('home.html')
+# Home resource
+class HomeResource(Resource):
+    @jwt_required
+    def get(self):
+        return render_template('home.html')
 
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
+# Index resource
+class IndexResource(Resource):
+    def get(self):
+        return render_template('index.html')
 
-
-
-### CATTLE ROUTES ##
-@app.route('/cattle')
-def cattle():
-    # You can pass any necessary data to cattle.html here
-    return render_template('cattle.html')
-
+# Cattle resource
+class CattleResource(Resource):
+    @jwt_required
+    def get(self):
+        # You can pass any necessary data to cattle.html here
+        return render_template('cattle.html')
+    
 
 # POST cattle
-class CattleResource(Resource):
+class CattlePostResource(Resource):
+    @jwt_required
     def post(self):
         data = request.get_json()
         
@@ -91,6 +173,7 @@ class CattleResource(Resource):
     
 # GET cattle
 class CattleGetResource(Resource):
+    @jwt_required
     def get(self, serial_number=None):
         if serial_number:
             cattle = Cattle.query.filter_by(serial_number=serial_number).first()
@@ -128,6 +211,7 @@ class CattleGetResource(Resource):
         
 # GET cattle by id.
 class CattleByIdResource(Resource):
+    @jwt_required
     def get(self, serial_number):
         cattle = Cattle.query.filter_by(serial_number=serial_number).first()
         if cattle:
@@ -159,6 +243,7 @@ class CattleByIdResource(Resource):
 
 
 class CattleDeleteByIdResource(Resource):
+    @jwt_required
     def delete(self, serial_number):
         cattle = Cattle.query.filter_by(serial_number=serial_number).first()
         if cattle:
@@ -174,6 +259,7 @@ class CattleDeleteByIdResource(Resource):
 
 # POST vaccination record
 class VaccinationResource(Resource):
+    @jwt_required
     def post(self):
         data = request.get_json()
 
@@ -204,6 +290,7 @@ class VaccinationResource(Resource):
 
 # POST Vaccination by cattle id
 class VaccinationByCattleIdResource(Resource):
+    @jwt_required
     def post(self, cattle_id):
         data = request.get_json()
 
@@ -235,6 +322,7 @@ class VaccinationByCattleIdResource(Resource):
 
 # POST Dehorning record
 class DehorningResource(Resource):
+    @jwt_required
     def post(self):
         data = request.get_json()
 
@@ -260,6 +348,7 @@ class DehorningResource(Resource):
     
 #POST dehorning by cattle id
 class DehorningByCattleIdResource(Resource):
+    @jwt_required
     def post(self, cattle_id):
         data = request.get_json()
 
@@ -286,6 +375,7 @@ class DehorningByCattleIdResource(Resource):
     
 # PATCH dehorning and vaccination by id
 class DehorningByIdResource(Resource):
+    @jwt_required
     def put(self, dehorning_id):
         data = request.get_json()
 
@@ -303,6 +393,7 @@ class DehorningByIdResource(Resource):
         return {'message': 'Dehorning record updated successfully'}, 200
 
 class VaccinationByIdResource(Resource):
+    @jwt_required
     def put(self, vaccination_id):
         data = request.get_json()
 
@@ -324,6 +415,7 @@ class VaccinationByIdResource(Resource):
 
 # GET dehorning records 
 class GetDehorningResource(Resource):
+    @jwt_required
     def get(self):
         dehorning_records = Dehorning.query.all()
         result = []
@@ -341,6 +433,7 @@ class GetDehorningResource(Resource):
 
 #GET dehorning records by cattle id
 class GetDehorningByCattleIdResource(Resource):
+    @jwt_required
     def get(self, cattle_id):
         dehorning_records = Dehorning.query.filter_by(cattle_id=cattle_id).all()
         if dehorning_records:
@@ -361,6 +454,7 @@ class GetDehorningByCattleIdResource(Resource):
 #GET Vaccination records
 # Vaccination general GET request
 class GetVaccinationResource(Resource):
+    @jwt_required
     def get(self):
         vaccination_records = Vaccination.query.all()
         result = []
@@ -379,6 +473,7 @@ class GetVaccinationResource(Resource):
 
 # Vaccination by cattle ID GET request
 class GetVaccinationByCattleIdResource(Resource):
+    @jwt_required
     def get(self, cattle_id):
         vaccination_records = Vaccination.query.filter_by(cattle_id=cattle_id).all()
         if vaccination_records:
@@ -404,6 +499,7 @@ class GetVaccinationByCattleIdResource(Resource):
 
 # POST 
 class PostPeriodicTreatmentResource(Resource):
+    @jwt_required
     def post(self):
         data = request.get_json()
         
@@ -432,6 +528,7 @@ class PostPeriodicTreatmentResource(Resource):
 
 #POST by id
 class PeriodicTreatmentByCattleIdResource(Resource):
+    @jwt_required
     def post(self, cattle_id):
         data = request.get_json()
         
@@ -461,6 +558,7 @@ class PeriodicTreatmentByCattleIdResource(Resource):
 
 #PATCH by treatment id
 class PeriodicTreatmentPatchResource(Resource):
+    @jwt_required
     def patch(self, treatment_id):
         data = request.get_json()
         treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
@@ -486,6 +584,7 @@ class PeriodicTreatmentPatchResource(Resource):
 
 #PATCH by cattle id
 class PeriodicTreatmentPatchByCattleIdResource(Resource):
+    @jwt_required
     def patch(self, cattle_id):
         data = request.get_json()
         treatment = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).first()
@@ -511,6 +610,7 @@ class PeriodicTreatmentPatchByCattleIdResource(Resource):
 
 #GET
 class PeriodicTreatmentListResource(Resource):
+    @jwt_required
     def get(self):
         treatments = PeriodicTreatment.query.all()
         result = []
@@ -528,6 +628,7 @@ class PeriodicTreatmentListResource(Resource):
 
 #GET BY id
 class PeriodicTreatmentByCattleIdListResource(Resource):
+    @jwt_required
     def get(self, cattle_id):
         treatments = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).all()
         result = []
@@ -546,6 +647,7 @@ class PeriodicTreatmentByCattleIdListResource(Resource):
     
 # DELETE by id
 class PeriodicTreatmentDeleteResource(Resource):
+    @jwt_required
     def delete(self, treatment_id):
         treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
 
@@ -558,62 +660,15 @@ class PeriodicTreatmentDeleteResource(Resource):
         return {'message': 'Periodic Treatment deleted successfully'}, 200
 
 
-# WORKER REGISTRATION ROUTES
-
-# signup route
-class WorkerSignupResource(Resource):
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        username = data.get('username')
-        password = data.get('password')
-        role = data.get('role')
-
-        if Worker.query.filter_by(username=username).first():
-            return {'message': 'Username already exists'}, 400
-
-        hashed_password = generate_password_hash(password, method='sha256')
-        new_worker = Worker(name=name, username=username, password=hashed_password, role=role)
-        
-        db.session.add(new_worker)
-        db.session.commit()
-
-        return {'message': 'Worker registered successfully'}, 201
-    
-
-# login route
-class WorkerLoginResource(Resource):
-    def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        worker = Worker.query.filter_by(username=username).first()
-
-        if not worker or not check_password_hash(worker.password, password):
-            return {'message': 'Invalid credentials'}, 401
-
-        session['worker_id'] = worker.id
-        session['username'] = worker.username
-        session['role'] = worker.role
-
-        return {'message': 'Logged in successfully'}, 200
-    
-#Log out
-class WorkerLogoutResource(Resource):
-    def post(self):
-        session.pop('worker_id', None)
-        session.pop('username', None)
-        session.pop('role', None)
-        return {'message': 'Logged out successfully'}, 200
-
-
 
 
 
 ## RESOURCES ##
 
-api.add_resource(CattleResource, '/cattle/post') # POST cattle
+api.add_resource(HomeResource, '/home')
+api.add_resource(IndexResource, '/')
+api.add_resource(CattleResource, '/cattle')
+api.add_resource(CattlePostResource, '/cattle/post') # POST cattle
 api.add_resource(CattleGetResource, '/cattle/get') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
 api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
