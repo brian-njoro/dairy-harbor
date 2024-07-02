@@ -27,26 +27,39 @@
     z-index: 100; /* Ensure sidebar is above content */
 }
 
+.sidebar.active {
+    width: 225px; /* Expanded width when active */
+}
+
 @media (max-width: 768px) {
     .sidebar {
-        width: 0; /* Hide sidebar completely */
+        display: none; /* Hide sidebar completely on mobile */
     }
 
     .sidebar.active {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%; /* Full width when active */
+        display: block; /* Show sidebar when active */
+        width: 200px; /* Expanded width when active on mobile */
     }
 
-}
+    .main-content {
+        margin-left: 0; /* No margin when sidebar is hidden */
+        width: 100%; /* Occupy full width */
+    }
 
+    .sidebar.active ~ .main-content {
+        margin-left: 200px; /* Adjust margin when sidebar is active on mobile */
+        width: calc(100% - 200px); /* Adjust width when sidebar is active */
+    }
 
-.sidebar.active {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 225px; /* Expanded width when active */
+    .navbar {
+        left: 0; /* Adjust navbar position for hidden sidebar */
+        width: 100%; /* Adjust navbar width */
+    }
+
+    .sidebar.active ~ .navbar {
+        left: 200px; /* Adjust navbar position when sidebar is active on mobile */
+        width: calc(100% - 200px); /* Adjust navbar width when sidebar is active */
+    }
 }
 
 .sidebar #btn {
@@ -64,24 +77,20 @@
     left: 90%;
 }
 
-.sidebar .top .logo {
-    color: azure;
-    display: flex;
-    height: 50px;
-    align-items: center;
-    pointer-events: none;
-    opacity: 0;
+@media (max-width: 768px) {
+    #btn {
+        position: fixed;
+        top: 0.4rem;
+        left: 1rem;
+        transform: none;
+    }
 }
 
-.sidebar.active .top .logo {
-    opacity: 1;
-}
 
-.top .logo {
-    font-size: 2rem;
-    margin-right: 5px;
+.top .i {
+    z-index: 100;
+    left: 200px;
 }
-
 .user {
     display: flex;
     align-items: center;
@@ -135,10 +144,12 @@
 }
 
 .sidebar .nav-item {
-    opacity: 0;
+    display: none;
+    transition: opacity 0.5s ease;
 }
 
 .sidebar.active .nav-item {
+    display: inline;
     opacity: 1;
 }
 
@@ -175,13 +186,24 @@
     margin-left: 225px; /* Adjusted margin when sidebar is active */
 }
 
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* No margin when sidebar is hidden */
+        width: 100%; /* Occupy full width */
+    }
+
+    .sidebar.active ~ .main-content {
+        margin-left: 200px; /* Adjust margin when sidebar is active on mobile */
+        width: calc(100% - 200px); /* Adjust width when sidebar is active */
+    }
+}
+
 /* Navbar styles */
 .navbar {
     position: fixed;
     top: 0;
-    bottom: 10px;
     left: 80px; /* Initial left position matching sidebar width */
-    width: calc(100% - 160px); /* Adjusted width to fill remaining space */
+    width: calc(100% - 80px); /* Adjusted width to fill remaining space */
     height: 60px;
     border-radius: 20px;
     background-color: #7cdcf0be;
@@ -198,16 +220,30 @@
 
 .sidebar.active ~ .navbar {
     left: 225px; /* Adjusted left position when sidebar is active */
-    width: calc(100% - 305px); /* Adjusted width to fill remaining space when sidebar is active */
+    width: calc(100% - 225px); /* Adjusted width to fill remaining space when sidebar is active */
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        left: 0; /* Adjust navbar position for hidden sidebar */
+        width: 100%; /* Adjust navbar width */
+    }
+
+    .sidebar.active ~ .navbar {
+        left: 200px; /* Adjust navbar position when sidebar is active on mobile */
+        width: calc(100% - 200px); /* Adjust navbar width when sidebar is active */
+    }
 }
 
 .navbar-left {
     display: flex;
     align-items: center;
 }
+
 .navbar-left h2 {
     margin-right: 20px;
 }
+
 .btn {
     display: flex;
     align-items: center;
@@ -220,9 +256,11 @@
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
+
 .btn i {
     margin-right: 8px;
 }
+
 .btn:hover {
     background-color: #e0e0e0;
 }

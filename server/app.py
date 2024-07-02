@@ -37,12 +37,13 @@ db.init_app(app)
 
 
 
-
+## Home route
 @app.route('/home', methods=['GET'])
 def home():
     return render_template('home.html')
 
-@app.route('/index', methods=['GET'])
+# Index route
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
@@ -60,6 +61,11 @@ def login():
 @app.route('/forgot', methods=['GET'])
 def forgot():
     return render_template('forgot.html')
+
+@app.route('/worker')
+def worker():
+    # You can pass any necessary data to worker.html here
+    return render_template('worker.html')
 
 
 
