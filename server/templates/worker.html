@@ -1,0 +1,203 @@
+<div class="container-fluid">
+    <!-- Worker Statistics -->
+    <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                        <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                            <div class="card-title">
+                                <h4 class="mb-2">Total Workers</h4>
+                                <span class="badge bg-label-warning rounded-pill">Year 2024</span>
+                            </div>
+                            <div class="mt-sm-auto">
+                                <small class="text-success text-nowrap fw-medium"><i class="bx bx-chevron-up"></i> +5%</small>
+                                <h3 class="mb-0">50</h3>
+                            </div>
+                        </div>
+                        <div id="workerReportChart1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                        <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                            <div class="card-title">
+                                <h4 class="text-nowrap mb-2">On Leave</h4>
+                                <span class="badge bg-label-warning rounded-pill">Year 2024</span>
+                            </div>
+                            <div class="mt-sm-auto">
+                                <small class="text-danger text-nowrap fw-medium"><i class="bx bx-chevron-down"></i> -2%</small>
+                                <h3 class="mb-0">5</h3>
+                            </div>
+                        </div>
+                        <div id="workerReportChart2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                        <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                            <div class="card-title">
+                                <h4 class="text-nowrap mb-2">New Hires</h4>
+                                <span class="badge bg-label-warning rounded-pill">Year 2024</span>
+                            </div>
+                            <div class="mt-sm-auto">
+                                <small class="text-success text-nowrap fw-medium"><i class="bx bx-chevron-up"></i> +10%</small>
+                                <h3 class="mb-0">15</h3>
+                            </div>
+                        </div>
+                        <div id="workerReportChart3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Worker Management -->
+    <div class="container-fluid">
+        <!-- Buttons to add new worker and record leave -->
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalWorkerRegistration">
+                Add New Worker
+            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalLeave">
+                Record Leave
+            </button>
+        </div>
+
+        <!-- Modal for Worker Registration -->
+        <div class="modal fade" id="modalWorkerRegistration" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Worker</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="workerForm">
+                            <div class="mb-3">
+                                <label for="workerName" class="form-label">Name:</label>
+                                <input type="text" id="workerName" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerDob" class="form-label">Date of Birth:</label>
+                                <input type="date" id="workerDob" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerPhoto" class="form-label">Photo URL:</label>
+                                <input type="text" id="workerPhoto" class="form-control">
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerPosition" class="form-label">Position:</label>
+                                <input type="text" id="workerPosition" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerDepartment" class="form-label">Department:</label>
+                                <input type="text" id="workerDepartment" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerStartDate" class="form-label">Start Date:</label>
+                                <input type="date" id="workerStartDate" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerAdminId" class="form-label">Admin ID:</label>
+                                <input type="number" id="workerAdminId" class="form-control" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="addWorkerButton">Add Worker</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Leave Recording -->
+        <div class="modal fade" id="modalLeave" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Record Leave</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="leaveForm">
+                            <div class="mb-3">
+                                <label for="leaveType" class="form-label">Leave Type:</label>
+                                <div id="leaveType">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="leaveType" id="sickLeave" value="sickLeave">
+                                        <label class="form-check-label" for="sickLeave">Sick Leave</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="leaveType" id="annualLeave" value="annualLeave">
+                                        <label class="form-check-label" for="annualLeave">Annual Leave</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="leaveType" id="maternityLeave" value="maternityLeave">
+                                        <label class="form-check-label" for="maternityLeave">Maternity Leave</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="leaveType" id="otherLeave" value="otherLeave">
+                                        <label class="form-check-label" for="otherLeave">Other</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="leaveStartDate" class="form-label">Start Date:</label>
+                                <input type="date" id="leaveStartDate" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="leaveEndDate" class="form-label">End Date:</label>
+                                <input type="date" id="leaveEndDate" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerLeaveName" class="form-label">Worker Name:</label>
+                                <input type="text" id="workerLeaveName" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="workerLeaveAdminId" class="form-label">Admin ID:</label>
+                                <input type="number" id="workerLeaveAdminId" class="form-control" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="addLeaveButton">Record Leave</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Worker List -->
+        <div class="mt-5">
+            <h3>Worker List</h3>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Position</th>
+                            </tr>
+                        </thead>
+                        <tbody id="workerList">
+                            <!-- Worker items will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Custom JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>

@@ -2,13 +2,16 @@
 
 <body>
   {% block sidebar %}
+  
   <div class="sidebar">
+    <div class="top">
+      <i class="bx bx-menu" id="btn"></i>
+    </div>
       <div class="user">
-          <img src="/static/assets/img/avatars/logo.png" class="user-img" alt="Logo">
+          <img src="{{ url_for('static', filename= 'assets/img/avatars/logo.png')}}" class="user-img" alt="Logo">
       </div>
-      <div class="top">
-          <i class="bx bx-menu" id="btn"></i>
-      </div>
+      
+      
       <ul>
           <li>
               <a href="#" class="menu-link" data-target="homeContent" onclick="toggleSidebar(); showContent('homeContent')">
@@ -71,13 +74,13 @@
                               Manage your <strong>Cattle</strong>, monitor <strong>Production</strong>, and track <strong>Sales</strong> all in one place
                             </p>
           
-                            <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
+                            <a href="javascript:;" class="btn btn-sm btn-outline-primary">😎</a>
                           </div>
                         </div>
                         <div class="col-sm-5 text-center text-sm-left">
                           <div class="card-body pb-0 px-0 px-md-4">
                             <img
-                              src="/static/assets/img/illustrations/man-with-laptop-light.png"
+                              src="{{ url_for('static', filename='assets/img/illustrations/man-with-laptop-light.png')}}"
                               height="200"
                               alt="View Badge User"
                               data-app-dark-img="illustrations/man-with-laptop-dark.png"
@@ -271,7 +274,7 @@
                         </div>
                       </div>
                       </div>
-          <div class="row">
+                      <div class="row">
                       <div class="col-12 mb-4">
                         <div class="card">
                           <div class="card-body">
@@ -580,13 +583,12 @@
               </div>
               <!-- / Content -->
               
-            </div>
+          </div>
           <div id="myCattleContent" style="display: none;">
-              {% include "cattle.html" %}
+              
           </div>
           <div id="myWorkersContent" style="display: none;">
-              <h1>Workers</h1>
-              <p>Information about your workers.</p>
+            {% include "worker.html" %}
           </div>
           <div id="productionContent" style="display: none;">
               <h1>Production</h1>

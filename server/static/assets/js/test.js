@@ -45,6 +45,21 @@ function showContent(contentId) {
                     initCattlePage();
                 })
                 .catch(error => console.error('Error fetching cattle content:', error));
+        } else if (contentId === 'myWorkersContent') {
+            fetch('/worker') // Fetching the HTML content for worker.html
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    targetContent.innerHTML = html;
+                    targetContent.style.display = 'block';
+                    // After fetching HTML, initialize JavaScript specific to worker.html
+                    initWorkerPage();
+                })
+                .catch(error => console.error('Error fetching worker content:', error));
         } else {
             targetContent.style.display = 'block';
         }
@@ -69,6 +84,12 @@ function initCattlePage() {
     }
 }
 
+// Function to initialize worker.html specific JavaScript
+function initWorkerPage() {
+    console.log('Initializing worker page...');
+    // Add any worker page-specific initialization here
+}
+
 // Function to fetch cattle list and populate the UI
 function fetchCattleList() {
     console.log('Fetching cattle list...');
@@ -85,35 +106,72 @@ function fetchCattleList() {
 
             data.forEach(cattle => {
                 const row = document.createElement('tr');
-                const nameCell = document.createElement('td');
-                nameCell.textContent = cattle.name;
 
-                const serialNumberCell = document.createElement('td');
-                serialNumberCell.textContent = cattle.serial_number;
+                row.innerHTML = `
+                    <td>
+                        <div class="nav-item navbar-dropdown dropdown-user dropdown>
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                <div class="avatar avatar-online">
+                                    <img src="${cattle.photo}" alt="Cattle Photo" class="w-px-40 h-auto rounded-circle" />
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0 me-3">
+                                                <div class="avatar avatar-online">
+                                                    <img src="${cattle.photo}" alt="Profile Photo" class="w-px-40 h-auto rounded-circle" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <span class="fw-medium d-block">${cattle.name}</span>
+                                                <small class="text-muted">${cattle.serial_number}</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bx bx-user me-2"></i>
+                                        <span class="align-middle">${cattle.name}</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bx bx-cog me-2"></i>
+                                        <span class="align-middle">Edit</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <span class="d-flex align-items-center align-middle">
+                                            <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider"></div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="javascript:void(0);">
+                                        <i class="bx bx-power-off me-2"></i>
+                                        <span class="align-middle">Delete</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>${cattle.name}</td>
+                    <td>${cattle.serial_number}</td>
+                    <td>${cattle.date_of_birth}</td>
+                `;
 
-                // Create cell for edit button
-                const editCell = document.createElement('td');
-                const editButton = document.createElement('button');
-                editButton.textContent = 'Edit';
-                editButton.classList.add('btn', 'btn-primary', 'btn-sm');
-                editButton.addEventListener('click', () => editCattle(cattle.serial_number));
-                editCell.appendChild(editButton);
-
-                // Create cell for delete button
-                const deleteCell = document.createElement('td');
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
-                deleteButton.addEventListener('click', () => deleteCattle(cattle.serial_number));
-                deleteCell.appendChild(deleteButton);
-
-                // Append cells to row
-                row.appendChild(nameCell);
-                row.appendChild(serialNumberCell);
-                row.appendChild(editCell);
-                row.appendChild(deleteCell);
-
-                // Append row to cattleList
                 cattleList.appendChild(row);
             });
         })
@@ -121,6 +179,8 @@ function fetchCattleList() {
             console.error('Error fetching cattle list:', error);
         });
 }
+
+document.addEventListener('DOMContentLoaded', fetchCattleList);
 
 // Function to handle editing a cattle record
 function editCattle(serialNumber) {
