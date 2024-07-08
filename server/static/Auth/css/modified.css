@@ -42,6 +42,12 @@ header{
     border-radius:4px;
     margin-bottom:16px;
 }
+.img-icon{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
 .harbor{
     display:flex;
     flex-direction:row;
