@@ -16,44 +16,154 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row mb-3">
-            <div class="col-md-6 mb-3 mb-sm-0">
-                <div class="card row">
-                    <div class="card-body text-center">
-                        <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">FARM STATS</h3>
-                        <p class="card-text"><span>Cows:</span>&nbsp;5</p>
-                        <p class="card-text"><span>Bulls:</span>&nbsp;5</p>
-                        <p class="card-text"><span>Calves:</span>&nbsp;5</p>
-                        <a href="#" class="btn btn-primary">Edit</a>
+        <div class="row justify-content-between mx-auto px-auto">
+
+            <div class="col-md-6 mb-3">
+                <div class="card text-white mb-3">
+
+                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/s1.jpg')}}" alt="Image">
+
+                    <div class="card-img-overlay">
+                        <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">REPORTS</h3>
+                        <p class="card-text text-white">Generate detailed reports on milk production, sales, and farm expenses with our comprehensive reporting tools.</p>
+
+                        <!-- Button to add new cattle -->
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                                Reports
+                            </button>
+                        </div>
+
                     </div>
+
                 </div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    
-                    <!-- Button to add new cattle -->
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
-                            Add Cattle
-                        </button>
+                <div class="card text-white mb-3">
+                    <img class="card-img" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/addcattle.jpg')}}" alt="Image">
+
+                    <div class="card-img-overlay">
+                        <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">ADD CATTLE</h3>
+                        <p class="card-text text-white">Easily manage your livestock with Dairy Harbor's comprehensive cattle management feature.</p>
+
+                        <!-- Button to add new cattle -->
+                        <div class="mb-5">
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                                Add Cattle
+                            </button>
+                        </div>
+
                     </div>
-                    </div>
+
                 </div>
+            </div>
+
+        </div>
+
+        <!-- Procedures -->
+        <h2 class="mt-5 mb-3">Procedures</h2>
+
+        <div class="row mx-auto px-auto">
+
+            <!--Vaccination-->
+            <div class="col-md-6 mb-3">
+                <div class="card text-white mb-3">
+                    <img class="card-img" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/vaccination.jpg')}}" alt="Image">
+
+                    <div class="card-img-overlay">
+                        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">VACCINATION</h3>
+                        <p class="card-text text-white">Keep your livestock healthy and protected by easily scheduling and tracking vaccinations with our cattle vaccination management tool.</p>
+
+                        <!-- Button to add new cattle -->
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                                Vaccination
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Treatment-->
+            <div class="col-md-6 mb-3">
+                <div class="card text-white mb-3">
+                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/treatment1.jpg')}}" alt="Image">
+
+                    <div class="card-img-overlay">
+                        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">TREATMENT</h3>
+                        <p class="card-text text-white">Ensure timely and effective care for your livestock by managing and tracking cattle treatments with our dedicated treatment management feature.</p>
+
+                        <!-- Button to add new cattle -->
+                        <div class="mb-1">
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                                Treatment
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Dehorn-->
+            <div class="col-md-6 mb-3">
+                <div class="card text-white mb-3">
+                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/dehorn.jpg')}}" alt="Image">
+
+                    <div class="card-img-overlay">
+                        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">DEHORNING</h3>
+                        <p class="card-text text-white">Manage and schedule dehorning procedures efficiently to ensure the safety and well-being of your livestock with our dehorning management tool.</p>
+
+                        <!-- Button to add new cattle -->
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                                Dehorn
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Deworm-->
+            <div class="col-md-6 mb-3">
+                <div class="card text-white mb-3">
+                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/deworm.jpg')}}" alt="Image">
+
+                    <div class="card-img-overlay">
+                        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">DEWORMING</h3>
+                        <p class="card-text text-white">Welcome to your Deworming Report Card: a detailed summary of your livestock's deworming schedules, treatments, and overall health status</p>
+
+                        <!-- Button to add new cattle -->
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                                Deworm
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--Artificial Insemination-->
+        <div class="card text-white mb-3">
+            <img class="card-img" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/artificial.jpg')}}" alt="Image">
+            <div class="card-img-overlay">
+                <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Artificial Insemination</h3>
+            <p class="card-text text-white">Welcome to your Artificial Insemination Report Card: an in-depth review of your livestock's breeding schedules, success rates, and genetic data, all in one convenient location.</p>
+            <!-- Button to add new cattle -->
+            <div class="mb-3">
+                <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                    A.I. Cattle
+                </button>
+            </div>
+            <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
             </div>
         </div>
 
