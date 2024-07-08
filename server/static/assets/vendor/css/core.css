@@ -16578,6 +16578,7 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
   display: flex;
   flex: 1 1 auto;
   align-items: stretch;
+  transition: all 1s ease 0.5s;
 }
 
 .layout-page,
@@ -16642,6 +16643,27 @@ html:not(.layout-menu-fixed) .menu-inner-shadow {
   color: #697a8d;
   z-index: 2;
 }
+
+
+/* 
+.layout-navbar {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  right: 0;  
+  width: 100%; 
+  height: 3.875rem;
+  flex-wrap: nowrap;
+  color: #697a8d;
+  z-index: 2;  
+} */
+
+
+/* 
+.main-content > div {
+  margin-top: calc(3.875rem + 2px); 
+ } */
+
 .layout-navbar .navbar {
   transform: translate3d(0, 0, 0);
 }
@@ -16965,7 +16987,7 @@ html:not(.layout-footer-fixed) .content-wrapper {
   .layout-navbar,
   .content-footer {
     transition: none !important;
-    transition-duration: 0s !important;
+    transition-duration: 0.5s !important;
   }
   .layout-overlay {
     animation: none !important;

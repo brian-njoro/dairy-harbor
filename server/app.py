@@ -27,7 +27,7 @@ app = Flask(__name__)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['DEBUG'] = True
 
 migrate = Migrate(app, db)
@@ -35,19 +35,21 @@ api = Api(app)
 db.init_app(app)
 
 
-
+#Home Page
 
 ## Home route
 @app.route('/home', methods=['GET'])
 def home():
     return render_template('home.html')
 
+#Index Page
+@app.route('/index', methods=['GET'])
 # Index route
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
-#sign up page
+#sign-up page
 @app.route('/sign-up', methods=['GET'])
 def sign_up():
     return render_template('signup.html')
@@ -62,12 +64,17 @@ def login():
 def forgot():
     return render_template('forgot.html')
 
-@app.route('/worker')
+
+#worker Profile
+@app.route('/workerP',methods=['GET'])
 def worker():
     # You can pass any necessary data to worker.html here
-    return render_template('worker.html')
+    return render_template('workerP.html')
 
-
+#worker List
+@app.route('/workerL',methods=['GET'])
+def worker_List():
+    return render_template('workerList.html')
 
 ### CATTLE ROUTES ##
 @app.route('/cattle')
@@ -81,9 +88,9 @@ class CattleResource(Resource):
     def post(self):
         data = request.get_json()
         
+        photo = data.get('photo')
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')
-        photo = data.get('photo')
         breed = data.get('breed')
         father_breed = data.get('father_breed')
         mother_breed = data.get('mother_breed')
@@ -95,9 +102,9 @@ class CattleResource(Resource):
 
 
         new_cattle = Cattle(
+            photo=photo,
             name=name,
             date_of_birth=date_of_birth,
-            photo=photo,
             breed=breed,
             father_breed=father_breed,
             mother_breed=mother_breed,
@@ -117,10 +124,10 @@ class CattleGetResource(Resource):
             cattle = Cattle.query.filter_by(serial_number=serial_number).first()
             if cattle:
                 return {
+                    'photo': cattle.photo,
                     'serial_number': cattle.serial_number,
                     'name': cattle.name,
                     'date_of_birth': str(cattle.date_of_birth),
-                    'photo': cattle.photo,
                     'breed': cattle.breed,
                     'father_breed': cattle.father_breed,
                     'mother_breed': cattle.mother_breed,
@@ -134,10 +141,10 @@ class CattleGetResource(Resource):
             cattle_data = []
             for cattle in cattle_list:
                 cattle_data.append({
+                    'photo': cattle.photo,
                     'serial_number': cattle.serial_number,
                     'name': cattle.name,
                     'date_of_birth': str(cattle.date_of_birth),
-                    'photo': cattle.photo,
                     'breed': cattle.breed,
                     'father_breed': cattle.father_breed,
                     'mother_breed': cattle.mother_breed,
@@ -153,10 +160,10 @@ class CattleByIdResource(Resource):
         cattle = Cattle.query.filter_by(serial_number=serial_number).first()
         if cattle:
             return {
+                'photo': cattle.photo,
                 'serial_number': cattle.serial_number,
                 'name': cattle.name,
                 'date_of_birth': str(cattle.date_of_birth),
-                'photo': cattle.photo,
                 'breed': cattle.breed,
                 'father_breed': cattle.father_breed,
                 'mother_breed': cattle.mother_breed,
@@ -667,5 +674,4 @@ api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5555, debug=True)
-
+    app.run(host='0.0.0.0',port=5555, debug=True)

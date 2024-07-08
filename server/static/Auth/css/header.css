@@ -131,3 +131,7 @@
     justify-content: right; /* Centers items vertically (optional) */
     margin-right: -20px;
 }
+
+.dropdown{
+    margin-left: -30px;
+}

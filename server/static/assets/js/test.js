@@ -1,68 +1,81 @@
-let btn = document.querySelector('#btn');
-let sidebar = document.querySelector('.sidebar');
-let menuLinks = document.querySelectorAll('.menu-link');
-
-btn.addEventListener('click', toggleSidebar);
-
+// Function to toggle the sidebar visibility
 function toggleSidebar() {
-    sidebar.classList.toggle('active');
+    const layoutContainer = document.querySelector('.layout-container');
+    if (layoutContainer) {
+        layoutContainer.classList.toggle('layout-menu-collapsed');
+    }
+}
+
+// Function to simulate the click on the x icon
+function simulateXIconClick() {
+    const xIconLink = document.querySelector('.layout-menu-toggle.menu-link');
+    if (xIconLink) {
+        xIconLink.click();
+    }
 }
 
 // Add event listener to each menu link
-menuLinks.forEach(link => {
+document.querySelectorAll('.menu-link[data-target]').forEach(link => {
     link.addEventListener('click', function(event) {
         event.preventDefault();  // Prevent default link behavior
-        let targetContent = this.getAttribute('data-target');
-        showContent(targetContent);
-        if (sidebar.classList.contains('active')) {
-            toggleSidebar();
+        const targetId = this.getAttribute('data-target');
+        if (targetId) {
+            showContent(targetId);
         }
+        simulateXIconClick(); // Simulate the click on the x icon to collapse the sidebar
     });
 });
 
+// Function to show the specified content and hide others
 function showContent(contentId) {
-    // Hide all content sections
-    let contents = document.querySelectorAll('.container > div');
+    // Hide all content sections except the target
+    let contents = document.querySelectorAll('.main-content > div');
     contents.forEach(content => {
-        content.style.display = 'none';
+        if (content.id === contentId) {
+            content.style.display = 'block';
+            
+           
+        } else {
+            content.style.display = 'none';
+        }
     });
 
-    // Show the selected content section
-    let targetContent = document.getElementById(contentId);
-    if (targetContent) {
-        if (contentId === 'myCattleContent') {
-            fetch('/cattle') // Fetching the HTML content for cattle.html
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    targetContent.innerHTML = html;
-                    targetContent.style.display = 'block';
-                    // After fetching HTML, initialize JavaScript specific to cattle.html
-                    initCattlePage();
-                })
-                .catch(error => console.error('Error fetching cattle content:', error));
-        } else if (contentId === 'myWorkersContent') {
-            fetch('/worker') // Fetching the HTML content for worker.html
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    targetContent.innerHTML = html;
-                    targetContent.style.display = 'block';
-                    // After fetching HTML, initialize JavaScript specific to worker.html
-                    initWorkerPage();
-                })
-                .catch(error => console.error('Error fetching worker content:', error));
-        } else {
-            targetContent.style.display = 'block';
-        }
+
+
+    // Special handling for dynamic content loading
+    if (contentId === 'myCattleContent') {
+        console.log('LOOOOOOAAADING THE CATTLE CONTENT')
+        fetch('/cattle') // Fetching the HTML content for cattle.html
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                const cattleContentDiv = document.getElementById('myCattleContent');
+                cattleContentDiv.innerHTML = html;
+                cattleContentDiv.style.display = 'block';
+                // Initialize JavaScript specific to cattle.html if needed
+                initCattlePage();
+            })
+            .catch(error => console.error('Error fetching cattle content:', error));
+    } else if (contentId === 'myWorkersContent') {
+        fetch('/worker') // Fetching the HTML content for worker.html
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                const workerContentDiv = document.getElementById('myWorkersContent');
+                workerContentDiv.innerHTML = html;
+                workerContentDiv.style.display = 'block';
+                // Initialize JavaScript specific to worker.html if needed
+                initWorkerPage();
+            })
+            .catch(error => console.error('Error fetching worker content:', error));
     }
 }
 
@@ -109,7 +122,7 @@ function fetchCattleList() {
 
                 row.innerHTML = `
                     <td>
-                        <div class="nav-item navbar-dropdown dropdown-user dropdown>
+                        <div class="nav-item navbar-dropdown dropdown-user dropdown">
                             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                                 <div class="avatar avatar-online">
                                     <img src="${cattle.photo}" alt="Cattle Photo" class="w-px-40 h-auto rounded-circle" />
