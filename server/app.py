@@ -667,5 +667,5 @@ api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
 
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(host='0.0.0.0', port=5555, debug=True)
 
