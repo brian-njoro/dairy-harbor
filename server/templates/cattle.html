@@ -7,11 +7,54 @@
         <!-- Cattle management content -->
         <h2 class="mt-5 mb-3">Cattle Management</h2>
 
-        <!-- Button to add new cattle -->
-        <div class="mb-3">
-            <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
-                Add Cattle
-            </button>
+        <div class="card text-white mb-3">
+            <img class="card-img" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/carousel-11.jpg')}}" alt="Image">
+            <div class="card-img-overlay">
+                <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">FARM NAME</h3>
+            <p class="card-text text-white">Since using Dairy Harbor, my farm's productivity has skyrocketed. The platform's comprehensive tools have made it easy to track my livestock, monitor milk production, and manage feed schedules efficiently. It's user-friendly and has saved me so much time and effort. Dairy Harbor has truly transformed the way I run my farm, and I couldn't be happier with the results.</p>
+            <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-6 mb-3 mb-sm-0">
+                <div class="card row">
+                    <div class="card-body text-center">
+                        <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">FARM STATS</h3>
+                        <p class="card-text"><span>Cows:</span>&nbsp;5</p>
+                        <p class="card-text"><span>Bulls:</span>&nbsp;5</p>
+                        <p class="card-text"><span>Calves:</span>&nbsp;5</p>
+                        <a href="#" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    
+                    <!-- Button to add new cattle -->
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                            Add Cattle
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Modal for Cattle Registration -->
@@ -131,7 +174,6 @@
                 </div>
                 <!--Cattle History-->
             </div>
-        </div>
         </div>
 
     </div>
