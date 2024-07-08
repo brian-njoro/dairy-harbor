@@ -175,6 +175,7 @@ p{
 }
 
 .menu-item:hover .menu-link {
-    background-color: #007bff; /* Change to your desired color */
+    background-color: #d9dfe6; /* Change to your desired color */
     color: #fff; /* Change the text color if needed */
+    border-radius: 10px;
 }

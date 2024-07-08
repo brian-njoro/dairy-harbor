@@ -14,7 +14,7 @@ data-template="vertical-menu-template-free">
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-        <title>{%block title %}Base{% endblock %}</title>
+        <title>{%block title %}{% endblock %}</title>
 
         <meta name="description" content="" />
 
@@ -110,45 +110,45 @@ data-template="vertical-menu-template-free">
                                 <div data-i18n="Layouts text-info">Management</div>
                             </a>
 
-                            <ul class="menu-sub">
-                                <li class="menu-item">
+                            <ul class="menu-sub ">
+                                <li class="menu-item mb-1">
                                     <a href="/cattle" class="menu-link text-dark fs-5">
                                     <div data-i18n="without menu">Cattle List</div>
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a href="javascript:void(0);" class="menu-link menu-toggle fw-bold text-white fs-5">
                                         <i class="menu-icon tf-icons bx bx-layout text-white"></i>
                                         <div data-i18n="Layouts text-info">Procedures</div>
                                     </a>
             
                                     <ul class="menu-sub">
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1">
                                             <a href="/treatment" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="without menu">Treatment</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1">
                                             <a href="/vaccination" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Without navbar">Vaccination</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1">
                                             <a href="/dehorn" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Container">Dehorning</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1">
                                             <a href="/deworm" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Fluid">Deworming</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1">
                                             <a href="/Artificial" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Blank">Artificial Insemination</div>
                                             </a>
@@ -166,7 +166,7 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a
                                     href="/workerL"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -195,7 +195,7 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a
                                     href="/milkD"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -222,7 +222,7 @@ data-template="vertical-menu-template-free">
                                 <div data-i18n="Front Pages">Expenses</div>
                             </a>
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a
                                     href="/feeds"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -231,7 +231,7 @@ data-template="vertical-menu-template-free">
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a
                                     href="/medicine"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -259,7 +259,7 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a
                                     href="/milkR"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -289,21 +289,9 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
-                                    <a href="/login" class="menu-link text-white fs-6 fw-bold" target="_blank">
-                                        <div data-i18n="Basic">Login</div>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="/sign-up" class="menu-link text-white fs-6 fw-bold" target="_blank">
-                                        <div data-i18n="Basic">Sign Up</div>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
+                                <li class="menu-item mb-1">
                                     <a href="/forgot" class="menu-link text-white fs-6 fw-bold" target="_blank">
-                                        <div data-i18n="Basic">Forgot Password</div>
+                                        <div data-i18n="Basic">Reset Password</div>
                                     </a>
                                 </li>
 
@@ -327,20 +315,21 @@ data-template="vertical-menu-template-free">
 
                         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                                <i class="bx bx-menu bx-sm"></i>
+                                <i class="bx bx-menu-alt-left bx-sm"></i>
                             </a>
                         </div>
         
                         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                             <!-- Search -->
-                            <div class="navbar-nav align-items-center">
+                            <div class="navbar-nav align-items-center mt-3">
                                 <div class="nav-item d-flex align-items-center">
-                                <i class="bx bx-search fs-4 lh-0"></i>
-                                <input
-                                    type="text"
-                                    class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                                    placeholder="Search..."
-                                    aria-label="Search..." />
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                                            placeholder="Search..."
+                                            aria-label="Search..." />
+                                    </div>
                                 </div>
                             </div>
                             <!-- /Search -->
@@ -387,18 +376,7 @@ data-template="vertical-menu-template-free">
                                         <i class="bx bx-cog me-2"></i>
                                         <span class="align-middle">Settings</span>
                                         </a>
-                                    </li>
-
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                        <span class="d-flex align-items-center align-middle">
-                                            <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                        </span>
-                                        </a>
-                                    </li>
-
+                                    </li>                                    
                                     <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
