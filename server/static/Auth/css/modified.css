@@ -173,3 +173,8 @@ p{
     border: 2px solid rgb(0, 183, 255);
     border-radius: 10px;
 }
+
+.menu-item:hover .menu-link {
+    background-color: #007bff; /* Change to your desired color */
+    color: #fff; /* Change the text color if needed */
+}
