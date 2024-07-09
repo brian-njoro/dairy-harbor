@@ -175,7 +175,17 @@ p{
 }
 
 .menu-item:hover .menu-link {
-    background-color: #d9dfe6; /* Change to your desired color */
+    background-color: #898d92; /* Change to your desired color */
+    color: #fff; /* Change the text color if needed */
+    border-radius: 10px;
+}
+
+.menu-item .menu-list{
+    background-color: transparent;
+    border-radius: 10px;
+}
+.menu-item .menu-list:hover{
+    background-color: #898d92; /* Change to your desired color */
     color: #fff; /* Change the text color if needed */
     border-radius: 10px;
 }

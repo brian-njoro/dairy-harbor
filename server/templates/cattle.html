@@ -5,26 +5,27 @@
 {% block content %}
     <div class="container-fluid">
         <!-- Cattle management content -->
-        <h2 class="mt-5 mb-3">Cattle Management</h2>
+        <h2 class="mt-5 mb-3 fw-bold text-info">Cattle Management</h2>
 
         <div class="card text-white mb-3">
-            <img class="card-img" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/carousel-11.jpg')}}" alt="Image">
+            <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/carousel-11.jpg')}}" alt="Image">
             <div class="card-img-overlay">
-                <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">FARM NAME</h3>
-            <p class="card-text text-white">Since using Dairy Harbor, my farm's productivity has skyrocketed. The platform's comprehensive tools have made it easy to track my livestock, monitor milk production, and manage feed schedules efficiently. It's user-friendly and has saved me so much time and effort. Dairy Harbor has truly transformed the way I run my farm, and I couldn't be happier with the results.</p>
-            <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
+                <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">FARM NAME</h3>
+                <p class="card-text text-white">Since using Dairy Harbor, my farm's productivity has skyrocketed. The platform's comprehensive tools have made it easy to track my livestock, monitor milk production, and manage feed schedules efficiently. It's user-friendly and has saved me so much time and effort. Dairy Harbor has truly transformed the way I run my farm, and I couldn't be happier with the results.</p>
+                <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
             </div>
         </div>
 
         <div class="row justify-content-between mx-auto px-auto">
 
+            <!--Reports Card-->
             <div class="col-md-6 mb-3">
-                <div class="card text-white mb-3">
+                <div class="card text-white mb-3 shadow-sm">
 
-                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/s1.jpg')}}" alt="Image">
+                    <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/s1.jpg')}}" alt="Image">
 
                     <div class="card-img-overlay">
-                        <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">REPORTS</h3>
+                        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">REPORTS</h3>
                         <p class="card-text text-white">Generate detailed reports on milk production, sales, and farm expenses with our comprehensive reporting tools.</p>
 
                         <!-- Button to add new cattle -->
@@ -39,12 +40,13 @@
                 </div>
             </div>
 
+            <!--Add Cattle Card-->
             <div class="col-md-6 mb-3">
                 <div class="card text-white mb-3">
-                    <img class="card-img" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/addcattle.jpg')}}" alt="Image">
+                    <img class="card-img lazy" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/addcattle.jpg')}}" alt="Image">
 
                     <div class="card-img-overlay">
-                        <h3 class="card-title text-info" style="font-family:Times New Roman,Arial;">ADD CATTLE</h3>
+                        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">ADD CATTLE</h3>
                         <p class="card-text text-white">Easily manage your livestock with Dairy Harbor's comprehensive cattle management feature.</p>
 
                         <!-- Button to add new cattle -->
@@ -59,17 +61,129 @@
                 </div>
             </div>
 
+            <!-- Modal for Cattle Registration -->
+            <div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border border-3 border-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold">Add Cattle</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="cattleForm">
+                                <!--Cattle Name-->
+                                <div class="mb-3">
+                                    <label for="name" class="form-label text-dark fw-bold">Name:</label>
+                                    <input type="text" id="name" class="form-control" required>
+                                </div>
+
+                                <!--Date Of Birth-->
+                                <div class="mb-3">
+                                    <label for="dateOfBirth" class="form-label text-dark fw-bold">Date of Birth:</label>
+                                    <input type="date" id="dateOfBirth" class="form-control" required>
+                                </div>
+
+                                <!--Cattle Photo-->
+                                <div class="mb-3">
+                                    <label for="formFile" class="form-label text-dark fw-bold">Photo:</label>
+                                    <input class="form-control" type="file" id="photo" name="photo">
+                                    <button type="button" onclick="uploadImage()" class="mt-2 btn btn-info">Upload Image</button>
+                                </div>
+
+                                <!--Cattle Breed-->
+                                <div class="mb-3">
+                                    <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
+                                    <select class="form-control" name="breed" id="breed" required>
+                                        <option value="Holstein_Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown_Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                        <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                        <option value="Red_White_Holstein">Red and White Holstein</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    </select>
+                                </div>
+
+                                <!--Fathers Breed-->
+                                <div class="mb-3">
+                                    <label for="fatherBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
+                                    <select class="form-control" name="breed" id="breed" required>
+                                        <option value="Holstein_Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown_Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                        <option value="Swedish_Red_White">Swedish Red and White</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Norwegian_Red">Norwegian Red</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                    </select>
+                                </div>
+
+                                <!--Mothers' Breed -->
+                                <div class="mb-3">
+                                    <label for="motherBreed" class="form-label text-dark fw-bold">Mother's Breed:</label>
+                                    <select class="form-control" name="motherBreed" id="motherBreed" required>
+                                        <option value="Holstein_Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown_Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                        <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                        <option value="Red_White_Holstein">Red and White Holstein</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    </select>
+                                </div>
+
+                                <!--Method Of Breeding-->
+                                <div class="mb-3">
+                                    <label for="methodBred" class="form-label text-dark fw-bold">Method Bred:</label>
+                                    <select class="form-control" name="methodBred" id="methodBred" required>
+                                        <option value="Natural">Natural</option>
+                                        <option value="Artificial Insemination">Artificial Insemination</option>
+                                    </select>
+                                </div>
+
+                                <!--Admin Id-->
+                                <div class="mb-3">
+                                    <label for="adminId" class="form-label text-dark fw-bold">Admin ID:</label>
+                                    <select class="form-control" type="number" name='adminId' id="adminId" required>
+                                        <option value="adminId1">1</option>
+                                        <option value="adminId2">2</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Procedures -->
-        <h2 class="mt-5 mb-3">Procedures</h2>
+
+        <!-- Procedures-->
+        <h2 class="mt-5 mb-3 fw-bold text-info">Procedures</h2>
 
         <div class="row mx-auto px-auto">
 
-            <!--Vaccination-->
+            <!--Vaccination Card-->
             <div class="col-md-6 mb-3">
                 <div class="card text-white mb-3">
-                    <img class="card-img" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/vaccination.jpg')}}" alt="Image">
+                    <img class="card-img lazy" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/vaccination.jpg')}}" alt="Image">
 
                     <div class="card-img-overlay">
                         <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">VACCINATION</h3>
@@ -77,7 +191,7 @@
 
                         <!-- Button to add new cattle -->
                         <div class="mb-3">
-                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleVaccination" id='cattleVaccination'>
                                 Vaccination
                             </button>
                         </div>
@@ -87,10 +201,97 @@
                 </div>
             </div>
 
-            <!--Treatment-->
+            <!-- Modal for Cattle Vaccination -->
+            <div class="modal fade" id="modalCattleVaccination" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border border-3 border-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold">Vaccination</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="cattleForm">
+                                <!--Vet Name-->
+                                <div class="mb-3">
+                                    <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
+                                    <input class="form-control" type="text" name='vetName' id="vetName" required>
+                                </div>
+
+                                <!--Date-->
+                                <div class="mb-3">
+                                    <label for="vaccinationDate" class="form-label text-dark fw-bold">Date:</label>
+                                    <input type="date" id="vaccinationDate" class="form-control" required>
+                                </div>
+
+                                <!--Serial Number-->
+                                <div class="mb-3">
+                                    <label for="serial Number" class="form-label text-dark fw-bold">Cattle Serial Number:</label>
+                                    <input type="Number" id="serialNumber" class="form-control" required>
+                                </div>
+
+                                <!--Cattle Breed-->
+                                <div class="mb-3">
+                                    <label for="breed" class="form-label text-dark fw-bold">Cattle Breed:</label>
+                                    <select class="form-control" name="breed" id="breed" required>
+                                        <option value="Holstein Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking Shorthorn">Milking Shorthorn</option>
+                                        <option value="Swedish Red and White">Swedish Red and White</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Norwegian Red">Norwegian Red</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Dutch Belted">Dutch Belted (Lakenvelder)</option>
+                                    </select>
+                                </div>
+
+                                <!--Method of vaccination-->
+                                <div class="mb-3">
+                                    <label for="methodOfVaccination" class="form-label text-dark fw-bold">Method of vaccination:</label>
+                                    <select class="form-control" name="methodOfVaccination" id="methodOfVaccination" required>
+                                        <option value="subcutaneous">Subcutaneous (SubQ) Injection</option>
+                                        <option value="Intramuscular">Intramuscular (IM) Injection</option>
+                                        <option value="Intranasalr">Intranasal (IN) Administration</option>
+                                        <option value="Oral">Oral Administration</option>
+                                        <option value="Intravenous">Intravenous (IV) Injection</option>
+                                        <option value="Topical">Topical Administration</option>
+                                        <option value="Intradermal">Intradermal (ID) Injection</option>
+                                        <option value="Aerosol">Aerosol Vaccination</option>
+                                    </select>
+                                </div>
+
+                                <!--Drug Name-->
+                                <div class="mb-3">
+                                    <label for="drugName" class="form-label text-dark fw-bold">Name of drug:</label>
+                                    <input class="form-control" type="text" name='drugName' id="drugName" required>
+                                </div>
+
+                                <!--Disease Name-->
+                                <div class="mb-3">
+                                    <label for="diseaseName" class="form-label text-dark fw-bold">Name of disease:</label>
+                                    <input class="form-control" type="text" name='diseaseName' id="diseaseName" required>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-info" id="addCattleButton">Add</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--/ Modal for cattle Vaccination -->
+            <!--/Vaccination-->
+
+            <!--Treatment Card-->
             <div class="col-md-6 mb-3">
                 <div class="card text-white mb-3">
-                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/treatment1.jpg')}}" alt="Image">
+                    <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/treatment1.jpg')}}" alt="Image">
 
                     <div class="card-img-overlay">
                         <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">TREATMENT</h3>
@@ -98,7 +299,7 @@
 
                         <!-- Button to add new cattle -->
                         <div class="mb-1">
-                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleTreatment" id='cattleRegistration'>
                                 Treatment
                             </button>
                         </div>
@@ -108,10 +309,105 @@
                 </div>
             </div>
 
+            <!-- Modal for Cattle Treatment -->
+            <div class="modal fade" id="modalCattleTreatment" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border border-3 border-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold">Cattle Treatment</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="cattleForm">
+                                <!--Vet Name-->
+                                <div class="mb-3">
+                                    <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
+                                    <input class="form-control" type="text" name='vetName' id="vetName" required>
+                                </div>
+
+                                <!--Date Of Treatment -->
+                                <div class="mb-3">
+                                    <label for="dateOfTreatment" class="form-label text-dark fw-bold">Date Of Treatment:</label>
+                                    <input type="date" id="dateOfTreatment" class="form-control" required>
+                                </div>
+
+                                <!--Serial Number -->
+                                <div class="mb-3">
+                                    <label for="serial Number" class="form-label text-dark fw-bold">Cattle Serial Number:</label>
+                                    <input type="Number" id="serialNumber" class="form-control" required>
+                                </div>
+
+                                <!--Cattle Breed-->
+                                <div class="mb-3">
+                                    <label for="breed" class="form-label text-dark fw-bold">Cattle Breed:</label>
+                                    <select class="form-control" name="breed" id="breed" required>
+                                        <option value="Holstein Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking Shorthorn">Milking Shorthorn</option>
+                                        <option value="Swedish Red and White">Swedish Red and White</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Norwegian Red">Norwegian Red</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Dutch Belted">Dutch Belted (Lakenvelder)</option>
+                                    </select>
+                                </div>
+
+                                <!--Treatment Method-->
+                                <div class="mb-3">
+                                    <label for="methodBred" class="form-label text-dark fw-bold">Method Of Treatment:</label>
+                                    <select class="form-control" name="treatmentMethod" id="treatmentMethod" required>
+                                        <option value="Antibiotic">Antibiotic Therapy</option>
+                                        <option value="Antiparasitic">Antiparasitic Treatments</option>
+                                        <option value="Nutritional">Nutritional Management</option>
+                                        <option value="Surgical">Surgical Interventions</option>
+                                        <option value="Foot">Foot Care</option>
+                                        <option value="Therapeutic">Therapeutic Management</option>
+                                        <option value="Supportive">Supportive Care</option>
+                                        <option value="Probiotic">Probiotic and Prebiotic Therapy</option>
+                                        <option value="Herbal">Herbal and Homeopathic Treatments</option>
+                                        <option value="Isolation">Isolation and Quarantine</option>
+                                    </select>
+                                </div>
+
+                                <!--Administration Method-->
+                                <div class="mb-3">
+                                    <label for="adminId" class="form-label text-dark fw-bold">Administration Method:</label>
+                                    <input class="form-control" type="text" name='adminMethod' id="adminMethod" required>
+                                </div>
+
+                                <!--Drug Name-->
+                                <div class="mb-3">
+                                    <label for="drugName" class="form-label text-dark fw-bold">Name Of Drug:</label>
+                                    <input class="form-control" type="text" name='drugName' id="drugName" required>
+                                </div>
+
+                                <!--Disease Name-->
+                                <div class="mb-3">
+                                    <label for="diseaseName" class="form-label text-dark fw-bold">Name Of Disease:</label>
+                                    <input class="form-control" type="text" name='diseaseName' id="diseaseName" required>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--/ Modal for Cattle Treatment -->
+            <!--/ Treatment -->
+
             <!--Dehorn-->
             <div class="col-md-6 mb-3">
                 <div class="card text-white mb-3">
-                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/dehorn.jpg')}}" alt="Image">
+                    <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/dehorn.jpg')}}" alt="Image">
 
                     <div class="card-img-overlay">
                         <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">DEHORNING</h3>
@@ -119,7 +415,7 @@
 
                         <!-- Button to add new cattle -->
                         <div class="mb-3">
-                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleDehorning" id='cattleRegistration'>
                                 Dehorn
                             </button>
                         </div>
@@ -129,10 +425,64 @@
                 </div>
             </div>
 
+            <!-- Modal for Cattle Dehorning -->
+            <div class="modal fade" id="modalCattleDehorning" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border border-3 border-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold">Cattle Dehorning</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="cattleForm">
+                                <!--Vet Name-->
+                                <div class="mb-3">
+                                    <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
+                                    <input class="form-control" type="text" name='vetName' id="vetName" required>
+                                </div>
+
+                                <!--Date Of Dehorning -->
+                                <div class="mb-3">
+                                    <label for="dateOfDehorning" class="form-label fw-bold text-dark">Date Of Dehorning:</label>
+                                    <input type="date" id="dateOfDehorning" class="form-control" required>
+                                </div>
+
+                                <!--Serial Number -->
+                                <div class="mb-3">
+                                    <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
+                                    <input type="Number" id="serialNumber" class="form-control" required>
+                                </div>
+
+                                <!--Dehorning Method-->
+                                <div class="mb-3">
+                                    <label for="dehorningMethod" class="form-label fw-bold text-dark">Method Of Dehorning:</label>
+                                    <input class="form-control" name="dehorningMethod" id="dehorningMethod" required>
+                                </div>
+
+                                <!--Dehorning Id-->
+                                <div class="mb-3">
+                                    <label for="dehorningId" class="form-label fw-bold text-dark">Dehorning Id:</label>
+                                    <input class="form-control" type="text" name='dehorningId' id="dehorningId" required>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--/ Modal for Cattle Dehorning -->
+            <!--/ Dehorn -->
+
             <!--Deworm-->
             <div class="col-md-6 mb-3">
                 <div class="card text-white mb-3">
-                    <img class="card-img" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/deworm.jpg')}}" alt="Image">
+                    <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/deworm.jpg')}}" alt="Image">
 
                     <div class="card-img-overlay">
                         <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">DEWORMING</h3>
@@ -140,7 +490,7 @@
 
                         <!-- Button to add new cattle -->
                         <div class="mb-3">
-                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleDeworming" id='cattleRegistration'>
                                 Deworm
                             </button>
                         </div>
@@ -149,17 +499,71 @@
 
                 </div>
             </div>
+
+            <!-- Modal for Cattle Deworming -->
+            <div class="modal fade" id="modalCattleDeworming" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border border-3 border-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold">Cattle Dehorning</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="cattleForm">
+                                <!--Vet Name-->
+                                <div class="mb-3">
+                                    <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
+                                    <input class="form-control" type="text" name='vetName' id="vetName">
+                                </div>
+
+                                <!--Date Of Deworming -->
+                                <div class="mb-3">
+                                    <label for="dateOfDehorning" class="form-label fw-bold text-dark">Date Of Deworming:</label>
+                                    <input type="date" id="dateOfDehorning" class="form-control" required>
+                                </div>
+
+                                <!--Serial Number -->
+                                <div class="mb-3">
+                                    <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
+                                    <input type="Number" id="serialNumber" class="form-control" required>
+                                </div>
+
+                                <!--Deworming Method-->
+                                <div class="mb-3">
+                                    <label for="dehorningMethod" class="form-label fw-bold text-dark">Method Of Deworming:</label>
+                                    <input class="form-control" name="dewormingMethod" id="dewormingMethod" required>
+                                </div>
+
+                                <!--Disease Name-->
+                                <div class="mb-3">
+                                    <label for="diseaseName" class="form-label fw-bold text-dark">Name of disease:</label>
+                                    <input class="form-control" name="diseaseName" id="diseaseName" required>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--/ Modal for Cattle Dehorning -->
+            <!--/ Deworming -->
         </div>
 
         <!--Artificial Insemination-->
         <div class="card text-white mb-3">
-            <img class="card-img" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/artificial.jpg')}}" alt="Image">
+            <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/artificial.jpg')}}" alt="Image">
             <div class="card-img-overlay">
                 <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Artificial Insemination</h3>
-            <p class="card-text text-white">Welcome to your Artificial Insemination Report Card: an in-depth review of your livestock's breeding schedules, success rates, and genetic data, all in one convenient location.</p>
+            <p class="card-text text-white">Welcome to your Artificial Insemination Report Card:<br> An in-depth review of your livestock's breeding schedules, success rates, and genetic data, all in one convenient location.</p>
             <!-- Button to add new cattle -->
             <div class="mb-3">
-                <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
+                <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleInsemination" id='cattleRegistration'>
                     A.I. Cattle
                 </button>
             </div>
@@ -167,82 +571,68 @@
             </div>
         </div>
 
-        <!-- Modal for Cattle Registration -->
-        <div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
+        <!-- Modal for Cattle Artificial Insemination -->
+        <div class="modal fade" id="modalCattleInsemination" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-3 border-info">
                     <div class="modal-header">
-                        <h5 class="modal-title text-info">Add Cattle</h5>
+                        <h5 class="modal-title text-info fw-bold">Artificial Inseminaton</h5>
                         <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
                         <form id="cattleForm">
+                            <!--Vet Name-->
                             <div class="mb-3">
-                                <label for="name" class="form-label">Name:</label>
-                                <input type="text" id="name" class="form-control" required>
+                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName">
                             </div>
 
+                            <!--Date Of Insemination -->
                             <div class="mb-3">
-                                <label for="dateOfBirth" class="form-label">Date of Birth:</label>
-                                <input type="date" id="dateOfBirth" class="form-control" required>
+                                <label for="dateOfInsemination" class="form-label fw-bold text-dark">Date Of Insemination:</label>
+                                <input type="date" id="dateOfInsemination" class="form-control" required>
                             </div>
 
+                            <!--Serial Number -->
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">Photo:</label>
-                                <input class="form-control" type="file" id="photo" name="photo">
-                                <button type="button" onclick="uploadImage()" class="mt-2 btn btn-primary">Upload Image</button>
+                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
+                                <input type="Number" id="serialNumber" class="form-control" required>
                             </div>
 
-
+                            <!--Donor's Breed-->
                             <div class="mb-3">
-                                <label for="breed" class="form-label">Breed:</label>
-                                <select class="form-control" name="breed" id="breed" required>
-                                    <!-- Options will be populated dynamically by JavaScript -->
-                                        <option value="Holstein">Holstein</option>
-                                        <option value="Jersey">Jersey</option>
-                                        <option value="Guernsey">Guernsey</option>
-                                        <option value="Brown Swiss">Brown Swiss</option>
-                                        <option value="Ayrshire">Ayrshire</option>
-                                    
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="fatherBreed" class="form-label">Father's Breed:</label>
-                                <select class="form-control" name="fatherBreed" id="fatherBreed" required>
-                                    <option value="Angus">Angus</option>
-                                    <option value="Hereford">Hereford</option>
-                                    <option value="Charolais">Charolais</option>
-                                    <option value="Simmental">Simmental</option>
-                                    <option value="Limousin">Limousin</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="motherBreed" class="form-label">Mother's Breed:</label>
-                                <select class="form-control" name="motherBreed" id="motherBreed" required>
-                                    <option value="Holstein">Holstein</option>
+                                <label for="donorBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
+                                <select class="form-control" name="donorBreed" id="donorBreed" required>
+                                    <option value="Holstein_Friesian">Holstein Friesian</option>
                                     <option value="Jersey">Jersey</option>
                                     <option value="Guernsey">Guernsey</option>
-                                    <option value="Brown Swiss">Brown Swiss</option>
+                                    <option value="Brown_Swiss">Brown Swiss</option>
                                     <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                    <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    <option value="Montbéliarde">Montbéliarde</option>
+                                    <option value="Norwegian_Red">Norwegian Red</option>
+                                    <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
                                 </select>
                             </div>
 
+                            <!--expected Breed-->
                             <div class="mb-3">
-                                <label for="methodBred" class="form-label">Method Bred:</label>
-                                <select class="form-control" name="methodBred" id="methodBred" required>
-                                    <option value="Natural">Natural</option>
-                                    <option value="Artificial Insemination">Artificial Insemination</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="adminId" class="form-label">Admin ID:</label>
-                                <select class="form-control" type="number" name='adminId' id="adminId" required>
-                                    <option value="adminId1">1</option>
-                                    <option value="adminId2">2</option>
+                                <label for="calfBreed" class="form-label text-dark fw-bold">Expected Calf Breed:</label>
+                                <select class="form-control" name="calfBreed" id="calfBreed" required>
+                                    <option value="Holstein_Friesian">Holstein Friesian</option>
+                                    <option value="Jersey">Jersey</option>
+                                    <option value="Guernsey">Guernsey</option>
+                                    <option value="Brown_Swiss">Brown Swiss</option>
+                                    <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                    <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    <option value="Montbéliarde">Montbéliarde</option>
+                                    <option value="Norwegian_Red">Norwegian Red</option>
+                                    <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
                                 </select>
                             </div>
                         </form>
@@ -250,11 +640,13 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="addCattleButton">Add Cattle</button>
+                        <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
                     </div>
+
                 </div>
             </div>
         </div>
+        <!--/ Modal for Cattle insemination -->        
 
         <!-- Cattle List -->
         <div class="mt-5">
