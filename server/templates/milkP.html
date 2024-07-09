@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Milk Production{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-info fw-bold">MILK PRODUCTION</h5>
+            <small class="text-muted float-end">Daily milk Production</small>
+            </div>
+            <div class="card-body">
+            <form>
+                <!--Serial Number-->
+                <div class="mb-3">
+                    <label class="form-label text-dark fw-bold" for="basic-default-fullname">Serial Number:</label>
+                    <input type="number" class="form-control" id="serialNumber" placeholder="1" required/>
+                </div>
+
+                <!--Date-->
+                <div class="mb-3">
+                    <label for="milkProductionDate" class="form-label text-dark fw-bold">Date:</label>
+                    <input type="date" id="milkProductionDate" class="form-control" placeholder="currentDate()" required>
+                </div>
+
+                <!--Milk Liters-->
+                <div class="mb-3">
+                    <label class="form-label text-dark fw-bold" for="milkLiters">Milk In Liters:</label>
+                    <input type="number" class="form-control" id="milkLiters"  required/>
+                </div>
+
+                <!--worker Id-->
+                <div class="mb-3">
+                    <label class="form-label text-dark fw-bold" for="workerId">Worker Id:</label>
+                    <input type="number" class="form-control" id="workerId"  required/>
+                </div>
+
+                
+                <div class="mb-3">
+                    <label class="form-label" for="basic-default-message">Message</label>
+                    <textarea
+                        id="basic-default-message"
+                        class="form-control"
+                        placeholder="The cow produced above average today!"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="milkProduction">Send</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}

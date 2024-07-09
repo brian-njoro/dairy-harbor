@@ -14,7 +14,7 @@ data-template="vertical-menu-template-free">
         name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-        <title>{%block title %}Base{% endblock %}</title>
+        <title>{%block title %}{% endblock %}</title>
 
         <meta name="description" content="" />
 
@@ -95,7 +95,7 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-list">
                                     <a href="/home" class="menu-link text-dark fs-6 fw-bold">
                                         <div data-i18n="without menu">Home</div>
                                     </a>
@@ -107,48 +107,48 @@ data-template="vertical-menu-template-free">
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
                                 <i class="menu-icon tf-icons bx bx-layout text-white"></i>
-                                <div data-i18n="Layouts text-info">Cattle Management</div>
+                                <div data-i18n="Layouts text-info">Management</div>
                             </a>
 
-                            <ul class="menu-sub">
-                                <li class="menu-item">
+                            <ul class="menu-sub ">
+                                <li class="menu-item mb-1 menu-list">
                                     <a href="/cattle" class="menu-link text-dark fs-5">
                                     <div data-i18n="without menu">Cattle List</div>
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a href="javascript:void(0);" class="menu-link menu-toggle fw-bold text-white fs-5">
                                         <i class="menu-icon tf-icons bx bx-layout text-white"></i>
                                         <div data-i18n="Layouts text-info">Procedures</div>
                                     </a>
             
-                                    <ul class="menu-sub">
-                                        <li class="menu-item">
+                                    <ul class="menu-sub menu-list">
+                                        <li class="menu-item mb-1 ">
                                             <a href="/treatment" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="without menu">Treatment</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1 menu-list">
                                             <a href="/vaccination" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Without navbar">Vaccination</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1 menu-list">
                                             <a href="/dehorn" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Container">Dehorning</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1 menu-list">
                                             <a href="/deworm" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Fluid">Deworming</div>
                                             </a>
                                         </li>
 
-                                        <li class="menu-item">
+                                        <li class="menu-item mb-1 menu-list">
                                             <a href="/Artificial" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Blank">Artificial Insemination</div>
                                             </a>
@@ -159,14 +159,14 @@ data-template="vertical-menu-template-free">
                         </li>
             
                         <!-- Workers-->
-                        <li class="menu-item">
+                        <li class="menu-item menu-list">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-store text-white"></i>
+                                <i class="menu-icon tf-icons bx bx-dock-top text-white"></i>
                                 <div data-i18n="Front Pages">Workers</div>
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a
                                     href="/workerL"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -175,7 +175,7 @@ data-template="vertical-menu-template-free">
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item menu-list">
                                     <a
                                     href="/workerP"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -195,21 +195,21 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a
                                     href="/milkD"
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
-                                        <div data-i18n="Landing">Daily production</div>
+                                        <div data-i18n="Landing">Production</div>
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item menu-list">
                                     <a
                                     href="/milkS"
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
-                                        <div data-i18n="Pricing">Milk Distribution and sales</div>
+                                        <div data-i18n="Pricing">Sales</div>
                                     </a>
                                 </li>
                             </ul>
@@ -218,11 +218,11 @@ data-template="vertical-menu-template-free">
                         <!-- Expenses-->
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-store text-white"></i>
+                                <i class="menu-icon tf-icons bx bx-layout text-white"></i>
                                 <div data-i18n="Front Pages">Expenses</div>
                             </a>
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a
                                     href="/feeds"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -231,7 +231,7 @@ data-template="vertical-menu-template-free">
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a
                                     href="/medicine"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -240,7 +240,7 @@ data-template="vertical-menu-template-free">
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item menu-list">
                                     <a
                                     href="/farmM"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -254,12 +254,12 @@ data-template="vertical-menu-template-free">
                         <!-- Reports-->
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-store text-white"></i>
+                                <i class="menu-icon tf-icons bx bx-box text-white"></i>
                                 <div data-i18n="Front Pages">Reports</div>
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a
                                     href="/milkR"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -270,7 +270,7 @@ data-template="vertical-menu-template-free">
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item menu-list">
                                     <a
                                     href="/salesR"
                                     class="menu-link text-dark fs-6 fw-bold"
@@ -289,25 +289,13 @@ data-template="vertical-menu-template-free">
                             </a>
 
                             <ul class="menu-sub">
-                                <li class="menu-item">
-                                    <a href="/login" class="menu-link text-white fs-6 fw-bold" target="_blank">
-                                        <div data-i18n="Basic">Login</div>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
-                                    <a href="/sign-up" class="menu-link text-white fs-6 fw-bold" target="_blank">
-                                        <div data-i18n="Basic">Sign Up</div>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
+                                <li class="menu-item mb-1 menu-list">
                                     <a href="/forgot" class="menu-link text-white fs-6 fw-bold" target="_blank">
-                                        <div data-i18n="Basic">Forgot Password</div>
+                                        <div data-i18n="Basic">Reset Password</div>
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
+                                <li class="menu-item menu-list">
                                     <a href="/index" class="menu-link text-white fs-6 fw-bold" target="_self">
                                         <div data-i18n="Basic">Logout</div>
                                     </a>
@@ -327,106 +315,94 @@ data-template="vertical-menu-template-free">
 
                         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                                <i class="bx bx-menu bx-sm"></i>
+                                <i class="bx bx-menu-alt-left bx-sm"></i>
                             </a>
                         </div>
         
                         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                             <!-- Search -->
-                            <div class="navbar-nav align-items-center">
+                            <div class="navbar-nav align-items-center mt-3">
                                 <div class="nav-item d-flex align-items-center">
-                                <i class="bx bx-search fs-4 lh-0"></i>
-                                <input
-                                    type="text"
-                                    class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                                    placeholder="Search..."
-                                    aria-label="Search..." />
+                                    <div class="input-group">
+                                        <input
+                                            type="text"
+                                            class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                                            placeholder="Search..."
+                                            aria-label="Search..." />
+                                    </div>
                                 </div>
                             </div>
                             <!-- /Search -->
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
-                              <!-- User -->
-                              <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                    <div class="avatar avatar-online">
-                                        <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
-                                    </div>
-                                </a>
+                                <!-- User -->
+                                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                        <div class="avatar avatar-online">
+                                            <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
+                                        </div>
+                                    </a>
 
-                                <ul class="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar avatar-online">
-                                                    <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle" />
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0 me-3">
+                                                    <div class="avatar avatar-online">
+                                                        <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex-grow-1">
+                                                    <span class="fw-medium d-block">John Doe</span>
+                                                    <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
 
-                                            <div class="flex-grow-1">
-                                                <span class="fw-medium d-block">John Doe</span>
-                                                <small class="text-muted">Admin</small>
-                                            </div>
-                                        </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                            <i class="bx bx-user me-2"></i>
+                                            <span class="align-middle">My Profile</span>
+                                            </a>
+                                        </li>
 
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                        <i class="bx bx-user me-2"></i>
-                                        <span class="align-middle">My Profile</span>
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                            <i class="bx bx-cog me-2"></i>
+                                            <span class="align-middle">Settings</span>
+                                            </a>
+                                        </li>                                    
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
 
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                        <i class="bx bx-cog me-2"></i>
-                                        <span class="align-middle">Settings</span>
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a class="dropdown-item" href="javascript:void(0);">
+                                            <i class="bx bx-power-off me-2"></i>
+                                            <span class="align-middle">Log Out</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!--/ User -->
 
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                        <span class="d-flex align-items-center align-middle">
-                                            <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                        </span>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <div class="dropdown-divider"></div>
-                                    </li>
-
-                                    <li>
-                                        <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="bx bx-power-off me-2"></i>
-                                        <span class="align-middle">Log Out</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                              </li>
-                              <!--/ User -->
-
-                              <!-- Place this tag where you want the button to render. -->
-                              <li class="nav-item lh-1 me-3 ms-2">
-                                  <a
-                                      class="github-button"
-                                      href=""
-                                      data-icon="octicon-star"
-                                      data-size="large"
-                                      data-show-count="true"
-                                      aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                                      >Star</a
-                                  >
-                              </li>
+                                <!-- Place this tag where you want the button to render. -->
+                                <li class="nav-item lh-1 me-3 ms-2">
+                                    <a
+                                        class="github-button"
+                                        href="#"
+                                        data-icon="octicon-star"
+                                        data-size="large"
+                                        data-show-count="true"
+                                        aria-label="Star"
+                                        >Messages</a>
+                                </li>
                 
-                                
                             </ul>
                         </div>
                     </nav>
@@ -442,36 +418,30 @@ data-template="vertical-menu-template-free">
                         <!-- / Content -->
                     
                         <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    ©
+                        <footer class="content-footer footer bg-footer-theme" style="border-top: 2px solid rgb(0, 162, 255);">
+                            <div class="container-xxl d-flex flex-wrap justify-content-center py-2 flex-md-row flex-column">
+                                <div class="mb-2 mb-md-0 d-flex align-items-center">
+                                     
+                                    <div class="image-footer-1">
+                                        <div>©</div>
+                                        <img class="logo-1-icon" style="width:50px; height:50px; border:1px solid rgb(0, 162, 255); border-radius:50%; border-bottom:10px solid rgb(0, 162, 255); margin:10px 0; margin-left:-10px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
+                                    </div>
                                     <script>
                                     document.write(new Date().getFullYear());
                                     </script>
                                     , made by
-                                    <a href="#" target="_self" class="footer-link fw-medium text-brown">CHOCS</a>
+                                    <a href="#" target="_self" class="footer-link fw-medium text-brown">DAIRY HARBOR</a>
                                 </div>
                                 
-                                <div class="d-none d-lg-inline-block">
+                                <div class="d-none d-lg-inline-block ms-auto">
                                     <a href="#" class="footer-link me-4" target="_self">License</a>
-                
-                                    <a
-                                    href="#"
-                                    target="_self"
-                                    class="footer-link me-4"
-                                    >Documentation</a
-                                    >
-                
-                                    <a
-                                    href="#"
-                                    target="_self"
-                                    class="footer-link"
-                                    >Support</a
-                                    >
+                                    <a href="#" target="_self" class="footer-link me-4">Documentation</a>
+                                    <a href="#" target="_self" class="footer-link">Support</a>
                                 </div>
                             </div>
                         </footer>
+                        <!-- / Footer -->
+                        
                         <!-- / Footer -->
 
                         <div class="content-backdrop fade"></div>
@@ -526,6 +496,7 @@ data-template="vertical-menu-template-free">
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
         <script src="{{ url_for('static', filename='js/cattle.js') }}"></script>
+        <script src="{{url_for('static',filename='assets/js/scripts.js')}}" async></script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
