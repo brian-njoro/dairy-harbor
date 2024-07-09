@@ -82,6 +82,10 @@ def cattle():
     # You can pass any necessary data to cattle.html here
     return render_template('cattle.html')
 
+#milk Production page
+@app.route('/milkP', methods=['GET'])
+def milk_Production():
+    return render_template('milkP.html')
 
 # POST cattle
 class CattleResource(Resource):
