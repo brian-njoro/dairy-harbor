@@ -82,24 +82,16 @@ def cattle():
     # You can pass any necessary data to cattle.html here
     return render_template('cattle.html')
 
-<<<<<<< HEAD
-#milk Production page
-@app.route('/milkP', methods=['GET'])
-def milk_Production():
-    return render_template('milkP.html')
-=======
 #milk production
 @app.route('/milkP',methods=['GET'])
 def milk_Production():
     return render_template('milkP.html')
 
->>>>>>> 3d626877659ec28bb44aa227ec3ec324aa9037a3
 
 # POST cattle
 class CattleResource(Resource):
     def post(self):
         data = request.get_json()
-        
         photo = data.get('photo')
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')

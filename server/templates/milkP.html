@@ -5,50 +5,91 @@
 {% block content %}
     <div class="container-fluid">
         <div class="col-xl">
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0 text-info fw-bold">MILK PRODUCTION</h5>
-            <small class="text-muted float-end">Daily milk Production</small>
-            </div>
-            <div class="card-body">
-            <form>
-                <!--Serial Number-->
-                <div class="mb-3">
-                    <label class="form-label text-dark fw-bold" for="basic-default-fullname">Serial Number:</label>
-                    <input type="number" class="form-control" id="serialNumber" placeholder="1" required/>
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-info fw-bold">MILK PRODUCTION</h5>
+                    <small class="text-muted float-end">Daily milk Production</small>
                 </div>
 
-                <!--Date-->
-                <div class="mb-3">
-                    <label for="milkProductionDate" class="form-label text-dark fw-bold">Date:</label>
-                    <input type="date" id="milkProductionDate" class="form-control" placeholder="currentDate()" required>
+                <div class="card-body">
+                    <form class='' id="milkProduction">
+                        <!--Date-->
+                        <div class="mb-3">
+                            <label for="date" class="form-label text-dark fw-bold">Date:</label>
+                            <input type="date" id="date" class="form-control" required>
+                        </div>
+
+                        <!--Serial Number-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="serialNumber">Serial Number:</label>
+                            <input type="Number" class="form-control" id="serialNumber" placeholder="1" required/>
+                        </div>
+
+                        <!--Cattle Breed-->
+                        <div class="mb-3">
+                            <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
+                            <select class="form-control" name="breed" id="breed" required>
+                                <option value="Holstein_Friesian">Holstein Friesian</option>
+                                <option value="Jersey">Jersey</option>
+                                <option value="Guernsey">Guernsey</option>
+                                <option value="Brown_Swiss">Brown Swiss</option>
+                                <option value="Ayrshire">Ayrshire</option>
+                                <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                <option value="Red_White_Holstein">Red and White Holstein</option>
+                                <option value="Montbéliarde">Montbéliarde</option>
+                                <option value="Swedish_Red_White">Swedish Red and White</option>
+                            </select>
+                        </div>
+
+                        <!--Milk Liters-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="milkLiters">Milk In Liters:</label>
+                            <input type="number" class="form-control" id="milkLiters"  required/>
+                        </div>
+
+                        <!--worker Id-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="workerId">Worker Number:</label>
+                            <input type="number" class="form-control" id="workerId" placeholder="1" required/>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                    </form>
                 </div>
 
-                <!--Milk Liters-->
-                <div class="mb-3">
-                    <label class="form-label text-dark fw-bold" for="milkLiters">Milk In Liters:</label>
-                    <input type="number" class="form-control" id="milkLiters"  required/>
-                </div>
-
-                <!--worker Id-->
-                <div class="mb-3">
-                    <label class="form-label text-dark fw-bold" for="workerId">Worker Id:</label>
-                    <input type="number" class="form-control" id="workerId"  required/>
-                </div>
-
-                
-                <div class="mb-3">
-                    <label class="form-label" for="basic-default-message">Message</label>
-                    <textarea
-                        id="basic-default-message"
-                        class="form-control"
-                        placeholder="The cow produced above average today!"></textarea>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="milkProduction">Send</button>
-            </form>
             </div>
         </div>
+    </div>
+
+
+    <!-- Cattle List -->
+    <div class="mt-5">
+        <h3 class="text-info fw-bold">Milk Production History</h3>
+        <div class="card border border-info border-3 shadow-lg cattle-table">
+            <!-- Milk Production History -->
+            <div class="card bg-light border-none ">
+                <div class="table-responsive text-nowrap border">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-info fw-bold">Date</th>
+                                <th class="text-info fw-bold">Serial Number</th>
+                                <th class="text-info fw-bold">Name</th>
+                                <th class="text-info fw-bold">Breed</th>
+                                <th class="text-info fw-bold">Litres</th>
+                                <th class="text-info fw-bold">Delete</th>
+                                
+                            </tr>
+                        </thead>
+
+                        <tbody id="milkList">
+                            <!-- Cattle items will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Cattle History-->
         </div>
     </div>
 {% endblock %}

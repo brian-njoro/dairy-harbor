@@ -3,6 +3,7 @@ from .config import db
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(100))
-    unit_price = db.Column(db.Float)
-    quantity_available = db.Column(db.Integer)
+    Litres = db.Column(db.Integer)
+    cattle_Id=db.Column(db.Integer)
+    worker_Id = db.Column(db.Integer)
+    date = db.Column(db.Date)
