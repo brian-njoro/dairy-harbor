@@ -662,6 +662,22 @@ class AdminSignupResource(Resource):
         db.session.commit()
 
         return {"message": "Admin created successfully"}, 201
+    
+    
+# Admin login
+class AdminLoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        admin = Admin.query.filter_by(username=username).first()
+
+        if not admin or not check_password_hash(admin.password, password):
+            return {"message": "Invalid username or password"}, 401
+
+        return {"message": "Login successful"}, 200
+
 
 
 
@@ -692,6 +708,8 @@ api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:trea
 api.add_resource(WorkerSignupResource, '/signup') # signup for workers
 api.add_resource(WorkerLoginResource, '/login') # Log in for workers
 api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
+api.add_resource(AdminSignupResource, '/admin/signup') # Sign up for admin
+api.add_resource(AdminLoginResource, '/admin/login') #log in for admin
 
 
 
