@@ -394,13 +394,12 @@ data-template="vertical-menu-template-free">
                                 <li class="nav-item lh-1 me-3 ms-2">
                                     <a
                                         class="github-button"
-                                        href=""
+                                        href="#"
                                         data-icon="octicon-star"
                                         data-size="large"
                                         data-show-count="true"
-                                        aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                                        >Star</a
-                                    >
+                                        aria-label="Star"
+                                        >Messages</a>
                                 </li>
                 
                             </ul>
@@ -418,36 +417,30 @@ data-template="vertical-menu-template-free">
                         <!-- / Content -->
                     
                         <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme">
-                            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    ©
+                        <footer class="content-footer footer bg-footer-theme" style="border-top: 2px solid rgb(0, 162, 255);">
+                            <div class="container-xxl d-flex flex-wrap justify-content-center py-2 flex-md-row flex-column">
+                                <div class="mb-2 mb-md-0 d-flex align-items-center">
+                                     
+                                    <div class="image-footer-1">
+                                        <div>©</div>
+                                        <img class="logo-1-icon" style="width:50px; height:50px; border:1px solid rgb(0, 162, 255); border-radius:50%; border-bottom:10px solid rgb(0, 162, 255); margin:10px 0; margin-left:-10px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
+                                    </div>
                                     <script>
                                     document.write(new Date().getFullYear());
                                     </script>
                                     , made by
-                                    <a href="#" target="_self" class="footer-link fw-medium text-brown">CHOCS</a>
+                                    <a href="#" target="_self" class="footer-link fw-medium text-brown">DAIRY HARBOR</a>
                                 </div>
                                 
-                                <div class="d-none d-lg-inline-block">
+                                <div class="d-none d-lg-inline-block ms-auto">
                                     <a href="#" class="footer-link me-4" target="_self">License</a>
-                
-                                    <a
-                                    href="#"
-                                    target="_self"
-                                    class="footer-link me-4"
-                                    >Documentation</a
-                                    >
-                
-                                    <a
-                                    href="#"
-                                    target="_self"
-                                    class="footer-link"
-                                    >Support</a
-                                    >
+                                    <a href="#" target="_self" class="footer-link me-4">Documentation</a>
+                                    <a href="#" target="_self" class="footer-link">Support</a>
                                 </div>
                             </div>
                         </footer>
+                        <!-- / Footer -->
+                        
                         <!-- / Footer -->
 
                         <div class="content-backdrop fade"></div>

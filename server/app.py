@@ -82,10 +82,18 @@ def cattle():
     # You can pass any necessary data to cattle.html here
     return render_template('cattle.html')
 
+<<<<<<< HEAD
 #milk Production page
 @app.route('/milkP', methods=['GET'])
 def milk_Production():
     return render_template('milkP.html')
+=======
+#milk production
+@app.route('/milkP',methods=['GET'])
+def milk_Production():
+    return render_template('milkP.html')
+
+>>>>>>> 3d626877659ec28bb44aa227ec3ec324aa9037a3
 
 # POST cattle
 class CattleResource(Resource):
@@ -642,6 +650,48 @@ class WorkerLogoutResource(Resource):
 
 
 
+# Admin and farm registration routes
+
+# admin signup
+class AdminSignupResource(Resource):
+    def post(self):
+        data = request.get_json()
+        name = data.get('name')
+        farm_name = data.get('farm_name')
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return {"message": "Username and password are required"}, 400
+
+        if Admin.query.filter_by(username=username).first():
+            return {"message": "Username already exists"}, 400
+
+        hashed_password = generate_password_hash(password)
+        new_admin = Admin(name=name, farm_name=farm_name, username=username, password=hashed_password)
+
+        db.session.add(new_admin)
+        db.session.commit()
+
+        return {"message": "Admin created successfully"}, 201
+    
+    
+# Admin login
+class AdminLoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        admin = Admin.query.filter_by(username=username).first()
+
+        if not admin or not check_password_hash(admin.password, password):
+            return {"message": "Invalid username or password"}, 401
+
+        return {"message": "Login successful"}, 200
+
+
+
 
 ## RESOURCES ##
 
@@ -670,6 +720,8 @@ api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:trea
 api.add_resource(WorkerSignupResource, '/signup') # signup for workers
 api.add_resource(WorkerLoginResource, '/login') # Log in for workers
 api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
+api.add_resource(AdminSignupResource, '/admin/signup') # Sign up for admin
+api.add_resource(AdminLoginResource, '/admin/login') #log in for admin
 
 
 
