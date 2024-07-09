@@ -638,6 +638,32 @@ class WorkerLogoutResource(Resource):
 
 
 
+# Admin and farm registration routes
+
+# admin signup
+class AdminSignupResource(Resource):
+    def post(self):
+        data = request.get_json()
+        name = data.get('name')
+        farm_name = data.get('farm_name')
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return {"message": "Username and password are required"}, 400
+
+        if Admin.query.filter_by(username=username).first():
+            return {"message": "Username already exists"}, 400
+
+        hashed_password = generate_password_hash(password)
+        new_admin = Admin(name=name, farm_name=farm_name, username=username, password=hashed_password)
+
+        db.session.add(new_admin)
+        db.session.commit()
+
+        return {"message": "Admin created successfully"}, 201
+
+
 
 ## RESOURCES ##
 
