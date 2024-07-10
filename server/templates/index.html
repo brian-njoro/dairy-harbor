@@ -60,18 +60,7 @@
                     <a href="#Contacts" class="nav-item nav-link" style="color:rgb(23, 180, 233);">CONTACTS</a>
                 </div>
             </div>
-            <form class="d-flex authButtons d-sm-none d-md-block" role="search">
-                <a href="/sign-up" target="_self">
-                    <button type="button" class="sign-up">
-                        Sign Up
-                    </button>
-                </a>
-                <a href="/login" target="_self">
-                    <button type="button" class="login-1">
-                        Log In
-                    </button>
-                </a>
-            </form>
+            
         </nav>   
         <!-- Navbar End -->
 
@@ -85,7 +74,7 @@
                     </div>
 
                     <div class="carousel-item active image">
-                        <img class="w-100 img" style="filter:brightness(60%)" src="{{url_for('static',filename='auth/img/carousel-12.png')}}" alt="Image">
+                        <img class="w-100 img" style="filter:brightness(70%)" src="{{url_for('static',filename='auth/img/carousel-12.png')}}" alt="Image">
 
                         <div class="carousel-caption">
 
@@ -94,8 +83,8 @@
                                 <div class="text-start justify-content-center ms-5">
                                     <h1 class="text-white mb-4 animated slideInRight delay-10s fw-bold fs-1">What's the secret to success? <p> </p> Monitor, manage, and master.</h1>
                                     <p class="justify-content-center text-white mb-5 animated slideInRight fs-5" style="font-family:Arial, San Serif;">
-                                        <p>Together Strong</p>
-                                        <h2 class="text-white mb-5 animated slideInRight">Daily we Dairy</h2>
+                                        <p> </p>
+                                        <h1 class="text-white mb-5 animated slideInRight">Daily We Dairy</h1>
                                     </p>
                                 </div>
 
@@ -131,6 +120,21 @@
                                         <h4 class="display-1 text-white mb-5 animated slideInRight">Walking the milky way.</h4>
 
                                     </div>
+                                </div>
+                                <div class="text-center">
+                                    <form class="d-flex authButtons" role="search">
+                                        <a href="sign-up" target="_self">
+                                            <button type="button" class="sighup animated slideInLeft ms-3">
+                                                Sign Up
+                                            </button>
+                                        </a>
+
+                                        <a href="login" target="_self">
+                                            <button type="button" class="login ms-3 animated slideInRight">
+                                                Log In
+                                                </button>
+                                        </a>
+                                    </form>
                                 </div>
                             </div>
                         </div>
