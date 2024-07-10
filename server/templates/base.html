@@ -54,7 +54,6 @@ data-template="vertical-menu-template-free">
         <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
         <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
         <script src="{{url_for('static',filename='assets/js/config.js')}}"></script>
-        <script src="{{url_for('static',filename='assets/js/scripts.js')}}" async></script>
 
     </head>
 
@@ -124,30 +123,35 @@ data-template="vertical-menu-template-free">
                                     </a>
             
                                     <ul class="menu-sub menu-list">
+                                        <!--Treatment-->
                                         <li class="menu-item mb-1 ">
                                             <a href="/treatment" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="without menu">Treatment</div>
                                             </a>
                                         </li>
 
+                                        <!--Vaccination-->
                                         <li class="menu-item mb-1 menu-list">
                                             <a href="/vaccination" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Without navbar">Vaccination</div>
                                             </a>
                                         </li>
 
+                                        <!--dehorning-->
                                         <li class="menu-item mb-1 menu-list">
                                             <a href="/dehorn" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Container">Dehorning</div>
                                             </a>
                                         </li>
 
+                                        <!--Deworming-->
                                         <li class="menu-item mb-1 menu-list">
                                             <a href="/deworm" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Fluid">Deworming</div>
                                             </a>
                                         </li>
 
+                                        <!--Artificial Insemination-->
                                         <li class="menu-item mb-1 menu-list">
                                             <a href="/Artificial" class="menu-link text-dark fs-6 fw-bold">
                                                 <div data-i18n="Blank">Artificial Insemination</div>
@@ -206,7 +210,7 @@ data-template="vertical-menu-template-free">
 
                                 <li class="menu-item menu-list">
                                     <a
-                                    href="/milkS"
+                                    href="/sales"
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
                                         <div data-i18n="Pricing">Sales</div>
@@ -242,7 +246,7 @@ data-template="vertical-menu-template-free">
 
                                 <li class="menu-item menu-list">
                                     <a
-                                    href="/farmM"
+                                    href="/machinery"
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
                                         <div data-i18n="Pricing">Farm Machinery</div>
@@ -455,6 +459,12 @@ data-template="vertical-menu-template-free">
         </div>
         <!-- / Layout wrapper -->
 
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-lg-square rounded-circle back-to-top" style="background-color:rgb(3, 38, 49)">
+            <i class="bi bi-arrow-up">
+            </i>
+        </a>
+
 
         
         <!-- Core JS -->
@@ -498,12 +508,8 @@ data-template="vertical-menu-template-free">
         <script src="{{url_for('static',filename='assets/js/scripts.js')}}" async></script>
         <script src="{{ url_for('static', filename='js/milkProduction.js') }}"></script>
 
-
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
         
-        
     </body>
-
-
 </html>
