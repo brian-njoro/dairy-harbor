@@ -40,6 +40,8 @@
     <link rel="stylesheet" href="{{url_for('static',filename='auth/static/assets/vendor/css/pages/page-auth.css')}}"/>
 
     <!-- Helpers -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="{{url_for('static',filename='auth/static/assets/vendor/js/helpers.js')}}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
@@ -149,57 +151,53 @@
               <p class="mb-4 text-dark">Please sign-in to your account</p>
 
               <!--Form-->
-              <form id="formAuthentication" class="mb-3" action="index.html">
-
-                <!--Email or username-->
+              <form id="formAuthentication" class="mb-3">
+                <!-- Email or Username -->
                 <div class="mb-3">
-                  <label for="email" class="form-label text-info">Email or Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    name="email-username"
-                    placeholder="Enter your email or username"
-                    autofocus />
-                </div>
-                <!--Email or Username end--> 
-
-                <!--Password-->
-                <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label text-info" for="password">Password</label>
-                    <a href="/forgot" target="_self">
-                      <small>Forgot Password?</small>
-                    </a>
-                  </div>
-                  <div class="input-group input-group-merge">
+                    <label for="email-username" class="form-label text-info">Email or Username</label>
                     <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
+                        type="text"
+                        class="form-control"
+                        id="email-username"
+                        name="email-username"
+                        placeholder="Enter your email or username"
+                        autofocus>
                 </div>
-                <!--password end-->
-
+                <!-- Email or Username end --> 
+        
+                <!-- Password -->
+                <div class="mb-3 form-password-toggle">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label text-info" for="password">Password</label>
+                        <a href="/forgot" target="_self">
+                            <small>Forgot Password?</small>
+                        </a>
+                    </div>
+                    <div class="input-group input-group-merge">
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            name="password"
+                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                            aria-describedby="password">
+                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    </div>
+                </div>
+                <!-- Password end -->
+        
                 <div class="mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="remember-me" />
-                    <label class="form-check-label text-dark" for="remember-me"> Remember Me </label>
-                  </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="remember-me">
+                        <label class="form-check-label text-dark" for="remember-me"> Remember Me </label>
+                    </div>
                 </div>
-
-                
+        
                 <div class="mb-3">
-                  <a href="/home">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
-                  </a>
+                    <button class="btn btn-primary d-grid w-100" type="button" id="loginButton">Sign in</button>
                 </div>
-              </form>
-              <!--Form end-->
+            </form>
+            <!-- Form end -->
 
               <p class="text-center text-dark">
                 <span>New on our platform?</span>
@@ -214,7 +212,44 @@
         </div>
       </div>
     </div>
-    <!-- / Content -->
+
+    <script>
+      $(document).ready(function() {
+          $('#loginButton').on('click', function(event) {
+              event.preventDefault();
+
+              var emailUsername = $('#email-username').val();
+              var password = $('#password').val();
+
+              if (!emailUsername || !password) {
+                  alert('Email/Username and password are required.');
+                  return;
+              }
+
+              var formData = {
+                  username: emailUsername,
+                  password: password
+              };
+
+              $.ajax({
+                  url: '/admin/login',
+                  type: 'POST',
+                  contentType: 'application/json',
+                  data: JSON.stringify(formData),
+                  success: function(response) {
+                      if (response.redirect) {
+                          window.location.href = response.redirect;
+                      } else {
+                          alert(response.message);
+                      }
+                  },
+                  error: function(xhr) {
+                      alert('Error: ' + xhr.responseJSON.message);
+                  }
+              });
+          });
+      });
+  </script>
 
 
     <!-- build:js assets/vendor/js/core.js -->

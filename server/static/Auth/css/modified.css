@@ -184,8 +184,8 @@ p{
     background-color: transparent;
     border-radius: 10px;
 }
-.menu-item .menu-list:hover{
-    background-color: #898d92; /* Change to your desired color */
-    color: #fff; /* Change the text color if needed */
+/* .menu-item .menu-list:hover{
+    background-color: #898d92; 
+    color: #fff; 
     border-radius: 10px;
-}
+} */

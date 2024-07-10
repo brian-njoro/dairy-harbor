@@ -42,6 +42,7 @@
     <link rel="stylesheet" href="{{url_for('static',filename='auth/static/assets/vendor/css/pages/page-auth.css')}}"/>
 
     <!-- Helpers -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{url_for('static',filename='auth/static/assets/vendor/js/helpers.js')}}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
@@ -149,94 +150,58 @@
               <h4 class="mb-2">Adventure starts here 🚀</h4>
               <p class="mb-4">Make your dairy management easy and fun!</p>
 
-              <!--Form-->
-              <form id="formAuthentication" class="mb-3" action="index.html">
-
-                <!--user name-->
-                <div class="mb-3"> 
-                  <label for="username" class="form-label text-info">Username</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="Enter your username"
-                    autofocus />
-                </div>
-                <!--username end-->
-
-                <!--Farm name-->
+              <form id="formAuthentication" class="mb-3">
+                <!-- Name -->
                 <div class="mb-3">
-                  <label for="email" class="form-label text-info">Farm name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="farmName"
-                    name="farm-Name"
-                    placeholder="Enter your Farm Name"
-                    autofocus />
+                    <label for="name" class="form-label text-info">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" autofocus>
                 </div>
-                <!--Farm end-->
-
-                <!--Email-->
+        
+                <!-- Farm name -->
                 <div class="mb-3">
-                  <label for="email" class="form-label text-info">Email</label>
-                  <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email" />
+                    <label for="farmName" class="form-label text-info">Farm name</label>
+                    <input type="text" class="form-control" id="farmName" name="farmName" placeholder="Enter your Farm Name">
                 </div>
-                <!--Email end-->
-
-                <!--Password-->
+        
+                <!-- Username -->
+                <div class="mb-3">
+                    <label for="username" class="form-label text-info">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
+                </div>
+        
+                <!-- Password -->
                 <div class="mb-3 form-password-toggle">
-                  <label class="form-label text-info" for="password">Password</label>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
+                    <label class="form-label text-info" for="password">Password</label>
+                    <div class="input-group input-group-merge">
+                        <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password">
+                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    </div>
                 </div>
-                <!--password end-->
-
-                <!--Confirm Password-->
+        
+                <!-- Confirm Password -->
                 <div class="mb-3 form-password-toggle">
-                  <label class="form-label text-info" for="password">Confirm Password</label>
-                  <div class="input-group input-group-merge">
-                    <input
-                      type="password"
-                      id="password"
-                      class="form-control"
-                      name="password"
-                      placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                      aria-describedby="password" />
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
+                    <label class="form-label text-info" for="confirmPassword">Confirm Password</label>
+                    <div class="input-group input-group-merge">
+                        <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password">
+                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    </div>
                 </div>
-                <!--Confirm password end-->
-
-                <!--Agree-->
+        
+                <!-- Agree -->
                 <div class="mb-3">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" />
-                    <label class="form-check-label" for="terms-conditions">
-                      I agree to
-                      <a href="javascript:void(0);">privacy policy & terms</a>
-                    </label>
-                  </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
+                        <label class="form-check-label" for="terms-conditions">
+                            I agree to
+                            <a href="javascript:void(0);">privacy policy & terms</a>
+                        </label>
+                    </div>
                 </div>
-                <!--Agree end-->
-
-                <!--signup button-->
-                <a href="/home">
-                  <button class="btn btn-primary d-grid w-100">Sign up</button>
-                </a>
-                <!--signup button end-->
-
-              </form>
-              <!--form end-->
+        
+                <!-- Signup button -->
+                <button type="button" class="btn btn-primary d-grid w-100" id="signupButton">Sign up</button>
+            </form>
+        
 
               <p class="text-center">
                 <span>Already have an account?</span>
@@ -257,7 +222,57 @@
     
 
     <!-- Core JS -->
+    <script>
+      $(document).ready(function() {
+          $('#signupButton').on('click', function(event) {
+              event.preventDefault();
+
+              // Validate form inputs
+              var name = $('#name').val();
+              var farmName = $('#farmName').val();
+              var username = $('#username').val();
+              var password = $('#password').val();
+              var confirmPassword = $('#confirmPassword').val();
+              var terms = $('#terms-conditions').is(':checked');
+
+              if (!name || !farmName || !username || !password || !confirmPassword || !terms) {
+                  alert('All fields are required and you must agree to the terms.');
+                  return;
+              }
+
+              if (password !== confirmPassword) {
+                  alert('Passwords do not match.');
+                  return;
+              }
+
+              var formData = {
+                  name: name,
+                  farm_name: farmName,
+                  username: username,
+                  password: password
+              };
+
+              $.ajax({
+                  url: '/admin/signup',
+                  type: 'POST',
+                  contentType: 'application/json',
+                  data: JSON.stringify(formData),
+                  success: function(response) {
+                      if (response.redirect) {
+                          window.location.href = response.redirect;
+                      } else {
+                          alert(response.message);
+                      }
+                  },
+                  error: function(xhr) {
+                      alert('Error: ' + xhr.responseJSON.message);
+                  }
+              });
+          });
+      });
+  </script>
     <!-- build:js assets/vendor/js/core.js -->
+
 
     <script src="{{ url_for('static', filename='auth/static/assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ url_for('static', filename='auth/static/assets/vendor/libs/popper/popper.js') }}"></script>
