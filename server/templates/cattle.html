@@ -606,225 +606,39 @@
         </div>
         <!--/ Modal for Cattle insemination -->        
 
-
         <div class="card text-center bg-transparent border border-info">
-            <div class="card-header bg-info">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link bg-dark text-info" aria-current="true" href="#cattle-list">Cattle</a>
-                        
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link bg-dark text-info" href="#vaccination-list">Vaccination</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link bg-dark text-info" aria-disabled="true" href="#treatment-list">Treatment</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link bg-dark text-info" aria-disabled="true" href="#dehorn-list">Dehorn</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link bg-dark text-info" aria-disabled="true" href="#deworm-list">Deworm</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link bg-dark text-info" aria-disabled="true" href="#insemination-list">Artficial Insemination</a>
-                    </li>
-                </ul>
-            </div>
-
             <div class="card-body">
-                
-                <div class="tab-content" id='cattle-list'>
-                    <!-- Cattle List -->
-                    <div class="mt-5" id='cattle-List'>
-                        <h3 class="fs-3 text-info fw-bold">Cattle List</h3>
-                        <div class="card border border-info border-3 shadow-lg cattle-table">
-                            <!-- Cattle History -->
-                            <div class="card bg-light border-none ">
-                                <div class="table-responsive text-nowrap border">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-info fw-bold">#</th>
-                                                <th class="text-info fw-bold">Serial Number</th>
-                                                <th class="text-info fw-bold">Name</th>
-                                                <th class="text-info fw-bold">Breed</th>
-                                                <th class="text-info fw-bold">Date Of Birth</th>
-                                                <th class="text-info fw-bold">Delete</th>
-                                                
-                                            </tr>
-                                        </thead>
 
-                                        <tbody id="cattleList">
-                                            <!-- Cattle items will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                <!-- Cattle List -->
+                <div class="mt-5" id='cattle-List'>
+                    <h3 class="fs-3 text-info fw-bold">Cattle List</h3>
+                    <div class="card border border-info border-3 shadow-lg cattle-table">
+                        <!-- Cattle History -->
+                        <div class="card bg-light border-none ">
+                            <div class="table-responsive text-nowrap border">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-info fw-bold">#</th>
+                                            <th class="text-info fw-bold">Serial Number</th>
+                                            <th class="text-info fw-bold">Name</th>
+                                            <th class="text-info fw-bold">Breed</th>
+                                            <th class="text-info fw-bold">Date Of Birth</th>
+                                            <th class="text-info fw-bold">Delete</th>
+                                            
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="cattleList">
+                                        <!-- Cattle items will be dynamically added here -->
+                                    </tbody>
+                                </table>
                             </div>
-                            <!--Cattle History-->
                         </div>
+                        <!--Cattle History-->
                     </div>
                 </div>
-
-                <div class="tab-content" id='vaccination-list'>
-                    <!-- vaccination List -->
-                    <div class="mt-5" id='vaccination-List'>
-                        <h3 class="fs-3 text-info fw-bold">Vaccination List</h3>
-                        <div class="card border border-info border-3 shadow-lg cattle-table">
-                            <!-- Cattle History -->
-                            <div class="card bg-light border-none ">
-                                <div class="table-responsive text-nowrap border">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-info fw-bold">Date</th>
-                                                <th class="text-info fw-bold">Serial Number</th>
-                                                <th class="text-info fw-bold">Vet Name</th>
-                                                <th class="text-info fw-bold">Method</th>
-                                                <th class="text-info fw-bold">Drug</th>
-                                                <th class="text-info fw-bold">Disease</th>
-                                                
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="vaccinationList">
-                                            <!-- Cattle items will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--Cattle History-->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id='treatment-list'>
-                    <!-- Treatment List -->
-                    <div class="mt-5" id='treatment-List'>
-                        <h3 class="fs-3 text-info fw-bold">Treatment List</h3>
-                        <div class="card border border-info border-3 shadow-lg cattle-table">
-                            <!-- Treatment History -->
-                            <div class="card bg-light border-none ">
-                                <div class="table-responsive text-nowrap border">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-info fw-bold">Date</th>
-                                                <th class="text-info fw-bold">Serial Number</th>
-                                                <th class="text-info fw-bold">Vet Name</th>
-                                                <th class="text-info fw-bold">Method</th>
-                                                <th class="text-info fw-bold">Medicine</th>
-                                                <th class="text-info fw-bold">Disease</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="treatmentList">
-                                            <!-- Treatment items will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--Treatment History-->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id='dehorn-list'>
-                    <!-- Dehorn List -->
-                    <div class="mt-5" id='dehorn-List'>
-                        <h3 class="fs-3 text-info fw-bold">Dehorn List</h3>
-                        <div class="card border border-info border-3 shadow-lg cattle-table">
-                            <!-- Dehorn History -->
-                            <div class="card bg-light border-none ">
-                                <div class="table-responsive text-nowrap border">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-info fw-bold">Dehorn Id</th>
-                                                <th class="text-info fw-bold">Date</th>
-                                                <th class="text-info fw-bold">Serial Number</th>
-                                                <th class="text-info fw-bold">Vet Name</th>
-                                                <th class="text-info fw-bold">Method</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="dehornList">
-                                            <!-- dehorn will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--Dehorn History-->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id='deworm-list'>
-                    <!-- Deworm List -->
-                    <div class="mt-5" id='deworm-List'>
-                        <h3 class="fs-3 text-info fw-bold">Deworm List</h3>
-                        <div class="card border border-info border-3 shadow-lg cattle-table">
-                            <!-- Deworm History -->
-                            <div class="card bg-light border-none ">
-                                <div class="table-responsive text-nowrap border">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-info fw-bold">Date</th>
-                                                <th class="text-info fw-bold">Serial Number</th>
-                                                <th class="text-info fw-bold">Vet Name</th>
-                                                <th class="text-info fw-bold">Method</th>
-                                                <th class="text-info fw-bold">Disease</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="dewormList">
-                                            <!-- Deworm items will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--Deworm History-->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-content" id='insemination-list'>
-                    <!-- Artificial Insemination List -->
-                    <div class="mt-5" id='insemination-List'>
-                        <h3 class="fs-3 text-info fw-bold">Vaccination List</h3>
-                        <div class="card border border-info border-3 shadow-lg cattle-table">
-                            <!-- Artificial Insemination History -->
-                            <div class="card bg-light border-none ">
-                                <div class="table-responsive text-nowrap border">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-info fw-bold">Date</th>
-                                                <th class="text-info fw-bold">Serial Number</th>
-                                                <th class="text-info fw-bold">Vet Name</th>
-                                                <th class="text-info fw-bold">Father Breed</th>
-                                                <th class="text-info fw-bold">Mother Breed</th>
-                                                <th class="text-info fw-bold">Calf Breed</th>
-                                                
-                                            </tr>
-                                        </thead>
-
-                                        <tbody id="inseminationList">
-                                            <!-- Artificial Insemination items will be dynamically added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <!--Artificial Insemination History-->
-                        </div>
-                    </div>
-                </div>
+                <!-- / Cattle List -->
 
             </div>
         </div>

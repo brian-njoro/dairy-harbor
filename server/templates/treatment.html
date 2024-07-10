@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Cattle Treatment{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" id='treatment-list'>
+        <!--Treatment Card-->
+        <div class="col mb-3">
+            <div class="card text-white mb-3">
+                <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/treatment1.jpg')}}" alt="Image">
+
+                <div class="card-img-overlay">
+                    <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">TREATMENT</h3>
+                    <p class="card-text text-white">Ensure timely and effective care for your livestock by managing and tracking cattle treatments with our dedicated treatment management feature.</p>
+
+                    <!-- Button to add new cattle -->
+                    <div class="mb-1">
+                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleTreatment" id='cattleRegistration'>
+                            Treatment
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal for Cattle Treatment -->
+        <div class="modal fade" id="modalCattleTreatment" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border border-3 border-info">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-info fw-bold">Cattle Treatment</h5>
+                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form id="cattleForm">
+                            <!--Vet Name-->
+                            <div class="mb-3">
+                                <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName" required>
+                            </div>
+
+                            <!--Date Of Treatment -->
+                            <div class="mb-3">
+                                <label for="dateOfTreatment" class="form-label text-dark fw-bold">Date Of Treatment:</label>
+                                <input type="date" id="dateOfTreatment" class="form-control" required>
+                            </div>
+
+                            <!--Serial Number -->
+                            <div class="mb-3">
+                                <label for="serial Number" class="form-label text-dark fw-bold">Cattle Serial Number:</label>
+                                <input type="Number" id="serialNumber" class="form-control" required>
+                            </div>
+
+                            <!--Treatment Method-->
+                            <div class="mb-3">
+                                <label for="methodBred" class="form-label text-dark fw-bold">Method Of Treatment:</label>
+                                <select class="form-control" name="treatmentMethod" id="treatmentMethod" required>
+                                    <option value="Antibiotic">Antibiotic Therapy</option>
+                                    <option value="Antiparasitic">Antiparasitic Treatments</option>
+                                    <option value="Nutritional">Nutritional Management</option>
+                                    <option value="Surgical">Surgical Interventions</option>
+                                    <option value="Foot">Foot Care</option>
+                                    <option value="Therapeutic">Therapeutic Management</option>
+                                    <option value="Supportive">Supportive Care</option>
+                                    <option value="Probiotic">Probiotic and Prebiotic Therapy</option>
+                                    <option value="Herbal">Herbal and Homeopathic Treatments</option>
+                                    <option value="Isolation">Isolation and Quarantine</option>
+                                </select>
+                            </div>
+
+                            <!--Drug Name-->
+                            <div class="mb-3">
+                                <label for="drugName" class="form-label text-dark fw-bold">Name Of Drug:</label>
+                                <input class="form-control" type="text" name='drugName' id="drugName" required>
+                            </div>
+
+                            <!--Disease Name-->
+                            <div class="mb-3">
+                                <label for="diseaseName" class="form-label text-dark fw-bold">Name Of Disease:</label>
+                                <input class="form-control" type="text" name='diseaseName' id="diseaseName" required>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--/ Modal for Cattle Treatment -->
+        <!--/ Treatment -->
+
+
+        <!-- Treatment List -->
+        <div class="mt-5" id='treatment-List'>
+            <h3 class="fs-3 text-info fw-bold">Treatment List</h3>
+            <div class="card border border-info border-3 shadow-lg cattle-table">
+                <!-- Treatment History -->
+                <div class="card bg-light border-none ">
+                    <div class="table-responsive text-nowrap border">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-info fw-bold">Date</th>
+                                    <th class="text-info fw-bold">Serial Number</th>
+                                    <th class="text-info fw-bold">Vet Name</th>
+                                    <th class="text-info fw-bold">Method</th>
+                                    <th class="text-info fw-bold">Medicine</th>
+                                    <th class="text-info fw-bold">Disease</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="treatmentList">
+                                <!-- Treatment items will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Treatment History-->
+            </div>
+        </div>
+    </div>
+{% endblock %}
