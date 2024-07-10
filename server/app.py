@@ -64,6 +64,22 @@ def login():
 def forgot():
     return render_template('forgot.html')
 
+##Inventory
+#feeds page
+@app.route('/feeds', methods=['GET'])
+def feeds():
+    return render_template('feeds.html')
+
+#medicine page
+@app.route('/medicine', methods=['GET'])
+def medicine():
+    return render_template('medicine.html')
+
+#machinery page
+@app.route('/machinery', methods=['GET'])
+def machinery():
+    return render_template('machinery.html')
+
 
 #worker Profile
 @app.route('/workerP',methods=['GET'])
