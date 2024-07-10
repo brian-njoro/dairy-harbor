@@ -427,18 +427,21 @@ data-template="vertical-menu-template-free">
                         <!-- / Content -->
                     
                         <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme" style="border-top: 2px solid rgb(0, 162, 255);">
+                        <footer class="content-footer footer text-info bg-footer-theme bg-secondary" style="border-top: 2px solid rgb(0, 162, 255);">
                             <div class="container-xxl d-flex flex-wrap justify-content-center py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0 d-flex align-items-center">
+                                <div class="mb-2 mb-md-0 d-flex align-items-center text-center">
 
                                     <div class="image-footer-1">
-                                        <div>©</div>
                                         <img class="logo-1-icon" style="width:50px; height:50px; border:1px solid rgb(0, 162, 255); border-radius:50%; border-bottom:10px solid rgb(0, 162, 255); margin:10px 0; margin-left:-10px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
                                     </div>
+                                    &nbsp;
+
+                                    <div class="col">©</div>
+                                    &nbsp;
+
                                     <script>
-                                    document.write(new Date().getFullYear());
-                                    </script>
-                                    , made by
+                                        document.write(new Date().getFullYear());
+                                    </script>, made by
                                     <a href="#" target="_self" class="footer-link fw-medium text-brown">&nbsp;DAIRY HARBOR</a>
                                 </div>
                                 

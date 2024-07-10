@@ -35,19 +35,19 @@ api = Api(app)
 db.init_app(app)
 
 
-# Index route
-@app.route('/index', methods=['GET'])
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
-
+#Home Page
 
 ## Home route
 @app.route('/home', methods=['GET'])
 def home():
     return render_template('home.html')
 
-
+#Index Page
+@app.route('/index', methods=['GET'])
+# Index route
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
 
 #sign-up page
 @app.route('/sign-up', methods=['GET'])
@@ -58,12 +58,6 @@ def sign_up():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
-
-
-@app.route('/worker_dashboard')
-def worker_dashboard():
-    # You can pass any necessary data to worker_dashboard.html here
-    return render_template('worker_dashboard.html')
 
 #forgot page
 @app.route('/forgot', methods=['GET'])
@@ -88,37 +82,12 @@ def cattle():
     # You can pass any necessary data to cattle.html here
     return render_template('cattle.html')
 
-#milk production
-@app.route('/milkP',methods=['GET'])
-def milk_Production():
-    return render_template('milkP.html')
-
-#milk sales
-@app.route('/sales',methods=['GET'])
-def sales():
-    return render_template('sales.html')
-
-#feeds sales
-@app.route('/feeds',methods=['GET'])
-def feeds():
-    return render_template('feeds.html')
-
-#medicine sales
-@app.route('/medicine',methods=['GET'])
-def medicine():
-    return render_template('medicine.html')
-
-#machinery sales
-@app.route('/machinery',methods=['GET'])
-def machinery():
-    return render_template('machinery.html')
-
-
 
 # POST cattle
 class CattleResource(Resource):
     def post(self):
         data = request.get_json()
+        
         photo = data.get('photo')
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')
@@ -718,7 +687,7 @@ class AdminSignupResource(Resource):
 
         return {"message": "Admin created successfully", "redirect": url_for('home')}, 201
     
-
+    
 # Admin login
 class AdminLoginResource(Resource):
     def post(self):
@@ -731,8 +700,50 @@ class AdminLoginResource(Resource):
         if not admin or not check_password_hash(admin.password, password):
             return {"message": "Invalid username or password"}, 401
 
-        return {"message": "Login successful", "redirect": url_for('home')}, 200
+        return {"message": "Login successfull", "redirect": url_for('home')}, 200
 
+#
+#   RESOURCES TO VIEW AND DELETE ADMIN
+#
+#
+class AdminViewResource(Resource):
+    def get(self, admin_id):
+        admin = Admin.query.get(admin_id)
+        if not admin:
+            return {"message": "Admin not found"}, 404
+
+        admin_data = {
+            "id": admin.id,
+            "name": admin.name,
+            "farm_name": admin.farm_name,
+            "username": admin.username
+        }
+        return jsonify(admin_data)
+
+class AdminDeleteResource(Resource):
+    def delete(self, admin_id):
+        admin = Admin.query.get(admin_id)
+        if not admin:
+            return {"message": "Admin not found"}, 404
+
+        db.session.delete(admin)
+        db.session.commit()
+        return {"message": "Admin deleted successfully"}, 200    
+
+class AdminListResource(Resource):
+    def get(self):
+        admins = Admin.query.all()
+        admin_list = [
+            {
+                "id": admin.id,
+                "name": admin.name,
+                "farm_name": admin.farm_name,
+                "username": admin.username
+            }
+            for admin in admins
+        ]
+        return jsonify(admin_list)
+    
 
 
 
@@ -763,8 +774,13 @@ api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:trea
 api.add_resource(WorkerSignupResource, '/signup') # signup for workers
 api.add_resource(WorkerLoginResource, '/login') # Log in for workers
 api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
+
+###  ADMIN (FARM MANAGER)
 api.add_resource(AdminSignupResource, '/admin/signup') # Sign up for admin
 api.add_resource(AdminLoginResource, '/admin/login') #log in for admin
+api.add_resource(AdminViewResource, '/admin/view/<int:admin_id>')  # View admin by ID
+api.add_resource(AdminDeleteResource, '/admin/delete/<int:admin_id>')  # Delete admin by ID
+api.add_resource(AdminListResource, '/admin/list')  # View all admins
 
 
 
