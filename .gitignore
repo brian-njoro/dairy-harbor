@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 __pycache__/ add .gitignore commit -m "Ignore __pycache__directory"
-=======
-__pycache__/  add .gitignore commit -m "Ignore __pycache__ directory"
->>>>>>> 3d626877659ec28bb44aa227ec3ec324aa9037a3
