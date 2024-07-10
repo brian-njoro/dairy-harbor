@@ -93,6 +93,27 @@ def cattle():
 def milk_Production():
     return render_template('milkP.html')
 
+#milk sales
+@app.route('/sales',methods=['GET'])
+def sales():
+    return render_template('sales.html')
+
+#feeds sales
+@app.route('/feeds',methods=['GET'])
+def feeds():
+    return render_template('feeds.html')
+
+#medicine sales
+@app.route('/medicine',methods=['GET'])
+def medicine():
+    return render_template('medicine.html')
+
+#machinery sales
+@app.route('/machinery',methods=['GET'])
+def machinery():
+    return render_template('machinery.html')
+
+
 
 # POST cattle
 class CattleResource(Resource):

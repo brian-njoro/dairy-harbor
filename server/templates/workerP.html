@@ -33,12 +33,80 @@
     </div>
     <!--/ Horizontal -->
 
-    <!-- Hoverable Table rows -->
-    <div class="card bg-light border border-info border-2 shadow-lg">
-        <h5 class="card-header text-dark fw-4 fw-bold">History</h5>
-        <div class="table-responsive text-nowrap border">
-            <table class="table table-hover">
-                <thead>
+    <div class="container-fluid">
+        <h4 class="py-3 mb-4 text-info fw-bold fs-2">Workers List</h4>
+
+        <!-- Workers List -->
+        <div class="card bg-light border border-info border-2 shadow-lg mb-4">
+            <h5 class="card-header fw-bold text-info fs-4">Workers</h5>
+            <div class="table-responsive text-nowrap border">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class='text-info fw-bold fs-6'>Date Hired</th>
+                            <th class='text-info fw-bold fs-6'>First Name</th>
+                            <th class='text-info fw-bold fs-6'>Last Name</th>
+                            <th class='text-info fw-bold fs-6'>Gender</th>
+                            <th class='text-info fw-bold fs-6'>Age</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>
+                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <span class="fw-medium">1/1/2024</span>
+                            </td>
+                            <td>Chocs</td>
+                            <td>Mwenda</td>
+                            <td><span class="badge bg-label-primary me-1">Male</span></td>
+                            <td>21</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <span class="fw-medium">2/2/2024</span>
+                            </td>
+                            <td>Eliud</td>
+                            <td>Marierie</td>
+                            <td><span class="badge bg-label-primary me-1">Male</span></td>
+                            <td>23</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <span class="fw-medium">2/6/2024</span>
+                            </td>
+                            <td>Sharon</td>
+                            <td>Nyaboks</td>
+                            <td><span class="badge bg-label-primary me-1">Female</span></td>
+                            <td>21</td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <span class="fw-medium">3/4/2024</span>
+                            </td>
+                            <td>Felister</td>
+                            <td>Njeri</td>
+                            <td><span class="badge bg-label-primary me-1">Female</span></td>
+                            <td>23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--/ Workers List -->
+
+        <!-- Workers History -->
+        <div class="card bg-light border border-info border-2 shadow-lg">
+            <h5 class="card-header text-info fs-4 fw-bold">History</h5>
+            <div class="table-responsive text-nowrap border">
+                <table class="table table-hover">
+                    <thead>
                     <tr>
                         <th class='text-info fw-bold fs-6'>Date</th>
                         <th class='text-info fw-bold fs-6'>Task</th>
@@ -46,136 +114,132 @@
                         <th class='text-info fw-bold fs-6'>Status</th>
                         <th class='text-info fw-bold fs-6'>Actions</th>
                     </tr>
-                </thead>
-
-                <tbody class="table-border-bottom-0">
-                    <tr>
-                        <td>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        <tr>
+                            <td>
                             <i class="bx bxl-angular bx-sm text-danger me-3"></i>
                             <span class="fw-medium">1/7/2024</span>
-                        </td>
-                        <td>Milking</td>
-                        <td>6:30 A.M</td>
-                        <td><span class="badge bg-label-primary me-1">
-                            <select name=''>
-                                <option value='complete'>Complete</option>
-                                <option value='pending'>Pending</option>
-                                <option value='Planned'>Planned</option>
-                            </select>
-                        </span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                    >
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-trash me-1"></i> Delete</a
-                                    >
+                            </td>
+                            <td>Milking</td>
+                            <td>6:30 A.M</td>
+                            <td><span class="badge bg-label-primary me-1">
+                                <select name=''>
+                                    <option value='complete'>Complete</option>
+                                    <option value='pending'>Pending</option>
+                                    <option value='Planned'>Planned</option>
+                                </select>
+                            </span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                        >
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                             <i class="bx bxl-angular bx-sm text-danger me-3"></i>
                             <span class="fw-medium">2/7/2024</span>
-                        </td>
-                        <td>Cattle deworming</td>
-                        <td>7:00 A.M.</td>
-                        <td><span class="badge bg-label-primary me-1">
-                            <select name=''>
-                                <option value='complete'>Complete</option>
-                                <option value='pending'>Pending</option>
-                                <option value='Planned'>Planned</option>
-                            </select>
-                        </span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                    >
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-trash me-1"></i> Delete</a
-                                    >
+                            </td>
+                            <td>Cattle deworming</td>
+                            <td>7:00 A.M.</td>
+                            <td><span class="badge bg-label-primary me-1">
+                                <select name=''>
+                                    <option value='complete'>Complete</option>
+                                    <option value='pending'>Pending</option>
+                                    <option value='Planned'>Planned</option>
+                                </select>
+                            </span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                        >
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                        <i class="bx bxl-angular bx-sm text-danger me-3"></i>
-                        <span class="fw-medium">3/7/2024</span>
-                        </td>
-                        <td>Napier Grass cutting</td>
-                        <td>9:30 A.M</td>
-                        <td><span class="badge bg-label-primary me-1">
-                            <select name=''>
-                                <option value='complete'>Complete</option>
-                                <option value='pending'>Pending</option>
-                                <option value='Planned'>Planned</option>
-                            </select>
-                        </span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                    >
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-trash me-1"></i> Delete</a
-                                    >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                            <span class="fw-medium">3/7/2024</span>
+                            </td>
+                            <td>Napier Grass cutting</td>
+                            <td>9:30 A.M</td>
+                            <td><span class="badge bg-label-primary me-1">
+                                <select name=''>
+                                    <option value='complete'>Complete</option>
+                                    <option value='pending'>Pending</option>
+                                    <option value='Planned'>Planned</option>
+                                </select>
+                            </span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                        >
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                        <i class="bx bxl-angular bx-sm text-danger me-3"></i>
-                        <span class="fw-medium">3/7/2024</span>
-                        </td>
-                        <td>Napier Grass storage</td>
-                        <td>2:30 P.M</td>
-                        <td><span class="badge bg-label-primary me-1">
-                            <select name=''>
-                                <option value='complete'>Complete</option>
-                                <option value='pending'>Pending</option>
-                                <option value='Planned'>Planned</option>
-                            </select>
-                        </span></td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                                    >
-                                    <a class="dropdown-item" href="javascript:void(0);"
-                                        ><i class="bx bx-trash me-1"></i> Delete</a
-                                    >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                            <span class="fw-medium">3/7/2024</span>
+                            </td>
+                            <td>Napier Grass storage</td>
+                            <td>2:30 P.M</td>
+                            <td><span class="badge bg-label-primary me-1">
+                                <select name=''>
+                                    <option value='complete'>Complete</option>
+                                    <option value='pending'>Pending</option>
+                                    <option value='Planned'>Planned</option>
+                                </select>
+                            </span></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                        >
+                                        <a class="dropdown-item" href="javascript:void(0);"
+                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                        >
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <!--/ Workers History -->
     </div>
-    <!--/ Hoverable Table rows -->
 {% endblock %}
