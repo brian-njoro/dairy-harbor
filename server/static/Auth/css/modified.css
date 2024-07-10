@@ -175,7 +175,7 @@ p{
 }
 
 .menu-item:hover .menu-link {
-    background-color: #898d92; /* Change to your desired color */
+    background-color: rgba(64, 125, 199, 0.9);
     color: #fff; /* Change the text color if needed */
     border-radius: 10px;
 }
