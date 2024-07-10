@@ -184,8 +184,13 @@ p{
     background-color: transparent;
     border-radius: 10px;
 }
+
 /* .menu-item .menu-list:hover{
     background-color: #898d92; 
     color: #fff; 
     border-radius: 10px;
 } */
+
+.custom-color {
+    color: rgb(0, 183, 255);
+}
