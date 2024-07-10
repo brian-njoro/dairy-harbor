@@ -76,7 +76,7 @@ data-template="vertical-menu-template-free">
 
                 <!-- Menu -->
                 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info">
-                    <div class="app-brand d-flex flex-column mb-3">
+                    <div class="app-brand d-flex flex-column mb-0">
                         <div class='p-2'>
                             <div class="d-flex d-flex-row">
                                 <div class='col container-fluid'>
@@ -95,8 +95,9 @@ data-template="vertical-menu-template-free">
                     </div>
         
                     <div class="menu-inner-shadow"></div>
+                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">FARM NAME</h1>
         
-                    <ul class="menu-inner py-1 mt-0">
+                    <ul class="menu-inner py-1 mt-3">
                         <!-- Dashboards -->
                         <li class="menu-item">
                             <a href="/home" class="menu-link menu-toggle text-white fw-bold fs-5">
@@ -224,11 +225,11 @@ data-template="vertical-menu-template-free">
                             </ul>
                         </li>
 
-                        <!-- Expenses-->
+                        <!-- Inventory-->
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
                                 <i class="menu-icon tf-icons bx bx-layout text-white"></i>
-                                <div data-i18n="Front Pages">Expenses</div>
+                                <div data-i18n="Front Pages">Inventory</div>
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item mb-1 menu-list">
@@ -426,18 +427,21 @@ data-template="vertical-menu-template-free">
                         <!-- / Content -->
                     
                         <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme" style="border-top: 2px solid rgb(0, 162, 255);">
+                        <footer class="content-footer footer text-info bg-footer-theme bg-secondary" style="border-top: 2px solid rgb(0, 162, 255);">
                             <div class="container-xxl d-flex flex-wrap justify-content-center py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0 d-flex align-items-center">
+                                <div class="mb-2 mb-md-0 d-flex align-items-center text-center">
 
                                     <div class="image-footer-1">
-                                        <div>©</div>
                                         <img class="logo-1-icon" style="width:50px; height:50px; border:1px solid rgb(0, 162, 255); border-radius:50%; border-bottom:10px solid rgb(0, 162, 255); margin:10px 0; margin-left:-10px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
                                     </div>
+                                    &nbsp;
+
+                                    <div class="col">©</div>
+                                    &nbsp;
+
                                     <script>
-                                    document.write(new Date().getFullYear());
-                                    </script>
-                                    , made by
+                                        document.write(new Date().getFullYear());
+                                    </script>, made by
                                     <a href="#" target="_self" class="footer-link fw-medium text-brown">&nbsp;DAIRY HARBOR</a>
                                 </div>
                                 
@@ -465,9 +469,8 @@ data-template="vertical-menu-template-free">
         <!-- / Layout wrapper -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-lg-square rounded-circle back-to-top" style="background-color:rgb(3, 38, 49)">
-            <i class="bi bi-arrow-up">
-            </i>
+        <a href="#" class="btn bg-info btn-lg btn-lg-square rounded-circle back-to-top">
+            <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
 
