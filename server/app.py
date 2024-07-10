@@ -230,6 +230,30 @@ class CattleDeleteByIdResource(Resource):
 
 
 ## PROCEDURE ROUTES ##
+#vaccination
+@app.route('/vaccination',methods=['GET'])
+def vaccination():
+    return render_template('vaccination.html')
+
+#treatment
+@app.route('/treatment',methods=['GET'])
+def treatment():
+    return render_template('treatment.html')
+
+#dehorning
+@app.route('/dehorn',methods=['GET'])
+def dehorn():
+    return render_template('dehorn.html')
+
+#deworm
+@app.route('/deworm',methods=['GET'])
+def deworm():
+    return render_template('deworm.html')
+
+#insemination
+@app.route('/insemination',methods=['GET'])
+def insemination():
+    return render_template('insemination.html')
 
 # POST vaccination record
 class VaccinationResource(Resource):
