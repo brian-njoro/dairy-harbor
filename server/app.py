@@ -35,19 +35,19 @@ api = Api(app)
 db.init_app(app)
 
 
-#Home Page
+# Index route
+@app.route('/index', methods=['GET'])
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
 
 ## Home route
 @app.route('/home', methods=['GET'])
 def home():
     return render_template('home.html')
 
-#Index Page
-@app.route('/index', methods=['GET'])
-# Index route
-@app.route('/', methods=['GET'])
-def index():
-    return render_template('index.html')
+
 
 #sign-up page
 @app.route('/sign-up', methods=['GET'])
@@ -58,6 +58,12 @@ def sign_up():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
+
+
+@app.route('/worker_dashboard')
+def worker_dashboard():
+    # You can pass any necessary data to worker_dashboard.html here
+    return render_template('worker_dashboard.html')
 
 #forgot page
 @app.route('/forgot', methods=['GET'])
@@ -665,9 +671,9 @@ class AdminSignupResource(Resource):
         db.session.add(new_admin)
         db.session.commit()
 
-        return {"message": "Admin created successfully"}, 201
+        return {"message": "Admin created successfully", "redirect": url_for('home')}, 201
     
-    
+
 # Admin login
 class AdminLoginResource(Resource):
     def post(self):
@@ -680,7 +686,7 @@ class AdminLoginResource(Resource):
         if not admin or not check_password_hash(admin.password, password):
             return {"message": "Invalid username or password"}, 401
 
-        return {"message": "Login successful"}, 200
+        return {"message": "Login successful", "redirect": url_for('home')}, 200
 
 
 

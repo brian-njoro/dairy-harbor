@@ -1,0 +1,334 @@
+{% extends "workerbase.html" %}
+
+{% block title %}Dairy Harbour - My Dashboard{% endblock %}
+
+{% block content %}
+    <!-- Content -->
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 order-0">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="card-title d-flex align-items-start justify-content-between">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="../static/assets/img/icons/unicons/cow.png" alt="chart success" class="rounded" />
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="fw-medium d-block mb-1">Cattle</span>
+                                <h6>28</h6>
+                                <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +3</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="card-title d-flex align-items-start justify-content-between">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="../static/assets/img/icons/unicons/calve.png" alt="Credit Card" class="rounded" />
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>CALVES</span>
+                                <h6>19</h6>
+                                <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +4</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="card-title d-flex align-items-start justify-content-between">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="../static/assets/img/icons/unicons/cow-1.png" alt="chart success" class="rounded" />
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="fw-medium d-block mb-1">Sick Cows</span>
+                                <h6>2</h6>
+                                <small class="text-danger fw-medium"><i class="bx bx-up-arrow-alt"></i> +1</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="card-title d-flex align-items-start justify-content-between">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="../static/assets/img/icons/unicons/weaning-calve.png" alt="Credit Card" class="rounded" />
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span>Weaning Calves</span>
+                                <h6>4</h6>
+                                <small class="text-success fw-medium"><i class="bx bx-down-arrow-alt"></i> -3</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-8 col-lg-4 order-4 order-md-1">
+                <div class="row">
+                    <div class="col-6 mb-4 order-2">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="card-title d-flex align-items-start justify-content-between">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="../static/assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn p-0" type="button" id="cardOpt4" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="d-block mb-1">Payments</span>
+                                <h6>Ksh. 2,456</h6>
+                                <small class="text-danger fw-medium"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-4 order-3">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="card-title d-flex align-items-start justify-content-between">
+                                    <div class="avatar flex-shrink-0">
+                                        <img src="../static/assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
+                                    </div>
+                                    <div class="dropdown">
+                                        <button class="btn p-0" type="button" id="cardOpt1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="cardOpt1">
+                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
+                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="fw-medium d-block mb-1">Losses</span>
+                                <h6>Ksh. 14,857</h6>
+                                <small class="text-danger fw-medium"><i class="bx bx-up-down-alt"></i> -28.14%</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4 order-1">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                                    <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                                                               
+                                    </div>
+                                    <div id="ProductionReportChart">
+                                        <canvas id="productionReportCanvas"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-4 order-1">
+                        <div class="card border border-2 border-info shadow-md">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between flex-sm-row flex-column gap-3">
+                                    <div class="d-flex flex-sm-column flex-row align-items-start justify-content-between">
+                                                                               
+                                    </div>
+                                    <div id="ProductionReportChart">
+                                        <canvas id="productionReportCanvas"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 col-xl-4 order-5 mb-4">
+                <div class="card h-100 border border-2 border-info shadow-md">
+                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                        <div class="card-title mb-0">
+                            <h5 class="m-0 me-2">Inventory</h5>
+                            <small class="text-muted">Maintenance Needed</small>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn p-0" type="button" id="inventoryOptions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="inventoryOptions">
+                                <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="p-0 m-0">
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-food-menu"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Feed</h6>
+                                        <small class="text-muted">Various types</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">15% low</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-info"><i class="bx bx-tree"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Pasture</h6>
+                                        <small class="text-muted">Green and fresh</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">20% growth</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-warning"><i class="bx bx-wrench"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Dairy Farming Equipments</h6>
+                                        <small class="text-muted">Milking machines, etc.</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">5% maintenance</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-home"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Housing Materials</h6>
+                                        <small class="text-muted">Barns, shelters</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">10% renovation</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-danger"><i class="bx bx-hammer"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Other Materials</h6>
+                                        <small class="text-muted">Various items</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">15% inspection</small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('productionReportCanvas').getContext('2d');
+const productionReportChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        datasets: [{
+            label: 'Milk Production (liters)',
+            data: [500, 600, 550, 700, 800, 750, 650],
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Days of the Week'
+                },
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Milk Production (liters)'
+                },
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 100
+                },
+                max: 1000,
+                grid: {
+                    display: true,
+                    color: 'rgba(200, 200, 200, 0.2)'
+                }
+            }
+        }
+    }
+});
+
+    </script>
+    
+    <!-- / Content -->
+{% endblock %}
