@@ -1,42 +1,12 @@
 {% extends "base.html" %}
-{% block title%}Worker Profile{% endblock %}
+{% block title%}Workers{% endblock %}
 
 {% block content %}
-    <h4 class="py-3 mb-4 text-dark fs-3 fw-bold">Worker Profile</h4>
-        
-    <!-- Horizontal -->
-    <div class="row mb-5">
-        <div class="col-lg">
-            <div class="card mb-3 border border-2 border-info shadow-lg">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <div class="img-fluid h-auto">
-                            <img class="img-fluid img-icon" src="{{ url_for('static', filename='auth/img/service1.png') }}" alt="">
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 bg-light">
-                        <div class="card-body">
-                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span> Worker Name</p>
-                            <p class="card-text"><span class="text-info fw-bold fs-4">Gender:</span> Worker Gender</p>
-                            <p class="card-text"><span class="text-info fw-bold fs-4">Nationality:</span> Worker's Nationality</p>
-                            <p class="card-text"><span class="text-info fw-bold fs-4">Age:</span> Worker's Age</p>
-                            <p class="card-text"><span class="text-info fw-bold fs-4">Date Hired:</span> Worker Hire Date</p>
-                            <a href="#" class="btn btn-info ms-2">Edit</a>
-                            <a href="#" class="btn btn-danger ms-2">Delete</a>
-                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--/ Horizontal -->
 
     <div class="container-fluid">
         <h4 class="py-3 mb-4 text-info fw-bold fs-2">Workers List</h4>
 
-        <!-- Workers List -->
+        <!-- Workers list -->
         <div class="card bg-light border border-info border-2 shadow-lg mb-4">
             <h5 class="card-header fw-bold text-info fs-4">Workers</h5>
             <div class="table-responsive text-nowrap border">
@@ -44,56 +14,51 @@
                     <thead>
                         <tr>
                             <th class='text-info fw-bold fs-6'>Date Hired</th>
-                            <th class='text-info fw-bold fs-6'>First Name</th>
-                            <th class='text-info fw-bold fs-6'>Last Name</th>
+                            <th class='text-info fw-bold fs-6'>Name</th>
                             <th class='text-info fw-bold fs-6'>Gender</th>
-                            <th class='text-info fw-bold fs-6'>Age</th>
+                            <th class="text-info fw-bold fs-6">Edit</th>
                         </tr>
                     </thead>
 
                     <tbody class="table-border-bottom-0">
                         <tr>
                             <td>
-                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <i class="bx bx-user bx-sm text-info me-3" data-bs-toggle="modal" data-bs-target="#modalWorkerProfile"></i>
                                 <span class="fw-medium">1/1/2024</span>
                             </td>
                             <td>Chocs</td>
-                            <td>Mwenda</td>
                             <td><span class="badge bg-label-primary me-1">Male</span></td>
-                            <td>21</td>
+                            <td><a data-bs-toggle="modal" data-bs-target="#workerEditForm" class="btn btn-info ms-2">Edit</a></td>
                         </tr>
 
                         <tr>
                             <td>
-                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <i class="bx bx-user bx-sm text-info me-3" data-bs-toggle="modal" data-bs-target="#modalWorkerProfile"></i>
                                 <span class="fw-medium">2/2/2024</span>
                             </td>
                             <td>Eliud</td>
-                            <td>Marierie</td>
                             <td><span class="badge bg-label-primary me-1">Male</span></td>
-                            <td>23</td>
+                            <td><a data-bs-toggle="modal" data-bs-target="#workerEditForm" class="btn btn-info ms-2">Edit</a></td>
                         </tr>
 
                         <tr>
                             <td>
-                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <i class="bx bx-user bx-sm text-info me-3" data-bs-toggle="modal" data-bs-target="#modalWorkerProfile"></i>
                                 <span class="fw-medium">2/6/2024</span>
                             </td>
                             <td>Sharon</td>
-                            <td>Nyaboks</td>
                             <td><span class="badge bg-label-primary me-1">Female</span></td>
-                            <td>21</td>
+                            <td><a data-bs-toggle="modal" data-bs-target="#workerEditForm" class="btn btn-info ms-2">Edit</a></td>
                         </tr>
 
                         <tr>
                             <td>
-                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <i class="bx bx-user bx-sm text-info me-3" data-bs-toggle="modal" data-bs-target="#modalWorkerProfile"></i>
                                 <span class="fw-medium">3/4/2024</span>
                             </td>
                             <td>Felister</td>
-                            <td>Njeri</td>
                             <td><span class="badge bg-label-primary me-1">Female</span></td>
-                            <td>23</td>
+                            <td><a data-bs-toggle="modal" data-bs-target="#workerEditForm" class="btn btn-info ms-2">Edit</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -101,25 +66,286 @@
         </div>
         <!--/ Workers List -->
 
-        <!-- Workers History -->
+        <!-- Modal For Worker Profile -->
+        <div class="modal fade" id="modalWorkerProfile" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border border-3 border-info">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-info fw-bold fs-2">Worker Profile</h5>
+                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+        
+                    <div class="modal-body">
+                        <!-- Worker Profile -->
+                        <div class="row mb-5">
+                            <div class="col-lg">
+                                <div class="card mb-3 border border-2 border-info shadow-lg">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <div class="img-fluid h-auto">
+                                                <img class="img-fluid img-icon" src="{{ url_for('static', filename='auth/img/service1.png') }}" alt="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-8 bg-light">
+                                            <div class="card-body">
+                                                <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span> <span id="workerName"></span></p>
+                                                <p class="card-text"><span class="text-info fw-bold fs-4">Gender:</span> <span id="workerGender"></span></p>
+                                                <p class="card-text"><span class="text-info fw-bold fs-4">Nationality:</span> <span id="workerNationality"></span></p>
+                                                <p class="card-text"><span class="text-info fw-bold fs-4">Age:</span> <span id="workerAge"></span></p>
+                                                <p class="card-text"><span class="text-info fw-bold fs-4">Date Hired:</span> <span></span id="hireDate"></p>
+                                                <a id="delete" class="btn btn-danger ms-2">Delete</a>
+                                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ Worker Profile -->
+
+                        <!-- Worker Task History Table rows -->
+                        <div class="card bg-light border border-info border-2 shadow-lg mb-5">
+                            <h5 class="card-header text-dark fw-4 fw-bold">History</h5>
+                            <div class="table-responsive text-nowrap border">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class='text-info fw-bold fs-6'>Date</th>
+                                            <th class='text-info fw-bold fs-6'>Task</th>
+                                            <th class='text-info fw-bold fs-6'>Time</th>
+                                            <th class='text-info fw-bold fs-6'>Status</th>
+                                            <th class='text-info fw-bold fs-6'>Actions</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="table-border-bottom-0">
+                                        <tr>
+                                            <td>
+                                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                                <span class="fw-medium">1/7/2024</span>
+                                            </td>
+                                            <td>Milking</td>
+                                            <td>6:30 A.M</td>
+                                            <td><span class="badge bg-label-primary me-1">
+                                                <select name=''>
+                                                    <option value='complete'>Complete</option>
+                                                    <option value='pending'>Pending</option>
+                                                    <option value='Planned'>Planned</option>
+                                                </select>
+                                            </span></td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                                        >
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                                <span class="fw-medium">2/7/2024</span>
+                                            </td>
+                                            <td>Cattle deworming</td>
+                                            <td>7:00 A.M.</td>
+                                            <td><span class="badge bg-label-primary me-1">
+                                                <select name=''>
+                                                    <option value='complete'>Complete</option>
+                                                    <option value='pending'>Pending</option>
+                                                    <option value='Planned'>Planned</option>
+                                                </select>
+                                            </span></td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                                        >
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                            <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                            <span class="fw-medium">3/7/2024</span>
+                                            </td>
+                                            <td>Napier Grass cutting</td>
+                                            <td>9:30 A.M</td>
+                                            <td><span class="badge bg-label-primary me-1">
+                                                <select name=''>
+                                                    <option value='complete'>Complete</option>
+                                                    <option value='pending'>Pending</option>
+                                                    <option value='Planned'>Planned</option>
+                                                </select>
+                                            </span></td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                                        >
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                            <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                            <span class="fw-medium">3/7/2024</span>
+                                            </td>
+                                            <td>Napier Grass storage</td>
+                                            <td>2:30 P.M</td>
+                                            <td><span class="badge bg-label-primary me-1">
+                                                <select name=''>
+                                                    <option value='complete'>Complete</option>
+                                                    <option value='pending'>Pending</option>
+                                                    <option value='Planned'>Planned</option>
+                                                </select>
+                                            </span></td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-edit-alt me-1"></i> Edit</a
+                                                        >
+                                                        <a class="dropdown-item" href="javascript:void(0);"
+                                                            ><i class="bx bx-trash me-1"></i> Delete</a
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--/ Worker Tasks History Table rows -->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / Modal For Worker Profile-->
+
+        <!-- Modal For Worker Edit Form-->
+        <div class="modal fade" id="workerEditForm" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border border-3 border-info">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-info fw-bold fs-2">Worker Profile</h5>
+                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+        
+                    <div class="modal-body">
+                        <!--worker Edit Form -->
+                        <h5 class="card-header text-info fw-4 fw-bold">Worker Edit Form</h5>
+                        <form id="workerEditForm">
+                            <!--Date of Hire -->
+                            <div class="mb-3">
+                                <label for="medicineDate" class="form-label fw-bold text-dark">Date Of Hire:</label>
+                                <input type="date" id="medicineDate" class="form-control" required>
+                            </div>
+
+                            <!--worker Name-->
+                            <div class="mb-3">
+                                <label for="workerName" class="form-label text-dark fw-bold">Worker Name:</label>
+                                <input type="text" id="workerName" class="form-control" required>
+                            </div>
+
+                            <!--Worker Gender-->
+                            <div class="mb-3">
+                                <label for="diseaseTreated" class="form-label text-dark fw-bold">Worker Gender:</label>
+                                <select id="workerGender" class="form-control" name="workerGender" required>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+
+                            <!-- Worker Nationality -->
+                            <div class="mb-3">
+                                <label for="workerNationality" class="form-label fw-bold text-dark">Worker Nationality:</label>
+                                <input type="text" id="workerNationality" class="form-control" required>
+                            </div>
+
+                            <!--Date of Birth-->
+                            <div class="mb-3">
+                                <label for="dateOfBirth" class="form-label text-dark fw-bold">Date Of Birth:</label>
+                                <input type="date" id="dateOfBirth" class="form-control" required>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="mb-3">
+                                <label for="phoneNumber" class="form-label fw-bold text-dark">Phone Number:</label>
+                                <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                            </div>
+
+                            <button type="submit" id="editWorker" class="btn btn-info">Edit</button>
+                        </form>
+                        <!--/worker Edit Form-->
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / modal For Worker Edit Form-->
+
+        <!-- Workers Tasks History Table rows -->
         <div class="card bg-light border border-info border-2 shadow-lg">
-            <h5 class="card-header text-info fs-4 fw-bold">History</h5>
+            <h5 class="card-header text-dark fw-4 fw-bold">History</h5>
             <div class="table-responsive text-nowrap border">
                 <table class="table table-hover">
                     <thead>
-                    <tr>
-                        <th class='text-info fw-bold fs-6'>Date</th>
-                        <th class='text-info fw-bold fs-6'>Task</th>
-                        <th class='text-info fw-bold fs-6'>Time</th>
-                        <th class='text-info fw-bold fs-6'>Status</th>
-                        <th class='text-info fw-bold fs-6'>Actions</th>
-                    </tr>
+                        <tr>
+                            <th class='text-info fw-bold fs-6'>Date</th>
+                            <th class='text-info fw-bold fs-6'>Task</th>
+                            <th class='text-info fw-bold fs-6'>Time</th>
+                            <th class='text-info fw-bold fs-6'>Status</th>
+                            <th class='text-info fw-bold fs-6'>Actions</th>
+                        </tr>
                     </thead>
+
                     <tbody class="table-border-bottom-0">
                         <tr>
                             <td>
-                            <i class="bx bxl-angular bx-sm text-danger me-3"></i>
-                            <span class="fw-medium">1/7/2024</span>
+                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <span class="fw-medium">1/7/2024</span>
                             </td>
                             <td>Milking</td>
                             <td>6:30 A.M</td>
@@ -135,6 +361,7 @@
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
+
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="javascript:void(0);"
                                             ><i class="bx bx-edit-alt me-1"></i> Edit</a
@@ -146,10 +373,11 @@
                                 </div>
                             </td>
                         </tr>
+
                         <tr>
                             <td>
-                            <i class="bx bxl-angular bx-sm text-danger me-3"></i>
-                            <span class="fw-medium">2/7/2024</span>
+                                <i class="bx bxl-angular bx-sm text-danger me-3"></i>
+                                <span class="fw-medium">2/7/2024</span>
                             </td>
                             <td>Cattle deworming</td>
                             <td>7:00 A.M.</td>
@@ -176,6 +404,7 @@
                                 </div>
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                             <i class="bx bxl-angular bx-sm text-danger me-3"></i>
@@ -206,6 +435,7 @@
                                 </div>
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                             <i class="bx bxl-angular bx-sm text-danger me-3"></i>
@@ -240,6 +470,5 @@
                 </table>
             </div>
         </div>
-        <!--/ Workers History -->
-    </div>
+        <!--/ Workers Tasks History Table rows -->
 {% endblock %}
