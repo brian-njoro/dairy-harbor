@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<!--Artificial Insemination-->
+<!--Feeds-->
 <div class="card text-white mb-3">
     <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/artificial.jpg')}}" alt="Image">
     <div class="card-img-overlay">
@@ -45,7 +45,7 @@
 
                     <!--feedName-->
                     <div class="mb-3">
-                        <label for="donorBreed" class="form-label text-dark fw-bold">Total Cost:</label>
+                        <label for="feedName" class="form-label text-dark fw-bold">Total Cost:</label>
                         <select class="form-control" name="feedName" id="feedName" required>
                             <option value="hay">Hay</option>
                             <option value="napier">Napier Grass</option>
@@ -69,8 +69,8 @@
 
                     <!--Total Cost-->
                     <div class="mb-3">
-                        <label for="calfBreed" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
-                        <input type="number" id="quantity" class="form-control" required>
+                        <label for="cost" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
+                        <input type="number" id="cost" class="form-control" required>
                     </div>
                 </form>
             </div>
