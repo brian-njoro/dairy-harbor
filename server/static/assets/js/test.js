@@ -222,17 +222,29 @@ function deleteCattle(serialNumber) {
 }
 
 // Function to add new cattle
+document.getElementById('addCattleButton').addEventListener('click', addCattle);
+
 function addCattle() {
-    console.log('Adding cattle ...');
+    console.log('Add Cattle button clicked');
+    
+    const name = document.getElementById('name').value;
+    const dateOfBirth = document.getElementById('dateOfBirth').value;
+    const breed = document.getElementById('breed').value;
+    const fatherBreed = document.getElementById('fatherBreed').value;
+    const motherBreed = document.getElementById('motherBreed').value;
+    const methodBred = document.getElementById('methodBred').value;
+    const adminId = document.getElementById('adminId').value;
+    
+    console.log('Form Data:', { name, dateOfBirth, breed, fatherBreed, motherBreed, methodBred, adminId });
+
     const formData = {
-        name: document.getElementById('name').value,
-        date_of_birth: document.getElementById('dateOfBirth').value,
-        photo: document.getElementById('photo').value,
-        breed: document.getElementById('breed').value,
-        father_breed: document.getElementById('fatherBreed').value,
-        mother_breed: document.getElementById('motherBreed').value,
-        method_bred: document.getElementById('methodBred').value,
-        admin_id: parseInt(document.getElementById('adminId').value)
+        name: name,
+        date_of_birth: dateOfBirth,
+        breed: breed,
+        father_breed: fatherBreed,
+        mother_breed: motherBreed,
+        method_bred: methodBred,
+        admin_id: adminId
     };
 
     fetch('/cattle/post', {
@@ -243,7 +255,9 @@ function addCattle() {
         body: JSON.stringify(formData)
     })
     .then(response => {
+        console.log('Fetch response received');
         if (!response.ok) {
+            console.error(`HTTP error! Status: ${response.status}`);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
@@ -253,19 +267,33 @@ function addCattle() {
         // Close the modal after adding cattle
         const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
         if (modalCloseButton) {
+            console.log('Closing modal...');
             modalCloseButton.click(); // Simulate click on close button
         } else {
             console.error('Close button not found in modal');
         }
         // Clear input fields
         clearFormFields();
-        // Refresh cattle list after adding new cattle
-        fetchCattleList();
+        // Optionally update cattle list or handle success
+        // fetchCattleList();
     })
     .catch(error => {
         console.error('Error adding cattle:', error);
     });
 }
+
+function clearFormFields() {
+    console.log('Clearing form fields');
+    document.getElementById('name').value = '';
+    document.getElementById('dateOfBirth').value = '';
+    document.getElementById('breed').value = '';
+    document.getElementById('fatherBreed').value = '';
+    document.getElementById('motherBreed').value = '';
+    document.getElementById('methodBred').value = '';
+    document.getElementById('adminId').value = '';
+}
+
+
 
 // Function to clear input fields
 function clearFormFields() {

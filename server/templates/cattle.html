@@ -155,10 +155,8 @@
                                 <!--Admin Id-->
                                 <div class="mb-3">
                                     <label for="adminId" class="form-label text-dark fw-bold">Admin ID:</label>
-                                    <select class="form-control" type="number" name='adminId' id="adminId" required>
-                                        <option value="adminId1">1</option>
-                                        <option value="adminId2">2</option>
-                                    </select>
+                                    <input type="hidden" id="adminId" value="{{ admin.id }}">
+                                    <p>{{ admin.username }}</p>
                                 </div>
                             </form>
                         </div>
@@ -176,7 +174,7 @@
         <!-- / Cattle summary -->
 
         <div class="card text-white mb-3 shadow-lg">
-            <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/carousel-11.jpg')}}" alt="Image">
+            <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/carousel-11.jpg')}}" alt="Image">
             <div class="card-img-overlay">
                 <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">FARM NAME</h3>
                 <p class="card-text text-white">Since using Dairy Harbor, my farm's productivity has skyrocketed. The platform's comprehensive tools have made it easy to track my livestock, monitor milk production, and manage feed schedules efficiently. It's user-friendly and has saved me so much time and effort. Dairy Harbor has truly transformed the way I run my farm, and I couldn't be happier with the results.</p>
