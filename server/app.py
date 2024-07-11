@@ -98,6 +98,17 @@ def cattle():
     # You can pass any necessary data to cattle.html here
     return render_template('cattle.html')
 
+#MILK PRODUCTION
+@app.route('/milkP')
+def milk_P():
+    # You can pass any necessary data to cattle.html here
+    return render_template('milkP.html')
+
+#MILK SALES
+@app.route('/sales')
+def milk_sales():
+    # You can pass any necessary data to cattle.html here
+    return render_template('sales.html')
 
 # POST cattle
 class CattleResource(Resource):
@@ -223,7 +234,7 @@ class CattleDeleteByIdResource(Resource):
             return {'message': 'Cattle not found'}, 404
         
 
-#reports page
+#milkReport page
 @app.route('/milkR', methods=['GET'])
 def milk_report():
     return render_template('milkReport.html')
