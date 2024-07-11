@@ -57,14 +57,10 @@ data-template="vertical-menu-template-free">
         <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
         <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
         <script src="{{url_for('static',filename='assets/js/config.js')}}"></script>
-        <script src="{{url_for('static',filename='assets/js/scripts.js')}}" async></script>
         <script src="{{url_for('static',filename='assets/js/login.js')}}" async></script>
         <script src="{{url_for('static',filename='assets/js/milkproduction.js')}}" async></script>
-        <script src="{{url_for('static',filename='assets/js/cattle.js')}}" async></script>
         <script src="{{url_for('static',filename='assets/js/login.js')}}"></script>
-        <script src="{{url_for('static',filename='assets/js/scripts.js')}}"></script>
         <script src="{{url_for('static',filename='assets/js/milkproduction.js')}}"></script>
-        <script src="{{url_for('static',filename='assets/js/cattle.js')}}"></script>
 
     </head>
 
@@ -275,7 +271,7 @@ data-template="vertical-menu-template-free">
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
                                         <div data-i18n="Pricing">
-                                            Production
+                                            Milk Production
                                         </div>
                                     </a>
                                 </li>
@@ -320,7 +316,7 @@ data-template="vertical-menu-template-free">
                 <div class="layout-page">
 
                     <!-- Navbar -->
-                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center shadow-lg bg-navbar-theme border-info border-3 border-bottom fixed-top rounded-pill" id="layout-navbar">
+                    <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center shadow-lg bg-navbar-theme border-info border-3 border-bottom  fixed-top rounded-pill" id="layout-navbar">
 
                         <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
                             <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
@@ -453,10 +449,9 @@ data-template="vertical-menu-template-free">
                             </div>
                         </footer>
                         <!-- / Footer -->
-                        
-                        <!-- / Footer -->
 
                         <div class="content-backdrop fade"></div>
+
                     </div>
                     <!-- Content wrapper -->
                 </div>
@@ -469,7 +464,7 @@ data-template="vertical-menu-template-free">
         <!-- / Layout wrapper -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn bg-info btn-lg btn-lg-square rounded-circle back-to-top">
+        <a href="#" class="btn btn-info text-info btn-lg btn-lg-square rounded-circle back-to-top">
             <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
@@ -512,8 +507,9 @@ data-template="vertical-menu-template-free">
 
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/cattle.js') }}"></script>
-        <script src="{{url_for('static',filename='assets/js/scripts.js')}}" async></script>
+        <script src="{{url_for('static',filename='assets/js/addCattle.js')}}" async></script>
+        <script src="{{url_for('static',filename='assets/js/cattle.js')}}" async></script>
+        
         <script src="{{url_for('static',filename='assets/js/login.js')}}" async></script>
         <script src="{{ url_for('static', filename='js/milkProduction.js') }}"></script>
 
