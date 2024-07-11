@@ -54,10 +54,15 @@ def index():
 def sign_up():
     return render_template('signup.html')
 
-#login page
-@app.route('/login', methods=['GET'])
+#workerLogin page
+@app.route('/workerLogin', methods=['GET'])
 def login():
-    return render_template('login.html')
+    return render_template('workerLogin.html')
+
+#adminLogin page
+@app.route('/adminLogin', methods=['GET'])
+def admin_login():
+    return render_template('adminLogin.html')
 
 #forgot page
 @app.route('/forgot', methods=['GET'])
