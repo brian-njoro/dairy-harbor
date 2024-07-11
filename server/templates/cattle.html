@@ -9,6 +9,7 @@
 
         <!--Cattle summary-->
         <div class="row mb-3">
+
             <!-- Cattle Numbers -->
             <div class="col-sm-4 text-center mb-3 mb-sm-0">
                 <div class="card border border-2 border-info shadow-lg bg-white">
@@ -242,10 +243,12 @@
                                                 <div class="col bg-light">
                                                     <img src="./static/auth/img/p10.png" class="card-img-top" alt="cowprofile">
                                                     <div class="card-body">
+                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Serial Number:</span> <span id="serialNumber"></span></p>
                                                         <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span> <span id="cowName"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Breed:</span> <span id="cowBreed"></span></p>
                                                         <p class="card-text"><span class="text-info fw-bold fs-4">Date Of birth:</span> <span id="dateOfBirth"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Status:</span> <span></span id="cowStatus"></p>
+                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Breed:</span> <span id="cowBreed"></span></p>
+                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Father's Breed:</span> <span id="fatherBreed"></span></p>
+                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Mother Breed:</span> <span id="motherBreed"></span></p>
                                                         <a id="delete" class="btn btn-danger ms-2">Delete</a>
                                                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                                     </div>
@@ -266,7 +269,6 @@
                                                     <th class='text-info fw-bold fs-6'>Serial Number</th>
                                                     <th class='text-info fw-bold fs-6'>Name</th>
                                                     <th class='text-info fw-bold fs-6'>Breed</th>
-                                                    <th class='text-info fw-bold fs-6'>Status</th>
                                                     <th class='text-info fw-bold fs-6'>Date Of Birth</th>
                                                 </tr>
                                             </thead>
