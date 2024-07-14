@@ -108,83 +108,27 @@ function fetchCattleList() {
     console.log('Fetching cattle list...');
     fetch('/cattle/get')
         .then(response => {
+            console.log('Received response from /cattle/get');
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
+            console.log('Received data:', data);
             const cattleList = document.getElementById('cattleList');
             cattleList.innerHTML = ''; // Clear existing list items
 
-            data.forEach(cattle => {
+            data.forEach((cattle, index) => {
                 const row = document.createElement('tr');
-
                 row.innerHTML = `
-                    <td>
-                        <div class="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                <div class="avatar avatar-online">
-                                    <img src="${cattle.photo}" alt="Cattle Photo" class="w-px-40 h-auto rounded-circle" />
-                                </div>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar avatar-online">
-                                                    <img src="${cattle.photo}" alt="Profile Photo" class="w-px-40 h-auto rounded-circle" />
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <span class="fw-medium d-block">${cattle.name}</span>
-                                                <small class="text-muted">${cattle.serial_number}</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bx bx-user me-2"></i>
-                                        <span class="align-middle">${cattle.name}</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bx bx-cog me-2"></i>
-                                        <span class="align-middle">Edit</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <span class="d-flex align-items-center align-middle">
-                                            <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                            <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                            <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                                        </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="javascript:void(0);">
-                                        <i class="bx bx-power-off me-2"></i>
-                                        <span class="align-middle">Delete</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>${cattle.name}</td>
+                    <td>${index + 1}</td>
                     <td>${cattle.serial_number}</td>
+                    <td>${cattle.name}</td>
+                    <td>${cattle.breed}</td>
                     <td>${cattle.date_of_birth}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="deleteCattle('${cattle.serial_number}')">Delete</button></td>
                 `;
-
                 cattleList.appendChild(row);
             });
         })
@@ -192,7 +136,6 @@ function fetchCattleList() {
             console.error('Error fetching cattle list:', error);
         });
 }
-
 document.addEventListener('DOMContentLoaded', fetchCattleList);
 
 // Function to handle editing a cattle record
@@ -295,17 +238,6 @@ function clearFormFields() {
 
 
 
-// Function to clear input fields
-function clearFormFields() {
-    document.getElementById('name').value = '';
-    document.getElementById('dateOfBirth').value = '';
-    document.getElementById('photo').value = '';
-    document.getElementById('breed').value = '';
-    document.getElementById('fatherBreed').value = '';
-    document.getElementById('motherBreed').value = '';
-    document.getElementById('methodBred').value = '';
-    document.getElementById('adminId').value = '';
-}
 
 // Show initial content (Home)
 showContent('homeContent');
