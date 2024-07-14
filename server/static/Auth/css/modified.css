@@ -184,8 +184,31 @@ p{
     background-color: transparent;
     border-radius: 10px;
 }
+
 /* .menu-item .menu-list:hover{
     background-color: #898d92; 
     color: #fff; 
     border-radius: 10px;
 } */
+
+.custom-color {
+    color: rgb(0, 183, 255);
+}
+
+
+.animated {
+    animation-duration: 1s;
+}
+.slideInLeft {
+    animation-name: slideInLeft;
+}
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

@@ -33,6 +33,9 @@
         <link href="{{url_for('static',filename='auth/css/modified.css')}}" rel="stylesheet">
         <link href="{{ url_for('static', filename='auth/css/header.css') }}" rel="stylesheet">
 
+
+        
+
         <style>
             
             
@@ -81,10 +84,11 @@
                             <!--Get started-->
                             <div class="container-xxl py-5 text-start">
                                 <div class="text-start justify-content-center ms-5">
-                                    <h1 class="text-white mb-4 animated slideInRight delay-10s fw-bold fs-1">What's the secret to success? <p> </p> Monitor, manage, and master.</h1>
-                                    <p class="justify-content-center text-white mb-5 animated slideInRight fs-5" style="font-family:Arial, San Serif;">
+                                    <p class="fs-3 text-white">What's the secret to success?</p> 
+                                    <h4 class="display-1 text-white animated slideInLeft fw-bolder" id="animatedText"></h4> 
+                                    <p class="justify-content-center text-white mb-5 animated slideInLeft fs-5" style="font-family:Arial, San Serif;">
                                         <p> </p>
-                                        <h1 class="text-white mb-5 animated slideInRight">Daily We Dairy</h1>
+                                        <h1 class="text-info mb-5 animated slideInRight">Daily We Dairy</h1>
                                     </p>
                                 </div>
 
@@ -96,11 +100,9 @@
                                             </button>
                                         </a>
 
-                                        <a href="login" target="_self">
-                                            <button type="button" class="login ms-3 animated slideInRight">
-                                                Log In
-                                                </button>
-                                        </a>
+                                        <button type="button" class="login ms-3 animated slideInRight" data-bs-toggle="modal" data-bs-target="#loginType">
+                                            Log In
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -116,11 +118,13 @@
                             <div class="container">
                                 <div class="row justify-content-end">
                                     <div class="col-lg-8 text-end">
-                                        <p class="fs-4 text-white ">Welcome to Dairy Harbor</p>
+                                        <p class="fs-4 text-white">Welcome to Dairy Harbor</p>
                                         <h4 class="display-1 text-white mb-5 animated slideInRight">Walking the milky way.</h4>
 
                                     </div>
                                 </div>
+
+                                <!--sign up and login-->
                                 <div class="text-center">
                                     <form class="d-flex authButtons" role="search">
                                         <a href="sign-up" target="_self">
@@ -129,11 +133,10 @@
                                             </button>
                                         </a>
 
-                                        <a href="login" target="_self">
-                                            <button type="button" class="login ms-3 animated slideInRight">
-                                                Log In
-                                                </button>
-                                        </a>
+                                        
+                                        <button type="button" class="login ms-3 animated slideInRight" data-bs-toggle="modal" data-bs-target="#loginType">
+                                            Log In
+                                        </button>
                                     </form>
                                 </div>
                             </div>
@@ -143,8 +146,8 @@
 
                 <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel"
                     data-bs-slide="prev">
-                    <span class="" aria-hidden="true"><i class="bi bi-arrow-left-square text-info"></i></span>
-                    <span class="visually-hidden bg-info text-info bg-info fs-2 me-2 rounded-circle">Previous</span>
+                    <span class="" aria-hidden="true"><i class="bi bi-arrow-left-square text-info fs-2 me-2 rounded-circle"></i></span>
+                    <span class="visually-hidden text-info bg-info">Previous</span>
                 </button>
 
                 <button class="carousel-control-next" type="button" data-bs-target="#header-carousel"
@@ -155,6 +158,56 @@
             </div>
         </div>
         <!-- Carousel End -->
+
+
+        <!-- Modal for Login Type -->
+        <div class="modal fade" id="loginType" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered bg-black">
+                <div class="modal-content border border-2 border-info bg-black">
+
+                    <div class="modal-header">
+                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body px-0">
+                        <!--sign up and login-->
+                        <div class="card text-bg-dark mx-0 mb-0 mt-0">
+                            <img src="{{ url_for('static', filename='auth/img/b1.jpg') }}" class="card-img" alt="cow">
+                            <div class="card-img-overlay">
+                                <h5 class="card-title text-center text-info">Login As...</h5>
+                                <p class="card-text text-white text-center fs-4 mb-5">Welcome! Please choose your login type:</p>
+
+                                <div class="text-center mb-0">
+                                    <form class="d-flex authButtons" role="search">
+                                        <div class="row">
+                                            <div class="col-sm-6 mb-1 mb-sm-0">
+                                                <a href="/adminLogin" target="_self">
+                                                    <button type="button" class="shadow-lg px-3 fs-3 border border-info bg-info rounded-pill text-white animated slideInLeft ms-3">
+                                                        Admin
+                                                    </button>
+                                                </a>
+                                            </div>
+        
+                                            <div class="col-sm-6 mb-1 mb-sm-0">
+                                                <a href="/workerLogin" target="_self">
+                                                    <button type="button" class="shadow-lg px-3 fs-3 border border-info bg-info rounded-pill text-white ms-3 animated slideInRight">
+                                                        worker
+                                                        </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
 
         <!-- About Start -->
@@ -297,6 +350,38 @@
         <script src="{{ url_for('static', filename='auth/lib/counterup/counterup.min.js') }}"></script>
         <script src="{{ url_for('static', filename='auth/lib/parallax/parallax.min.js') }}"></script>
         <script src="{{ url_for('static', filename='auth/lib/lightbox/js/lightbox.min.js') }}"></script>
+
+        <script>
+            function displayWordsOneAtATime(words, elementId, displayTime) {
+                const element = document.getElementById(elementId);
+                let currentWordIndex = 0;
+    
+                function typeWord(word) {
+                    element.innerHTML = '';
+                    const span = document.createElement('span');
+                    span.classList.add('typewriter-text');
+                    span.textContent = word;
+                    element.appendChild(span);
+    
+                    setTimeout(() => {
+                        span.style.animation = 'typing 2s steps(30, end) reverse, blink-caret .75s step-end infinite';
+                        setTimeout(() => {
+                            currentWordIndex = (currentWordIndex + 1) % words.length;
+                            typeWord(words[currentWordIndex]);
+                        }, displayTime / 2); // Delay for reverse typing
+                    }, displayTime / 2); // Display time before deleting starts
+                }
+    
+                typeWord(words[currentWordIndex]);
+            }
+    
+            // Example usage
+            const words = ["Monitor", "Manage", "Master"];
+            const elementId = "animatedText";
+            const displayTime = 3000; // Display each word for 3000ms (3 seconds)
+    
+            displayWordsOneAtATime(words, elementId, displayTime);
+        </script>
 
         <!-- Template Javascript -->
         <script src="{{ url_for('static', filename='auth/js/main.js') }}"></script>
