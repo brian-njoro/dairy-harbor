@@ -54,10 +54,15 @@ def index():
 def sign_up():
     return render_template('signup.html')
 
-#login page
-@app.route('/login', methods=['GET'])
+#workerLogin page
+@app.route('/workerLogin', methods=['GET'])
 def login():
-    return render_template('login.html')
+    return render_template('workerLogin.html')
+
+#adminLogin page
+@app.route('/adminLogin', methods=['GET'])
+def admin_login():
+    return render_template('adminLogin.html')
 
 #forgot page
 @app.route('/forgot', methods=['GET'])
@@ -98,13 +103,23 @@ def cattle():
     # You can pass any necessary data to cattle.html here
     return render_template('cattle.html')
 
+#MILK PRODUCTION
+@app.route('/milkP')
+def milk_P():
+    # You can pass any necessary data to cattle.html here
+    return render_template('milkP.html')
+
+#MILK SALES
+@app.route('/sales')
+def milk_sales():
+    # You can pass any necessary data to cattle.html here
+    return render_template('sales.html')
 
 # POST cattle
 class CattleResource(Resource):
     def post(self):
         data = request.get_json()
         
-        photo = data.get('photo')
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')
         breed = data.get('breed')
@@ -118,14 +133,13 @@ class CattleResource(Resource):
 
 
         new_cattle = Cattle(
-            photo=photo,
             name=name,
-            date_of_birth=date_of_birth,
-            breed=breed,
-            father_breed=father_breed,
-            mother_breed=mother_breed,
-            method_bred=method_bred,
-            admin_id=admin_id
+            date_of_birth = date_of_birth,
+            breed = breed,
+            father_breed = father_breed,
+            mother_breed = mother_breed,
+            method_bred = method_bred,
+            admin_id = admin_id
         )
 
         db.session.add(new_cattle)
@@ -134,13 +148,44 @@ class CattleResource(Resource):
         return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
     
 # GET cattle
+
+# Example route for getting cow details by serial number
+@app.route('/cattle/get/<serial_number>', methods=['GET'])
+def get_cow(serial_number):
+    cow = Cattle.query.filter_by(serial_number=serial_number).first()
+    if cow:
+        cow_data = {
+            'serial_number': cow.serial_number,
+            'name': cow.name,
+            'date_of_birth': str(cow.date_of_birth),
+            'breed': cow.breed,
+            'father_breed': cow.father_breed,
+            'mother_breed': cow.mother_breed,
+        }
+        return jsonify(cow_data), 200
+    return jsonify({'message': 'Cow not found'}), 404
+
+
+@app.route('/api/cattle/<int:serial_number>', methods=['GET'])
+def get_cattle(serial_number):
+    cattle = Cattle.query.get_or_404(serial_number)
+    return jsonify({
+        'serial_number': cattle.serial_number,
+        'name': cattle.name,
+        'date_of_birth': cattle.date_of_birth,
+        'breed': cattle.breed,
+        'father_breed': cattle.father_breed,
+        'mother_breed': cattle.mother_breed,
+        'method_bred': cattle.method_bred,
+        'admin_id': cattle.admin_id
+    })
+    
 class CattleGetResource(Resource):
     def get(self, serial_number=None):
         if serial_number:
             cattle = Cattle.query.filter_by(serial_number=serial_number).first()
             if cattle:
                 return {
-                    'photo': cattle.photo,
                     'serial_number': cattle.serial_number,
                     'name': cattle.name,
                     'date_of_birth': str(cattle.date_of_birth),
@@ -157,7 +202,6 @@ class CattleGetResource(Resource):
             cattle_data = []
             for cattle in cattle_list:
                 cattle_data.append({
-                    'photo': cattle.photo,
                     'serial_number': cattle.serial_number,
                     'name': cattle.name,
                     'date_of_birth': str(cattle.date_of_birth),
@@ -176,7 +220,6 @@ class CattleByIdResource(Resource):
         cattle = Cattle.query.filter_by(serial_number=serial_number).first()
         if cattle:
             return {
-                'photo': cattle.photo,
                 'serial_number': cattle.serial_number,
                 'name': cattle.name,
                 'date_of_birth': str(cattle.date_of_birth),
@@ -213,6 +256,10 @@ class CattleDeleteByIdResource(Resource):
             return {'message': 'Cattle not found'}, 404
         
 
+#milkReport page
+@app.route('/milkR', methods=['GET'])
+def milk_report():
+    return render_template('milkReport.html')
 
 ## PROCEDURE ROUTES ##
 #vaccination
@@ -244,7 +291,6 @@ def insemination():
 class VaccinationResource(Resource):
     def post(self):
         data = request.get_json()
-
         date = data.get('date')
         vet_name = data.get('vet_name')
         method = data.get('method')
@@ -274,7 +320,6 @@ class VaccinationResource(Resource):
 class VaccinationByCattleIdResource(Resource):
     def post(self, cattle_id):
         data = request.get_json()
-
         date = data.get('date')
         vet_name = data.get('vet_name')
         method = data.get('method')
@@ -716,7 +761,7 @@ class AdminLoginResource(Resource):
         if not admin or not check_password_hash(admin.password, password):
             return {"message": "Invalid username or password"}, 401
 
-        return {"message": "Login successfull", "redirect": url_for('home')}, 200
+        return {"message": "Login successful", "redirect": url_for('home')}, 200
 
 #
 #   RESOURCES TO VIEW AND DELETE ADMIN
