@@ -16,16 +16,16 @@
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Total Cattle</h5>
                         <p class="card-text text-info">
-                            Cows:<span class="text-dark" id="totalCows"> 5</span>
+                            Cows:<span class="text-dark" id="totalCows">{{ admin.cattle | length }}</span>
                         </p>
                         <p class="card-text text-info">
-                            Bulls:<span class="text-dark" id="totalBulls"> 2</span>
+                            Bulls:<span class="text-dark" id="totalBulls"> 0</span>
                         </p>
                         <p class="card-text text-info">
-                            Calves:<span class="text-dark" id="totalCalves"> 5</span>
+                            Calves:<span class="text-dark" id="totalCalves"> 0</span>
                         </p>
                         <p class="card-text text-info">
-                            Total Cattle:<span class="text-dark" id="totalCattle">12</span>
+                            Total cattle:<span class="text-dark" id="totalCows">{{ admin.cattle | length }}</span>
                         </p>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="card border border-2 border-info shadow-lg bg-white">
                     <div class="card-body">
                         <h5 class="card-title text-info fw-bold">ADD CATTLE</h5>
-                        <p class="card-text">Easily manage your livestock with Dairy Harbor's comprehensive cattle management feature.</p>
+                        <p class="card-text">Add your cattle here </p>
 
                         <!-- Button to add new cattle -->
                         <div class="mb-0">
@@ -174,14 +174,7 @@
         </div>
         <!-- / Cattle summary -->
 
-        <div class="card text-white mb-3 shadow-lg">
-            <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/carousel-11.jpg')}}" alt="Image">
-            <div class="card-img-overlay">
-                <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">{{ admin.farm_name}}</h3>
-                <p class="card-text text-white">Since using Dairy Harbor, my farm's productivity has skyrocketed. The platform's comprehensive tools have made it easy to track my livestock, monitor milk production, and manage feed schedules efficiently. It's user-friendly and has saved me so much time and effort. Dairy Harbor has truly transformed the way I run my farm, and I couldn't be happier with the results.</p>
-                <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
-            </div>
-        </div>
+        
 
         <div class="row justify-content-between mx-auto px-auto">
 
@@ -296,10 +289,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             console.log('Document is ready');
-        
+    
             // Fetch cattle list when the page is loaded
             fetchCattleList();
-        
+    
             // Add event listener for the "Add Cattle" button
             const addCattleButton = document.getElementById('addCattleButton');
             if (addCattleButton) {
@@ -308,7 +301,7 @@
                 console.error('Add Cattle button not found');
             }
         });
-        
+    
         function fetchCattleList() {
             console.log('Fetching cattle list...');
             fetch('/cattle/get')
@@ -324,11 +317,11 @@
                         console.error('Error fetching cattle list:', data.error);
                         return;
                     }
-        
+    
                     console.log('Received data:', data);
                     const cattleList = document.getElementById('cattleList');
                     cattleList.innerHTML = ''; // Clear existing list items
-        
+    
                     data.forEach((cattle, index) => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
@@ -341,12 +334,15 @@
                         `;
                         cattleList.appendChild(row);
                     });
+    
+                    // Update cattle count
+                    updateCattleCount(data.length);
                 })
                 .catch(error => {
                     console.error('Error fetching cattle list:', error);
                 });
         }
-        
+    
         function deleteCattle(serialNumber) {
             console.log(`Deleting cattle with serial number ${serialNumber}`);
             fetch(`/cattle/${serialNumber}`, {
@@ -365,7 +361,7 @@
                 console.error(`Error deleting cattle with serial number ${serialNumber}:`, error);
             });
         }
-        
+    
         function addCattle() {
             console.log('Add Cattle button clicked');
             
@@ -378,7 +374,7 @@
             const adminId = document.getElementById('adminId').value;
             
             console.log('Form Data:', { name, dateOfBirth, breed, fatherBreed, motherBreed, methodBred, adminId });
-        
+    
             const formData = {
                 name: name,
                 date_of_birth: dateOfBirth,
@@ -388,7 +384,7 @@
                 method_bred: methodBred,
                 admin_id: adminId
             };
-        
+    
             fetch('/cattle/post', {
                 method: 'POST',
                 headers: {
@@ -423,7 +419,7 @@
                 console.error('Error adding cattle:', error);
             });
         }
-        
+    
         function clearFormFields() {
             console.log('Clearing form fields');
             document.getElementById('name').value = '';
@@ -434,6 +430,16 @@
             document.getElementById('methodBred').value = '';
             document.getElementById('adminId').value = '';
         }
-        </script>
+    
+        function updateCattleCount(count) {
+            const totalCowsSpan = document.getElementById('totalCows');
+            if (totalCowsSpan) {
+                totalCowsSpan.textContent = count;
+            } else {
+                console.error('Total Cows span not found');
+            }
+        }
+    </script>
+    
         
 {% endblock %}
