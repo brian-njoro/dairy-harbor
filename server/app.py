@@ -59,6 +59,11 @@ def sign_up():
 def login():
     return render_template('workerLogin.html')
 
+#myprofile page
+@app.route('/myProfile', methods=['GET'])
+def my_profile():
+    return render_template('myProfile.html')
+
 #adminLogin page
 @app.route('/adminLogin', methods=['GET'])
 def admin_login():
