@@ -85,10 +85,15 @@ def index():
 def sign_up():
     return render_template('signup.html')
 
-#login page
-@app.route('/login', methods=['GET'])
+#workerLogin page
+@app.route('/workerLogin', methods=['GET'])
 def login():
-    return render_template('login.html')
+    return render_template('workerLogin.html')
+
+#adminLogin page
+@app.route('/adminLogin', methods=['GET'])
+def admin_login():
+    return render_template('adminLogin.html')
 
 #forgot page
 @app.route('/forgot', methods=['GET'])
@@ -170,6 +175,23 @@ class CattleResource(Resource):
 
         return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
 # GET cattle
+
+# Example route for getting cow details by serial number
+@app.route('/cattle/get/<serial_number>', methods=['GET'])
+def get_cow(serial_number):
+    cow = Cattle.query.filter_by(serial_number=serial_number).first()
+    if cow:
+        cow_data = {
+            'serial_number': cow.serial_number,
+            'name': cow.name,
+            'date_of_birth': str(cow.date_of_birth),
+            'breed': cow.breed,
+            'father_breed': cow.father_breed,
+            'mother_breed': cow.mother_breed,
+        }
+        return jsonify(cow_data), 200
+    return jsonify({'message': 'Cow not found'}), 404
+
 
 @app.route('/api/cattle/<int:serial_number>', methods=['GET'])
 def get_cattle(serial_number):
@@ -261,7 +283,7 @@ class CattleDeleteByIdResource(Resource):
             return {'message': 'Cattle not found'}, 404
         
 
-#reports page
+#milkReport page
 @app.route('/milkR', methods=['GET'])
 def milk_report():
     return render_template('milkReport.html')
