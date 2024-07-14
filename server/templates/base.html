@@ -87,7 +87,7 @@ data-template="vertical-menu-template-free">
                     </div>
         
                     <div class="menu-inner-shadow"></div>
-                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">FARM NAME</h1>
+                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ admin.farm_name}}</h1>
         
                     <ul class="menu-inner py-1 mt-3">
                         <!-- Dashboards -->
@@ -359,6 +359,12 @@ data-template="vertical-menu-template-free">
                                                         <small class="text-muted">Admin</small>
                                                     </div>
                                                 </div>
+
+                                                <div class="flex-grow-1">
+                                                    <span class="fw-medium d-block">{{admin.name}}</span>
+                                                    <small class="text-muted">Admin</small>
+                                                </div>
+                                            </div>
                                             </a>
                                         </li>
                                         <li>
@@ -500,7 +506,6 @@ data-template="vertical-menu-template-free">
 
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
-        <script src="{{url_for('static',filename='js/addCattle.js')}}" async></script>
         <script src="{{url_for('static',filename='js/milkproduction.js')}}" async></script>
         <script src="{{url_for('static',filename='js/login.js')}}"></script>
         <script src="{{url_for('static',filename='js/milkproduction.js')}}"></script>

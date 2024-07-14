@@ -21,26 +21,73 @@ from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
+import os
 
 
 app = Flask(__name__)
-CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+# Explicitly define the full path to the database
+database_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance', 'app.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{database_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SECRET_KEY'] = 'JUITVNTT7359YU735HR583HFI3BF7945Y9984YR394UFHIU3RBF378595Y3HYIF3BFHDB874H834YIFB3Y4BFIH'
 app.config['DEBUG'] = True
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
+
+db.init_app(app)
 migrate = Migrate(app, db)
 api = Api(app)
-db.init_app(app)
+CORS(app)
 
 
+
+# Create the instance folder if it doesn't exist
+instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
+if not os.path.exists(instance_path):
+    os.makedirs(instance_path)
+
+# Print database path for debugging
+print(f"Database path: {database_path}")
 #Home Page
 
 ## Home route
+# Example route for admin homepage
 @app.route('/home', methods=['GET'])
+@login_required
 def home():
-    return render_template('home.html')
+    def serialize_cattle(cattle):
+        return {
+            "serial_number": cattle.serial_number,
+            "name": cattle.name,
+            "date_of_birth": cattle.date_of_birth.strftime('%Y-%m-%d'),
+            "breed": cattle.breed,
+            "father_breed": cattle.father_breed,
+            "mother_breed": cattle.mother_breed,
+            "method_bred": cattle.method_bred,
+            "admin_id": cattle.admin_id
+        }
+    
+    cattle = Cattle.query.filter_by(admin_id=current_user.id).all()
+    
+    serialized_cattle = [serialize_cattle(c) for c in cattle]
+    
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": serialized_cattle
+    }
+    
+    # Store serialized cattle data in session for later access
+    session['cattle_data'] = serialized_cattle
+    
+    return render_template('home.html', admin=admin_data)
+
+
 
 #Index Page
 @app.route('/index', methods=['GET'])
@@ -78,117 +125,202 @@ def forgot():
 #feeds page
 @app.route('/feeds', methods=['GET'])
 def feeds():
-    return render_template('feeds.html')
-
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('feeds.html', admin = admin_data)
 #medicine page
 @app.route('/medicine', methods=['GET'])
 def medicine():
-    return render_template('medicine.html')
-
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('medicine.html', admin = admin_data)
 #machinery page
 @app.route('/machinery', methods=['GET'])
 def machinery():
-    return render_template('machinery.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('machinery.html', admin = admin_data)
 
 
 #worker Profile
 @app.route('/workerP',methods=['GET'])
 def worker():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
     # You can pass any necessary data to worker.html here
-    return render_template('workerP.html')
+    return render_template('workerP.html', admin = admin_data)
 
 #worker List
 @app.route('/workerL',methods=['GET'])
 def worker_List():
-    return render_template('workerList.html')
+
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('workerList.html', admin = admin_data)
 
 ### CATTLE ROUTES ##
+# Route to display cattle data
 @app.route('/cattle')
+@login_required
 def cattle():
-    # You can pass any necessary data to cattle.html here
-    return render_template('cattle.html')
+    # Retrieve cattle data from session
+    cattle_data = session.get('cattle_data', None)
+    
+    if not cattle_data:
+        # If no cattle data in session, fetch again (this could happen on page reload)
+        cattle_data = Cattle.query.filter_by(admin_id=current_user.id).all()
+    
+    return render_template('cattle.html', cattle=cattle_data, admin=current_user)
 
-#MILK PRODUCTION
-@app.route('/milkP')
-def milk_P():
-    # You can pass any necessary data to cattle.html here
-    return render_template('milkP.html')
 
-#MILK SALES
-@app.route('/sales')
-def milk_sales():
-    # You can pass any necessary data to cattle.html here
-    return render_template('sales.html')
+##   ADMIN RESOURCES
+# admin signup
+class AdminSignupResource(Resource):
+    def post(self):
+        data = request.get_json()
+        name = data.get('name')
+        farm_name = data.get('farm_name')
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return {"message": "Username and password are required"}, 400
+
+        if Admin.query.filter_by(username=username).first():
+            return {"message": "Username already exists"}, 400
+
+        hashed_password = generate_password_hash(password)
+        new_admin = Admin(name=name, farm_name=farm_name, username=username, password=hashed_password)
+
+        db.session.add(new_admin)
+        db.session.commit()
+
+        # Log in the new admin user
+        login_user(new_admin)
+
+        # Prepare data to return in response
+        admin_data = {
+            "username": new_admin.username,
+            "name": new_admin.name,
+            "farm_name": new_admin.farm_name,
+        }
+
+        return {"message": "Admin created successfully", "admin": admin_data, "redirect": url_for('home')}, 201
+    
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Admin.query.get(int(user_id))
+
+
+
+   
+# Admin login
+class AdminLoginResource(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        if not username or not password:
+            return {"message": "Username and password required"}, 400
+
+        admin = Admin.query.filter_by(username=username).first()
+
+        if not admin or not check_password_hash(admin.password, password):
+            return {"message": "Invalid username or password"}, 401
+
+        login_user(admin)
+
+        admin_data = {
+            "id": admin.id,
+            "name": admin.name,
+            "farm_name": admin.farm_name,
+            "username": admin.username
+            # Add more fields as necessary
+        }
+
+        return jsonify({"message": "Login successful", "user_data": admin_data, "redirect": url_for('home')})
+
 
 # POST cattle
 class CattleResource(Resource):
+    @login_required
     def post(self):
         data = request.get_json()
-        
+
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')
         breed = data.get('breed')
         father_breed = data.get('father_breed')
         mother_breed = data.get('mother_breed')
         method_bred = data.get('method_bred')
-        admin_id = data.get('admin_id')
 
         # Convert date_of_birth from string to date object
         date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
 
-
+        # Create a new cattle object linked to the current admin (current_user)
         new_cattle = Cattle(
             name=name,
-            date_of_birth = date_of_birth,
-            breed = breed,
-            father_breed = father_breed,
-            mother_breed = mother_breed,
-            method_bred = method_bred,
-            admin_id = admin_id
+            date_of_birth=date_of_birth,
+            breed=breed,
+            father_breed=father_breed,
+            mother_breed=mother_breed,
+            method_bred=method_bred,
+            admin_id=current_user.id  # Link to current admin
         )
 
         db.session.add(new_cattle)
         db.session.commit()
 
         return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
-    
-# GET cattle
-
-# Example route for getting cow details by serial number
-@app.route('/cattle/get/<serial_number>', methods=['GET'])
-def get_cow(serial_number):
-    cow = Cattle.query.filter_by(serial_number=serial_number).first()
-    if cow:
-        cow_data = {
-            'serial_number': cow.serial_number,
-            'name': cow.name,
-            'date_of_birth': str(cow.date_of_birth),
-            'breed': cow.breed,
-            'father_breed': cow.father_breed,
-            'mother_breed': cow.mother_breed,
-        }
-        return jsonify(cow_data), 200
-    return jsonify({'message': 'Cow not found'}), 404
 
 
-@app.route('/api/cattle/<int:serial_number>', methods=['GET'])
-def get_cattle(serial_number):
-    cattle = Cattle.query.get_or_404(serial_number)
-    return jsonify({
-        'serial_number': cattle.serial_number,
-        'name': cattle.name,
-        'date_of_birth': cattle.date_of_birth,
-        'breed': cattle.breed,
-        'father_breed': cattle.father_breed,
-        'mother_breed': cattle.mother_breed,
-        'method_bred': cattle.method_bred,
-        'admin_id': cattle.admin_id
-    })
-    
+
+
+# GET cattle    
 class CattleGetResource(Resource):
+    @login_required
     def get(self, serial_number=None):
+        admin_id = current_user.id  # Assuming 'id' is the primary key attribute of the Admin model
+        
         if serial_number:
-            cattle = Cattle.query.filter_by(serial_number=serial_number).first()
+            cattle = Cattle.query.filter_by(serial_number=serial_number, admin_id=admin_id).first()
             if cattle:
                 return {
                     'serial_number': cattle.serial_number,
@@ -203,7 +335,7 @@ class CattleGetResource(Resource):
             else:
                 return {'message': 'Cattle not found'}, 404
         else:
-            cattle_list = Cattle.query.all()
+            cattle_list = Cattle.query.filter_by(admin_id=admin_id).all()
             cattle_data = []
             for cattle in cattle_list:
                 cattle_data.append({
@@ -217,7 +349,7 @@ class CattleGetResource(Resource):
                     'admin_id': cattle.admin_id
                 })
             return cattle_data, 200
-        
+
         
 # GET cattle by id.
 class CattleByIdResource(Resource):
@@ -264,33 +396,87 @@ class CattleDeleteByIdResource(Resource):
 #milkReport page
 @app.route('/milkR', methods=['GET'])
 def milk_report():
-    return render_template('milkReport.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('milkReport.html', admin = admin_data)
 
 ## PROCEDURE ROUTES ##
 #vaccination
 @app.route('/vaccination',methods=['GET'])
 def vaccination():
-    return render_template('vaccination.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('vaccination.html', admin = admin_data)
 
 #treatment
 @app.route('/treatment',methods=['GET'])
 def treatment():
-    return render_template('treatment.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('treatment.html', admin = admin_data)
 
 #dehorning
 @app.route('/dehorn',methods=['GET'])
 def dehorn():
-    return render_template('dehorn.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('dehorn.html', admin = admin_data)
 
 #deworm
 @app.route('/deworm',methods=['GET'])
 def deworm():
-    return render_template('deworm.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('deworm.html', admin = admin_data)
 
 #insemination
 @app.route('/insemination',methods=['GET'])
 def insemination():
-    return render_template('insemination.html')
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('insemination.html', admin = admin_data)
 
 # POST vaccination record
 class VaccinationResource(Resource):
@@ -690,7 +876,7 @@ class WorkerSignupResource(Resource):
         if Worker.query.filter_by(username=username).first():
             return {'message': 'Username already exists'}, 400
 
-        hashed_password = generate_password_hash(password, method='sha256')
+        hashed_password = generate_password_hash(password)
         new_worker = Worker(name=name, username=username, password=hashed_password, role=role)
         
         db.session.add(new_worker)
@@ -724,51 +910,38 @@ class WorkerLogoutResource(Resource):
         session.pop('username', None)
         session.pop('role', None)
         return {'message': 'Logged out successfully'}, 200
+    
+class WorkerListResource(Resource):
+    def get(self):
+        workers = Worker.query.all()
+        worker_list = [
+            {
+                "id": worker.id,
+                "name": worker.name,
+                "username": worker.username,
+                "role": worker.role
+            }
+            for worker in workers
+        ]
+        return jsonify(worker_list)
+
+class WorkerResource(Resource):
+    def delete(self, worker_id):
+        worker = Worker.query.get(worker_id)
+        if not worker:
+            return {'message': 'Worker not found'}, 404
+
+        db.session.delete(worker)
+        db.session.commit()
+
+        return {'message': 'Worker deleted successfully'}, 200        
 
 
 
 
 # Admin and farm registration routes
 
-# admin signup
-class AdminSignupResource(Resource):
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        farm_name = data.get('farm_name')
-        username = data.get('username')
-        password = data.get('password')
 
-        if not username or not password:
-            return {"message": "Username and password are required"}, 400
-
-        if Admin.query.filter_by(username=username).first():
-            return {"message": "Username already exists"}, 400
-
-        hashed_password = generate_password_hash(password)
-        new_admin = Admin(name=name, farm_name=farm_name, username=username, password=hashed_password)
-
-        db.session.add(new_admin)
-        db.session.commit()
-
-        return {"message": "Admin created successfully", "redirect": url_for('home')}, 201
-    
-    
-# Admin login
-class AdminLoginResource(Resource):
-    def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        admin = Admin.query.filter_by(username=username).first()
-
-        if not admin or not check_password_hash(admin.password, password):
-            return {"message": "Invalid username or password"}, 401
-
-        return {"message": "Login successful", "redirect": url_for('home')}, 200
-
-#
 #   RESOURCES TO VIEW AND DELETE ADMIN
 #
 #
@@ -796,19 +969,29 @@ class AdminDeleteResource(Resource):
         db.session.commit()
         return {"message": "Admin deleted successfully"}, 200    
 
+
+# Admin List Resource
 class AdminListResource(Resource):
     def get(self):
-        admins = Admin.query.all()
-        admin_list = [
-            {
-                "id": admin.id,
-                "name": admin.name,
-                "farm_name": admin.farm_name,
-                "username": admin.username
-            }
-            for admin in admins
-        ]
-        return jsonify(admin_list)
+        # Debugging line to check the database path
+        print(f"Database path: {os.path.abspath('app.db')}")
+
+        try:
+            admins = Admin.query.all()
+            admin_list = [
+                {
+                    "id": admin.id,
+                    "name": admin.name,
+                    "farm_name": admin.farm_name,
+                    "username": admin.username
+                }
+                for admin in admins
+            ]
+            return admin_list  # Return the list directly
+        except Exception as e:
+            # Debugging line to catch and log any errors
+            print(f"Error retrieving admins: {e}")
+            return {'error': str(e)}, 500
     
 
 
@@ -837,9 +1020,13 @@ api.add_resource(PeriodicTreatmentPatchByCattleIdResource, '/cattle/<int:cattle_
 api.add_resource(PeriodicTreatmentListResource, '/periodic_treatments') #GET all periodic treatment record
 api.add_resource(PeriodicTreatmentByCattleIdListResource, '/cattle/<int:cattle_id>/periodic_treatments') #Get periodic treatment record for specific cattle using cattle id
 api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:treatment_id>') #Delete periodic treatment record for a specific cattle
-api.add_resource(WorkerSignupResource, '/signup') # signup for workers
-api.add_resource(WorkerLoginResource, '/login') # Log in for workers
-api.add_resource(WorkerLogoutResource, '/logout') # log out for workers
+
+#  WORKER (EMPLOYEE)
+api.add_resource(WorkerSignupResource, '/signup/worker') # signup for workers
+api.add_resource(WorkerLoginResource, '/login/worker') # Log in for workers
+api.add_resource(WorkerLogoutResource, '/logout/worker') # log out for workers
+api.add_resource(WorkerListResource, '/workers')
+api.add_resource(WorkerResource, '/workers/<int:worker_id>')
 
 ###  ADMIN (FARM MANAGER)
 api.add_resource(AdminSignupResource, '/admin/signup') # Sign up for admin
