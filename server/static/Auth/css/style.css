@@ -124,25 +124,20 @@
     }
 }
 
-@media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
-        display: block;
-        border: none;
-        margin-top: 0;
-        top: 150%;
-        opacity: 0;
-        visibility: hidden;
-        transition: .5s;
-    }
-
-    .navbar .nav-item:hover .dropdown-menu {
-        top: 100%;
-        visibility: visible;
-        transition: .5s;
-        opacity: 1;
-    }
+/* Ensure the dropdown menu is hidden by default */
+.dropdown-menu {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+    top: 100%;
 }
 
+/* Show the dropdown menu when the 'show' class is added */
+.dropdown-menu.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
 
 /*** Header ***/
 .carousel-caption {
