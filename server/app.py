@@ -53,12 +53,8 @@ if not os.path.exists(instance_path):
 print(f"Database path: {database_path}")
 #Home Page
 
-## Home route
-# Example route for admin homepage
-@app.route('/home', methods=['GET'])
-@login_required
-def home():
-    def serialize_cattle(cattle):
+### SERIALIZE CATTLE FUNCTION FOR TEMPLATE RENDERING: ###
+def serialize_cattle(cattle):
         return {
             "serial_number": cattle.serial_number,
             "name": cattle.name,
@@ -69,7 +65,11 @@ def home():
             "method_bred": cattle.method_bred,
             "admin_id": cattle.admin_id
         }
-    
+# Example route for admin homepage
+@app.route('/home', methods=['GET'])
+@login_required
+def home():
+       
     cattle = Cattle.query.filter_by(admin_id=current_user.id).all()
     
     serialized_cattle = [serialize_cattle(c) for c in cattle]
@@ -121,6 +121,12 @@ def admin_login():
 def forgot():
     return render_template('forgot.html')
 
+
+@app.route('/worker_dashboard', methods=['GET'])
+@login_required
+def worker_dashboard():
+    return render_template('worker_dashboard.html')
+
 ##Inventory
 #feeds page
 @app.route('/feeds', methods=['GET'])
@@ -148,6 +154,8 @@ def medicine():
     }
     # You can pass any necessary data to worker.html here
     return render_template('medicine.html', admin = admin_data)
+
+
 #machinery page
 @app.route('/machinery', methods=['GET'])
 def machinery():
@@ -165,7 +173,7 @@ def machinery():
 
 #worker Profile
 @app.route('/workerP',methods=['GET'])
-def worker():
+def worker_profile():
     cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
 
     admin_data = {
@@ -192,6 +200,8 @@ def worker_List():
     }
     # You can pass any necessary data to worker.html here
     return render_template('workerList.html', admin = admin_data)
+
+
 
 ### CATTLE ROUTES ##
 # Route to display cattle data
@@ -885,6 +895,7 @@ class WorkerSignupResource(Resource):
         return {'message': 'Worker registered successfully'}, 201
     
 
+
 # login route
 class WorkerLoginResource(Resource):
     def post(self):
@@ -892,17 +903,25 @@ class WorkerLoginResource(Resource):
         username = data.get('username')
         password = data.get('password')
 
+        if not username or not password:
+            return {"message": "Username and password required"}, 400
+
         worker = Worker.query.filter_by(username=username).first()
 
         if not worker or not check_password_hash(worker.password, password):
             return {'message': 'Invalid credentials'}, 401
 
-        session['worker_id'] = worker.id
-        session['username'] = worker.username
-        session['role'] = worker.role
+        login_user(worker)
 
-        return {'message': 'Logged in successfully'}, 200
-    
+        worker_data = {
+            "id": worker.id,
+            "name": worker.name,
+            "username": worker.username,
+            "role": worker.role
+            # Add more fields as necessary
+        }
+
+        return {"message": "Worker Loged in successfully", "worker_data": worker_data, "redirect": url_for('worker_dashboard')}, 201    
 #Log out
 class WorkerLogoutResource(Resource):
     def post(self):
