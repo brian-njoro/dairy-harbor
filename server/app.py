@@ -99,7 +99,7 @@ def index():
 #sign-up page
 @app.route('/sign-up', methods=['GET'])
 def sign_up():
-    return render_template('adminSignup.html')
+    return render_template('signup.html')
 
 #workerLogin page
 @app.route('/login/worker', methods=['GET'])

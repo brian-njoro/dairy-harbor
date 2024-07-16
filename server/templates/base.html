@@ -67,7 +67,7 @@ data-template="vertical-menu-template-free">
             <div class="layout-container">
 
                 <!-- Menu -->
-                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info border-end border-3 border-white">
+                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info border-end border-5 border-white rounded-end-circle">
                     <div class="app-brand d-flex flex-column mb-0">
                         <div class='p-2'>
                             <div class="d-flex d-flex-row">
@@ -388,7 +388,7 @@ data-template="vertical-menu-template-free">
                                         <li>
                                             <a class="dropdown-item" href="/myProfile">
                                                 <i class="bx bx-user me-2"></i>
-                                                <span class="align-middle">My Profile</span>
+                                                <span class="align-middle" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>My Profile</span>
                                             </a>
                                         </li>
 
@@ -418,6 +418,52 @@ data-template="vertical-menu-template-free">
                         </div>
                     </nav>
                     <!-- / Navbar -->
+
+                    <!-- Modal For My Profile -->
+                    <div class="modal fade" id="modalMyProfile" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border border-3 border-info">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-info fw-bold fs-2">Cow Profile</h5>
+                                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                    
+                                <div class="modal-body">
+                                    <!-- My Profile -->
+                                    <div class="row mb-5">
+                                        <div class="col-lg">
+                                            <div class="card mb-3 border border-2 border-info shadow-lg">
+                                                <div class="row g-0">
+                                                    <div class="col bg-light">
+                                                        <img src="./static/auth/img/Brian.jpeg" class="card-img-top" alt="cowprofile">
+                                                        <div class="card-body">
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>{{admin.name}}<span id="Name"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">{{admin.farm_name}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email:</span><span id="email"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Id:</span><span id="farmId"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmId"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number:</span><span id="phoneNumber"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Cattle:</span><span id="cattleNo"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Workers:</span><span id="workersNo"></span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/ My Profile -->
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Modal For cow Profile-->
         
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
