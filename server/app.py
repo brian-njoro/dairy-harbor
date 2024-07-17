@@ -102,7 +102,7 @@ def sign_up():
     return render_template('signup.html')
 
 #workerLogin page
-@app.route('/workerLogin', methods=['GET'])
+@app.route('/login/worker', methods=['GET'])
 def login():
     return render_template('workerLogin.html')
 

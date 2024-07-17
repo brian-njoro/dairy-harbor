@@ -67,7 +67,7 @@ data-template="vertical-menu-template-free">
             <div class="layout-container">
 
                 <!-- Menu -->
-                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info">
+                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info border-end border-5 border-white rounded-end-circle">
                     <div class="app-brand d-flex flex-column mb-0">
                         <div class='p-2'>
                             <div class="d-flex d-flex-row">
@@ -311,6 +311,10 @@ data-template="vertical-menu-template-free">
                 <!-- Layout container -->
                 <div class="layout-page">
 
+                    <div class="row bg-info border-bottom border-3 border-dark shadow-sm px-5 mt-0">
+                        <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{admin.farm_name}}</h1>
+                    </div>
+
                     <!-- Navbar -->
                     <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center shadow-lg bg-navbar-theme border-info border-3 border-bottom  fixed-top rounded-pill" id="layout-navbar">
 
@@ -358,6 +362,7 @@ data-template="vertical-menu-template-free">
                                             <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
                                         </div>
                                     </a>
+
                                     <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <a class="dropdown-item" href="#">
@@ -367,6 +372,7 @@ data-template="vertical-menu-template-free">
                                                             <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle" />
                                                         </div>
                                                     </div>
+
                                                     <div class="flex-grow-1">
                                                         <span class="fw-medium d-block">{{admin.name}}</span>
                                                         <small class="text-muted">Admin</small>
@@ -374,24 +380,29 @@ data-template="vertical-menu-template-free">
                                                 </div>
                                             </a>
                                         </li>
+
                                         <li>
                                             <div class="dropdown-divider"></div>
                                         </li>
+
                                         <li>
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item" href="/myProfile">
                                                 <i class="bx bx-user me-2"></i>
-                                                <span class="align-middle">My Profile</span>
+                                                <span class="align-middle" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>My Profile</span>
                                             </a>
                                         </li>
+
                                         <li>
                                             <a class="dropdown-item" href="#">
                                                 <i class="bx bx-cog me-2"></i>
                                                 <span class="align-middle">Settings</span>
                                             </a>
                                         </li>
+
                                         <li>
                                             <div class="dropdown-divider"></div>
                                         </li>
+
                                         <li>
                                             <a class="dropdown-item" href="javascript:void(0);">
                                                 <i class="bx bx-power-off me-2"></i>
@@ -402,12 +413,57 @@ data-template="vertical-menu-template-free">
                                 </li>
                                 
                                 <!--/ User -->
-
                                 
                             </ul>
                         </div>
                     </nav>
                     <!-- / Navbar -->
+
+                    <!-- Modal For My Profile -->
+                    <div class="modal fade" id="modalMyProfile" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border border-3 border-info">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-info fw-bold fs-2">Cow Profile</h5>
+                                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                    
+                                <div class="modal-body">
+                                    <!-- My Profile -->
+                                    <div class="row mb-5">
+                                        <div class="col-lg">
+                                            <div class="card mb-3 border border-2 border-info shadow-lg">
+                                                <div class="row g-0">
+                                                    <div class="col bg-light">
+                                                        <img src="./static/auth/img/Brian.jpeg" class="card-img-top" alt="cowprofile">
+                                                        <div class="card-body">
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>{{admin.name}}<span id="Name"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">{{admin.farm_name}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email:</span><span id="email"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Id:</span><span id="farmId"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmId"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number:</span><span id="phoneNumber"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Cattle:</span><span id="cattleNo"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Workers:</span><span id="workersNo"></span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/ My Profile -->
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Modal For cow Profile-->
         
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -465,25 +521,25 @@ data-template="vertical-menu-template-free">
         </a>
 
         <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const dropdownToggle = document.getElementById('dropdownToggle');
-    const dropdownMenu = document.getElementById('dropdownMenu');
+            document.addEventListener('DOMContentLoaded', function() {
+                const dropdownToggle = document.getElementById('dropdownToggle');
+                const dropdownMenu = document.getElementById('dropdownMenu');
 
-    dropdownToggle.addEventListener('click', function(event) {
-        event.stopPropagation(); // Prevent click event from bubbling up to document
-        dropdownMenu.classList.toggle('show');
-    });
+                dropdownToggle.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent click event from bubbling up to document
+                    dropdownMenu.classList.toggle('show');
+                });
 
-    document.addEventListener('click', function() {
-        if (dropdownMenu.classList.contains('show')) {
-            dropdownMenu.classList.remove('show');
-        }
-    });
+                document.addEventListener('click', function() {
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
 
-    dropdownMenu.addEventListener('click', function(event) {
-        event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
-    });
-});
+                dropdownMenu.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
+                });
+            });
 
 // HANDLING LOGOUT FOR FARMER
 
