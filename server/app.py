@@ -21,7 +21,7 @@ from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
 import os
 
 
@@ -286,6 +286,13 @@ class AdminLoginResource(Resource):
         }
 
         return jsonify({"message": "Login successful", "user_data": admin_data, "redirect": url_for('home')})
+
+
+class AdminLogoutResource(Resource):
+    @login_required
+    def post(self):
+        logout_user()
+        return jsonify({"message": "Logout successful", "redirect": url_for('login')})        
 
 
 # POST cattle
@@ -1050,6 +1057,7 @@ api.add_resource(WorkerResource, '/workers/<int:worker_id>')
 ###  ADMIN (FARM MANAGER)
 api.add_resource(AdminSignupResource, '/admin/signup') # Sign up for admin
 api.add_resource(AdminLoginResource, '/admin/login') #log in for admin
+api.add_resource(AdminLogoutResource, '/admin/logout') #logout for farmer (admin)
 api.add_resource(AdminViewResource, '/admin/view/<int:admin_id>')  # View admin by ID
 api.add_resource(AdminDeleteResource, '/admin/delete/<int:admin_id>')  # Delete admin by ID
 api.add_resource(AdminListResource, '/admin/list')  # View all admins
