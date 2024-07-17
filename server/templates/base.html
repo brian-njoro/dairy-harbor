@@ -485,6 +485,33 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// HANDLING LOGOUT FOR FARMER
+
+    // Function to handle logout
+    async function handleLogout() {
+        const response = await fetch('/admin/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Redirect to login page after successful logout
+            window.location.href = data.redirect;
+        } else {
+            // Handle logout error (optional)
+            console.error('Logout failed:', data.message);
+        }
+    }
+
+    // Add event listeners to the logout links
+    document.getElementById('logoutLink1').addEventListener('click', handleLogout);
+    document.getElementById('logoutLink2').addEventListener('click', handleLogout);
+
+
 
         </script>
 
