@@ -550,7 +550,7 @@ def artificial_insemination():
         "farm_name": current_user.farm_name,
         "cattle": cattle_list
     }
-    # You can pass any necessary data to worker.html here
+    # You can pass any necessary data to artificial.html here
     return render_template('AInsemination.html', admin = admin_data)
 
 #Natural insemination
@@ -564,7 +564,7 @@ def natural_insemination():
         "farm_name": current_user.farm_name,
         "cattle": cattle_list
     }
-    # You can pass any necessary data to worker.html here
+    # You can pass any necessary data to natural.html here
     return render_template('NInsemination.html', admin = admin_data)
 
 # POST vaccination record
