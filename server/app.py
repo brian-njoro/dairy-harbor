@@ -127,6 +127,7 @@ def forgot():
 def worker_dashboard():
     return render_template('worker_dashboard.html')
 
+
 ##Inventory
 #feeds page
 @app.route('/feeds', methods=['GET'])
@@ -141,6 +142,8 @@ def feeds():
     }
     # You can pass any necessary data to worker.html here
     return render_template('feeds.html', admin = admin_data)
+
+
 #medicine page
 @app.route('/medicine', methods=['GET'])
 def medicine():
@@ -224,7 +227,9 @@ class AdminSignupResource(Resource):
     def post(self):
         data = request.get_json()
         name = data.get('name')
+        phone_number = data.get('phone_number')
         farm_name = data.get('farm_name')
+        farm_location = data.get('farm_location')
         username = data.get('username')
         password = data.get('password')
 
@@ -247,7 +252,9 @@ class AdminSignupResource(Resource):
         admin_data = {
             "username": new_admin.username,
             "name": new_admin.name,
+            "phone_number": new_admin.phone_number,
             "farm_name": new_admin.farm_name,
+            "farm_location": new_admin.farm_location,
         }
 
         return {"message": "Admin created successfully", "admin": admin_data, "redirect": url_for('home')}, 201
@@ -259,7 +266,7 @@ def load_user(user_id):
 
 
 
-   
+
 # Admin login
 class AdminLoginResource(Resource):
     def post(self):
@@ -297,6 +304,7 @@ class CattleResource(Resource):
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')
         breed = data.get('breed')
+        status = data.get('status')
         father_breed = data.get('father_breed')
         mother_breed = data.get('mother_breed')
         method_bred = data.get('method_bred')
@@ -309,6 +317,7 @@ class CattleResource(Resource):
             name=name,
             date_of_birth=date_of_birth,
             breed=breed,
+            status=status,
             father_breed=father_breed,
             mother_breed=mother_breed,
             method_bred=method_bred,
@@ -418,6 +427,48 @@ def milk_report():
     return render_template('milkReport.html', admin = admin_data)
 
 ## PROCEDURE ROUTES ##
+#pregnancy
+@app.route('/pregnancy',methods=['GET'])
+def pregnancy():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to pregnancy.html here
+    return render_template('pregnancy.html', admin = admin_data)
+
+#miscarriage
+@app.route('/miscarriage',methods=['GET'])
+def miscarriage():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to miscarriage.html here
+    return render_template('miscarriage.html', admin = admin_data)
+
+#heat detection
+@app.route('/heat',methods=['GET'])
+def heat():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to heat.html here
+    return render_template('heat.html', admin = admin_data)
+
 #vaccination
 @app.route('/vaccination',methods=['GET'])
 def vaccination():
@@ -429,7 +480,7 @@ def vaccination():
         "farm_name": current_user.farm_name,
         "cattle": cattle_list
     }
-    # You can pass any necessary data to worker.html here
+    # You can pass any necessary data to vaccination.html here
     return render_template('vaccination.html', admin = admin_data)
 
 #treatment
@@ -460,6 +511,20 @@ def dehorn():
     # You can pass any necessary data to worker.html here
     return render_template('dehorn.html', admin = admin_data)
 
+#Pest Control
+@app.route('/pestControl',methods=['GET'])
+def pest_control():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to pestC.html here
+    return render_template('pestC.html', admin = admin_data)
+
 #deworm
 @app.route('/deworm',methods=['GET'])
 def deworm():
@@ -474,9 +539,9 @@ def deworm():
     # You can pass any necessary data to worker.html here
     return render_template('deworm.html', admin = admin_data)
 
-#insemination
-@app.route('/insemination',methods=['GET'])
-def insemination():
+#Artificial insemination
+@app.route('/Ainsemination',methods=['GET'])
+def artificial_insemination():
     cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
     admin_data = {
         "id": current_user.id,
@@ -486,7 +551,21 @@ def insemination():
         "cattle": cattle_list
     }
     # You can pass any necessary data to worker.html here
-    return render_template('insemination.html', admin = admin_data)
+    return render_template('AInsemination.html', admin = admin_data)
+
+#Natural insemination
+@app.route('/Ninsemination',methods=['GET'])
+def natural_insemination():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to worker.html here
+    return render_template('NInsemination.html', admin = admin_data)
 
 # POST vaccination record
 class VaccinationResource(Resource):

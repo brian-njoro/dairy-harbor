@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<!-- Modal for CFeeds -->
+<!-- Modal for Feeds -->
 <div class="modal fade" id="modalFeeds" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border border-3 border-info">
@@ -71,12 +71,18 @@
                         <label for="cost" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
                         <input type="number" id="cost" class="form-control" required>
                     </div>
+
+                    <!-- Notes -->
+                    <div class="mb-3">
+                        <label for="feedsnotes" class="form-label fw-bold text-dark">Notes:</label>
+                        <textarea name='feedsnotes' id='feedsnotes' class='form-control'></textarea>
+                    </div>
                 </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="addCattleButton">Add Feed</button>
+                <button type="button" class="btn btn-info" id="addFeedButton">Add Feed</button>
             </div>
 
         </div>
