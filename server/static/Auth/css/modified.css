@@ -213,4 +213,8 @@ p{
     }
 }
 
+.profile-pic-input{
+    display: inline-block;
+    width: 80%;
+}
 

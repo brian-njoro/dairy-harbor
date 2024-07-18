@@ -12,7 +12,7 @@
 
             <!-- Cattle Numbers -->
             <div class="col-sm-4 text-center mb-3 mb-sm-0">
-                <div class="card border border-2 border-info shadow-lg bg-white">
+                <div class="card border border-1 border-info shadow-lg bg-white">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Total Cattle</h5>
                         <p class="card-text text-info">
@@ -33,7 +33,7 @@
             
             <!-- Cattle Status card -->
             <div class="col-sm-4 text-center mb-3 mb-sm-0">
-                <div class="card border border-2 border-info shadow-lg bg-white">
+                <div class="card border border-1 border-info shadow-lg bg-white">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Cattle Status</h5>
                         <p class="card-text text-info">
@@ -54,7 +54,7 @@
 
             <!-- Add Cattle Card -->
             <div class="col-sm-4 text-center mb-3 mb-sm-0">
-                <div class="card border border-2 border-info shadow-lg bg-white">
+                <div class="card border border-1 border-info shadow-lg bg-white">
                     <div class="card-body">
                         <h5 class="card-title text-info fw-bold">ADD CATTLE</h5>
                         <p class="card-text">Add and manage cattle profiles by tracking all animals health and productivity history.</p>
@@ -72,13 +72,21 @@
             <!-- Modal for Cattle Registration -->
             <div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content border border-3 border-info">
+                    <div class="modal-content border border-2 border-info">
                         <div class="modal-header">
                             <h5 class="modal-title text-info fw-bold">Add Cattle</h5>
                             <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
+                            <form id="photo" enctype="multipart/form-data">
+                                <!--Photo-->
+                                <div class="mb-3">
+                                    <input class="form-control profile-pic-input" type="file" id="photoFile" name="photoFile" accept="image/jpeg, image/png, image/jpg"/>
+                                    <button type='submit' value='Upload' class="btn btn-info text-white fw-bold border border-3 shadow-sm">Upload</button>
+                                </div>
+                            </form>
+
                             <form id="cattleForm">
                                 <!--Cattle Name-->
                                 <div class="mb-3">
@@ -153,9 +161,10 @@
                                     </select>
                                 </div>
 
+                                <!--Status-->
                                 <div class="mb-3">
                                     <label for="status" class="form-label text-dark fw-bold">Status:</label>
-                                    <select class="form-control" name="status" id="status" required>
+                                    <select class="form-control" name="status" id="status">
                                         <option value="healthy">Healthy</option>
                                         <option value="sick">Sick</option>
                                         <option value="pregnant">Pregnant</option>
@@ -165,7 +174,7 @@
 
                                 <!--Admin Id-->
                                 <div class="mb-3">
-                                    <label for="adminId" class="form-label text-dark fw-bold">Admin ID:</label>
+                                    <label for="adminId" class="form-label text-dark fw-bold">Admin :</label>
                                     <input type="hidden" id="adminId" value="{{ admin.id }}">
                                     <p>{{ admin.username }}</p>
                                 </div>
@@ -197,7 +206,7 @@
                 <!-- Cattle List -->
                 <div class="mt-5" id='cattle-List'>
                     <h3 class="fs-3 text-info fw-bold">Cattle List</h3>
-                    <div class="card border border-info border-3 shadow-lg cattle-table">
+                    <div class="card border border-info border-1 shadow-lg cattle-table">
                         <!-- Cattle History -->
                         <div class="card bg-light border-none ">
                             <div class="table-responsive text-nowrap border">
@@ -243,7 +252,7 @@
                                         <div class="card mb-3 border border-2 border-info shadow-lg">
                                             <div class="row g-0">
                                                 <div class="col bg-light">
-                                                    <img src="./static/auth/img/p10.png" class="card-img-top" alt="cowprofile">
+                                                    <img src="./static/auth/img/p10.png" class="card-img-top" alt="cowprofile" id="cow-profile-pic">
                                                     <div class="card-body">
                                                         <p class="card-text"><span class="text-info fw-bold fs-4">Serial Number:</span> <span id="serialNumber"></span></p>
                                                         <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span> <span id="cowName"></span></p>
@@ -385,6 +394,17 @@
             const motherBreed = document.getElementById('motherBreed').value;
             const methodBred = document.getElementById('methodBred').value;
             const adminId = document.getElementById('adminId').value;
+            const profile_pic = document.getElementById('cow-profile-pic'); 
+            const photoInput = document.getElementById('photoFile');
+
+            if (!photo) {
+                alert("Please select a photo to upload.");
+                return;
+            }
+        
+            photoInput.onchange = function(){
+                profile_pic.src = URL.createObjectURL(photoInput.files[0]);
+            };
             
             console.log('Form Data:', { name, dateOfBirth, breed, status, fatherBreed, motherBreed, methodBred, adminId });
     
@@ -392,11 +412,12 @@
                 name: name,
                 date_of_birth: dateOfBirth,
                 breed: breed,
-                status: staus,
+                status: status,
                 father_breed: fatherBreed,
                 mother_breed: motherBreed,
                 method_bred: methodBred,
-                admin_id: adminId
+                admin_id: adminId,
+                photo: photo,
             };
     
             fetch('/cattle/post', {
@@ -439,6 +460,7 @@
             document.getElementById('name').value = '';
             document.getElementById('dateOfBirth').value = '';
             document.getElementById('breed').value = '';
+            document.getElementById('status').value = '';
             document.getElementById('fatherBreed').value = '';
             document.getElementById('motherBreed').value = '';
             document.getElementById('methodBred').value = '';
