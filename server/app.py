@@ -21,6 +21,7 @@ from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
 import os
 
@@ -43,6 +44,15 @@ api = Api(app)
 CORS(app)
 
 
+#folder to store cattle profile images
+UPLOAD_FOLDER = './media'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Create the instance folder if it doesn't exist
 instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
@@ -69,7 +79,6 @@ def serialize_cattle(cattle):
 @app.route('/home', methods=['GET'])
 @login_required
 def home():
-       
     cattle = Cattle.query.filter_by(admin_id=current_user.id).all()
     
     serialized_cattle = [serialize_cattle(c) for c in cattle]
@@ -162,13 +171,13 @@ def medicine():
 #machinery page
 @app.route('/machinery', methods=['GET'])
 def machinery():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    machinery_list = Cattle.query.filter_by(admin_id=current_user.id).all()
     admin_data = {
         "id": current_user.id,
         "username": current_user.username,
         "name": current_user.name,
         "farm_name": current_user.farm_name,
-        "cattle": cattle_list
+        "machinery": machinery_list
     }
     # You can pass any necessary data to worker.html here
     return render_template('machinery.html', admin = admin_data)
@@ -311,6 +320,7 @@ class CattleResource(Resource):
 
         # Convert date_of_birth from string to date object
         date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+        
 
         # Create a new cattle object linked to the current admin (current_user)
         new_cattle = Cattle(
@@ -323,6 +333,24 @@ class CattleResource(Resource):
             method_bred=method_bred,
             admin_id=current_user.id  # Link to current admin
         )
+        
+        def upload_file():
+            if request.method == 'POST':
+                # check if the post request has the file part
+                if 'file' not in request.files:
+                    flash('No file part')
+                    return redirect(request.url)
+                file = request.files['photoFile']
+                
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                return redirect(url_for('download_file', name=filename))
 
         db.session.add(new_cattle)
         db.session.commit()
