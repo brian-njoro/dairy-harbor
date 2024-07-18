@@ -5,15 +5,15 @@
 {% block content %}
     <div class="container-fluid " id='insemination-list'>
         <!--Artificial Insemination-->
-        <div class="card text-white mb-3">
+        <div class="card text-white mb-3 border border-1 border-info shadow-lg">
             <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/artificial.jpg')}}" alt="Image">
             <div class="card-img-overlay">
-                <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Artificial Insemination</h3>
-            <p class="card-text text-white">Artificial Insemination:<br> An in-depth review of your livestock's breeding schedules, success rates, and genetic data, all in one convenient location.</p>
-            <!-- Button to add new cattle -->
+                <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">ARTIFICIAL INSEMINATION</h3>
+            <p class="card-text text-white">Record AI procedures to manage breeding schedules, track genetic improvements, and enhance your herd's reproductive efficiency.</p>
+            <!-- Button to add newly inseminated cattle -->
             <div class="mb-3">
-                <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleInsemination" id='cattleRegistration'>
-                    A.I. Cattle
+                <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleInsemination" id='cattleInsemination'>
+                    A. Inseminate
                 </button>
             </div>
             <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
@@ -23,7 +23,7 @@
         <!-- Modal for Cattle Artificial Insemination -->
         <div class="modal fade" id="modalCattleInsemination" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border border-3 border-info">
+                <div class="modal-content border border-1 border-info">
                     <div class="modal-header">
                         <h5 class="modal-title text-info fw-bold">Artificial Inseminaton</h5>
                         <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -106,8 +106,8 @@
 
         <!-- Artificial Insemination List -->
         <div class="mt-5" id='AInsemination-List'>
-            <h3 class="fs-3 text-info fw-bold">Vaccination List</h3>
-            <div class="card border border-info border-3 shadow-lg cattle-table">
+            <h3 class="fs-3 text-info fw-bold text-center">Vaccination List</h3>
+            <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- Artificial Insemination History -->
                 <div class="card bg-light border-none ">
                     <div class="table-responsive text-nowrap border">

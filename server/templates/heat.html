@@ -6,17 +6,17 @@
     <div class="container-fluid" id='dehorn-list'>
         <!--Cow Heat-->
         <div class="col mb-3">
-            <div class="card text-white mb-3">
+            <div class="card text-white mb-3 border border-1 border-info shadow-lg">
                 <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;top;" src="{{url_for('static',filename='auth/img/heat.jpg')}}" alt="Image">
 
                 <div class="card-img-overlay">
                     <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">HEAT DETECTION</h3>
-                    <p class="card-text text-white">Manage and schedule dehorning procedures efficiently to ensure the safety and well-being of your livestock with our dehorning management tool.</p>
+                    <p class="card-text text-white">Monitor and record your cattle's estrus periods to optimize breeding timing and improve overall herd fertility rates.</p>
 
                     <!-- Button to add new pregnant cattle -->
                     <div class="mb-3">
                         <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalheatCattle" id='cattleheatdetection'>
-                            Heat
+                            Detect Heat
                         </button>
                     </div>
 
@@ -28,10 +28,10 @@
         <!-- Modal for Pregnant Cattle -->
         <div class="modal fade" id="modalheatCattle" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content border border-3 border-info">
+                <div class="modal-content border border-1 border-info">
                     <div class="modal-header">
                         <h5 class="modal-title text-info fw-bold">Cattle Heat Detection</h5>
-                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close bg-danger border border-1 border-info" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
@@ -70,8 +70,8 @@
 
         <!-- heat detection List -->
         <div class="mt-5" id='heatDetection-List'>
-            <h3 class="fs-3 text-info fw-bold">Heat Detection List</h3>
-            <div class="card border border-info border-3 shadow-lg cattle-table">
+            <h3 class="fs-3 text-info fw-bold text-center">Heat Detection List</h3>
+            <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- Heat Detection History -->
                 <div class="card bg-light border-none ">
                     <div class="table-responsive text-nowrap border">

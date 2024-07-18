@@ -334,10 +334,16 @@ class CattleResource(Resource):
             admin_id=current_user.id  # Link to current admin
         )
         
-        def upload_file():
+        
+        db.session.add(new_cattle)
+        db.session.commit()
+
+        return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
+    
+    def upload_file():
             if request.method == 'POST':
                 # check if the post request has the file part
-                if 'file' not in request.files:
+                if 'photoFile' not in request.files:
                     flash('No file part')
                     return redirect(request.url)
                 file = request.files['photoFile']
@@ -352,10 +358,6 @@ class CattleResource(Resource):
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 return redirect(url_for('download_file', name=filename))
 
-        db.session.add(new_cattle)
-        db.session.commit()
-
-        return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
 
 
 
@@ -595,6 +597,49 @@ def natural_insemination():
     # You can pass any necessary data to natural.html here
     return render_template('NInsemination.html', admin = admin_data)
 
+#Calving
+@app.route('/calving',methods=['GET'])
+def calving():    
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to calving.html here
+    return render_template('calving.html', admin = admin_data)
+
+class CalvingResource(Resource):
+    @login_required
+    def calf(self):
+        data = request.get_json()
+        cattle_id = data.get('serialNumber')
+        calf_id = data.get('calfSerialNumber')
+        date_of_calving = data.get('dateOfCalving')
+        calving_outcome = data.get('calvingOutcome')
+        worker_id = data.get('workerId')
+
+        # Convert date_of_calving from string to date object
+        date_of_calving = datetime.strptime(date_of_calving, '%Y-%m-%d').date()
+        
+
+        # Create a new calf object linked to the current admin (current_user)
+        new_calf = Calf(
+            cattle_id = cattle_id,
+            calf_id = calf_id,
+            date_of_calving=date_of_calving,
+            calving_outcome = calving_outcome,
+            worker_id = worker_id,
+        )
+        
+        
+        db.session.add(new_calf)
+        db.session.commit()
+
+        return {'message': 'Calf created successfully', 'calf': new_calf.serial_number}, 201
+
 # POST vaccination record
 class VaccinationResource(Resource):
     def post(self):
@@ -651,9 +696,6 @@ class VaccinationByCattleIdResource(Resource):
 
         return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
 
-    
-    
-
 # POST Dehorning record
 class DehorningResource(Resource):
     def post(self):
@@ -703,7 +745,6 @@ class DehorningByCattleIdResource(Resource):
 
         return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
     
-
     
 # PATCH dehorning and vaccination by id
 class DehorningByIdResource(Resource):
@@ -757,7 +798,6 @@ class GetDehorningResource(Resource):
                 'cattle_id': record.cattle_id
             })
         return result, 200
-
 
 
 #GET dehorning records by cattle id
@@ -817,8 +857,6 @@ class GetVaccinationByCattleIdResource(Resource):
             return result, 200
         else:
             return {'message': 'Vaccination records not found for this cattle ID'}, 404
-        
-
 
 
 # PERIODIC PROCEDURES ROUTES
@@ -1063,12 +1101,8 @@ class WorkerResource(Resource):
         return {'message': 'Worker deleted successfully'}, 200        
 
 
-
-
 # Admin and farm registration routes
-
-
-#   RESOURCES TO VIEW AND DELETE ADMIN
+# RESOURCES TO VIEW AND DELETE ADMIN
 #
 #
 class AdminViewResource(Resource):
@@ -1118,12 +1152,9 @@ class AdminListResource(Resource):
             # Debugging line to catch and log any errors
             print(f"Error retrieving admins: {e}")
             return {'error': str(e)}, 500
-    
-
 
 
 ## RESOURCES ##
-
 api.add_resource(CattleResource, '/cattle/post') # POST cattle
 api.add_resource(CattleGetResource, '/cattle/get') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 

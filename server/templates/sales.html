@@ -7,7 +7,7 @@
     
     <!--Add Sale Card-->
     <div class="col mb-3">
-        <div class="card text-white mb-3">
+        <div class="card text-white mb-3 border border-info border-1 shadow-lg">
             <img class="card-img lazy" style="filter:brightness(70%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/service-2.jpg')}}" alt="Image">
 
             <div class="card-img-overlay">
@@ -29,10 +29,10 @@
     <!-- Modal for sales -->
     <div class="modal fade" id="modalMilkSales" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border border-3 border-info">
+            <div class="modal-content border border-1 border-info">
                 <div class="modal-header">
-                    <h5 class="modal-title text-info fw-bold">Sales</h5>
-                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title text-info fw-bold text-center">Sales</h5>
+                    <button type="button" class="btn-close bg-danger border border-info border-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
@@ -75,8 +75,8 @@
 
     <!-- Sales List -->
     <div class="mt-5" id='sales-List'>
-        <h3 class="fs-3 text-info fw-bold">Cattle List</h3>
-        <div class="card border border-info border-3 shadow-lg cattle-table">
+        <h3 class="fs-3 text-info fw-bold text-center">Sales List</h3>
+        <div class="card border border-info border-1 shadow-lg cattle-table">
             <!-- Sales History -->
             <div class="card bg-light border-none ">
                 <div class="table-responsive text-nowrap border">
