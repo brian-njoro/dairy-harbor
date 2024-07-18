@@ -149,7 +149,17 @@
                                     <label for="methodBred" class="form-label text-dark fw-bold">Method Bred:</label>
                                     <select class="form-control" name="methodBred" id="methodBred" required>
                                         <option value="Natural">Natural</option>
-                                        <option value="Artificial Insemination">Artificial Insemination</option>
+                                        <option value="ArtificialInsemination">Artificial Insemination</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="status" class="form-label text-dark fw-bold">Status:</label>
+                                    <select class="form-control" name="status" id="status" required>
+                                        <option value="healthy">Healthy</option>
+                                        <option value="sick">Sick</option>
+                                        <option value="pregnant">Pregnant</option>
+                                        <option value="weaning">Weaning</option>
                                     </select>
                                 </div>
 
@@ -198,6 +208,7 @@
                                             <th class="text-info fw-bold">Serial Number</th>
                                             <th class="text-info fw-bold">Name</th>
                                             <th class="text-info fw-bold">Breed</th>
+                                            <th class="text-info fw-bold">Status</th>
                                             <th class="text-info fw-bold">Date Of Birth</th>
                                             <th class="text-info fw-bold">Delete</th>
                                             
@@ -329,6 +340,7 @@
                             <td>${cattle.serial_number}</td>
                             <td>${cattle.name}</td>
                             <td>${cattle.breed}</td>
+                            <td>${cattle.status}</td>
                             <td>${cattle.date_of_birth}</td>
                             <td><button class="btn btn-danger btn-sm" onclick="deleteCattle('${cattle.serial_number}')">Delete</button></td>
                         `;
@@ -368,17 +380,19 @@
             const name = document.getElementById('name').value;
             const dateOfBirth = document.getElementById('dateOfBirth').value;
             const breed = document.getElementById('breed').value;
+            const status = document.getElementById('status').value;
             const fatherBreed = document.getElementById('fatherBreed').value;
             const motherBreed = document.getElementById('motherBreed').value;
             const methodBred = document.getElementById('methodBred').value;
             const adminId = document.getElementById('adminId').value;
             
-            console.log('Form Data:', { name, dateOfBirth, breed, fatherBreed, motherBreed, methodBred, adminId });
+            console.log('Form Data:', { name, dateOfBirth, breed, status, fatherBreed, motherBreed, methodBred, adminId });
     
             const formData = {
                 name: name,
                 date_of_birth: dateOfBirth,
                 breed: breed,
+                status: staus,
                 father_breed: fatherBreed,
                 mother_breed: motherBreed,
                 method_bred: methodBred,

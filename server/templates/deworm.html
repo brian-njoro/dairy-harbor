@@ -13,9 +13,9 @@
                     <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">DEWORMING</h3>
                     <p class="card-text text-white">Welcome to your Deworming Report Card: a detailed summary of your livestock's deworming schedules, treatments, and overall health status</p>
 
-                    <!-- Button to add new cattle -->
+                    <!-- Button to deworm new cattle -->
                     <div class="mb-3">
-                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleDeworming" id='cattleRegistration'>
+                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleDeworming" id='cattleDeworm'>
                             Deworm
                         </button>
                     </div>
@@ -65,12 +65,18 @@
                                 <label for="diseaseName" class="form-label fw-bold text-dark">Name of disease:</label>
                                 <input class="form-control" name="diseaseName" id="diseaseName" required>
                             </div>
+
+                            <!-- Notes -->
+                            <div class="mb-3">
+                                <label for="dewormnotes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='dewormnotes' id='dewormnotes' class='form-control'></textarea>
+                            </div>
                         </form>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                        <button type="button" class="btn btn-info" id="dewormCattleButton">Submit</button>
                     </div>
 
                 </div>
