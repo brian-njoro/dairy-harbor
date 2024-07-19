@@ -5,21 +5,47 @@ from flask import Flask, request, jsonify, session, redirect, url_for,make_respo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
-from models.admin import Admin
-from models.cattle import Cattle
-from models.customer import Customer
-from models.dehorning import Dehorning
-from models.equipment import Equipment
-from models.inventory import Inventory
-from models.payment import Payment
-from models.periodic import PeriodicTreatment
-from models.pestControl import PestControl
-from models.product import Product
-from models.rawmaterials import RawMaterial
-from models.treatment import Treatment
-from models.vaccination import Vaccination
-from models.worker import Worker
-from models.cattleWorkerAssociation import cattle_worker_association
+from models.models import (
+    Farmer,
+    Worker,
+    Cattle,
+    Dehorning,
+    Deworming,
+    Vaccination,
+    Treatment,
+    HeatDetection,
+    ArtificialInsemination,
+    NaturalInsemination,
+    LogMessage,
+    Notification,
+    Pregnancy,
+    Miscarriage,
+    Calving,
+    CattleDeath,
+    MaintenanceCost,
+    MilkProduction,
+    MilkSales,
+    Equipment,
+    Medicine,
+    Feeds,
+    cattle_worker_association
+)
+
+# from models.admin import Admin
+# # from models.cattle import Cattle
+# from models.customer import Customer
+# # from models.dehorning import Dehorning
+# # from models.equipment import Equipment
+# from models.inventory import Inventory
+# from models.payment import Payment
+# from models.periodic import PeriodicTreatment
+# from models.pestControl import PestControl
+# from models.product import Product
+# from models.rawmaterials import RawMaterial
+# # from models.treatment import Treatment
+# # from models.vaccination import Vaccination
+# # from models.worker import Worker
+# # from models.cattleWorkerAssociation import cattle_worker_association
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
 import os
