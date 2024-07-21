@@ -108,17 +108,8 @@ def login():
 
 #myprofile page
 @app.route('/myProfile', methods=['GET'])
-@login_required
 def my_profile():
-
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        
-    }
-    return render_template('myProfile.html', admin = admin_data)
+    return render_template('myProfile.html')
 
 #adminLogin page
 @app.route('/adminLogin', methods=['GET'])
