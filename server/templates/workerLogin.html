@@ -215,22 +215,22 @@
 
     <script>
       $(document).ready(function() {
-          $('#loginButton').on('click', function(event) {
+          $('#workerLoginButton').on('click', function(event) {
               event.preventDefault();
-
-              var emailUsername = $('#email-username').val();
+    
+              var emailUsername = $('#workerEmailUsername').val();
               var password = $('#password').val();
-
+    
               if (!emailUsername || !password) {
                   alert('Email/Username and password are required.');
                   return;
               }
-
+    
               var formData = {
-                  username: emailUsername,
+                  email_address: emailUsername,
                   password: password
               };
-
+    
               $.ajax({
                   url: '/login/worker',
                   type: 'POST',
@@ -244,13 +244,13 @@
                       }
                   },
                   error: function(xhr) {
-                      alert('Error: ' + xhr.responseJSON.message);
+                      alert('Error: ' + (xhr.responseJSON ? xhr.responseJSON.message : 'Unknown error'));
                   }
               });
           });
       });
-  </script>
-
+    </script>
+    
 
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{url_for('static', filename='auth/static/assets/vendor/libs/jquery/jquery.js')}}"></script>

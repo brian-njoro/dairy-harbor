@@ -5,6 +5,9 @@ from flask import Flask, request, jsonify, session, redirect, url_for,make_respo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
+import logging
+logging.basicConfig(level=logging.DEBUG,  # Set the logging level to DEBUG
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 from models.models import (
     Farmer,
     Worker,
@@ -41,7 +44,9 @@ from .schemas import (
 )
 
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
+from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
+
+
 
 # Utility function to save to database
 def save_to_db(instance):
@@ -53,40 +58,6 @@ def delete_from_db(instance):
     db.session.delete(instance)
     db.session.commit()
 
-# Farmer signup resource
-class FarmerSignupResource(Resource):
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        email_address = data.get('email_address')
-        farm_name = data.get('farm_name')
-        password = generate_password_hash(data.get('password'))
-        phone_number = data.get('phone_number')
-        address = data.get('address')
-
-        new_farmer = Farmer(name=name, email_address=email_address, farm_name=farm_name, password=password, phone_number=phone_number, address=address)
-        save_to_db(new_farmer)
-        
-        # Log the user in
-        login_user(new_farmer)
-        
-        # Redirect to the home page
-        return jsonify({'message': 'Farmer registered and logged in successfully', 'redirect': url_for('home')})
-
-# Farmer login resource
-class FarmerLoginResource(Resource):
-    def post(self):
-        data = request.get_json()
-        email_address = data.get('email_address')
-        password = data.get('password')
-        
-        farmer = Farmer.query.filter_by(email_address=email_address).first()
-        if farmer and check_password_hash(farmer.password, password):
-            login_user(farmer)
-            return jsonify({'message': 'Login successful', 'redirect': url_for('home')})
-        else:
-            return jsonify({'message': 'Invalid credentials'}), 401
-
 # Farmer delete resource
 class FarmerDeleteResource(Resource):
     def delete(self, farmer_id):
@@ -97,35 +68,10 @@ class FarmerDeleteResource(Resource):
         else:
             return jsonify({'message': 'Farmer not found'}), 404
 
-# Worker signup resource
-class WorkerSignupResource(Resource):
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        email_address = data.get('email_address')
-        password = generate_password_hash(data.get('password'))
-        phone_number = data.get('phone_number')
-        address = data.get('address')
-        role = data.get('role')
-        
-        new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role)
-        save_to_db(new_worker)
-        
-        return jsonify({'message': 'Worker registered successfully'})
 
-# Worker login resource
-class WorkerLoginResource(Resource):
-    def post(self):
-        data = request.get_json()
-        email_address = data.get('email_address')
-        password = data.get('password')
-        
-        worker = Worker.query.filter_by(email_address=email_address).first()
-        if worker and check_password_hash(worker.password, password):
-            login_user(worker)  # Log the worker in
-            return redirect(url_for('worker_dashboard'))  # Redirect to worker dashboard
-        else:
-            return jsonify({'message': 'Invalid credentials'}), 401
+
+
+
 
             
 # Worker view resource

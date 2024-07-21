@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Send the registration request
-        fetch('/worker/signup', {
+        fetch('/signup/worker', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
