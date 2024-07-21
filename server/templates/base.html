@@ -428,10 +428,10 @@ data-template="vertical-menu-template-free">
                                         </li>
 
                                         <li>
-                                            <a class="dropdown-item" href="/myProfile">
+                                            <div class="dropdown-item cursor-pointer">
                                                 <i class="bx bx-user me-2"></i>
                                                 <span class="align-middle" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>My Profile</span>
-                                            </a>
+                                            </div>
                                         </li>
 
                                         <li>
@@ -446,7 +446,7 @@ data-template="vertical-menu-template-free">
                                         </li>
 
                                         <li>
-                                            <a class="dropdown-item" href="javascript:void(0);">
+                                            <a class="dropdown-item" href="/index">
                                                 <i class="bx bx-power-off me-2"></i>
                                                 <span class="align-middle">Log Out</span>
                                             </a>
@@ -467,7 +467,7 @@ data-template="vertical-menu-template-free">
                             <div class="modal-content border border-3 border-info">
 
                                 <div class="modal-header">
-                                    <h5 class="modal-title text-info fw-bold fs-2">Cow Profile</h5>
+                                    <h5 class="modal-title text-info fw-bold fs-2">My Profile</h5>
                                     <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                     
@@ -478,7 +478,9 @@ data-template="vertical-menu-template-free">
                                             <div class="card mb-3 border border-2 border-info shadow-lg">
                                                 <div class="row g-0">
                                                     <div class="col bg-light">
-                                                        <img src="./static/auth/img/Brian.jpeg" class="card-img-top" alt="cowprofile">
+                                                        <div class="px-auto ms-5">
+                                                            <img src="./static/auth/img/Brian.jpeg" class="card-img-top border border-1 border-info w-px-100 h-auto rounded-circle ms-5" alt="myprofile">
+                                                        </div>
                                                         <div class="card-body">
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>Name<span id="Name"></span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">Farm name</span></p>
