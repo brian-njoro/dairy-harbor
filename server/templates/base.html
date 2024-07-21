@@ -87,7 +87,7 @@ data-template="vertical-menu-template-free">
                     </div>
         
                     <div class="menu-inner-shadow"></div>
-                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{admin.farm_name}}</h1>
+                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">Farem name</h1>
         
                     <ul class="menu-inner py-1 mt-3">
                         <!-- Dashboards -->
@@ -130,8 +130,8 @@ data-template="vertical-menu-template-free">
                             </a>
         
                                 <ul class="menu-sub menu-list">
-                                    <!--Treatment-->
-                                    <li class="menu-item mb-1 ">
+                                     <!--Treatment-->
+                                     <li class="menu-item mb-1 ">
                                         <a href="/treatment" class="menu-link text-dark fs-6 fw-bold" target="_self" >
                                             <div data-i18n="without menu">Treatment</div>
                                         </a>
@@ -353,6 +353,10 @@ data-template="vertical-menu-template-free">
                 <!-- Layout container -->
                 <div class="layout-page">
 
+                    <div class="row bg-info border-bottom border-3 border-dark shadow-sm px-5 mt-0">
+                        <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">Farm name</h1>
+                    </div>
+
                     <!-- Navbar -->
                     <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center shadow-lg bg-navbar-theme border-info border-3 border-bottom  fixed-top rounded-pill" id="layout-navbar">
 
@@ -412,8 +416,8 @@ data-template="vertical-menu-template-free">
                                                     </div>
 
                                                     <div class="flex-grow-1">
-                                                        <span class="fw-medium d-block">{{admin.name}}</span>
-                                                        <small class="text-muted">Admin</small>
+                                                        <span class="fw-medium d-block">Farmer name</span>
+                                                        <small class="text-muted">Farmer</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -478,13 +482,14 @@ data-template="vertical-menu-template-free">
                                                             <img src="./static/auth/img/Brian.jpeg" class="card-img-top border border-1 border-info w-px-100 h-auto rounded-circle ms-5" alt="myprofile">
                                                         </div>
                                                         <div class="card-body">
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name :</span><span id="Name" class="text-dark fw-bold"> {{admin.name}}</span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name : </span> <span id="farmName" class="text-dark fw-bold"> {{admin.farm_name}}</span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email : </span><span id="email" class="text-dark fw-bold"> {{admin.username}}</span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmLocation">{{admin.farm_location}}</span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number : </span><span id="phoneNumber" class="text-dark fw-bold"> {{admin.phone_number}}</span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Cattle : </span><span id="cattleNo"></span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Workers : </span><span id="workersNo"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>Name<span id="Name"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">Farm name</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email:</span><span id="email"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Id:</span><span id="farmId"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmId"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number:</span><span id="phoneNumber"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Cattle:</span><span id="cattleNo"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Workers:</span><span id="workersNo"></span></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -580,6 +585,33 @@ data-template="vertical-menu-template-free">
                 });
             });
 
+// HANDLING LOGOUT FOR FARMER
+
+    // Function to handle logout
+    async function handleLogout() {
+        const response = await fetch('/farmer/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Redirect to login page after successful logout
+            window.location.href = data.redirect;
+        } else {
+            // Handle logout error (optional)
+            console.error('Logout failed:', data.message);
+        }
+    }
+
+    // Add event listeners to the logout links
+    document.getElementById('logoutLink1').addEventListener('click', handleLogout);
+    document.getElementById('logoutLink2').addEventListener('click', handleLogout);
+
+
 
         </script>
 
@@ -607,9 +639,7 @@ data-template="vertical-menu-template-free">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <!-- Include ApexCharts JS -->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- Include your custom script -->
-        <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -627,10 +657,7 @@ data-template="vertical-menu-template-free">
 
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
-        <script src="{{url_for('static',filename='js/addCattle.js')}}" async></script>
-        <script src="{{url_for('static',filename='js/milkproduction.js')}}" async></script>
         <script src="{{url_for('static',filename='js/login.js')}}"></script>
-        <script src="{{url_for('static',filename='js/milkproduction.js')}}"></script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
