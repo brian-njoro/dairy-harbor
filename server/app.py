@@ -3,8 +3,11 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS
 from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import Session
 from flask_migrate import Migrate
-from datetime import datetime
+from datetime import datetime, timedelta
+import logging
+logging.basicConfig(level=logging.DEBUG)
 from models.models import (
     Farmer,
     Worker,
@@ -31,11 +34,7 @@ from models.models import (
     cattle_worker_association
 )
 from models.ApiResources import (
-    FarmerSignupResource,
-    FarmerLoginResource,
     FarmerDeleteResource,
-    WorkerSignupResource,
-    WorkerLoginResource,
     WorkerViewResource,
     WorkerViewbyIdResource,
     WorkerEditResource,
@@ -66,7 +65,9 @@ from models.ApiResources import (
     RecordLogMessageResource,
     RecordNotificationResource
 )
-from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
 import os
 
 
@@ -108,21 +109,139 @@ print(f"Database path: {database_path}")
 
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'index'  # Change 'login' to your login view endpoint
+
 
 # Add your login_manager.login_view to the route you want users to see if not logged in
 @login_manager.user_loader
 def load_user(user_id):
-    farmer = Farmer.query.get(int(user_id))
-    if farmer:
-        return farmer
-
-    worker = Worker.query.get(int(user_id))
-    if worker:
-        return worker
-
+    user_type = session.get('user_type')
+    if user_type == 'farmer':
+        return Farmer.query.get(int(user_id))
+    elif user_type == 'worker':
+        return Worker.query.get(int(user_id))
     return None
 
-login_manager.login_view = 'index'
+# Utility function to save to database
+def save_to_db(instance):
+    db.session.add(instance)
+    db.session.commit()
+
+# Utility function to delete from database
+def delete_from_db(instance):
+    db.session.delete(instance)
+    db.session.commit()    
+
+@app.route('/signup/farmer', methods=['POST'])
+def farmer_signup():
+    data = request.get_json()
+    name = data.get('name')
+    email_address = data.get('email_address')
+    farm_name = data.get('farm_name')
+    password = generate_password_hash(data.get('password'))
+    phone_number = data.get('phone_number')
+    address = data.get('address')
+
+    new_farmer = Farmer(name=name, email_address=email_address, farm_name=farm_name, password=password, phone_number=phone_number, address=address)
+    save_to_db(new_farmer)
+    
+    # Log the user in
+    login_user(new_farmer)
+    
+    # Redirect to the home page
+    return jsonify({'message': 'Farmer registered and logged in successfully', 'redirect': url_for('home')})
+
+@app.route('/login/farmer', methods=['POST'])
+def farmer_login():
+    data = request.get_json()
+    email_address = data.get('email_address')
+    password = data.get('password')
+
+    logging.debug(f'Received login request with email: {email_address}')
+
+    farmer = Farmer.query.filter_by(email_address=email_address).first()
+    if farmer and check_password_hash(farmer.password, password):
+        logging.debug('Credentials are valid')
+
+        if current_user.is_authenticated:
+            logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
+            if isinstance(current_user, Worker):
+                logging.debug('Current user is a Worker, logging out')
+                logout_user()
+                session.clear()  # Clear session data
+                logging.debug('Session cleared after Worker logout')
+
+        login_user(farmer)
+        session['user_type'] = 'farmer'  # Add user_type to session
+        logging.debug(f'Logged in Farmer: {farmer}')
+        session.permanent = True
+        app.permanent_session_lifetime = timedelta(minutes=30)
+
+        logging.debug(f'Current user after login: {current_user}')
+        logging.debug(f'Session after login: {session}')
+
+        response = jsonify({'message': 'Login successful', 'redirect': url_for('home')})
+        response.status_code = 200
+        return response
+    else:
+        logging.debug('Invalid credentials provided')
+        return jsonify({'message': 'Invalid credentials'}), 401
+
+
+
+@app.route('/signup/worker', methods=['POST'])
+def worker_signup():
+    data = request.get_json()
+    name = data.get('name')
+    email_address = data.get('email_address')
+    password = generate_password_hash(data.get('password'))
+    phone_number = data.get('phone_number')
+    address = data.get('address')
+    role = data.get('role')
+    
+    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role)
+    save_to_db(new_worker)
+    
+    return jsonify({'message': 'Worker registered successfully'})
+
+@app.route('/login/worker', methods=['POST'])
+def worker_login():
+    data = request.get_json()
+    email_address = data.get('email_address')
+    password = data.get('password')
+
+    logging.debug(f'Received login request with email: {email_address}')
+
+    worker = Worker.query.filter_by(email_address=email_address).first()
+    if worker and check_password_hash(worker.password, password):
+        logging.debug('Credentials are valid')
+
+        if current_user.is_authenticated:
+            logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
+            if isinstance(current_user, Farmer):
+                logging.debug('Current user is a Farmer, logging out')
+                logout_user()
+                session.clear()  # Clear session data
+                logging.debug('Session cleared after Farmer logout')
+
+        login_user(worker)
+        session['user_type'] = 'worker'  # Add user_type to session
+        logging.debug(f'Logged in Worker: {worker}')
+        session.permanent = True
+        app.permanent_session_lifetime = timedelta(minutes=30)
+
+        logging.debug(f'Current user after login: {current_user}')
+        logging.debug(f'Session after login: {session}')
+
+        response = jsonify({'message': 'Login successful', 'redirect': url_for('worker_dashboard')})
+        response.status_code = 200
+        return response
+    else:
+        logging.debug('Invalid credentials provided')
+        return jsonify({'message': 'Invalid credentials'}), 401
+
+
+
 
 
 @app.route('/home', methods=['GET'])
@@ -254,13 +373,15 @@ def miscarriage():
 def pestControl():
     return render_template('pestControl.html')
 
-@app.route('/worker_dashboard')
-@login_required
+@app.route('/worker_dashboard', methods=['GET'])
 def worker_dashboard():
-    if isinstance(current_user, Worker):
-        return f'Welcome to the worker dashboard, {current_user.name}!'
-    else:
-        return redirect(url_for('index'))  # Redirect to home if not a worker
+    logging.debug(f'Current user in worker_dashboard: {current_user}')
+    if session.get('user_type') != 'worker':
+        logging.debug('Current user is not a Worker, redirecting')
+        return redirect(url_for('login'))  # Redirect to login if current user is not a Worker
+    # Render worker dashboard
+    return render_template('worker_dashboard.html')
+
 
 
 ##Inventory
@@ -337,13 +458,9 @@ def cattle():
 
 
 # API routes for Farmer
-api.add_resource(FarmerSignupResource, '/farmer/signup')
-api.add_resource(FarmerLoginResource, '/farmer/login')
 api.add_resource(FarmerDeleteResource, '/farmer/delete/<int:farmer_id>')
 
 # API routes for Worker
-api.add_resource(WorkerSignupResource, '/worker/signup')
-api.add_resource(WorkerLoginResource, '/worker/login')
 api.add_resource(WorkerViewResource, '/worker/view')
 api.add_resource(WorkerViewbyIdResource, '/worker/view/<int:worker_id>')
 api.add_resource(WorkerEditResource, '/worker/edit/<int:worker_id>')
