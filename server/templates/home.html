@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
+{% block head %}
 {% block title %}Home{% endblock %}
+{% endblock %}
 
 {% block content %}
     <!-- Content -->
@@ -12,7 +14,7 @@
                     <div class="d-flex align-items-end row">
                         <div class="col-sm-7">
                             <div class="card-body">
-                                <h5 class="card-title text-primary">Congratulations {{admin.name}}! 🎉</h5>
+                                <h5 class="card-title text-primary">Congratulations {{ farmer_name }}! 🎉</h5>
                                 <p class="mb-4">
                                 You have done <span class="fw-medium">0%</span> more sales today. Check your new badge in
                                 your profile.
@@ -68,8 +70,8 @@
                                     </div>
                                 </div>
 
-                                <span class="fw-medium d-block mb-1">Profit</span>
-                                <h6>Ksh. 0</h6>
+                                <span class="fw-medium d-block mb-1">Total Production in Litres</span>
+                                <h6>{{total_production}} Litres</h6>
                                 <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +0%</small>
                             </div>
                         </div>
@@ -105,7 +107,7 @@
                                 </div>
 
                                 <span>Sales</span>
-                                <h6>Ksh. 0</h6>
+                                <h6>{{ total_sales }}</h6>
                                 <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +0%</small>
                             </div>
                         </div>
@@ -561,5 +563,10 @@
         </div>
     </div>
     <!-- / Content -->
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
+
+
 
 {% endblock %}
