@@ -156,17 +156,29 @@
                     <label for="name" class="form-label text-info">Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" autofocus>
                 </div>
-        
+
+                <!--Phone Number-->
+                <div class="mb-3">
+                  <label for="phone" class="form-label text-info">Phone Number</label>
+                  <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" placeholder="Enter your Phone Number">
+                </div>
+
                 <!-- Farm name -->
                 <div class="mb-3">
-                    <label for="farmName" class="form-label text-info">Farm name</label>
-                    <input type="text" class="form-control" id="farmName" name="farmName" placeholder="Enter your Farm Name">
+                  <label for="farmName" class="form-label text-info">Farm name</label>
+                  <input type="text" class="form-control" id="farmName" name="farmName" placeholder="Enter your Farm Name">
+                </div>
+
+                <!-- Location/ Address -->
+                <div class="mb-3">
+                  <label for="Location" class="form-label text-info">Farm's Location / Address</label>
+                  <input type="text" class="form-control" id="farmLocation" name="farmLocation" placeholder="Enter your Location or Address">
                 </div>
         
                 <!-- Username -->
                 <div class="mb-3">
-                    <label for="username" class="form-label text-info">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
+                    <label for="username" class="form-label text-info">Username or Email</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your Username or Email">
                 </div>
         
                 <!-- Password -->
@@ -205,7 +217,7 @@
 
               <p class="text-center">
                 <span>Already have an account?</span>
-                <a href="/login">
+                <a href="/adminLogin" target="_self">
                   <span>Sign in instead</span>
                 </a>
               </p>
@@ -229,13 +241,15 @@
 
               // Validate form inputs
               var name = $('#name').val();
+              var phoneNumber = $('#phoneNumber').val();
               var farmName = $('#farmName').val();
+              var farmLocation = $('#farmLocation').val();
               var username = $('#username').val();
               var password = $('#password').val();
               var confirmPassword = $('#confirmPassword').val();
               var terms = $('#terms-conditions').is(':checked');
 
-              if (!name || !farmName || !username || !password || !confirmPassword || !terms) {
+              if (!name || !farmName || !phoneNumber || !farmLocation || !username || !password || !confirmPassword || !terms) {
                   alert('All fields are required and you must agree to the terms.');
                   return;
               }
@@ -247,7 +261,9 @@
 
               var formData = {
                   name: name,
+                  phone_number:phoneNumber,
                   farm_name: farmName,
+                  farm_location: farmLocation,
                   username: username,
                   password: password
               };

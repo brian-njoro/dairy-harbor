@@ -21,6 +21,7 @@ from models.vaccination import Vaccination
 from models.worker import Worker
 from models.cattleWorkerAssociation import cattle_worker_association
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
 import os
 
@@ -43,6 +44,15 @@ api = Api(app)
 CORS(app)
 
 
+#folder to store cattle profile images
+UPLOAD_FOLDER = './media'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Create the instance folder if it doesn't exist
 instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
@@ -53,12 +63,8 @@ if not os.path.exists(instance_path):
 print(f"Database path: {database_path}")
 #Home Page
 
-## Home route
-# Example route for admin homepage
-@app.route('/home', methods=['GET'])
-@login_required
-def home():
-    def serialize_cattle(cattle):
+### SERIALIZE CATTLE FUNCTION FOR TEMPLATE RENDERING: ###
+def serialize_cattle(cattle):
         return {
             "serial_number": cattle.serial_number,
             "name": cattle.name,
@@ -69,7 +75,10 @@ def home():
             "method_bred": cattle.method_bred,
             "admin_id": cattle.admin_id
         }
-    
+# Example route for admin homepage
+@app.route('/home', methods=['GET'])
+@login_required
+def home():
     cattle = Cattle.query.filter_by(admin_id=current_user.id).all()
     
     serialized_cattle = [serialize_cattle(c) for c in cattle]
@@ -102,9 +111,14 @@ def sign_up():
     return render_template('signup.html')
 
 #workerLogin page
-@app.route('/workerLogin', methods=['GET'])
+@app.route('/login/worker', methods=['GET'])
 def login():
     return render_template('workerLogin.html')
+
+#myprofile page
+@app.route('/myProfile', methods=['GET'])
+def my_profile():
+    return render_template('myProfile.html')
 
 #adminLogin page
 @app.route('/adminLogin', methods=['GET'])
@@ -115,6 +129,13 @@ def admin_login():
 @app.route('/forgot', methods=['GET'])
 def forgot():
     return render_template('forgot.html')
+
+
+@app.route('/worker_dashboard', methods=['GET'])
+@login_required
+def worker_dashboard():
+    return render_template('worker_dashboard.html')
+
 
 ##Inventory
 #feeds page
@@ -130,6 +151,8 @@ def feeds():
     }
     # You can pass any necessary data to worker.html here
     return render_template('feeds.html', admin = admin_data)
+
+
 #medicine page
 @app.route('/medicine', methods=['GET'])
 def medicine():
@@ -143,16 +166,18 @@ def medicine():
     }
     # You can pass any necessary data to worker.html here
     return render_template('medicine.html', admin = admin_data)
+
+
 #machinery page
 @app.route('/machinery', methods=['GET'])
 def machinery():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    machinery_list = Cattle.query.filter_by(admin_id=current_user.id).all()
     admin_data = {
         "id": current_user.id,
         "username": current_user.username,
         "name": current_user.name,
         "farm_name": current_user.farm_name,
-        "cattle": cattle_list
+        "machinery": machinery_list
     }
     # You can pass any necessary data to worker.html here
     return render_template('machinery.html', admin = admin_data)
@@ -160,7 +185,7 @@ def machinery():
 
 #worker Profile
 @app.route('/workerP',methods=['GET'])
-def worker():
+def worker_profile():
     cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
 
     admin_data = {
@@ -188,6 +213,8 @@ def worker_List():
     # You can pass any necessary data to worker.html here
     return render_template('workerList.html', admin = admin_data)
 
+
+
 ### CATTLE ROUTES ##
 # Route to display cattle data
 @app.route('/cattle')
@@ -209,7 +236,9 @@ class AdminSignupResource(Resource):
     def post(self):
         data = request.get_json()
         name = data.get('name')
+        phone_number = data.get('phone_number')
         farm_name = data.get('farm_name')
+        farm_location = data.get('farm_location')
         username = data.get('username')
         password = data.get('password')
 
@@ -232,7 +261,9 @@ class AdminSignupResource(Resource):
         admin_data = {
             "username": new_admin.username,
             "name": new_admin.name,
+            "phone_number": new_admin.phone_number,
             "farm_name": new_admin.farm_name,
+            "farm_location": new_admin.farm_location,
         }
 
         return {"message": "Admin created successfully", "admin": admin_data, "redirect": url_for('home')}, 201
@@ -244,7 +275,7 @@ def load_user(user_id):
 
 
 
-   
+
 # Admin login
 class AdminLoginResource(Resource):
     def post(self):
@@ -282,28 +313,51 @@ class CattleResource(Resource):
         name = data.get('name')
         date_of_birth = data.get('date_of_birth')
         breed = data.get('breed')
+        status = data.get('status')
         father_breed = data.get('father_breed')
         mother_breed = data.get('mother_breed')
         method_bred = data.get('method_bred')
 
         # Convert date_of_birth from string to date object
         date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
+        
 
         # Create a new cattle object linked to the current admin (current_user)
         new_cattle = Cattle(
             name=name,
             date_of_birth=date_of_birth,
             breed=breed,
+            status=status,
             father_breed=father_breed,
             mother_breed=mother_breed,
             method_bred=method_bred,
             admin_id=current_user.id  # Link to current admin
         )
-
+        
+        
         db.session.add(new_cattle)
         db.session.commit()
 
         return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
+    
+    def upload_file():
+            if request.method == 'POST':
+                # check if the post request has the file part
+                if 'photoFile' not in request.files:
+                    flash('No file part')
+                    return redirect(request.url)
+                file = request.files['photoFile']
+                
+            # If the user does not select a file, the browser submits an
+            # empty file without a filename.
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                return redirect(url_for('download_file', name=filename))
+
 
 
 
@@ -403,6 +457,48 @@ def milk_report():
     return render_template('milkReport.html', admin = admin_data)
 
 ## PROCEDURE ROUTES ##
+#pregnancy
+@app.route('/pregnancy',methods=['GET'])
+def pregnancy():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to pregnancy.html here
+    return render_template('pregnancy.html', admin = admin_data)
+
+#miscarriage
+@app.route('/miscarriage',methods=['GET'])
+def miscarriage():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to miscarriage.html here
+    return render_template('miscarriage.html', admin = admin_data)
+
+#heat detection
+@app.route('/heat',methods=['GET'])
+def heat():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to heat.html here
+    return render_template('heat.html', admin = admin_data)
+
 #vaccination
 @app.route('/vaccination',methods=['GET'])
 def vaccination():
@@ -414,7 +510,7 @@ def vaccination():
         "farm_name": current_user.farm_name,
         "cattle": cattle_list
     }
-    # You can pass any necessary data to worker.html here
+    # You can pass any necessary data to vaccination.html here
     return render_template('vaccination.html', admin = admin_data)
 
 #treatment
@@ -445,6 +541,20 @@ def dehorn():
     # You can pass any necessary data to worker.html here
     return render_template('dehorn.html', admin = admin_data)
 
+#Pest Control
+@app.route('/pestControl',methods=['GET'])
+def pest_control():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to pestC.html here
+    return render_template('pestC.html', admin = admin_data)
+
 #deworm
 @app.route('/deworm',methods=['GET'])
 def deworm():
@@ -459,9 +569,9 @@ def deworm():
     # You can pass any necessary data to worker.html here
     return render_template('deworm.html', admin = admin_data)
 
-#insemination
-@app.route('/insemination',methods=['GET'])
-def insemination():
+#Artificial insemination
+@app.route('/Ainsemination',methods=['GET'])
+def artificial_insemination():
     cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
     admin_data = {
         "id": current_user.id,
@@ -470,8 +580,65 @@ def insemination():
         "farm_name": current_user.farm_name,
         "cattle": cattle_list
     }
-    # You can pass any necessary data to worker.html here
-    return render_template('insemination.html', admin = admin_data)
+    # You can pass any necessary data to artificial.html here
+    return render_template('AInsemination.html', admin = admin_data)
+
+#Natural insemination
+@app.route('/Ninsemination',methods=['GET'])
+def natural_insemination():
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to natural.html here
+    return render_template('NInsemination.html', admin = admin_data)
+
+#Calving
+@app.route('/calving',methods=['GET'])
+def calving():    
+    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
+    admin_data = {
+        "id": current_user.id,
+        "username": current_user.username,
+        "name": current_user.name,
+        "farm_name": current_user.farm_name,
+        "cattle": cattle_list
+    }
+    # You can pass any necessary data to calving.html here
+    return render_template('calving.html', admin = admin_data)
+
+class CalvingResource(Resource):
+    @login_required
+    def calf(self):
+        data = request.get_json()
+        cattle_id = data.get('serialNumber')
+        calf_id = data.get('calfSerialNumber')
+        date_of_calving = data.get('dateOfCalving')
+        calving_outcome = data.get('calvingOutcome')
+        worker_id = data.get('workerId')
+
+        # Convert date_of_calving from string to date object
+        date_of_calving = datetime.strptime(date_of_calving, '%Y-%m-%d').date()
+        
+
+        # Create a new calf object linked to the current admin (current_user)
+        new_calf = Calf(
+            cattle_id = cattle_id,
+            calf_id = calf_id,
+            date_of_calving=date_of_calving,
+            calving_outcome = calving_outcome,
+            worker_id = worker_id,
+        )
+        
+        
+        db.session.add(new_calf)
+        db.session.commit()
+
+        return {'message': 'Calf created successfully', 'calf': new_calf.serial_number}, 201
 
 # POST vaccination record
 class VaccinationResource(Resource):
@@ -529,9 +696,6 @@ class VaccinationByCattleIdResource(Resource):
 
         return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
 
-    
-    
-
 # POST Dehorning record
 class DehorningResource(Resource):
     def post(self):
@@ -581,7 +745,6 @@ class DehorningByCattleIdResource(Resource):
 
         return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
     
-
     
 # PATCH dehorning and vaccination by id
 class DehorningByIdResource(Resource):
@@ -635,7 +798,6 @@ class GetDehorningResource(Resource):
                 'cattle_id': record.cattle_id
             })
         return result, 200
-
 
 
 #GET dehorning records by cattle id
@@ -695,8 +857,6 @@ class GetVaccinationByCattleIdResource(Resource):
             return result, 200
         else:
             return {'message': 'Vaccination records not found for this cattle ID'}, 404
-        
-
 
 
 # PERIODIC PROCEDURES ROUTES
@@ -880,6 +1040,7 @@ class WorkerSignupResource(Resource):
         return {'message': 'Worker registered successfully'}, 201
     
 
+
 # login route
 class WorkerLoginResource(Resource):
     def post(self):
@@ -887,17 +1048,25 @@ class WorkerLoginResource(Resource):
         username = data.get('username')
         password = data.get('password')
 
+        if not username or not password:
+            return {"message": "Username and password required"}, 400
+
         worker = Worker.query.filter_by(username=username).first()
 
         if not worker or not check_password_hash(worker.password, password):
             return {'message': 'Invalid credentials'}, 401
 
-        session['worker_id'] = worker.id
-        session['username'] = worker.username
-        session['role'] = worker.role
+        login_user(worker)
 
-        return {'message': 'Logged in successfully'}, 200
-    
+        worker_data = {
+            "id": worker.id,
+            "name": worker.name,
+            "username": worker.username,
+            "role": worker.role
+            # Add more fields as necessary
+        }
+
+        return {"message": "Worker Loged in successfully", "worker_data": worker_data, "redirect": url_for('worker_dashboard')}, 201    
 #Log out
 class WorkerLogoutResource(Resource):
     def post(self):
@@ -932,12 +1101,8 @@ class WorkerResource(Resource):
         return {'message': 'Worker deleted successfully'}, 200        
 
 
-
-
 # Admin and farm registration routes
-
-
-#   RESOURCES TO VIEW AND DELETE ADMIN
+# RESOURCES TO VIEW AND DELETE ADMIN
 #
 #
 class AdminViewResource(Resource):
@@ -987,12 +1152,9 @@ class AdminListResource(Resource):
             # Debugging line to catch and log any errors
             print(f"Error retrieving admins: {e}")
             return {'error': str(e)}, 500
-    
-
 
 
 ## RESOURCES ##
-
 api.add_resource(CattleResource, '/cattle/post') # POST cattle
 api.add_resource(CattleGetResource, '/cattle/get') # GET cattle
 api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 

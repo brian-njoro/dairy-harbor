@@ -212,3 +212,9 @@ p{
         opacity: 1;
     }
 }
+
+.profile-pic-input{
+    display: inline-block;
+    width: 80%;
+}
+

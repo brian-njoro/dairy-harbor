@@ -33,13 +33,6 @@
         <link href="{{url_for('static',filename='auth/css/modified.css')}}" rel="stylesheet">
         <link href="{{ url_for('static', filename='auth/css/header.css') }}" rel="stylesheet">
 
-
-        
-
-        <style>
-            
-            
-        </style>
     </head>
 
     <body>
@@ -50,8 +43,8 @@
                     <img class="logo-1-icon d-none d-md-block d-lg-block d-xl-block" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}" />
                 </div>
                 <h1 class="m-0" style="color:rgb(23, 180, 233);">Dairy Harbor</h1>
-                
             </a>
+
             <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" style="color:rgb(23, 180, 233);" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -94,7 +87,7 @@
 
                                 <div class="text-center">
                                     <form class="d-flex authButtons" role="search">
-                                        <a href="sign-up" target="_self">
+                                        <a href="/sign-up" target="_self">
                                             <button type="button" class="sighup animated slideInLeft ms-3">
                                                 Sign Up
                                             </button>
@@ -127,7 +120,7 @@
                                 <!--sign up and login-->
                                 <div class="text-center">
                                     <form class="d-flex authButtons" role="search">
-                                        <a href="sign-up" target="_self">
+                                        <a href="/sign-up" target="_self">
                                             <button type="button" class="sighup animated slideInLeft ms-3">
                                                 Sign Up
                                             </button>
@@ -378,7 +371,7 @@
             // Example usage
             const words = ["Monitor", "Manage", "Master"];
             const elementId = "animatedText";
-            const displayTime = 3000; // Display each word for 3000ms (3 seconds)
+            const displayTime = 1000; // Display each word for 3000ms (1 seconds)
     
             displayWordsOneAtATime(words, elementId, displayTime);
         </script>

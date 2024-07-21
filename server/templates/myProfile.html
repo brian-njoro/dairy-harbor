@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+
+    <!-- My Profile -->
+    <div class="row mb-5">
+        <div class="col-lg">
+            <div class="card mb-3 border border-2 border-info shadow-lg">
+                <div class="row g-0">
+                    <div class="col bg-light">
+                        <img src="./static/auth/img/Brian.jpeg" class="card-img-top" alt="cowprofile">
+                        <div class="card-body">
+                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span> <span id="Name"></span></p>
+                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName"></span></p>
+                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Id:</span> <span id="farmId"></span></p>
+                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span> <span id="farmId"></span></p>
+                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number:</span> <span id="phoneNumber"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ My Profile -->
+
+{% endblock %}

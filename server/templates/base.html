@@ -67,7 +67,7 @@ data-template="vertical-menu-template-free">
             <div class="layout-container">
 
                 <!-- Menu -->
-                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info">
+                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info border-end border-5 border-white rounded-end-circle">
                     <div class="app-brand d-flex flex-column mb-0">
                         <div class='p-2'>
                             <div class="d-flex d-flex-row">
@@ -87,7 +87,7 @@ data-template="vertical-menu-template-free">
                     </div>
         
                     <div class="menu-inner-shadow"></div>
-                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ admin.farm_name}}</h1>
+                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{admin.farm_name}}</h1>
         
                     <ul class="menu-inner py-1 mt-3">
                         <!-- Dashboards -->
@@ -115,7 +115,7 @@ data-template="vertical-menu-template-free">
 
                             <ul class="menu-sub ">
                                 <li class="menu-item mb-1 menu-list">
-                                    <a href="/cattle" class="menu-link text-dark fs-5">
+                                    <a href="{{ url_for('cattle')}}" class="menu-link text-dark fs-5">
                                     <div data-i18n="without menu">Cattle</div>
                                     </a>
                                 </li>
@@ -151,6 +151,13 @@ data-template="vertical-menu-template-free">
                                         </a>
                                     </li>
 
+                                    <!--pest control-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/pestControl" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Container">Pest Control</div>
+                                        </a>
+                                    </li>
+
                                     <!--Deworming-->
                                     <li class="menu-item mb-1 menu-list">
                                         <a href="/deworm" class="menu-link text-dark fs-6 fw-bold" target="_self">
@@ -158,10 +165,45 @@ data-template="vertical-menu-template-free">
                                         </a>
                                     </li>
 
+                                    <!--Heat Detection-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/heat" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Heat Detection</div>
+                                        </a>
+                                    </li>
+
                                     <!--Artificial Insemination-->
                                     <li class="menu-item mb-1 menu-list">
-                                        <a href="/insemination" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                        <a href="/Ainsemination" class="menu-link text-dark fs-6 fw-bold" target="_self">
                                             <div data-i18n="Blank">Artificial Insemination</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Natural Insemination-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/Ninsemination" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Blank">Natural Insemination</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Pregnancy-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/pregnancy" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Pregnancy</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Miscarriage-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/miscarriage" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Miscarriage</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Calving-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/calving" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Calving</div>
                                         </a>
                                     </li>
                                 </ul>
@@ -179,7 +221,7 @@ data-template="vertical-menu-template-free">
 
                                 <li class="menu-item menu-list">
                                     <a
-                                    href="/workerP"
+                                    href="{{ url_for('worker_profile')}}"
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
                                         <div data-i18n="Pricing">workers</div>
@@ -336,61 +378,6 @@ data-template="vertical-menu-template-free">
                             <!-- /Search -->
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
-                                <!-- User -->
-                                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                        <div class="avatar avatar-online">
-                                            <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
-                                        </div>
-                                    </a>
-
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <a class="dropdown-item" href="#">
-                                            <div class="d-flex">
-                                                <div class="flex-shrink-0 me-3">
-                                                    <div class="avatar avatar-online">
-                                                        <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block">John Doe</span>
-                                                    <small class="text-muted">Admin</small>
-                                                </div>
-                                            </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                        </li>
-
-                                        <li>
-                                            <a class="dropdown-item" href="#">
-                                            <i class="bx bx-user me-2"></i>
-                                            <span class="align-middle">My Profile</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a class="dropdown-item" href="#">
-                                            <i class="bx bx-cog me-2"></i>
-                                            <span class="align-middle">Settings</span>
-                                            </a>
-                                        </li>                                    
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                        </li>
-
-                                        <li>
-                                            <a class="dropdown-item" href="javascript:void(0);">
-                                            <i class="bx bx-power-off me-2"></i>
-                                            <span class="align-middle">Log Out</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <!--/ User -->
 
                                 <!-- Place this tag where you want the button to render. -->
                                 <li class="nav-item lh-1 me-3 ms-2">
@@ -401,13 +388,121 @@ data-template="vertical-menu-template-free">
                                         data-size="large"
                                         data-show-count="true"
                                         aria-label="Star"
-                                        >Messages</a>
+                                        >Messages .</a>
                                 </li>
                 
+
+
+                                <!-- User -->
+                                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                    <a id="dropdownToggle" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);">
+                                        <div class="avatar avatar-online">
+                                            <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
+                                        </div>
+                                    </a>
+
+                                    <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                <div class="d-flex">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar avatar-online">
+                                                            <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-grow-1">
+                                                        <span class="fw-medium d-block">{{admin.name}}</span>
+                                                        <small class="text-muted">Admin</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
+
+                                        <li>
+                                            <div class="dropdown-item cursor-pointer">
+                                                <i class="bx bx-user me-2"></i>
+                                                <span class="align-middle" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>My Profile</span>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item" href="#">
+                                                <i class="bx bx-cog me-2"></i>
+                                                <span class="align-middle">Settings</span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
+
+                                        <li>
+                                            <a class="dropdown-item" href="/index">
+                                                <i class="bx bx-power-off me-2"></i>
+                                                <span class="align-middle">Log Out</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                
+                                <!--/ User -->
+                                
                             </ul>
                         </div>
                     </nav>
                     <!-- / Navbar -->
+
+                    <!-- Modal For My Profile -->
+                    <div class="modal fade" id="modalMyProfile" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border border-3 border-info">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-info fw-bold fs-2">My Profile</h5>
+                                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                    
+                                <div class="modal-body">
+                                    <!-- My Profile -->
+                                    <div class="row mb-5">
+                                        <div class="col-lg">
+                                            <div class="card mb-3 border border-2 border-info shadow-lg">
+                                                <div class="row g-0">
+                                                    <div class="col bg-light">
+                                                        <div class="px-auto ms-5">
+                                                            <img src="./static/auth/img/Brian.jpeg" class="card-img-top border border-1 border-info w-px-100 h-auto rounded-circle ms-5" alt="myprofile">
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name :</span><span id="Name" class="text-dark fw-bold"> {{admin.name}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name : </span> <span id="farmName" class="text-dark fw-bold"> {{admin.farm_name}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email : </span><span id="email" class="text-dark fw-bold"> {{admin.username}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmLocation">{{admin.farm_location}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number : </span><span id="phoneNumber" class="text-dark fw-bold"> {{admin.phone_number}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Cattle : </span><span id="cattleNo"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Workers : </span><span id="workersNo"></span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/ My Profile -->
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Edit</button>
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Modal For cow Profile-->
         
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -464,6 +559,29 @@ data-template="vertical-menu-template-free">
             <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dropdownToggle = document.getElementById('dropdownToggle');
+                const dropdownMenu = document.getElementById('dropdownMenu');
+
+                dropdownToggle.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent click event from bubbling up to document
+                    dropdownMenu.classList.toggle('show');
+                });
+
+                document.addEventListener('click', function() {
+                    if (dropdownMenu.classList.contains('show')) {
+                        dropdownMenu.classList.remove('show');
+                    }
+                });
+
+                dropdownMenu.addEventListener('click', function(event) {
+                    event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
+                });
+            });
+
+
+        </script>
 
         
         <!-- Core JS -->
@@ -476,7 +594,7 @@ data-template="vertical-menu-template-free">
         <!-- endbuild -->
 
         <!-- Vendors JS -->
-        <script src="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+        <!-- <script src="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apexcharts.js') }}"></script> -->
 
         <!-- Main JS -->
         <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
@@ -485,6 +603,15 @@ data-template="vertical-menu-template-free">
 
 
         <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <!-- Include ApexCharts JS -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <!-- Include your custom script -->
+        <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
+
+
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="{{ url_for('static', filename='auth/lib/wow/wow.min.js') }}"></script>
@@ -500,6 +627,7 @@ data-template="vertical-menu-template-free">
 
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
+        <script src="{{url_for('static',filename='js/addCattle.js')}}" async></script>
         <script src="{{url_for('static',filename='js/milkproduction.js')}}" async></script>
         <script src="{{url_for('static',filename='js/login.js')}}"></script>
         <script src="{{url_for('static',filename='js/milkproduction.js')}}"></script>

@@ -14,7 +14,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Login Page</title>
+    <title>Worker Login</title>
 
     <meta name="description" content="" />
 
@@ -154,12 +154,12 @@
               <form id="formAuthentication" class="mb-3">
                 <!-- Email or Username -->
                 <div class="mb-3">
-                    <label for="email-username" class="form-label text-info">Email or Username</label>
+                    <label for="workerEmailUsername" class="form-label text-info">Email or Username</label>
                     <input
                         type="text"
                         class="form-control"
-                        id="email-username"
-                        name="email-username"
+                        id="workerEmailUsername"
+                        name="workerEmailUsername"
                         placeholder="Enter your email or username"
                         autofocus>
                 </div>
@@ -194,10 +194,10 @@
                 </div>
         
                 <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" type="button" id="loginButton">Sign in</button>
+                    <button class="btn btn-primary d-grid w-100" type="button" id="workerLoginButton">Sign in</button>
                 </div>
-            </form>
-            <!-- Form end -->
+              </form>
+              <!-- Form end -->
 
               <p class="text-center text-dark">
                 <span>New on our platform?</span>
@@ -232,7 +232,7 @@
               };
 
               $.ajax({
-                  url: '/admin/login',
+                  url: '/login/worker',
                   type: 'POST',
                   contentType: 'application/json',
                   data: JSON.stringify(formData),

@@ -1,2 +1,3 @@
-__pycache__/ add .gitignore commit -m "Ignore __pycache__directory"
+__pycache__/
+instance/
 
