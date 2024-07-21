@@ -112,12 +112,10 @@ login_manager.init_app(app)
 # Add your login_manager.login_view to the route you want users to see if not logged in
 @login_manager.user_loader
 def load_user(user_id):
-    # Try to load a Farmer first
     farmer = Farmer.query.get(int(user_id))
     if farmer:
         return farmer
-    
-    # Try to load a Worker next
+
     worker = Worker.query.get(int(user_id))
     if worker:
         return worker
@@ -179,8 +177,8 @@ def sign_up():
     return render_template('signup.html')
 
 #workerLogin page
-@app.route('/login/worker', methods=['GET'])
-def login():
+@app.route('/workerLogin', methods=['GET'])
+def workerLogin():
     return render_template('workerLogin.html')
 
 #myprofile page
@@ -256,10 +254,13 @@ def miscarriage():
 def pestControl():
     return render_template('pestControl.html')
 
-@app.route('/worker_dashboard', methods=['GET'])
+@app.route('/worker_dashboard')
 @login_required
 def worker_dashboard():
-    return render_template('worker_dashboard.html')
+    if isinstance(current_user, Worker):
+        return f'Welcome to the worker dashboard, {current_user.name}!'
+    else:
+        return redirect(url_for('index'))  # Redirect to home if not a worker
 
 
 ##Inventory

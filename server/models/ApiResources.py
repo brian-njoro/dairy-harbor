@@ -122,10 +122,12 @@ class WorkerLoginResource(Resource):
         
         worker = Worker.query.filter_by(email_address=email_address).first()
         if worker and check_password_hash(worker.password, password):
-            return jsonify({'message': 'Login successful', 'worker_id': worker.id})
+            login_user(worker)  # Log the worker in
+            return redirect(url_for('worker_dashboard'))  # Redirect to worker dashboard
         else:
             return jsonify({'message': 'Invalid credentials'}), 401
 
+            
 # Worker view resource
 class WorkerViewResource(Resource):
     def get(self):
