@@ -154,70 +154,71 @@
                 <!-- Name -->
                 <div class="mb-3">
                     <label for="name" class="form-label text-info">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" autofocus>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required autofocus>
                 </div>
-
-                <!--Phone Number-->
+            
+                <!-- Phone Number -->
                 <div class="mb-3">
-                  <label for="phone" class="form-label text-info">Phone Number</label>
-                  <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" placeholder="Enter your Phone Number">
+                    <label for="phoneNumber" class="form-label text-info">Phone Number</label>
+                    <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" pattern="[0-9]{10}" placeholder="Enter your Phone Number" required>
                 </div>
-
-                <!-- Farm name -->
+            
+                <!-- Farm Name -->
                 <div class="mb-3">
-                  <label for="farmName" class="form-label text-info">Farm name</label>
-                  <input type="text" class="form-control" id="farmName" name="farmName" placeholder="Enter your Farm Name">
+                    <label for="farmName" class="form-label text-info">Farm Name</label>
+                    <input type="text" class="form-control" id="farmName" name="farmName" placeholder="Enter your Farm Name" required>
                 </div>
-
-                <!-- Location/ Address -->
+            
+                <!-- Location/Address -->
                 <div class="mb-3">
-                  <label for="Location" class="form-label text-info">Location / Address</label>
-                  <input type="text" class="form-control" id="Location" name="Location" placeholder="Enter your Location or Address">
+                    <label for="farmLocation" class="form-label text-info">Farm's Location / Address</label>
+                    <input type="text" class="form-control" id="farmLocation" name="farmLocation" placeholder="Enter your Location or Address" required>
                 </div>
-        
-                <!-- Username -->
+            
+                <!-- Username/Email -->
                 <div class="mb-3">
                     <label for="username" class="form-label text-info">Username or Email</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
+                    <input type="email" class="form-control" id="username" name="username" placeholder="Enter your Username or Email" required>
                 </div>
-        
+            
                 <!-- Password -->
                 <div class="mb-3 form-password-toggle">
                     <label class="form-label text-info" for="password">Password</label>
                     <div class="input-group input-group-merge">
-                        <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password">
+                        <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" required>
                         <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                     </div>
                 </div>
-        
+            
                 <!-- Confirm Password -->
                 <div class="mb-3 form-password-toggle">
                     <label class="form-label text-info" for="confirmPassword">Confirm Password</label>
                     <div class="input-group input-group-merge">
-                        <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password">
+                        <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="confirmPassword" required>
                         <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                     </div>
                 </div>
-        
+            
                 <!-- Agree -->
                 <div class="mb-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
+                        <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms" required>
                         <label class="form-check-label" for="terms-conditions">
                             I agree to
                             <a href="javascript:void(0);">privacy policy & terms</a>
                         </label>
                     </div>
                 </div>
-        
+            
                 <!-- Signup button -->
                 <button type="button" class="btn btn-primary d-grid w-100" id="signupButton">Sign up</button>
             </form>
+            
         
 
               <p class="text-center">
                 <span>Already have an account?</span>
-                <a href="/login">
+                <a href="/adminLogin" target="_self">
                   <span>Sign in instead</span>
                 </a>
               </p>
@@ -238,51 +239,77 @@
       $(document).ready(function() {
           $('#signupButton').on('click', function(event) {
               event.preventDefault();
-
-              // Validate form inputs
-              var name = $('#name').val();
-              var farmName = $('#farmName').val();
-              var username = $('#username').val();
+  
+              // Collect form data
+              var name = $('#name').val().trim();
+              var phoneNumber = $('#phoneNumber').val().trim();
+              var farmName = $('#farmName').val().trim();
+              var farmLocation = $('#farmLocation').val().trim();
+              var emailAddress = $('#username').val().trim(); // Changed to emailAddress
               var password = $('#password').val();
               var confirmPassword = $('#confirmPassword').val();
               var terms = $('#terms-conditions').is(':checked');
-
-              if (!name || !farmName || !username || !password || !confirmPassword || !terms) {
+  
+              // Log collected data
+              console.log('Form Data:', {
+                  name: name,
+                  phoneNumber: phoneNumber,
+                  farmName: farmName,
+                  farmLocation: farmLocation,
+                  emailAddress: emailAddress,
+                  password: password,
+                  confirmPassword: confirmPassword,
+                  terms: terms
+              });
+  
+              // Check for required fields and matching passwords
+              if (!name || !phoneNumber || !farmName || !farmLocation || !emailAddress || !password || !confirmPassword || !terms) {
+                  console.warn('Validation Error: All fields are required and you must agree to the terms.');
                   alert('All fields are required and you must agree to the terms.');
                   return;
               }
-
+  
               if (password !== confirmPassword) {
+                  console.warn('Validation Error: Passwords do not match.');
                   alert('Passwords do not match.');
                   return;
               }
-
+  
               var formData = {
                   name: name,
+                  phone_number: phoneNumber,
                   farm_name: farmName,
-                  username: username,
+                  farm_location: farmLocation,
+                  email_address: emailAddress,
                   password: password
               };
-
+  
+              console.log('Form Data Sent:', formData);
+  
               $.ajax({
-                  url: '/admin/signup',
+                  url: '/farmer/signup',
                   type: 'POST',
                   contentType: 'application/json',
                   data: JSON.stringify(formData),
                   success: function(response) {
+                      console.log('Response:', response);
                       if (response.redirect) {
+                          console.log('Redirecting to:', response.redirect);
                           window.location.href = response.redirect;
                       } else {
                           alert(response.message);
                       }
                   },
                   error: function(xhr) {
-                      alert('Error: ' + xhr.responseJSON.message);
+                      var errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : 'An unexpected error occurred.';
+                      console.error('Error:', errorMessage);
+                      alert('Error: ' + errorMessage);
                   }
               });
           });
       });
   </script>
+  
     <!-- build:js assets/vendor/js/core.js -->
 
 

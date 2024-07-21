@@ -6,7 +6,7 @@
 
 <!--Feeds-->
 <div class="card text-white mb-3">
-    <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/feeds.jpg')}}" alt="Image">
+    <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/feeds.jpg')}}" alt="Image">
     <div class="card-img-overlay">
         <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Feeds</h3>
         <p class="card-text text-white">Optimize your livestock's nutrition with comprehensive tracking of feed types, quantities, and schedules, ensuring a balanced diet for improved health and productivity.</p>
@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<!-- Modal for CFeeds -->
+<!-- Modal for Feeds -->
 <div class="modal fade" id="modalFeeds" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border border-3 border-info">
@@ -71,12 +71,18 @@
                         <label for="cost" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
                         <input type="number" id="cost" class="form-control" required>
                     </div>
+
+                    <!-- Notes -->
+                    <div class="mb-3">
+                        <label for="feedsnotes" class="form-label fw-bold text-dark">Notes:</label>
+                        <textarea name='feedsnotes' id='feedsnotes' class='form-control'></textarea>
+                    </div>
                 </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="addCattleButton">Add Feed</button>
+                <button type="button" class="btn btn-info" id="addFeedButton">Add Feed</button>
             </div>
 
         </div>

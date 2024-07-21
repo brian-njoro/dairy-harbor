@@ -5,23 +5,68 @@ from flask import Flask, request, jsonify, session, redirect, url_for,make_respo
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
-from models.admin import Admin
-from models.cattle import Cattle
-from models.customer import Customer
-from models.dehorning import Dehorning
-from models.equipment import Equipment
-from models.inventory import Inventory
-from models.payment import Payment
-from models.periodic import PeriodicTreatment
-from models.pestControl import PestControl
-from models.product import Product
-from models.rawmaterials import RawMaterial
-from models.treatment import Treatment
-from models.vaccination import Vaccination
-from models.worker import Worker
-from models.cattleWorkerAssociation import cattle_worker_association
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
+from models.models import (
+    Farmer,
+    Worker,
+    Cattle,
+    Dehorning,
+    Deworming,
+    Vaccination,
+    Treatment,
+    HeatDetection,
+    ArtificialInsemination,
+    NaturalInsemination,
+    LogMessage,
+    Notification,
+    Pregnancy,
+    Miscarriage,
+    Calving,
+    CattleDeath,
+    MaintenanceCost,
+    MilkProduction,
+    MilkSales,
+    Equipment,
+    Medicine,
+    Feeds,
+    cattle_worker_association
+)
+from models.ApiResources import (
+    FarmerSignupResource,
+    FarmerLoginResource,
+    FarmerDeleteResource,
+    WorkerSignupResource,
+    WorkerLoginResource,
+    WorkerViewResource,
+    WorkerViewbyIdResource,
+    WorkerEditResource,
+    WorkerDeleteResource,
+    CattleGetResource,
+    CattlePostResource,
+    CattleGetByIdResource,
+    CattleEditResource,
+    CattleDeleteResource,
+    RecordVaccinationResource,
+    RecordTreatmentResource,
+    RecordArtificialInseminationResource, 
+    RecordNaturalInseminationResource,
+    RecordDehorningResource,
+    RecordDewormingResource, 
+    RecordFeedsResource,
+    RecordHeatDetectionResource,
+    RecordPestControlResource, 
+    RecordPregnancyResource,
+    RecordSalesResource,
+    RecordMedicineResource, 
+    RecordMiscarriageResource,
+    RecordCalvingResource,
+    RecordMilkProductionResource, 
+    RecordMaintenanceCostResource,
+    RecordEquipmentResource,
+    RecordCattleDeathResource,
+    RecordLogMessageResource,
+    RecordNotificationResource
+)
+from flask_login import LoginManager, UserMixin, login_user, current_user, login_required
 import os
 
 
@@ -33,8 +78,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{database_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SECRET_KEY'] = 'JUITVNTT7359YU735HR583HFI3BF7945Y9984YR394UFHIU3RBF378595Y3HYIF3BFHDB874H834YIFB3Y4BFIH'
 app.config['DEBUG'] = True
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+
 
 
 db.init_app(app)
@@ -53,39 +97,63 @@ if not os.path.exists(instance_path):
 print(f"Database path: {database_path}")
 #Home Page
 
-### SERIALIZE CATTLE FUNCTION FOR TEMPLATE RENDERING: ###
-def serialize_cattle(cattle):
-        return {
-            "serial_number": cattle.serial_number,
-            "name": cattle.name,
-            "date_of_birth": cattle.date_of_birth.strftime('%Y-%m-%d'),
-            "breed": cattle.breed,
-            "father_breed": cattle.father_breed,
-            "mother_breed": cattle.mother_breed,
-            "method_bred": cattle.method_bred,
-            "admin_id": cattle.admin_id
-        }
-# Example route for admin homepage
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Add your login_manager.login_view to the route you want users to see if not logged in
+@login_manager.user_loader
+def load_user(user_id):
+    # Try to load a Farmer first
+    farmer = Farmer.query.get(int(user_id))
+    if farmer:
+        return farmer
+    
+    # Try to load a Worker next
+    worker = Worker.query.get(int(user_id))
+    if worker:
+        return worker
+
+    return None
+
+login_manager.login_view = 'index'
+
+
 @app.route('/home', methods=['GET'])
 @login_required
 def home():
-       
-    cattle = Cattle.query.filter_by(admin_id=current_user.id).all()
-    
-    serialized_cattle = [serialize_cattle(c) for c in cattle]
-    
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": serialized_cattle
-    }
-    
-    # Store serialized cattle data in session for later access
-    session['cattle_data'] = serialized_cattle
-    
-    return render_template('home.html', admin=admin_data)
+    farmer = current_user
+
+    # Fetch farmer name and farm name
+    farmer_name = farmer.name
+    farm_name = farmer.farm_name
+
+    # Calculate total sales
+    total_sales = db.session.query(
+        db.func.sum(MilkSales.quantity * MilkSales.price_per_litre)
+    ).filter_by(farmer_id=farmer.id).scalar() or 0
+
+    # Fetch total production
+    total_production = db.session.query(
+        db.func.sum(MilkProduction.quantity)
+    ).filter_by(farmer_id=farmer.id).scalar() or 0
+
+    # Fetch total number of cattle
+    total_cattle = db.session.query(
+        db.func.count(Cattle.serial_number)
+    ).filter_by(farmer_id=farmer.id).scalar() or 0
+
+    # Fetch total number of workers
+    total_workers = db.session.query(
+        db.func.count(Worker.id)
+    ).filter_by(farmer_id=farmer.id).scalar() or 0
+
+    return render_template('home.html', 
+                           farmer_name=farmer_name, 
+                           farm_name=farm_name, 
+                           total_sales=total_sales, 
+                           total_production=total_production, 
+                           total_cattle=total_cattle, 
+                           total_workers=total_workers)
 
 
 
@@ -108,6 +176,7 @@ def login():
 
 #myprofile page
 @app.route('/myProfile', methods=['GET'])
+@login_required
 def my_profile():
     return render_template('myProfile.html')
 
@@ -121,85 +190,107 @@ def admin_login():
 def forgot():
     return render_template('forgot.html')
 
+@app.route('/treatment', methods=['GET'])
+@login_required
+def treatment():
+    return render_template('treatment.html')
+
+@app.route('/vaccination', methods=['GET'])
+@login_required
+def vaccination():
+    return render_template('vaccination.html')
+
+@app.route('/dehorn', methods=['GET'])
+@login_required
+def dehorn():
+    return render_template('dehorn.html')
+
+
+@app.route('/deworm', methods=['GET'])
+@login_required
+def deworm():
+    return render_template('deworm.html')
+
+
+@app.route('/heat', methods=['GET'])
+@login_required
+def heat():
+    return render_template('heat.html')
+
+    
+@app.route('/Ainsemination', methods=['GET'])
+@login_required
+def Ainsemination():
+    return render_template('Ainsemination.html')
+
+    
+@app.route('/Ninsemination', methods=['GET'])
+@login_required
+def Ninsemination():
+    return render_template('Ninsemination.html')
+
+ 
+@app.route('/pregnancy', methods=['GET'])
+@login_required
+def pregnancy():
+    return render_template('pregnancy.html')  
+
+  
+@app.route('/miscarriage', methods=['GET'])
+@login_required
+def miscarriage():
+    return render_template('miscarriage.html')     
+
+
+@app.route('/pestControl', methods=['GET'])
+@login_required
+def pestControl():
+    return render_template('pestControl.html')
 
 @app.route('/worker_dashboard', methods=['GET'])
 @login_required
 def worker_dashboard():
     return render_template('worker_dashboard.html')
 
+
 ##Inventory
 #feeds page
 @app.route('/feeds', methods=['GET'])
+@login_required
 def feeds():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
     # You can pass any necessary data to worker.html here
-    return render_template('feeds.html', admin = admin_data)
+    return render_template('feeds.html')
+
+
 #medicine page
 @app.route('/medicine', methods=['GET'])
+@login_required
 def medicine():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
     # You can pass any necessary data to worker.html here
-    return render_template('medicine.html', admin = admin_data)
-
+    return render_template('medicine.html')
 
 #machinery page
 @app.route('/machinery', methods=['GET'])
+@login_required
 def machinery():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
     # You can pass any necessary data to worker.html here
-    return render_template('machinery.html', admin = admin_data)
+    return render_template('machinery.html')
 
 
 #worker Profile
 @app.route('/workerP',methods=['GET'])
+@login_required
 def worker_profile():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
     # You can pass any necessary data to worker.html here
-    return render_template('workerP.html', admin = admin_data)
+    return render_template('workerP.html')
 
 #worker List
 @app.route('/workerL',methods=['GET'])
+@login_required
 def worker_List():
 
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
     # You can pass any necessary data to worker.html here
-    return render_template('workerList.html', admin = admin_data)
+    return render_template('workerList.html')
 
 
 
@@ -208,859 +299,118 @@ def worker_List():
 @app.route('/cattle')
 @login_required
 def cattle():
-    # Retrieve cattle data from session
-    cattle_data = session.get('cattle_data', None)
+    farmer_id = current_user.id  # Assuming the farmer's ID is stored in the 'id' attribute
     
-    if not cattle_data:
-        # If no cattle data in session, fetch again (this could happen on page reload)
-        cattle_data = Cattle.query.filter_by(admin_id=current_user.id).all()
+    # Querying the number of cows for the logged-in farmer
+    total_cows = Cattle.query.filter_by(farmer_id=farmer_id).count()
+
+    # Querying the number of cows with gender 'male'
+    male_cows = Cattle.query.filter_by(farmer_id=farmer_id, gender='male').count()
     
-    return render_template('cattle.html', cattle=cattle_data, admin=current_user)
+    # Querying the number of cows with different statuses
+    status_calf = Cattle.query.filter_by(farmer_id=farmer_id, status='calf').count()
+    status_sick = Cattle.query.filter_by(farmer_id=farmer_id, status='sick').count()
+    status_pregnant = Cattle.query.filter_by(farmer_id=farmer_id, status='pregnant').count()
+    status_heifer = Cattle.query.filter_by(farmer_id=farmer_id, status='heifer').count()
 
+    return render_template('cattle.html', 
+                           farmer_id=farmer_id,
+                           total_cows=total_cows,
+                           male_cows=male_cows,
+                           status_calf=status_calf,
+                           status_sick=status_sick,
+                           status_pregnant=status_pregnant,
+                           status_heifer=status_heifer)
 
-##   ADMIN RESOURCES
-# admin signup
-class AdminSignupResource(Resource):
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        farm_name = data.get('farm_name')
-        username = data.get('username')
-        password = data.get('password')
 
-        if not username or not password:
-            return {"message": "Username and password are required"}, 400
 
-        if Admin.query.filter_by(username=username).first():
-            return {"message": "Username already exists"}, 400
 
-        hashed_password = generate_password_hash(password)
-        new_admin = Admin(name=name, farm_name=farm_name, username=username, password=hashed_password)
 
-        db.session.add(new_admin)
-        db.session.commit()
+# API routes for Farmer
+api.add_resource(FarmerSignupResource, '/farmer/signup')
+api.add_resource(FarmerLoginResource, '/farmer/login')
+api.add_resource(FarmerDeleteResource, '/farmer/delete/<int:farmer_id>')
 
-        # Log in the new admin user
-        login_user(new_admin)
+# API routes for Worker
+api.add_resource(WorkerSignupResource, '/worker/signup')
+api.add_resource(WorkerLoginResource, '/worker/login')
+api.add_resource(WorkerViewResource, '/worker/view')
+api.add_resource(WorkerViewbyIdResource, '/worker/view/<int:worker_id>')
+api.add_resource(WorkerEditResource, '/worker/edit/<int:worker_id>')
+api.add_resource(WorkerDeleteResource, '/worker/delete/<int:worker_id>')
 
-        # Prepare data to return in response
-        admin_data = {
-            "username": new_admin.username,
-            "name": new_admin.name,
-            "farm_name": new_admin.farm_name,
-        }
-
-        return {"message": "Admin created successfully", "admin": admin_data, "redirect": url_for('home')}, 201
-    
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Admin.query.get(int(user_id))
-
-
-
-   
-# Admin login
-class AdminLoginResource(Resource):
-    def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        if not username or not password:
-            return {"message": "Username and password required"}, 400
-
-        admin = Admin.query.filter_by(username=username).first()
-
-        if not admin or not check_password_hash(admin.password, password):
-            return {"message": "Invalid username or password"}, 401
-
-        login_user(admin)
-
-        admin_data = {
-            "id": admin.id,
-            "name": admin.name,
-            "farm_name": admin.farm_name,
-            "username": admin.username
-            # Add more fields as necessary
-        }
-
-        return jsonify({"message": "Login successful", "user_data": admin_data, "redirect": url_for('home')})
-
-
-class AdminLogoutResource(Resource):
-    @login_required
-    def post(self):
-        logout_user()
-        return jsonify({"message": "Logout successful", "redirect": url_for('login')})        
-
-
-# POST cattle
-class CattleResource(Resource):
-    @login_required
-    def post(self):
-        data = request.get_json()
-
-        name = data.get('name')
-        date_of_birth = data.get('date_of_birth')
-        breed = data.get('breed')
-        father_breed = data.get('father_breed')
-        mother_breed = data.get('mother_breed')
-        method_bred = data.get('method_bred')
-
-        # Convert date_of_birth from string to date object
-        date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d').date()
-
-        # Create a new cattle object linked to the current admin (current_user)
-        new_cattle = Cattle(
-            name=name,
-            date_of_birth=date_of_birth,
-            breed=breed,
-            father_breed=father_breed,
-            mother_breed=mother_breed,
-            method_bred=method_bred,
-            admin_id=current_user.id  # Link to current admin
-        )
-
-        db.session.add(new_cattle)
-        db.session.commit()
-
-        return {'message': 'Cattle created successfully', 'cattle': new_cattle.serial_number}, 201
-
-
-
-
-# GET cattle    
-class CattleGetResource(Resource):
-    @login_required
-    def get(self, serial_number=None):
-        admin_id = current_user.id  # Assuming 'id' is the primary key attribute of the Admin model
-        
-        if serial_number:
-            cattle = Cattle.query.filter_by(serial_number=serial_number, admin_id=admin_id).first()
-            if cattle:
-                return {
-                    'serial_number': cattle.serial_number,
-                    'name': cattle.name,
-                    'date_of_birth': str(cattle.date_of_birth),
-                    'breed': cattle.breed,
-                    'father_breed': cattle.father_breed,
-                    'mother_breed': cattle.mother_breed,
-                    'method_bred': cattle.method_bred,
-                    'admin_id': cattle.admin_id
-                }, 200
-            else:
-                return {'message': 'Cattle not found'}, 404
-        else:
-            cattle_list = Cattle.query.filter_by(admin_id=admin_id).all()
-            cattle_data = []
-            for cattle in cattle_list:
-                cattle_data.append({
-                    'serial_number': cattle.serial_number,
-                    'name': cattle.name,
-                    'date_of_birth': str(cattle.date_of_birth),
-                    'breed': cattle.breed,
-                    'father_breed': cattle.father_breed,
-                    'mother_breed': cattle.mother_breed,
-                    'method_bred': cattle.method_bred,
-                    'admin_id': cattle.admin_id
-                })
-            return cattle_data, 200
-
-        
-# GET cattle by id.
-class CattleByIdResource(Resource):
-    def get(self, serial_number):
-        cattle = Cattle.query.filter_by(serial_number=serial_number).first()
-        if cattle:
-            return {
-                'serial_number': cattle.serial_number,
-                'name': cattle.name,
-                'date_of_birth': str(cattle.date_of_birth),
-                'breed': cattle.breed,
-                'father_breed': cattle.father_breed,
-                'mother_breed': cattle.mother_breed,
-                'method_bred': cattle.method_bred,
-                'admin_id': cattle.admin_id
-            }, 200
-        else:
-            return {'message': 'Cattle not found'}, 404
-        
-
-    # #DELETE by id
-    # def delete(self, serial_number):
-    #     cattle = Cattle.query.filter_by(serial_number=serial_number).first()
-    #     if cattle:
-    #         db.session.delete(cattle)
-    #         db.session.commit()
-    #         return {'message': 'Cattle deleted successfully'}, 200
-    #     else:
-    #         return {'message': 'Cattle not found'}, 404
-
-
-
-class CattleDeleteByIdResource(Resource):
-    def delete(self, serial_number):
-        cattle = Cattle.query.filter_by(serial_number=serial_number).first()
-        if cattle:
-            db.session.delete(cattle)
-            db.session.commit()
-            return {'message': 'Cattle deleted successfully'}, 200
-        else:
-            return {'message': 'Cattle not found'}, 404
-        
-
-#milkReport page
-@app.route('/milkR', methods=['GET'])
-def milk_report():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
-    # You can pass any necessary data to worker.html here
-    return render_template('milkReport.html', admin = admin_data)
-
-## PROCEDURE ROUTES ##
-#vaccination
-@app.route('/vaccination',methods=['GET'])
-def vaccination():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
-    # You can pass any necessary data to worker.html here
-    return render_template('vaccination.html', admin = admin_data)
-
-#treatment
-@app.route('/treatment',methods=['GET'])
-def treatment():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
-    # You can pass any necessary data to worker.html here
-    return render_template('treatment.html', admin = admin_data)
-
-#dehorning
-@app.route('/dehorn',methods=['GET'])
-def dehorn():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
-    # You can pass any necessary data to worker.html here
-    return render_template('dehorn.html', admin = admin_data)
-
-#deworm
-@app.route('/deworm',methods=['GET'])
-def deworm():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
-    # You can pass any necessary data to worker.html here
-    return render_template('deworm.html', admin = admin_data)
-
-#insemination
-@app.route('/insemination',methods=['GET'])
-def insemination():
-    cattle_list = Cattle.query.filter_by(admin_id=current_user.id).all()
-    admin_data = {
-        "id": current_user.id,
-        "username": current_user.username,
-        "name": current_user.name,
-        "farm_name": current_user.farm_name,
-        "cattle": cattle_list
-    }
-    # You can pass any necessary data to worker.html here
-    return render_template('insemination.html', admin = admin_data)
-
-# POST vaccination record
-class VaccinationResource(Resource):
-    def post(self):
-        data = request.get_json()
-        date = data.get('date')
-        vet_name = data.get('vet_name')
-        method = data.get('method')
-        drug = data.get('drug')
-        disease = data.get('disease')
-        cattle_id = data.get('cattle_id')
-
-        # Convert date from string to date object
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-
-        new_vaccination = Vaccination(
-            date=date,
-            vet_name=vet_name,
-            method=method,
-            drug=drug,
-            disease=disease,
-            cattle_id=cattle_id
-        )
-
-        db.session.add(new_vaccination)
-        db.session.commit()
-
-        return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
-    
-
-# POST Vaccination by cattle id
-class VaccinationByCattleIdResource(Resource):
-    def post(self, cattle_id):
-        data = request.get_json()
-        date = data.get('date')
-        vet_name = data.get('vet_name')
-        method = data.get('method')
-        drug = data.get('drug')
-        disease = data.get('disease')
-
-        # Convert date from string to date object
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-
-        new_vaccination = Vaccination(
-            date=date,
-            vet_name=vet_name,
-            method=method,
-            drug=drug,
-            disease=disease,
-            cattle_id=cattle_id
-        )
-
-        db.session.add(new_vaccination)
-        db.session.commit()
-
-        return {'message': 'Vaccination record created successfully', 'vaccination_id': new_vaccination.vaccination_id}, 201
-
-    
-    
-
-# POST Dehorning record
-class DehorningResource(Resource):
-    def post(self):
-        data = request.get_json()
-
-        date = data.get('date')
-        vet_name = data.get('vet_name')
-        method = data.get('method')
-        cattle_id = data.get('cattle_id')
-
-        # Convert date from string to date object
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-
-        new_dehorning = Dehorning(
-            date=date,
-            vet_name=vet_name,
-            method=method,
-            cattle_id=cattle_id
-        )
-
-        db.session.add(new_dehorning)
-        db.session.commit()
-
-        return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
-    
-#POST dehorning by cattle id
-class DehorningByCattleIdResource(Resource):
-    def post(self, cattle_id):
-        data = request.get_json()
-
-        date = data.get('date')
-        vet_name = data.get('vet_name')
-        method = data.get('method')
-
-        # Convert date from string to date object
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-
-        new_dehorning = Dehorning(
-            date=date,
-            vet_name=vet_name,
-            method=method,
-            cattle_id=cattle_id
-        )
-
-        db.session.add(new_dehorning)
-        db.session.commit()
-
-        return {'message': 'Dehorning record created successfully', 'dehorning_id': new_dehorning.dehorning_id}, 201
-    
-
-    
-# PATCH dehorning and vaccination by id
-class DehorningByIdResource(Resource):
-    def put(self, dehorning_id):
-        data = request.get_json()
-
-        dehorning = Dehorning.query.filter_by(dehorning_id=dehorning_id).first()
-        if not dehorning:
-            return {'message': 'Dehorning record not found'}, 404
-
-        dehorning.date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
-        dehorning.vet_name = data.get('vet_name')
-        dehorning.method = data.get('method')
-        dehorning.cattle_id = data.get('cattle_id')
-
-        db.session.commit()
-
-        return {'message': 'Dehorning record updated successfully'}, 200
-
-class VaccinationByIdResource(Resource):
-    def put(self, vaccination_id):
-        data = request.get_json()
-
-        vaccination = Vaccination.query.filter_by(vaccination_id=vaccination_id).first()
-        if not vaccination:
-            return {'message': 'Vaccination record not found'}, 404
-
-        vaccination.date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
-        vaccination.vet_name = data.get('vet_name')
-        vaccination.method = data.get('method')
-        vaccination.drug = data.get('drug')
-        vaccination.disease = data.get('disease')
-        vaccination.cattle_id = data.get('cattle_id')
-
-        db.session.commit()
-
-        return {'message': 'Vaccination record updated successfully'}, 200
-
-
-# GET dehorning records 
-class GetDehorningResource(Resource):
-    def get(self):
-        dehorning_records = Dehorning.query.all()
-        result = []
-        for record in dehorning_records:
-            result.append({
-                'dehorning_id': record.dehorning_id,
-                'date': str(record.date),
-                'vet_name': record.vet_name,
-                'method': record.method,
-                'cattle_id': record.cattle_id
-            })
-        return result, 200
-
-
-
-#GET dehorning records by cattle id
-class GetDehorningByCattleIdResource(Resource):
-    def get(self, cattle_id):
-        dehorning_records = Dehorning.query.filter_by(cattle_id=cattle_id).all()
-        if dehorning_records:
-            result = []
-            for record in dehorning_records:
-                result.append({
-                    'dehorning_id': record.dehorning_id,
-                    'date': str(record.date),
-                    'vet_name': record.vet_name,
-                    'method': record.method,
-                    'cattle_id': record.cattle_id
-                })
-            return result, 200
-        else:
-            return {'message': 'Dehorning records not found for this cattle ID'}, 404
-
-
-#GET Vaccination records
-# Vaccination general GET request
-class GetVaccinationResource(Resource):
-    def get(self):
-        vaccination_records = Vaccination.query.all()
-        result = []
-        for record in vaccination_records:
-            result.append({
-                'vaccination_id': record.vaccination_id,
-                'date': str(record.date),
-                'vet_name': record.vet_name,
-                'method': record.method,
-                'drug': record.drug,
-                'disease': record.disease,
-                'cattle_id': record.cattle_id
-            })
-        return result, 200
-    
-
-# Vaccination by cattle ID GET request
-class GetVaccinationByCattleIdResource(Resource):
-    def get(self, cattle_id):
-        vaccination_records = Vaccination.query.filter_by(cattle_id=cattle_id).all()
-        if vaccination_records:
-            result = []
-            for record in vaccination_records:
-                result.append({
-                    'vaccination_id': record.vaccination_id,
-                    'date': str(record.date),
-                    'vet_name': record.vet_name,
-                    'method': record.method,
-                    'drug': record.drug,
-                    'disease': record.disease,
-                    'cattle_id': record.cattle_id
-                })
-            return result, 200
-        else:
-            return {'message': 'Vaccination records not found for this cattle ID'}, 404
-        
-
-
-
-# PERIODIC PROCEDURES ROUTES
-
-# POST 
-class PostPeriodicTreatmentResource(Resource):
-    def post(self):
-        data = request.get_json()
-        
-        date = data.get('date')
-        cattle_id = data.get('cattle_id')
-        vet_name = data.get('vet_name')
-        disease = data.get('disease')
-        method_of_administration = data.get('method_of_administration')
-        
-        # Convert date from string to date object
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-        
-        new_treatment = PeriodicTreatment(
-            date=date,
-            cattle_id=cattle_id,
-            vet_name=vet_name,
-            disease=disease,
-            method_of_administration=method_of_administration
-        )
-
-        db.session.add(new_treatment)
-        db.session.commit()
-
-        return {'message': 'Periodic Treatment created successfully', 'treatment': new_treatment.id}, 201
-    
-
-#POST by id
-class PeriodicTreatmentByCattleIdResource(Resource):
-    def post(self, cattle_id):
-        data = request.get_json()
-        
-        date = data.get('date')
-        vet_name = data.get('vet_name')
-        disease = data.get('disease')
-        method_of_administration = data.get('method_of_administration')
-        
-        # Convert date from string to date object
-        date = datetime.strptime(date, '%Y-%m-%d').date()
-        
-        new_treatment = PeriodicTreatment(
-            date=date,
-            cattle_id=cattle_id,
-            vet_name=vet_name,
-            disease=disease,
-            method_of_administration=method_of_administration
-        )
-
-        db.session.add(new_treatment)
-        db.session.commit()
-
-        return {'message': 'Periodic Treatment created successfully', 'treatment': new_treatment.id}, 201
-    
-
-# PATCH
-
-#PATCH by treatment id
-class PeriodicTreatmentPatchResource(Resource):
-    def patch(self, treatment_id):
-        data = request.get_json()
-        treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
-
-        if not treatment:
-            return {'message': 'Periodic Treatment record not found'}, 404
-        
-        if 'date' in data:
-            treatment.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
-        if 'cattle_id' in data:
-            treatment.cattle_id = data['cattle_id']
-        if 'vet_name' in data:
-            treatment.vet_name = data['vet_name']
-        if 'disease' in data:
-            treatment.disease = data['disease']
-        if 'method_of_administration' in data:
-            treatment.method_of_administration = data['method_of_administration']
-
-        db.session.commit()
-
-        return {'message': 'Periodic Treatment updated successfully'}, 200
-    
-
-#PATCH by cattle id
-class PeriodicTreatmentPatchByCattleIdResource(Resource):
-    def patch(self, cattle_id):
-        data = request.get_json()
-        treatment = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).first()
-
-        if not treatment:
-            return {'message': 'Periodic Treatment record not found'}, 404
-        
-        if 'date' in data:
-            treatment.date = datetime.strptime(data['date'], '%Y-%m-%d').date()
-        if 'cattle_id' in data:
-            treatment.cattle_id = data['cattle_id']
-        if 'vet_name' in data:
-            treatment.vet_name = data['vet_name']
-        if 'disease' in data:
-            treatment.disease = data['disease']
-        if 'method_of_administration' in data:
-            treatment.method_of_administration = data['method_of_administration']
-
-        db.session.commit()
-
-        return {'message': 'Periodic Treatment updated successfully'}, 200
-
-
-#GET
-class PeriodicTreatmentListResource(Resource):
-    def get(self):
-        treatments = PeriodicTreatment.query.all()
-        result = []
-        for treatment in treatments:
-            result.append({
-                'id': treatment.id,
-                'date': str(treatment.date),
-                'cattle_id': treatment.cattle_id,
-                'vet_name': treatment.vet_name,
-                'disease': treatment.disease,
-                'method_of_administration': treatment.method_of_administration
-            })
-        return result, 200
-    
-
-#GET BY id
-class PeriodicTreatmentByCattleIdListResource(Resource):
-    def get(self, cattle_id):
-        treatments = PeriodicTreatment.query.filter_by(cattle_id=cattle_id).all()
-        result = []
-        for treatment in treatments:
-            result.append({
-                'id': treatment.id,
-                'date': str(treatment.date),
-                'cattle_id': treatment.cattle_id,
-                'vet_name': treatment.vet_name,
-                'disease': treatment.disease,
-                'method_of_administration': treatment.method_of_administration
-            })
-        return result, 200
-    
-
-    
-# DELETE by id
-class PeriodicTreatmentDeleteResource(Resource):
-    def delete(self, treatment_id):
-        treatment = PeriodicTreatment.query.filter_by(id=treatment_id).first()
-
-        if not treatment:
-            return {'message': 'Periodic Treatment record not found'}, 404
-        
-        db.session.delete(treatment)
-        db.session.commit()
-
-        return {'message': 'Periodic Treatment deleted successfully'}, 200
-
-
-# WORKER REGISTRATION ROUTES
-
-# signup route
-class WorkerSignupResource(Resource):
-    def post(self):
-        data = request.get_json()
-        name = data.get('name')
-        username = data.get('username')
-        password = data.get('password')
-        role = data.get('role')
-
-        if Worker.query.filter_by(username=username).first():
-            return {'message': 'Username already exists'}, 400
-
-        hashed_password = generate_password_hash(password)
-        new_worker = Worker(name=name, username=username, password=hashed_password, role=role)
-        
-        db.session.add(new_worker)
-        db.session.commit()
-
-        return {'message': 'Worker registered successfully'}, 201
-    
-
-
-# login route
-class WorkerLoginResource(Resource):
-    def post(self):
-        data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-
-        if not username or not password:
-            return {"message": "Username and password required"}, 400
-
-        worker = Worker.query.filter_by(username=username).first()
-
-        if not worker or not check_password_hash(worker.password, password):
-            return {'message': 'Invalid credentials'}, 401
-
-        login_user(worker)
-
-        worker_data = {
-            "id": worker.id,
-            "name": worker.name,
-            "username": worker.username,
-            "role": worker.role
-            # Add more fields as necessary
-        }
-
-        return {"message": "Worker Loged in successfully", "worker_data": worker_data, "redirect": url_for('worker_dashboard')}, 201    
-#Log out
-class WorkerLogoutResource(Resource):
-    def post(self):
-        session.pop('worker_id', None)
-        session.pop('username', None)
-        session.pop('role', None)
-        return {'message': 'Logged out successfully'}, 200
-    
-class WorkerListResource(Resource):
-    def get(self):
-        workers = Worker.query.all()
-        worker_list = [
-            {
-                "id": worker.id,
-                "name": worker.name,
-                "username": worker.username,
-                "role": worker.role
-            }
-            for worker in workers
-        ]
-        return jsonify(worker_list)
-
-class WorkerResource(Resource):
-    def delete(self, worker_id):
-        worker = Worker.query.get(worker_id)
-        if not worker:
-            return {'message': 'Worker not found'}, 404
-
-        db.session.delete(worker)
-        db.session.commit()
-
-        return {'message': 'Worker deleted successfully'}, 200        
-
-
-
-
-# Admin and farm registration routes
-
-
-#   RESOURCES TO VIEW AND DELETE ADMIN
-#
-#
-class AdminViewResource(Resource):
-    def get(self, admin_id):
-        admin = Admin.query.get(admin_id)
-        if not admin:
-            return {"message": "Admin not found"}, 404
-
-        admin_data = {
-            "id": admin.id,
-            "name": admin.name,
-            "farm_name": admin.farm_name,
-            "username": admin.username
-        }
-        return jsonify(admin_data)
-
-class AdminDeleteResource(Resource):
-    def delete(self, admin_id):
-        admin = Admin.query.get(admin_id)
-        if not admin:
-            return {"message": "Admin not found"}, 404
-
-        db.session.delete(admin)
-        db.session.commit()
-        return {"message": "Admin deleted successfully"}, 200    
-
-
-# Admin List Resource
-class AdminListResource(Resource):
-    def get(self):
-        # Debugging line to check the database path
-        print(f"Database path: {os.path.abspath('app.db')}")
-
-        try:
-            admins = Admin.query.all()
-            admin_list = [
-                {
-                    "id": admin.id,
-                    "name": admin.name,
-                    "farm_name": admin.farm_name,
-                    "username": admin.username
-                }
-                for admin in admins
-            ]
-            return admin_list  # Return the list directly
-        except Exception as e:
-            # Debugging line to catch and log any errors
-            print(f"Error retrieving admins: {e}")
-            return {'error': str(e)}, 500
-    
-
-
-
-## RESOURCES ##
-
-api.add_resource(CattleResource, '/cattle/post') # POST cattle
-api.add_resource(CattleGetResource, '/cattle/get') # GET cattle
-api.add_resource(CattleByIdResource, '/cattle/<int:serial_number>') #GET cattle by ID 
-api.add_resource(CattleDeleteByIdResource, '/cattle/<int:serial_number>') #DELETE cattle by ID
-api.add_resource(VaccinationResource, '/vaccination') # POST vaccination
-api.add_resource(DehorningResource, "/dehorning") #POST dehorning)
-api.add_resource(DehorningByIdResource, '/dehorning/<int:dehorning_id>') #PATCH dehorning by id
-api.add_resource(VaccinationByIdResource, '/vaccination/<int:vaccination_id>') #PATCH vaccination by id
-api.add_resource(DehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') #Post dehorning record for a specific cattle
-api.add_resource(VaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') #post vaccination record for a specific cattle
-# api.add_resource(DehorningResource,"/dehorning")
-api.add_resource(GetVaccinationResource, "/vaccination") #Get vaccination records
-api.add_resource(GetDehorningResource, "/dehorning")# get dehorning records
-api.add_resource(GetDehorningByCattleIdResource, '/cattle/<int:cattle_id>/dehorning') # get dehorning record for a specific cattle
-api.add_resource(GetVaccinationByCattleIdResource, '/cattle/<int:cattle_id>/vaccination') # Get vaccination record for a specific cattle
-api.add_resource(PostPeriodicTreatmentResource, '/periodic_treatment') # Add a record for periodic treatment
-api.add_resource(PeriodicTreatmentByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #POST BY cattle id
-api.add_resource(PeriodicTreatmentPatchResource, '/periodic_treatment/<int:treatment_id>') #patch periodic treatment by treatment id
-api.add_resource(PeriodicTreatmentPatchByCattleIdResource, '/cattle/<int:cattle_id>/periodic_treatment') #PATCH periodic treatment record by cattle id
-api.add_resource(PeriodicTreatmentListResource, '/periodic_treatments') #GET all periodic treatment record
-api.add_resource(PeriodicTreatmentByCattleIdListResource, '/cattle/<int:cattle_id>/periodic_treatments') #Get periodic treatment record for specific cattle using cattle id
-api.add_resource(PeriodicTreatmentDeleteResource, '/periodic_treatment/<int:treatment_id>') #Delete periodic treatment record for a specific cattle
-
-#  WORKER (EMPLOYEE)
-api.add_resource(WorkerSignupResource, '/signup/worker') # signup for workers
-api.add_resource(WorkerLoginResource, '/login/worker') # Log in for workers
-api.add_resource(WorkerLogoutResource, '/logout/worker') # log out for workers
-api.add_resource(WorkerListResource, '/workers')
-api.add_resource(WorkerResource, '/workers/<int:worker_id>')
-
-###  ADMIN (FARM MANAGER)
-api.add_resource(AdminSignupResource, '/admin/signup') # Sign up for admin
-api.add_resource(AdminLoginResource, '/admin/login') #log in for admin
-api.add_resource(AdminLogoutResource, '/admin/logout') #logout for farmer (admin)
-api.add_resource(AdminViewResource, '/admin/view/<int:admin_id>')  # View admin by ID
-api.add_resource(AdminDeleteResource, '/admin/delete/<int:admin_id>')  # Delete admin by ID
-api.add_resource(AdminListResource, '/admin/list')  # View all admins
+# API Routes for Cattle
+api.add_resource(CattleGetResource, '/api/cattle/get', endpoint='cattle_get_all')
+api.add_resource(CattlePostResource, '/api/cattle/post', endpoint='cattle_post')
+api.add_resource(CattleGetByIdResource, '/api/cattle/get/<int:cattle_id>', endpoint='cattle_get_by_id')
+api.add_resource(CattleEditResource, '/api/cattle/edit/<int:cattle_id>', endpoint='cattle_edit')
+api.add_resource(CattleDeleteResource, '/api/cattle/delete/<int:cattle_id>', endpoint='cattle_delete')
+
+
+# Add resources to the API
+
+#VACCINATIONS
+api.add_resource(RecordVaccinationResource, '/api/vaccination', '/api/vaccination/<int:id>')
+
+#TREATMENTS
+api.add_resource(RecordTreatmentResource, '/api/treatment', '/api/treatment/<int:id>')
+
+
+#ARTIFICIAL INSEMINATION
+api.add_resource(RecordArtificialInseminationResource, '/api/artificial_insemination', '/api/artificial_insemination/<int:id>')
+
+
+#NATURAL INSEMINATION
+api.add_resource(RecordNaturalInseminationResource, '/api/natural_insemination', '/api/natural_insemination/<int:id>')
+
+#DEHORNING
+api.add_resource(RecordDehorningResource, '/api/dehorning', '/api/dehorning/<int:id>')
+
+
+#DEWORMING
+api.add_resource(RecordDewormingResource, '/api/deworming', '/api/deworming/<int:id>')
+
+#FEEDS
+api.add_resource(RecordFeedsResource, '/api/feed', '/api/feed/<int:id>')
+
+#HEAT DETECTION
+api.add_resource(RecordHeatDetectionResource, '/api/heat_detection', '/api/heat_detection/<int:id>')
+
+#PEST CONTROL
+api.add_resource(RecordPestControlResource, '/api/pest_control', '/api/pest_control/<int:id>')
+
+#PREGNANCY
+api.add_resource(RecordPregnancyResource, '/api/pregnancy', '/api/pregnancy/<int:id>')
+
+#SALES
+api.add_resource(RecordSalesResource, '/api/milk_sales', '/api/milk_sales/<int:id>')
+
+#MEDICINE
+api.add_resource(RecordMedicineResource, '/api/medicine', '/api/medicine/<int:id>')
+
+#MISCARRIAGE
+api.add_resource(RecordMiscarriageResource, '/api/miscarriage', '/api/miscarriage/<int:id>')
+
+#CALVING
+api.add_resource(RecordCalvingResource, '/api/calving', '/api/calving/<int:id>')
+
+#MILK PRODUCTION
+api.add_resource(RecordMilkProductionResource, '/api/milk_production', '/api/milk_production/<int:id>')
+
+#MAINTENANCE COST
+api.add_resource(RecordMaintenanceCostResource, '/api/maintenance_costs', '/api/maintenance_costs/<int:id>')
+
+#EQUIPMENT
+api.add_resource(RecordEquipmentResource, '/api/equipment', '/api/equipment/<int:id>')
+
+#CATTLE DEATH
+api.add_resource(RecordCattleDeathResource, '/api/cattle_death', '/api/cattle_death/<int:id>')
+
+#Log Messages
+api.add_resource(RecordLogMessageResource, '/api/log_message', '/api/log_message/<int:id>')
+
+#NOTIFICATIONS
+api.add_resource(RecordNotificationResource, '/api/notification', '/api/notification/<int:id>')
 
 
 

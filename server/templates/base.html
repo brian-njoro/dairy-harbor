@@ -87,7 +87,7 @@ data-template="vertical-menu-template-free">
                     </div>
         
                     <div class="menu-inner-shadow"></div>
-                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{admin.farm_name}}</h1>
+                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">Farem name</h1>
         
                     <ul class="menu-inner py-1 mt-3">
                         <!-- Dashboards -->
@@ -130,8 +130,8 @@ data-template="vertical-menu-template-free">
                             </a>
         
                                 <ul class="menu-sub menu-list">
-                                    <!--Treatment-->
-                                    <li class="menu-item mb-1 ">
+                                     <!--Treatment-->
+                                     <li class="menu-item mb-1 ">
                                         <a href="/treatment" class="menu-link text-dark fs-6 fw-bold" target="_self" >
                                             <div data-i18n="without menu">Treatment</div>
                                         </a>
@@ -151,6 +151,13 @@ data-template="vertical-menu-template-free">
                                         </a>
                                     </li>
 
+                                    <!--pest control-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/pestControl" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Container">Pest Control</div>
+                                        </a>
+                                    </li>
+
                                     <!--Deworming-->
                                     <li class="menu-item mb-1 menu-list">
                                         <a href="/deworm" class="menu-link text-dark fs-6 fw-bold" target="_self">
@@ -158,10 +165,45 @@ data-template="vertical-menu-template-free">
                                         </a>
                                     </li>
 
+                                    <!--Heat Detection-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/heat" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Heat Detection</div>
+                                        </a>
+                                    </li>
+
                                     <!--Artificial Insemination-->
                                     <li class="menu-item mb-1 menu-list">
-                                        <a href="/insemination" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                        <a href="/Ainsemination" class="menu-link text-dark fs-6 fw-bold" target="_self">
                                             <div data-i18n="Blank">Artificial Insemination</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Natural Insemination-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/Ninsemination" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Blank">Natural Insemination</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Pregnancy-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/pregnancy" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Pregnancy</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Miscarriage-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/miscarriage" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Miscarriage</div>
+                                        </a>
+                                    </li>
+
+                                    <!--Calving-->
+                                    <li class="menu-item mb-1 menu-list">
+                                        <a href="/calving" class="menu-link text-dark fs-6 fw-bold" target="_self">
+                                            <div data-i18n="Fluid">Calving</div>
                                         </a>
                                     </li>
                                 </ul>
@@ -312,7 +354,7 @@ data-template="vertical-menu-template-free">
                 <div class="layout-page">
 
                     <div class="row bg-info border-bottom border-3 border-dark shadow-sm px-5 mt-0">
-                        <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{admin.farm_name}}</h1>
+                        <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">Farm name</h1>
                     </div>
 
                     <!-- Navbar -->
@@ -374,8 +416,8 @@ data-template="vertical-menu-template-free">
                                                     </div>
 
                                                     <div class="flex-grow-1">
-                                                        <span class="fw-medium d-block">{{admin.name}}</span>
-                                                        <small class="text-muted">Admin</small>
+                                                        <span class="fw-medium d-block">Farmer name</span>
+                                                        <small class="text-muted">Farmer</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -438,8 +480,8 @@ data-template="vertical-menu-template-free">
                                                     <div class="col bg-light">
                                                         <img src="./static/auth/img/Brian.jpeg" class="card-img-top" alt="cowprofile">
                                                         <div class="card-body">
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>{{admin.name}}<span id="Name"></span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">{{admin.farm_name}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>Name<span id="Name"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">Farm name</span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Email:</span><span id="email"></span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Farm Id:</span><span id="farmId"></span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmId"></span></p>
@@ -545,7 +587,7 @@ data-template="vertical-menu-template-free">
 
     // Function to handle logout
     async function handleLogout() {
-        const response = await fetch('/admin/logout', {
+        const response = await fetch('/farmer/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -595,9 +637,7 @@ data-template="vertical-menu-template-free">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <!-- Include ApexCharts JS -->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- Include your custom script -->
-        <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
 
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -615,10 +655,7 @@ data-template="vertical-menu-template-free">
 
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
-        <script src="{{url_for('static',filename='js/addCattle.js')}}" async></script>
-        <script src="{{url_for('static',filename='js/milkproduction.js')}}" async></script>
         <script src="{{url_for('static',filename='js/login.js')}}"></script>
-        <script src="{{url_for('static',filename='js/milkproduction.js')}}"></script>
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
