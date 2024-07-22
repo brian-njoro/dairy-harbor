@@ -1,0 +1,45 @@
+{
+    "code-runner.runInTerminal": true,
+    "code-runner.clearPreviousOutput": true,
+    "debug.terminal.clearBeforeReusing": true,
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "cmake.configureOnOpen": true,
+    "grunt.autoDetect": "on",
+    "workbench.editorAssociations": {
+        "*.calculator": "default",
+        "*.db": "default"
+    },
+    "explorer.confirmDelete": false,
+    "tabnine.experimentalAutoImports": true,
+    "gulp.autoDetect": "on",
+    "jake.autoDetect": "on",
+    "workbench.colorCustomizations": {},
+    "liveServer.settings.donotShowInfoMsg": true,
+    "open-in-browser.default": "chrome",
+    "liveServer.settings.AdvanceCustomBrowserCmdLine": "",
+    "dart.devToolsBrowser": "default",
+    "editor.wordWrap": "on",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "explorer.fileNesting.patterns": {
+        "*.ts": "${capture}.js",
+        "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+        "*.jsx": "${capture}.js",
+        "*.tsx": "${capture}.ts",
+        "tsconfig.json": "tsconfig.*.json",
+        "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb",
+        "pubspec.yaml": "pubspec.lock,pubspec_overrides.yaml,.packages,.flutter-plugins,.flutter-plugins-dependencies,.metadata",
+        "*.dart": "${capture}.g.dart",
+        "*.sqlite": "${capture}.${extname}-*",
+        "*.db": "${capture}.${extname}-*",
+        "*.sqlite3": "${capture}.${extname}-*",
+        "*.db3": "${capture}.${extname}-*",
+        "*.sdb": "${capture}.${extname}-*",
+        "*.s3db": "${capture}.${extname}-*"
+    },
+    "python.createEnvironment.trigger": "off",
+    "window.menuBarVisibility": "compact",
+    "workbench.colorTheme": "Visual Studio Dark - C++",
+    "emmet.preferences": {
+
+    }
+}
