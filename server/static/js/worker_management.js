@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
             password: workerPassword,
             phone_number: workerPhoneNumber,
             address: workerAddress,
-            role: workerRole
+            role: workerRole,
+            farmer_id: farmerId // Include farmer_id in the payload
         };
 
         // Send the registration request

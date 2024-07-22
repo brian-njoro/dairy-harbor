@@ -65,12 +65,14 @@
                         <label for="workerRole" class="form-label text-dark fw-bold">Role:</label>
                         <input type="text" id="workerRole" class="form-control" required>
                     </div>
+                    <input type="hidden" id="farmerId" value="{{ current_user.id }}">
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-info" id="registerWorkerButton">Register Worker</button>
             </div>
+
         </div>
     </div>
 </div>

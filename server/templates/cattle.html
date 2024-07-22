@@ -186,12 +186,12 @@
                                     <input type="text" id="photo" class="form-control" required>
                                 </div>
             
-                                <!--Farmer ID-->
+                                <!-- Farmer ID -->
                                 <div class="mb-3">
-                                    <label for="farmerId" class="form-label text-dark fw-bold">Farmer ID:</label>
-                                    <input type="hidden" id="farmerId" value="{{ farmer_id }}">
-                                    <p id="farmerIdDisplay">Farmer ID: {{ farmer_id }}</p>
+                                    <input type="hidden" id="farmerId" value="{{ current_user.id }}">
+                                    
                                 </div>
+
                             </form>
                         </div>
             
@@ -364,7 +364,7 @@
                             <td>${cattle.breed}</td>
                             <td>${cattle.status}</td>
                             <td>${cattle.date_of_birth}</td>
-                            <td><button class="btn btn-danger btn-sm" onclick="deleteCattle(${cattle.id})">Delete</button></td>
+                            <td><button class="btn btn-danger btn-sm" onclick="deleteCattle(${cattle.serial_number})">Delete</button></td>
                         `;
                         cattleList.appendChild(row);
                     });
@@ -377,104 +377,109 @@
                 });
         }
     
-        function deleteCattle(cattleId) {
-            console.log(`Deleting cattle with ID ${cattleId}`);
-            fetch(`/api/cattle/delete/${cattleId}`, {
-                method: 'DELETE',
-            })
-            .then(response => {
-                console.log('Received response from DELETE /api/cattle/delete');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                console.log(`Cattle with ID ${cattleId} deleted successfully.`);
-                // Refresh cattle list after deletion
-                fetchCattleList();
-            })
-            .catch(error => {
-                console.error(`Error deleting cattle with ID ${cattleId}:`, error);
-            });
-        }
-    
-        function addCattle() {
-    console.log('Add Cattle button clicked');
-    
-    const name = document.getElementById('name').value;
-    const dateOfBirth = document.getElementById('dateOfBirth').value;
-    const breed = document.getElementById('breed').value;
-    const status = document.getElementById('status').value;
-    const fatherBreed = document.getElementById('fatherBreed').value;
-    const motherBreed = document.getElementById('motherBreed').value;
-    const methodBred = document.getElementById('methodBred').value;
-    const gender = document.getElementById('gender').value;
-    const photo = document.getElementById('photo').value; // Assuming this is a URL or base64 encoded string
-    const farmerId = document.getElementById('farmerId').value;
-    
-    console.log('Form Data:', { name, dateOfBirth, breed, status, fatherBreed, motherBreed, methodBred, gender, photo, farmerId });
+        function deleteCattle(serialNumber) {
+    if (!serialNumber) {
+        console.error('Invalid cattle serial number:', serialNumber);
+        return;
+    }
 
-    const formData = {
-        name: name,
-        date_of_birth: dateOfBirth,
-        breed: breed,
-        status: status,
-        father_breed: fatherBreed,
-        mother_breed: motherBreed,
-        method_bred: methodBred,
-        gender: gender,
-        photo: photo,
-        farmer_id: farmerId
-    };
-
-    fetch('/api/cattle/post', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
+    console.log(`Deleting cattle with serial number ${serialNumber}`);
+    fetch(`/api/cattle/delete/${serialNumber}`, {
+        method: 'DELETE',
     })
     .then(response => {
-        console.log('Fetch response received');
+        console.log('Received response from DELETE /api/cattle/delete');
         if (!response.ok) {
-            console.error(`HTTP error! Status: ${response.status}`);
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Cattle added successfully:', data);
-        // Close the modal after adding cattle
-        const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
-        if (modalCloseButton) {
-            console.log('Closing modal...');
-            modalCloseButton.click(); // Simulate click on close button
-        } else {
-            console.error('Close button not found in modal');
-        }
-        // Clear input fields
-        clearFormFields();
-        // Refresh cattle list after adding new cattle
+        console.log(`Cattle with serial number ${serialNumber} deleted successfully.`);
+        // Refresh cattle list after deletion
         fetchCattleList();
     })
     .catch(error => {
-        console.error('Error adding cattle:', error);
+        console.error(`Error deleting cattle with serial number ${serialNumber}:`, error);
     });
 }
 
-function clearFormFields() {
-    console.log('Clearing form fields');
-    document.getElementById('name').value = '';
-    document.getElementById('dateOfBirth').value = '';
-    document.getElementById('breed').value = '';
-    document.getElementById('status').value = '';
-    document.getElementById('fatherBreed').value = '';
-    document.getElementById('motherBreed').value = '';
-    document.getElementById('methodBred').value = '';
-    document.getElementById('gender').value = '';
-    document.getElementById('photo').value = '';
-    document.getElementById('farmerId').value = '';
-}
-
-      
+    
+        function addCattle() {
+            console.log('Add Cattle button clicked');
+    
+            const name = document.getElementById('name').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            const breed = document.getElementById('breed').value;
+            const status = document.getElementById('status').value;
+            const fatherBreed = document.getElementById('fatherBreed').value;
+            const motherBreed = document.getElementById('motherBreed').value;
+            const methodBred = document.getElementById('methodBred').value;
+            const gender = document.getElementById('gender').value;
+            const photo = document.getElementById('photo').value; // Assuming this is a URL or base64 encoded string
+    
+            // Get the farmer ID from the hidden input field
+            const farmerId = document.getElementById('farmerId') ? document.getElementById('farmerId').value : null;
+    
+            console.log('Form Data:', { name, dateOfBirth, breed, status, fatherBreed, motherBreed, methodBred, gender, photo, farmerId });
+    
+            const formData = {
+                name: name,
+                date_of_birth: dateOfBirth,
+                breed: breed,
+                status: status,
+                father_breed: fatherBreed,
+                mother_breed: motherBreed,
+                method_bred: methodBred,
+                gender: gender,
+                photo: photo,
+                farmer_id: farmerId
+            };
+    
+            fetch('/api/cattle/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                console.log('Fetch response received');
+                if (!response.ok) {
+                    console.error(`HTTP error! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Cattle added successfully:', data);
+                // Close the modal after adding cattle
+                const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
+                if (modalCloseButton) {
+                    console.log('Closing modal...');
+                    modalCloseButton.click(); // Simulate click on close button
+                } else {
+                    console.error('Close button not found in modal');
+                }
+                // Clear input fields
+                clearFormFields();
+                // Refresh cattle list after adding new cattle
+                fetchCattleList();
+            })
+            .catch(error => {
+                console.error('Error adding cattle:', error);
+            });
+        }
+    
+        // Function to clear the form fields after submission
+        function clearFormFields() {
+            document.getElementById('name').value = '';
+            document.getElementById('dateOfBirth').value = '';
+            document.getElementById('breed').value = '';
+            document.getElementById('status').value = '';
+            document.getElementById('fatherBreed').value = '';
+            document.getElementById('motherBreed').value = '';
+            document.getElementById('methodBred').value = '';
+            document.getElementById('gender').value = '';
+            document.getElementById('photo').value = '';
+        }
     
         function updateCattleCount(count) {
             const totalCowsSpan = document.getElementById('totalCows');

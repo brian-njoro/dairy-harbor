@@ -33,41 +33,12 @@ from models.models import (
     Feeds,
     cattle_worker_association
 )
-from models.ApiResources import (
-    FarmerDeleteResource,
-    WorkerViewResource,
-    WorkerViewbyIdResource,
-    WorkerEditResource,
-    WorkerDeleteResource,
-    CattleGetResource,
-    CattlePostResource,
-    CattleGetByIdResource,
-    CattleEditResource,
-    CattleDeleteResource,
-    RecordVaccinationResource,
-    RecordTreatmentResource,
-    RecordArtificialInseminationResource, 
-    RecordNaturalInseminationResource,
-    RecordDehorningResource,
-    RecordDewormingResource, 
-    RecordFeedsResource,
-    RecordHeatDetectionResource,
-    RecordPestControlResource, 
-    RecordPregnancyResource,
-    RecordSalesResource,
-    RecordMedicineResource, 
-    RecordMiscarriageResource,
-    RecordCalvingResource,
-    RecordMilkProductionResource, 
-    RecordMaintenanceCostResource,
-    RecordEquipmentResource,
-    RecordCattleDeathResource,
-    RecordLogMessageResource,
-    RecordNotificationResource
-)
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
+import flask_login
+
 import os
 
 
@@ -122,6 +93,48 @@ def load_user(user_id):
         return Worker.query.get(int(user_id))
     return None
 
+def login_user(user):
+    if isinstance(user, Farmer):
+        session['user_type'] = 'farmer'
+    elif isinstance(user, Worker):
+        session['user_type'] = 'worker'
+    flask_login.login_user(user)
+
+## IMPORTED HERE TO DEAL WITH CIRCULAR IMPORTS
+from models.ApiResources import (
+    FarmerDeleteResource,
+    WorkerViewResource,
+    WorkerViewbyIdResource,
+    WorkerEditResource,
+    WorkerDeleteResource,
+    CattleGetResource,
+    CattlePostResource,
+    CattleGetByIdResource,
+    CattleEditResource,
+    CattleDeleteResource,
+    RecordVaccinationResource,
+    RecordTreatmentResource,
+    RecordArtificialInseminationResource, 
+    RecordNaturalInseminationResource,
+    RecordDehorningResource,
+    RecordDewormingResource, 
+    RecordFeedsResource,
+    RecordHeatDetectionResource,
+    RecordPestControlResource, 
+    RecordPregnancyResource,
+    RecordSalesResource,
+    RecordMedicineResource, 
+    RecordMiscarriageResource,
+    RecordCalvingResource,
+    RecordMilkProductionResource, 
+    RecordMaintenanceCostResource,
+    RecordEquipmentResource,
+    RecordCattleDeathResource,
+    RecordLogMessageResource,
+    RecordNotificationResource
+)
+
+
 # Utility function to save to database
 def save_to_db(instance):
     db.session.add(instance)
@@ -141,6 +154,7 @@ def farmer_signup():
     password = generate_password_hash(data.get('password'))
     phone_number = data.get('phone_number')
     address = data.get('address')
+    
 
     new_farmer = Farmer(name=name, email_address=email_address, farm_name=farm_name, password=password, phone_number=phone_number, address=address)
     save_to_db(new_farmer)
@@ -198,8 +212,9 @@ def worker_signup():
     phone_number = data.get('phone_number')
     address = data.get('address')
     role = data.get('role')
+    farmer_id = current_user.id  # Use the current farmer's ID
     
-    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role)
+    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role, farmer_id=farmer_id)
     save_to_db(new_worker)
     
     return jsonify({'message': 'Worker registered successfully'})
@@ -412,6 +427,8 @@ def machinery():
 @app.route('/workerP',methods=['GET'])
 @login_required
 def worker_profile():
+
+    print(f"THIS IS THE CURRENT FARMEERR {current_user}")
     # You can pass any necessary data to worker.html here
     return render_template('workerP.html')
 
@@ -471,7 +488,7 @@ api.add_resource(CattleGetResource, '/api/cattle/get', endpoint='cattle_get_all'
 api.add_resource(CattlePostResource, '/api/cattle/post', endpoint='cattle_post')
 api.add_resource(CattleGetByIdResource, '/api/cattle/get/<int:cattle_id>', endpoint='cattle_get_by_id')
 api.add_resource(CattleEditResource, '/api/cattle/edit/<int:cattle_id>', endpoint='cattle_edit')
-api.add_resource(CattleDeleteResource, '/api/cattle/delete/<int:cattle_id>', endpoint='cattle_delete')
+api.add_resource(CattleDeleteResource, '/api/cattle/delete/<int:serial_number>', endpoint='cattle_delete')
 
 
 # Add resources to the API

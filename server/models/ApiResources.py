@@ -6,8 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 import logging
-logging.basicConfig(level=logging.DEBUG,  # Set the logging level to DEBUG
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 from models.models import (
     Farmer,
     Worker,
@@ -121,12 +121,33 @@ class WorkerDeleteResource(Resource):
 class CattleGetResource(Resource):
     @login_required
     def get(self):
-        farmer_id = current_user.id  # Assumes current_user is a Farmer and has an 'id' attribute
+        logger.debug("Entered CattleGetResource get method")
+
+        # Determine farmer_id based on user type
+        if current_user.user_type == 'farmer':
+            logger.debug("User is a farmer")
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            logger.debug("User is a worker")
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                logger.error("Worker not found for user_id %s", current_user.id)
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            logger.debug("Worker found, farmer_id: %s", farmer_id)
+        else:
+            logger.error("Invalid user type: %s", current_user.user_type)
+            return {"error": "Invalid user type"}, 400
+
         cattle_list = Cattle.query.filter_by(farmer_id=farmer_id).all()
         cattle_data = [cattle.as_dict() for cattle in cattle_list]
+        
+        logger.debug("Cattle data retrieved: %s", cattle_data)
         return jsonify(cattle_data)
 
+
 class CattlePostResource(Resource):
+    @login_required
     def post(self):
         data = request.get_json()
         name = data.get('name')
@@ -138,7 +159,19 @@ class CattlePostResource(Resource):
         method_bred = data.get('method_bred')
         status = data.get('status')
         gender = data.get('gender')
-        farmer_id = data.get('farmer_id')
+
+        # Determine farmer_id based on user type
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
 
         # Convert date_of_birth from string to datetime.date
         try:
@@ -162,50 +195,113 @@ class CattlePostResource(Resource):
         db.session.add(new_cattle)
         db.session.commit()
 
+        # Create a log message
+        log_message = LogMessage(
+            cattle_id=new_cattle.serial_number,
+            message="New cattle added",
+            created_by=current_user.name if current_user.is_authenticated else 'Anonymous',
+            farmer_id=farmer_id,
+            worker_id=worker_id
+            # created_at is automatically set by the model's default
+        )
+
+        db.session.add(log_message)
+        db.session.commit()
+
         return jsonify(new_cattle.as_dict())
 
 class CattleGetByIdResource(Resource):
+    @login_required
     def get(self, cattle_id):
         try:
-            # Fetch the cattle by its ID
-            cattle = Cattle.query.get(cattle_id)
+            # Determine farmer_id based on user type
+            if current_user.user_type == 'farmer':
+                farmer_id = current_user.id
+            elif current_user.user_type == 'worker':
+                worker = Worker.query.filter_by(id=current_user.id).first()
+                if not worker:
+                    logger.error("Worker with ID %s not found", current_user.id)
+                    return {"error": "Worker not found"}, 404
+                farmer_id = worker.farmer_id
+            else:
+                logger.error("Invalid user type: %s", current_user.user_type)
+                return {"error": "Invalid user type"}, 400
+
+            # Fetch the cattle by its ID and ensure it's associated with the correct farmer_id
+            cattle = Cattle.query.filter_by(id=cattle_id, farmer_id=farmer_id).first()
             if cattle is None:
-                # Return a JSON response indicating the cattle was not found
+                logger.error("Cattle with ID %s not found for farmer_id %s", cattle_id, farmer_id)
                 return {'message': 'Cattle not found'}, 404
-            
-            # Return the cattle details as JSON using the as_dict method
+
+            logger.debug("Cattle found: %s", cattle.as_dict())
             return jsonify(cattle.as_dict())
         
         except Exception as e:
-            # Handle unexpected errors
+            logger.exception("An unexpected error occurred while fetching cattle with ID %s", cattle_id)
             return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
-    
+
 class CattleEditResource(Resource):
+    @login_required
     def put(self, serial_number):
-        cattle = Cattle.query.get_or_404(serial_number)
-        data = request.get_json()
+        logger.debug("Entered CattleEditResource put method with serial_number: %s", serial_number)
+        try:
+            # Determine farmer_id based on user type
+            if current_user.user_type == 'farmer':
+                farmer_id = current_user.id
+            elif current_user.user_type == 'worker':
+                worker = Worker.query.filter_by(id=current_user.id).first()
+                if not worker:
+                    logger.error("Worker with ID %s not found", current_user.id)
+                    return {"error": "Worker not found"}, 404
+                farmer_id = worker.farmer_id
+            else:
+                logger.error("Invalid user type: %s", current_user.user_type)
+                return {"error": "Invalid user type"}, 400
+
+            # Fetch the cattle by its serial_number and ensure it's associated with the correct farmer_id
+            cattle = Cattle.query.filter_by(serial_number=serial_number, farmer_id=farmer_id).first_or_404()
+            data = request.get_json()
+
+            # Update cattle attributes
+            cattle.name = data.get('name', cattle.name)
+            cattle.date_of_birth = data.get('date_of_birth', cattle.date_of_birth)
+            cattle.photo = data.get('photo', cattle.photo)
+            cattle.breed = data.get('breed', cattle.breed)
+            cattle.father_breed = data.get('father_breed', cattle.father_breed)
+            cattle.mother_breed = data.get('mother_breed', cattle.mother_breed)
+            cattle.method_bred = data.get('method_bred', cattle.method_bred)
+            cattle.status = data.get('status', cattle.status)
+            cattle.gender = data.get('gender', cattle.gender)
+            cattle.farmer_id = data.get('farmer_id', cattle.farmer_id)
+
+            db.session.commit()
+
+            logger.debug("Updated cattle details: %s", cattle.as_dict())
+            return jsonify(cattle.as_dict())
         
-        cattle.name = data.get('name', cattle.name)
-        cattle.date_of_birth = data.get('date_of_birth', cattle.date_of_birth)
-        cattle.photo = data.get('photo', cattle.photo)
-        cattle.breed = data.get('breed', cattle.breed)
-        cattle.father_breed = data.get('father_breed', cattle.father_breed)
-        cattle.mother_breed = data.get('mother_breed', cattle.mother_breed)
-        cattle.method_bred = data.get('method_bred', cattle.method_bred)
-        cattle.status = data.get('status', cattle.status)
-        cattle.gender = data.get('gender', cattle.gender)
-        cattle.farmer_id = data.get('farmer_id', cattle.farmer_id)
-
-        db.session.commit()
-
-        return jsonify(cattle.as_dict())
+        except Exception as e:
+            logger.exception("An unexpected error occurred while updating cattle with serial_number %s", serial_number)
+            return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 
 class CattleDeleteResource(Resource):
     def delete(self, serial_number):
-        cattle = Cattle.query.get_or_404(serial_number)
-        db.session.delete(cattle)
-        db.session.commit()
-        return '', 204
+        
+         # Fetch the cattle by its serial_number
+        cattle = Cattle.query.get(int(serial_number))
+        if cattle is None:
+            return {'message': 'Cattle not found'}, 404
+
+       # Delete the cattle and commit changes
+        try:
+            db.session.delete(cattle)
+            db.session.commit()
+            logger.info(f"Cattle with serial number {serial_number} deleted successfully.")
+            return '', 204
+        except Exception as e:
+            logger.error(f"Error occurred while deleting cattle with serial number {serial_number}: {e}")
+            db.session.rollback()
+            return {'message': 'An error occurred while deleting the cattle'}, 500
+
 
 class RecordDehorningResource(Resource):
     def __init__(self):
@@ -344,13 +440,49 @@ class RecordTreatmentResource(Resource):
         self.parser.add_argument('disease', type=str)
         self.parser.add_argument('notes', type=str)
 
+    def _create_log_message(self, cattle_id, message):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+        
+        log_message = LogMessage(
+            cattle_id=cattle_id,
+            message=message,
+            created_by=current_user.name if current_user.is_authenticated else 'Anonymous',
+            farmer_id=farmer_id,
+            worker_id=worker_id
+        )
+
+        db.session.add(log_message)
+        db.session.commit()
+
     def get(self, id=None):
         if id is None:
             # Get all treatment records for the logged-in farmer's cattle
-            cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=current_user.id).all()
-            cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]  # Convert list of tuples to list of IDs
+            if current_user.user_type == 'farmer':
+                cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=current_user.id).all()
+                cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]  # Convert list of tuples to list of IDs
+                
+                records = Treatment.query.filter(Treatment.cattle_id.in_(cattle_ids)).all()
+            elif current_user.user_type == 'worker':
+                worker = Worker.query.filter_by(id=current_user.id).first()
+                if not worker:
+                    return {"error": "Worker not found"}, 404
+                cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=worker.farmer_id).all()
+                cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]  # Convert list of tuples to list of IDs
+                
+                records = Treatment.query.filter(Treatment.cattle_id.in_(cattle_ids)).all()
+            else:
+                return {"error": "Invalid user type"}, 400
             
-            records = Treatment.query.filter(Treatment.cattle_id.in_(cattle_ids)).all()
             schema = TreatmentSchema(many=True)
             return schema.dump(records), 200
         else:
@@ -364,10 +496,30 @@ class RecordTreatmentResource(Resource):
     def post(self):
         data = request.get_json()
         schema = TreatmentSchema(session=db.session)
+        
+        # Determine farmer_id and worker_id based on user type
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         try:
             record = schema.load(data)
+            record.farmer_id = farmer_id
+            record.worker_id = worker_id
             db.session.add(record)
             db.session.commit()
+
+            # Log message for the new record
+            self._create_log_message(record.cattle_id, "New treatment record added")
+            
             return schema.dump(record), 201
         except Exception as e:
             db.session.rollback()
@@ -390,7 +542,25 @@ class RecordTreatmentResource(Resource):
         for key, value in args.items():
             if value is not None:
                 setattr(record, key, value)
+        
+        # Determine farmer_id and worker_id based on user type
+        if current_user.user_type == 'farmer':
+            record.farmer_id = current_user.id
+            record.worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            record.farmer_id = worker.farmer_id
+            record.worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+        
         db.session.commit()
+
+        # Log message for updated record
+        self._create_log_message(record.cattle_id, "Treatment record updated")
+        
         schema = TreatmentSchema()
         return schema.dump(record), 200
 
@@ -398,9 +568,25 @@ class RecordTreatmentResource(Resource):
         record = Treatment.query.get(id)
         if not record:
             return {'message': 'Treatment record not found'}, 404
+
+        # Determine if the current user is allowed to delete this record
+        if current_user.user_type == 'farmer':
+            if record.farmer_id != current_user.id:
+                return {'message': 'Unauthorized'}, 403
+        elif current_user.user_type == 'worker':
+            if record.worker_id != current_user.id:
+                return {'message': 'Unauthorized'}, 403
+        else:
+            return {"error": "Invalid user type"}, 400
+        
         db.session.delete(record)
         db.session.commit()
+
+        # Log message for deleted record
+        self._create_log_message(record.cattle_id, "Treatment record deleted")
+        
         return {'message': 'Treatment record deleted'}, 200
+
 
 
 class RecordArtificialInseminationResource(Resource):

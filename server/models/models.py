@@ -1,8 +1,9 @@
 from .config import db
-from flask_login import UserMixin
+from .mixins import UserMixin
+from flask_login import UserMixin as FlaskLoginUserMixin
 
 
-class Farmer(db.Model, UserMixin):
+class Farmer(db.Model, UserMixin, FlaskLoginUserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email_address = db.Column(db.String(100), unique=True)
@@ -22,7 +23,7 @@ class Farmer(db.Model, UserMixin):
     log_messages = db.relationship('LogMessage', back_populates='farmer')
     notifications = db.relationship('Notification', back_populates='farmer')
 
-class Worker(db.Model, UserMixin):
+class Worker(db.Model, UserMixin, FlaskLoginUserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email_address = db.Column(db.String(100), unique=True)
@@ -198,6 +199,7 @@ class LogMessage(db.Model):
     created_by = db.Column(db.String(100))
     farmer_id = db.Column(db.Integer, db.ForeignKey('farmer.id'))
     worker_id = db.Column(db.Integer, db.ForeignKey('worker.id'))
+
 
     cattle = db.relationship('Cattle', back_populates='log_messages')
     farmer = db.relationship('Farmer', back_populates='log_messages')
