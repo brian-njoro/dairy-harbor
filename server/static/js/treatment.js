@@ -17,12 +17,41 @@ const updateTreatmentList = async () => {
                 <td>${treatment.method_of_administration}</td>
                 <td>${treatment.drug_used}</td>
                 <td>${treatment.disease}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="editTreatment(${treatment.id})">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteTreatment(${treatment.id})">Delete</button>
+                </td>
             `;
 
             treatmentList.appendChild(row);
         });
     } catch (error) {
         console.error('Error fetching treatment list:', error);
+    }
+};
+
+// Function to edit a treatment
+const editTreatment = (id) => {
+    // Fetch the treatment record and populate a form for editing
+    // You can create a modal or use an existing form for editing
+    console.log('Edit treatment with id:', id);
+};
+
+// Function to delete a treatment
+const deleteTreatment = async (id) => {
+    try {
+        const response = await fetch(`/api/treatment/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            // Update the treatment list after deletion
+            updateTreatmentList();
+        } else {
+            console.error('Failed to delete treatment:', await response.text());
+        }
+    } catch (error) {
+        console.error('Error deleting treatment:', error);
     }
 };
 

@@ -661,17 +661,7 @@ class RecordTreatmentResource(Resource):
     def delete(self, id):
         record = Treatment.query.get(id)
         if not record:
-            return {'message': 'Treatment record not found'}, 404
-
-        # Determine if the current user is allowed to delete this record
-        if current_user.user_type == 'farmer':
-            if record.farmer_id != current_user.id:
-                return {'message': 'Unauthorized'}, 403
-        elif current_user.user_type == 'worker':
-            if record.worker_id != current_user.id:
-                return {'message': 'Unauthorized'}, 403
-        else:
-            return {"error": "Invalid user type"}, 400
+            return {'message': 'Treatment record not found'}, 404       
         
         db.session.delete(record)
         db.session.commit()
