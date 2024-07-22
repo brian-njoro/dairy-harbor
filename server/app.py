@@ -393,7 +393,7 @@ def worker_dashboard():
     logging.debug(f'Current user in worker_dashboard: {current_user}')
     if session.get('user_type') != 'worker':
         logging.debug('Current user is not a Worker, redirecting')
-        return redirect(url_for('login'))  # Redirect to login if current user is not a Worker
+        return redirect(url_for('workerLogin'))  # Redirect to login if current user is not a Worker
     # Render worker dashboard
     return render_template('worker_dashboard.html')
 
