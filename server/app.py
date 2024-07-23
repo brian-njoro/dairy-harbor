@@ -1,7 +1,7 @@
 from models.config import db
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS
-from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template
+from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import Session
 from flask_migrate import Migrate
@@ -88,9 +88,9 @@ login_manager.login_view = 'index'  # Change 'login' to your login view endpoint
 def load_user(user_id):
     user_type = session.get('user_type')
     if user_type == 'farmer':
-        return Farmer.query.get(int(user_id))
+        return db.session.get(Farmer, int(user_id))
     elif user_type == 'worker':
-        return Worker.query.get(int(user_id))
+        return db.session.get(Worker, int(user_id))
     return None
 
 def login_user(user):
@@ -412,10 +412,10 @@ def worker_dashboard():
         logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('workerLogin'))  # Redirect to login if current user is not a Worker
     
-    # Fetch the farmer associated with the current worker
-    worker = Worker.query.get(current_user.id)
+    # Fetch the worker associated with the current user
+    worker = db.session.get(Worker, current_user.id)
     if worker:
-        farmer = Farmer.query.get(worker.farmer_id)
+        farmer = db.session.get(Farmer, worker.farmer_id)
         if farmer:
             farm_name = farmer.farm_name
         else:
@@ -425,6 +425,7 @@ def worker_dashboard():
 
     # Render worker dashboard with the farm_name
     return render_template('worker_dashboard.html', farm_name=farm_name)
+
 
 
 
@@ -499,8 +500,55 @@ def cattle():
                            status_pregnant=status_pregnant,
                            status_heifer=status_heifer)
 
+@app.route('/api/income-data', methods=['GET'])
+@login_required
+def get_income_data():
+    farmer_id = current_user.id
+    milk_sales = MilkSales.query.filter_by(farmer_id=farmer_id).order_by(MilkSales.date.desc()).limit(10).all()
+    income_data = [{'date': sale.date.strftime('%Y-%m-%d'), 'amount': sale.price_per_litre * sale.quantity} for sale in milk_sales]
+    return jsonify(income_data)
 
+@app.route('/api/expenses-data', methods=['GET'])
+@login_required
+def get_expenses_data():
+    farmer_id = current_user.id
+    expenses_data = []
+    models = [MaintenanceCost, Equipment, Medicine, Feeds]
+    for model in models:
+        expenses = model.query.filter_by(farmer_id=farmer_id).order_by(model.purchase_date.desc() if hasattr(model, 'purchase_date') else model.date_paid.desc()).limit(10).all()
+        for expense in expenses:
+            date = expense.purchase_date if hasattr(expense, 'purchase_date') else expense.date_paid
+            amount = expense.price if hasattr(expense, 'price') else expense.amount
+            expenses_data.append({'date': date.strftime('%Y-%m-%d'), 'amount': amount})
+    return jsonify(expenses_data)
 
+@app.route('/api/milk-production-data', methods=['GET'])
+@login_required
+def get_milk_production_data():
+    farmer_id = current_user.id
+    milk_production = MilkProduction.query.filter_by(farmer_id=farmer_id).order_by(MilkProduction.date.desc()).limit(10).all()
+    milk_production_data = [{'date': production.date.strftime('%Y-%m-%d'), 'quantity': production.quantity} for production in milk_production]
+    return jsonify(milk_production_data)
+
+@app.route('/api/milk-sales-data', methods=['GET'])
+@login_required
+def get_milk_sales_data():
+    farmer_id = current_user.id
+    milk_sales = MilkSales.query.filter_by(farmer_id=farmer_id).order_by(MilkSales.date.desc()).limit(10).all()
+    milk_sales_data = [{'date': sale.date.strftime('%Y-%m-%d'), 'quantity': sale.quantity} for sale in milk_sales]
+    return jsonify(milk_sales_data)
+
+@app.route('/api/inventory-cost-data', methods=['GET'])
+@login_required
+def get_inventory_cost_data():
+    farmer_id = current_user.id
+    inventory_cost_data = []
+    models = [Equipment, Medicine, Feeds]
+    for model in models:
+        inventory_items = model.query.filter_by(farmer_id=farmer_id).order_by(model.purchase_date.desc()).limit(10).all()
+        for item in inventory_items:
+            inventory_cost_data.append({'date': item.purchase_date.strftime('%Y-%m-%d'), 'cost': item.price})
+    return jsonify(inventory_cost_data)
 
 
 # API routes for Farmer

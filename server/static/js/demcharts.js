@@ -1,98 +1,34 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Data for the charts
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const incomeData = [4.4, 5.5, 4.1, 6.4, 5.2, 5.3, 4.4, 4.9, 4.3, 2.3, 5.5, 1.0];
-    const expensesData = [4.4, 5.5, 4.1, 6.4, 5.2, 5.3, 4.4, 4.9, 4.3, 2.3, 5.5, 1.0];
-    const profitData = [9000, 13000, 10000, 12000, 7000, 5000, 7000, 8000, 2000, 3000, 12000, 10000];
-    const milkProductionData = [45, 55, 40, 65, 50, 60, 45, 50, 40, 65, 50, 60];
-    const milkSalesData = [30, 40, 35, 60, 45, 55, 40, 45, 60, 45, 55, 40];
-    const inventoryCostData = [25, 30, 28, 35, 32, 40, 30, 35, 35, 32, 40, 30];
+document.addEventListener('DOMContentLoaded', async function () {
+    async function fetchData(endpoint) {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        return data;
+    }
+
+    // Fetch data from the endpoints
+    const incomeData = await fetchData('/api/income-data');
+    const expensesData = await fetchData('/api/expenses-data');
+    const milkProductionData = await fetchData('/api/milk-production-data');
+    const milkSalesData = await fetchData('/api/milk-sales-data');
+    const inventoryCostData = await fetchData('/api/inventory-cost-data');
+
+    // Extract dates and values
+    const incomeDates = incomeData.map(item => item.date).reverse();
+    const incomeValues = incomeData.map(item => item.amount).reverse();
+    const expenseDates = expensesData.map(item => item.date).reverse();
+    const expenseValues = expensesData.map(item => item.amount).reverse();
+    const milkProductionDates = milkProductionData.map(item => item.date).reverse();
+    const milkProductionValues = milkProductionData.map(item => item.quantity).reverse();
+    const milkSalesDates = milkSalesData.map(item => item.date).reverse();
+    const milkSalesValues = milkSalesData.map(item => item.quantity).reverse();
+    const inventoryCostDates = inventoryCostData.map(item => item.date).reverse();
+    const inventoryCostValues = inventoryCostData.map(item => item.cost).reverse();
 
     // Common chart options
     const commonChartOptions = {
-        plotOptions: {
-            bar: {
-                borderRadius: 10,
-                dataLabels: {
-                    position: 'top'
-                }
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: function (val) {
-                return val;
-            },
-            offsetY: -20,
-            style: {
-                fontSize: '12px',
-                colors: ["#304758"]
-            }
-        },
-        xaxis: {
-            categories: months,
-            position: 'top',
-            labels: {
-                offsetY: -18
-            },
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            crosshairs: {
-                fill: {
-                    type: 'gradient',
-                    gradient: {
-                        colorFrom: '#D8E3F0',
-                        colorTo: '#BED1E6',
-                        stops: [0, 100],
-                        opacityFrom: 0.4,
-                        opacityTo: 0.5
-                    }
-                }
-            },
-            tooltip: {
-                enabled: true
-            }
-        },
-        fill: {
-            gradient: {
-                shade: 'light',
-                type: "horizontal",
-                shadeIntensity: 0.25,
-                gradientToColors: undefined,
-                inverseColors: true,
-                opacityFrom: 0.85,
-                opacityTo: 0.85,
-                stops: [50, 0, 100, 100]
-            }
-        },
-        yaxis: {
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            },
-            labels: {
-                show: false
-            }
-        },
-        title: {
-            text: 'Monthly Revenue',
-            floating: true,
-            offsetY: 330,
-            align: 'center',
-            style: {
-                color: '#444'
-            }
-        },
         chart: {
-            zoom: {
-                enabled: true
-            },
+            type: 'line',
+            height: 250,
             toolbar: {
                 show: true,
                 tools: {
@@ -105,92 +41,108 @@ document.addEventListener('DOMContentLoaded', function () {
                     reset: true
                 }
             }
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        
+        xaxis: {
+            categories: [],
+            position: 'bottom',
+            labels: {
+                offsetY: -18
+            },
+            axisBorder: {
+                show: false
+            },
+            axisTicks: {
+                show: false
+            },
+            tooltip: {
+                enabled: true
+            }
+        },
+        yaxis: {
+            labels: {
+                show: false,
+                formatter: function (val) {
+                    return val.toFixed(1); // Format y-axis labels to 1 decimal places
+                }
+            }
         }
     };
 
     // Chart options
     const incomeOptions = {
         ...commonChartOptions,
-        chart: {
-            ...commonChartOptions.chart,
-            type: 'line',
-            height: 350
-        },
-        stroke: {
-            curve: 'smooth'
-        },
         series: [{
             name: 'Income',
-            data: incomeData
-        }]
+            data: incomeValues
+        }],
+        xaxis: {
+            ...commonChartOptions.xaxis,
+            categories: incomeDates
+        }
     };
 
     const expensesOptions = {
         ...commonChartOptions,
-        chart: {
-            ...commonChartOptions.chart,
-            type: 'line',
-            height: 350
-        },
-        stroke: {
-            curve: 'smooth'
-        },
         series: [{
             name: 'Expenses',
-            data: expensesData
-        }]
+            data: expenseValues
+        }],
+        xaxis: {
+            ...commonChartOptions.xaxis,
+            categories: expenseDates
+        }
     };
 
     const profitOptions = {
         ...commonChartOptions,
-        chart: {
-            ...commonChartOptions.chart,
-            type: 'bar',
-            height: 350
-        },
         series: [{
             name: 'Profit',
-            data: profitData
-        }]
+            data: incomeValues.map((income, index) => income - (expenseValues[index] || 0))
+        }],
+        xaxis: {
+            ...commonChartOptions.xaxis,
+            categories: incomeDates
+        }
     };
 
     const milkProductionOptions = {
         ...commonChartOptions,
-        chart: {
-            ...commonChartOptions.chart,
-            type: 'bar',
-            height: 350
-        },
         series: [{
             name: 'Milk Production',
-            data: milkProductionData
-        }]
+            data: milkProductionValues
+        }],
+        xaxis: {
+            ...commonChartOptions.xaxis,
+            categories: milkProductionDates
+        }
     };
 
     const milkSalesOptions = {
         ...commonChartOptions,
-        chart: {
-            ...commonChartOptions.chart,
-            type: 'bar',
-            height: 350
-        },
         series: [{
             name: 'Milk Sales',
-            data: milkSalesData
-        }]
+            data: milkSalesValues
+        }],
+        xaxis: {
+            ...commonChartOptions.xaxis,
+            categories: milkSalesDates
+        }
     };
 
     const inventoryCostOptions = {
         ...commonChartOptions,
-        chart: {
-            ...commonChartOptions.chart,
-            type: 'bar',
-            height: 350
-        },
         series: [{
             name: 'Inventory Cost',
-            data: inventoryCostData
-        }]
+            data: inventoryCostValues
+        }],
+        xaxis: {
+            ...commonChartOptions.xaxis,
+            categories: inventoryCostDates
+        }
     };
 
     // Render charts
