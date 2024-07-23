@@ -156,47 +156,39 @@
         <!-- Modal for Login Type -->
         <div class="modal fade" id="loginType" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered bg-black">
-                <div class="modal-content border border-2 border-info bg-black">
+                <div class="modal-content border border-2 border-info bg-info">
 
                     <div class="modal-header">
                         <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
-                    <div class="modal-body px-0">
+                    
                         <!--sign up and login-->
-                        <div class="card text-bg-dark mx-0 mb-0 mt-0">
-                            <img src="{{ url_for('static', filename='auth/img/b1.jpg') }}" class="card-img" alt="cow">
-                            <div class="card-img-overlay">
-                                <h5 class="card-title text-center text-info">Login As...</h5>
-                                <p class="card-text text-white text-center fs-4 mb-5">Welcome! Please choose your login type:</p>
+                            <div class="card bg-info mx-auto px-auto">
+                                <p class="card-text text-dark text-center fs-4 mb-5">Welcome! Please choose your login type:</p>
 
-                                <div class="text-center mb-0">
+                                <div class="text-center mb-3">
                                     <form class="d-flex authButtons" role="search">
                                         <div class="row">
-                                            <div class="col-sm-6 mb-1 mb-sm-0">
+                                            <div class="col-sm-6 ms-1 ">
                                                 <a href="/adminLogin" target="_self">
-                                                    <button type="button" class="shadow-lg px-3 fs-3 border border-info bg-info rounded-pill text-white animated slideInLeft ms-3">
+                                                    <button type="button" class="shadow-lg px-3 fs-3 border border-dark bg-white rounded-pill text-dark animated slideInLeft ms-3">
                                                         Admin
                                                     </button>
                                                 </a>
                                             </div>
         
-                                            <div class="col-sm-6 mb-1 mb-sm-0">
+                                            <div class="col-sm-6 ms-2 mb-3">
                                                 <a href="/workerLogin" target="_self">
-                                                    <button type="button" class="shadow-lg px-3 fs-3 border border-info bg-info rounded-pill text-white ms-3 animated slideInRight">
+                                                    <button type="button" class="shadow-lg px-3 fs-3 border border-dark bg-white rounded-pill text-dark ms-3 animated slideInRight">
                                                         worker
-                                                        </button>
+                                                    </button>
                                                 </a>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                        </div>
-
-                        
-                        
-                    </div>
 
                 </div>
             </div>
