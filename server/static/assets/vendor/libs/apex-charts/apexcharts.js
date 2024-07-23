@@ -41,18 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	  }
 	};
 
-	const incomeChart = new ApexCharts(document.querySelector("#incomechart"), incomeOptions);
+	const incomeHomeChart = new ApexCharts(document.querySelector("#incomeHomeChart"), incomeOptions);
 	const expensesChart = new ApexCharts(document.querySelector("#expenseschart"), expensesOptions);
 	const profitChart = new ApexCharts(document.querySelector("#profitchart"), profitOptions);
 
-	incomeChart.render();
+	incomeHomeChart.render();
 	expensesChart.render();
 	profitChart.render();
 
 	document.querySelectorAll('.nav-link').forEach(tab => {
 	  tab.addEventListener('click', function() {
 		setTimeout(() => {
-		  incomeChart.updateOptions(incomeOptions);
+		  incomeHomeChart.updateOptions(incomeOptions);
 		  expensesChart.updateOptions(expensesOptions);
 		  profitChart.updateOptions(profitOptions);
 		}, 10);
