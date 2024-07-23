@@ -504,7 +504,7 @@ def cattle():
 @login_required
 def get_income_data():
     farmer_id = current_user.id
-    milk_sales = MilkSales.query.filter_by(farmer_id=farmer_id).order_by(MilkSales.date.desc()).limit(10).all()
+    milk_sales = MilkSales.query.filter_by(farmer_id=farmer_id).order_by(MilkSales.date.desc()).limit(15).all()
     income_data = [{'date': sale.date.strftime('%Y-%m-%d'), 'amount': sale.price_per_litre * sale.quantity} for sale in milk_sales]
     return jsonify(income_data)
 
@@ -515,7 +515,7 @@ def get_expenses_data():
     expenses_data = []
     models = [MaintenanceCost, Equipment, Medicine, Feeds]
     for model in models:
-        expenses = model.query.filter_by(farmer_id=farmer_id).order_by(model.purchase_date.desc() if hasattr(model, 'purchase_date') else model.date_paid.desc()).limit(10).all()
+        expenses = model.query.filter_by(farmer_id=farmer_id).order_by(model.purchase_date.desc() if hasattr(model, 'purchase_date') else model.date_paid.desc()).limit(15).all()
         for expense in expenses:
             date = expense.purchase_date if hasattr(expense, 'purchase_date') else expense.date_paid
             amount = expense.price if hasattr(expense, 'price') else expense.amount
@@ -526,7 +526,7 @@ def get_expenses_data():
 @login_required
 def get_milk_production_data():
     farmer_id = current_user.id
-    milk_production = MilkProduction.query.filter_by(farmer_id=farmer_id).order_by(MilkProduction.date.desc()).limit(10).all()
+    milk_production = MilkProduction.query.filter_by(farmer_id=farmer_id).order_by(MilkProduction.date.desc()).limit(15).all()
     milk_production_data = [{'date': production.date.strftime('%Y-%m-%d'), 'quantity': production.quantity} for production in milk_production]
     return jsonify(milk_production_data)
 
@@ -534,7 +534,7 @@ def get_milk_production_data():
 @login_required
 def get_milk_sales_data():
     farmer_id = current_user.id
-    milk_sales = MilkSales.query.filter_by(farmer_id=farmer_id).order_by(MilkSales.date.desc()).limit(10).all()
+    milk_sales = MilkSales.query.filter_by(farmer_id=farmer_id).order_by(MilkSales.date.desc()).limit(15).all()
     milk_sales_data = [{'date': sale.date.strftime('%Y-%m-%d'), 'quantity': sale.quantity} for sale in milk_sales]
     return jsonify(milk_sales_data)
 
@@ -545,7 +545,7 @@ def get_inventory_cost_data():
     inventory_cost_data = []
     models = [Equipment, Medicine, Feeds]
     for model in models:
-        inventory_items = model.query.filter_by(farmer_id=farmer_id).order_by(model.purchase_date.desc()).limit(10).all()
+        inventory_items = model.query.filter_by(farmer_id=farmer_id).order_by(model.purchase_date.desc()).limit(15).all()
         for item in inventory_items:
             inventory_cost_data.append({'date': item.purchase_date.strftime('%Y-%m-%d'), 'cost': item.price})
     return jsonify(inventory_cost_data)

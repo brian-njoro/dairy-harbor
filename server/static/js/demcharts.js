@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         },
         stroke: {
-            curve: 'smooth'
+            curve: 'smooth',
+            width: 1.5 // Set the line width to 1.5 for thinner lines
         },
-        
         xaxis: {
             categories: [],
             position: 'bottom',
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             labels: {
                 show: false,
                 formatter: function (val) {
-                    return val.toFixed(1); // Format y-axis labels to 1 decimal places
+                    return val.toFixed(1); // Format y-axis labels to 1 decimal place
                 }
             }
         }
@@ -87,6 +87,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const expensesOptions = {
         ...commonChartOptions,
+        chart: {
+            ...commonChartOptions.chart,
+            type: 'bar' // Change to bar chart
+        },
         series: [{
             name: 'Expenses',
             data: expenseValues
@@ -123,6 +127,10 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const milkSalesOptions = {
         ...commonChartOptions,
+        chart: {
+            ...commonChartOptions.chart,
+            type: 'bar' // Change to bar chart
+        },
         series: [{
             name: 'Milk Sales',
             data: milkSalesValues
