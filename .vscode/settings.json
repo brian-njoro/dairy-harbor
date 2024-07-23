@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
     "code-runner.runInTerminal": true,
     "code-runner.clearPreviousOutput": true,
     "debug.terminal.clearBeforeReusing": true,
@@ -41,11 +40,5 @@
     "window.menuBarVisibility": "compact",
     "workbench.colorTheme": "Visual Studio Dark - C++",
     "emmet.preferences": {
-
     }
-=======
-    "python.analysis.extraPaths": [
-        "./server"
-    ]
->>>>>>> c8b01c83045b6f44155426e0c65d43b60114089f
 }
