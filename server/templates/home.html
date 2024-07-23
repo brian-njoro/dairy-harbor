@@ -21,7 +21,10 @@
                                 </p>
                                 <a href="{{ url_for('cattle')}}" class="btn btn-sm btn-outline-primary">My Cattle</a>
                                 <a href="{{ url_for('worker_profile')}}" class="btn btn-sm btn-outline-primary">My workers</a>
-                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">Reports</a>
+                                <a href="{{ url_for('milkReport')}}" class="btn btn-sm btn-outline-primary">Reports</a>
+                                <a href="{{ url_for('milkProduction')}}" class="btn btn-sm mt-2" style="background-color: rgb(57, 135, 199); color: black; font-weight: bold;">Record Milk Production</a>
+
+
                             </div>
                         </div>
 

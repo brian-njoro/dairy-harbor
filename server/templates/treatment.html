@@ -90,7 +90,53 @@
         </div>
     </div>
 </div>
-<!-- / Modal for Cattle Treatment -->
+
+<!-- / Modal for Edit Treatment -->
+ <!-- Edit Treatment Modal -->
+<div class="modal fade" id="modalEditTreatment" tabindex="-1" aria-labelledby="modalEditTreatmentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditTreatmentLabel">Edit Treatment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editTreatmentForm">
+                    <input type="hidden" id="editTreatmentId">
+                    <div class="mb-3">
+                        <label for="editVetName" class="form-label">Vet Name</label>
+                        <input type="text" class="form-control" id="editVetName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDateOfTreatment" class="form-label">Date of Treatment</label>
+                        <input type="date" class="form-control" id="editDateOfTreatment" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDrugUsed" class="form-label">Drug Used</label>
+                        <input type="text" class="form-control" id="editDrugUsed" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editMethodOfAdministration" class="form-label">Method of Administration</label>
+                        <input type="text" class="form-control" id="editMethodOfAdministration" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDisease" class="form-label">Disease</label>
+                        <input type="text" class="form-control" id="editDisease" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editNotes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="editNotes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveEditTreatmentButton">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
         <!-- /Modal for Cattle Treatment -->
         

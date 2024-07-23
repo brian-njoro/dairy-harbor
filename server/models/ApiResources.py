@@ -303,67 +303,7 @@ class CattleDeleteResource(Resource):
             return {'message': 'An error occurred while deleting the cattle'}, 500
 
 
-class RecordDehorningResource(Resource):
-    def __init__(self):
-        self.parser = reqparse.RequestParser()
-        self.parser.add_argument('date', type=str)
-        self.parser.add_argument('vet_name', type=str)
-        self.parser.add_argument('method', type=str)
-        self.parser.add_argument('notes', type=str)
-        self.parser.add_argument('cattle_id', type=int)
 
-    def get(self, id=None):
-        if id is None:
-            # Get all dehorning records
-            records = Dehorning.query.all()
-            schema = DehorningSchema(many=True)
-            return schema.dump(records), 200
-        else:
-            # Get a specific dehorning record by ID
-            record = Dehorning.query.get(id)
-            if record:
-                schema = DehorningSchema()
-                return schema.dump(record), 200
-            return {'message': 'Dehorning record not found'}, 404
-
-    def post(self):
-        data = request.get_json()
-        schema = DehorningSchema(session=db.session)
-        try:
-            record = schema.load(data)
-            db.session.add(record)
-            db.session.commit()
-            return schema.dump(record), 201
-        except Exception as e:
-            db.session.rollback()
-            return {"message": str(e)}, 400
-
-    def put(self, id):
-        record = Dehorning.query.get(id)
-        if not record:
-            return {'message': 'Dehorning record not found'}, 404
-        args = self.parser.parse_args()
-
-        if args['date']:
-            try:
-                args['date'] = datetime.strptime(args['date'], '%Y-%m-%d').date()
-            except ValueError:
-                return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
-            
-        schema = DehorningSchema()
-        for key, value in args.items():
-            if value is not None:
-                setattr(record, key, value)
-        db.session.commit()
-        return schema.dump(record), 200
-
-    def delete(self, id):
-        record = Dehorning.query.get(id)
-        if not record:
-            return {'message': 'Dehorning record not found'}, 404
-        db.session.delete(record)
-        db.session.commit()
-        return {'message': 'Dehorning record deleted'}, 200
         
 
 class RecordVaccinationResource(Resource):
@@ -479,19 +419,7 @@ class RecordVaccinationResource(Resource):
             if value is not None:
                 setattr(record, key, value)
         
-        # Determine farmer_id and worker_id based on user type
-        if current_user.user_type == 'farmer':
-            record.farmer_id = current_user.id
-            record.worker_id = None
-        elif current_user.user_type == 'worker':
-            worker = Worker.query.filter_by(id=current_user.id).first()
-            if not worker:
-                return {"error": "Worker not found"}, 404
-            record.farmer_id = worker.farmer_id
-            record.worker_id = current_user.id
-        else:
-            return {"error": "Invalid user type"}, 400
-        
+                
         db.session.commit()
 
         # Log message for updated record
@@ -504,17 +432,7 @@ class RecordVaccinationResource(Resource):
         record = Vaccination.query.get(id)
         if not record:
             return {'message': 'Vaccination record not found'}, 404
-
-        # Determine if the current user is allowed to delete this record
-        if current_user.user_type == 'farmer':
-            if record.farmer_id != current_user.id:
-                return {'message': 'Unauthorized'}, 403
-        elif current_user.user_type == 'worker':
-            if record.worker_id != current_user.id:
-                return {'message': 'Unauthorized'}, 403
-        else:
-            return {"error": "Invalid user type"}, 400
-        
+                
         db.session.delete(record)
         db.session.commit()
 
@@ -635,20 +553,7 @@ class RecordTreatmentResource(Resource):
         
         for key, value in args.items():
             if value is not None:
-                setattr(record, key, value)
-        
-        # Determine farmer_id and worker_id based on user type
-        if current_user.user_type == 'farmer':
-            record.farmer_id = current_user.id
-            record.worker_id = None
-        elif current_user.user_type == 'worker':
-            worker = Worker.query.filter_by(id=current_user.id).first()
-            if not worker:
-                return {"error": "Worker not found"}, 404
-            record.farmer_id = worker.farmer_id
-            record.worker_id = current_user.id
-        else:
-            return {"error": "Invalid user type"}, 400
+                setattr(record, key, value)    
         
         db.session.commit()
 
@@ -673,6 +578,140 @@ class RecordTreatmentResource(Resource):
 
 
 
+class RecordDehorningResource(Resource):
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('date', type=str, help='Date is required')
+        self.parser.add_argument('vet_name', type=str)
+        self.parser.add_argument('method', type=str, help='Method is required')
+        self.parser.add_argument('notes', type=str)
+        self.parser.add_argument('cattle_id', type=int)
+
+    def _create_log_message(self, cattle_id, message):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+        
+        log_message = LogMessage(
+            cattle_id=cattle_id,
+            message=message,
+            created_by=current_user.name if current_user.is_authenticated else 'Anonymous',
+            farmer_id=farmer_id,
+            worker_id=worker_id
+        )
+
+        db.session.add(log_message)
+        db.session.commit()
+
+    def get(self, id=None):
+        if id is None:
+            # Get all dehorning records for the logged-in farmer's cattle
+            if current_user.user_type == 'farmer':
+                cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=current_user.id).all()
+                cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]
+                
+                records = Dehorning.query.filter(Dehorning.cattle_id.in_(cattle_ids)).all()
+            elif current_user.user_type == 'worker':
+                worker = Worker.query.filter_by(id=current_user.id).first()
+                if not worker:
+                    return {"error": "Worker not found"}, 404
+                cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=worker.farmer_id).all()
+                cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]
+                
+                records = Dehorning.query.filter(Dehorning.cattle_id.in_(cattle_ids)).all()
+            else:
+                return {"error": "Invalid user type"}, 400
+            
+            schema = DehorningSchema(many=True)
+            return schema.dump(records), 200
+        else:
+            # Get a specific dehorning record by ID
+            record = Dehorning.query.get(id)
+            if record:
+                schema = DehorningSchema()
+                return schema.dump(record), 200
+            return {'message': 'Dehorning record not found'}, 404
+
+    def post(self):
+        data = request.get_json()
+        schema = DehorningSchema(session=db.session)
+        
+        # Determine farmer_id and worker_id based on user type
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
+        try:
+            record = schema.load(data)
+            record.farmer_id = farmer_id
+            record.worker_id = worker_id
+            db.session.add(record)
+            db.session.commit()
+
+            # Log message for the new record
+            self._create_log_message(record.cattle_id, "New dehorning record added")
+            
+            return schema.dump(record), 201
+        except Exception as e:
+            db.session.rollback()
+            return {"message": str(e)}, 400
+
+    def put(self, id):
+        record = Dehorning.query.get(id)
+        if not record:
+            return {'message': 'Dehorning record not found'}, 404
+        
+        args = self.parser.parse_args()
+        
+        # Convert date string to date object if present
+        if args['date']:
+            try:
+                args['date'] = datetime.strptime(args['date'], '%Y-%m-%d').date()
+            except ValueError:
+                return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
+        
+        for key, value in args.items():
+            if value is not None:
+                setattr(record, key, value)    
+        
+        db.session.commit()
+
+        # Log message for updated record
+        self._create_log_message(record.cattle_id, "Dehorning record updated")
+        
+        schema = DehorningSchema()
+        return schema.dump(record), 200
+
+    def delete(self, id):
+        record = Dehorning.query.get(id)
+        if not record:
+            return {'message': 'Dehorning record not found'}, 404       
+        
+        db.session.delete(record)
+        db.session.commit()
+
+        # Log message for deleted record
+        self._create_log_message(record.cattle_id, "Dehorning record deleted")
+        
+        return {'message': 'Dehorning record deleted'}, 200
+
+
 class RecordArtificialInseminationResource(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
@@ -683,10 +722,49 @@ class RecordArtificialInseminationResource(Resource):
         self.parser.add_argument('vet_name', type=str)
         self.parser.add_argument('notes', type=str)
 
+    def _create_log_message(self, cattle_id, message):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+        
+        log_message = LogMessage(
+            cattle_id=cattle_id,
+            message=message,
+            created_by=current_user.name if current_user.is_authenticated else 'Anonymous',
+            farmer_id=farmer_id,
+            worker_id=worker_id
+        )
+
+        db.session.add(log_message)
+        db.session.commit()
+
     def get(self, id=None):
         if id is None:
-            # Get all artificial insemination records
-            records = ArtificialInsemination.query.all()
+            # Get all artificial insemination records for the logged-in farmer's cattle
+            if current_user.user_type == 'farmer':
+                cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=current_user.id).all()
+                cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]
+                
+                records = ArtificialInsemination.query.filter(ArtificialInsemination.cattle_id.in_(cattle_ids)).all()
+            elif current_user.user_type == 'worker':
+                worker = Worker.query.filter_by(id=current_user.id).first()
+                if not worker:
+                    return {"error": "Worker not found"}, 404
+                cattle_ids = db.session.query(Cattle.serial_number).filter_by(farmer_id=worker.farmer_id).all()
+                cattle_ids = [cattle_id[0] for cattle_id in cattle_ids]
+                
+                records = ArtificialInsemination.query.filter(ArtificialInsemination.cattle_id.in_(cattle_ids)).all()
+            else:
+                return {"error": "Invalid user type"}, 400
+            
             schema = ArtificialInseminationSchema(many=True)
             return schema.dump(records), 200
         else:
@@ -700,10 +778,30 @@ class RecordArtificialInseminationResource(Resource):
     def post(self):
         data = request.get_json()
         schema = ArtificialInseminationSchema(session=db.session)
+        
+        # Determine farmer_id and worker_id based on user type
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         try:
             record = schema.load(data)
+            record.farmer_id = farmer_id
+            record.worker_id = worker_id
             db.session.add(record)
             db.session.commit()
+
+            # Log message for the new record
+            self._create_log_message(record.cattle_id, "New artificial insemination record added")
+            
             return schema.dump(record), 201
         except Exception as e:
             db.session.rollback()
@@ -713,28 +811,41 @@ class RecordArtificialInseminationResource(Resource):
         record = ArtificialInsemination.query.get(id)
         if not record:
             return {'message': 'Artificial Insemination record not found'}, 404
+        
         args = self.parser.parse_args()
-
+        
+        # Convert insemination_date string to date object if present
         if args['insemination_date']:
             try:
                 args['insemination_date'] = datetime.strptime(args['insemination_date'], '%Y-%m-%d').date()
             except ValueError:
                 return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
-            
-        schema = ArtificialInseminationSchema()
+        
         for key, value in args.items():
             if value is not None:
-                setattr(record, key, value)
+                setattr(record, key, value)    
+        
         db.session.commit()
+
+        # Log message for updated record
+        self._create_log_message(record.cattle_id, "Artificial insemination record updated")
+        
+        schema = ArtificialInseminationSchema()
         return schema.dump(record), 200
 
     def delete(self, id):
         record = ArtificialInsemination.query.get(id)
         if not record:
-            return {'message': 'Artificial Insemination record not found'}, 404
+            return {'message': 'Artificial Insemination record not found'}, 404       
+        
         db.session.delete(record)
         db.session.commit()
-        return {'message': 'Artificial Insemination record deleted'}, 200
+
+        # Log message for deleted record
+        self._create_log_message(record.cattle_id, "Artificial insemination record deleted")
+        
+        return {'message': 'Artificial insemination record deleted'}, 200
+
 
         
 
