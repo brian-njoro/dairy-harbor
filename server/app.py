@@ -302,6 +302,12 @@ def home():
                            total_workers=total_workers)
 
 
+@app.route('/milkReport', methods=['GET'])
+@login_required
+def milkReport():
+    return render_template('milkReport.html')
+
+
 
 #Index Page
 @app.route('/index', methods=['GET'])
@@ -357,6 +363,11 @@ def dehorn():
 def deworm():
     return render_template('deworm.html')
 
+@app.route('/milkProduction', methods=['GET'])
+@login_required
+def milkProduction():
+    return render_template('milkProduction.html')    
+
 
 @app.route('/heat', methods=['GET'])
 @login_required
@@ -394,13 +405,26 @@ def pestControl():
     return render_template('pestControl.html')
 
 @app.route('/worker_dashboard', methods=['GET'])
+@login_required
 def worker_dashboard():
     logging.debug(f'Current user in worker_dashboard: {current_user}')
     if session.get('user_type') != 'worker':
         logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('workerLogin'))  # Redirect to login if current user is not a Worker
-    # Render worker dashboard
-    return render_template('worker_dashboard.html')
+    
+    # Fetch the farmer associated with the current worker
+    worker = Worker.query.get(current_user.id)
+    if worker:
+        farmer = Farmer.query.get(worker.farmer_id)
+        if farmer:
+            farm_name = farmer.farm_name
+        else:
+            farm_name = "Unknown Farm"
+    else:
+        farm_name = "Unknown Farm"
+
+    # Render worker dashboard with the farm_name
+    return render_template('worker_dashboard.html', farm_name=farm_name)
 
 
 

@@ -7,7 +7,7 @@
         <!--Vaccination Card-->
         <div class="col mb-3">
             <div class="card text-white mb-3 border border-info border-1 shadow-lg">
-                <img class="card-img lazy" style="filter:brightness(70%); max-height:250px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/vaccination2.jpg')}}" alt="Image">
+                <img class="card-img lazy" style="filter:brightness(70%); max-height:250px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/vaccination2.jpg')}}" alt="Image">
 
                 <div class="card-img-overlay">
                     <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">VACCINATION</h3>
@@ -33,34 +33,33 @@
                         <h5 class="modal-title text-info fw-bold text-center">Vaccination</h5>
                         <button type="button" class="btn-close bg-danger border border-info border-1" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
                     <div class="modal-body">
-                        <form id="cattleForm">
+                        <form id="cattleVaccinationForm">
                             <!--Vet Name-->
                             <div class="mb-3">
                                 <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
                                 <input class="form-control" type="text" name='vetName' id="vetName" required>
                             </div>
-
                             <!--Date-->
                             <div class="mb-3">
-                                <label for="vaccinationDate" class="form-label text-dark fw-bold">Date:</label>
-                                <input type="date" id="vaccinationDate" class="form-control" required>
+                                <label for="dateOfvaccination" class="form-label text-dark fw-bold">Date:</label>
+                                <input type="date" id="dateOfvaccination" class="form-control" required>
                             </div>
-
-                            <!--Serial Number-->
+                            
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label text-dark fw-bold">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
-
                             <!--Method of vaccination-->
                             <div class="mb-3">
-                                <label for="methodOfVaccination" class="form-label text-dark fw-bold">Method of vaccination:</label>
-                                <select class="form-control" name="methodOfVaccination" id="methodOfVaccination" required>
+                                <label for="methodOfAdministration" class="form-label text-dark fw-bold">Method of vaccination:</label>
+                                <select class="form-control" name="methodOfAdministration" id="methodOfAdministration" required>
                                     <option value="subcutaneous">Subcutaneous (SubQ) Injection</option>
                                     <option value="Intramuscular">Intramuscular (IM) Injection</option>
-                                    <option value="Intranasalr">Intranasal (IN) Administration</option>
+                                    <option value="Intranasal">Intranasal (IN) Administration</option>
                                     <option value="Oral">Oral Administration</option>
                                     <option value="Intravenous">Intravenous (IV) Injection</option>
                                     <option value="Topical">Topical Administration</option>
@@ -68,35 +67,31 @@
                                     <option value="Aerosol">Aerosol Vaccination</option>
                                 </select>
                             </div>
-
                             <!--Drug Name-->
                             <div class="mb-3">
-                                <label for="drugName" class="form-label text-dark fw-bold">Name of drug:</label>
-                                <input class="form-control" type="text" name='drugName' id="drugName" required>
+                                <label for="drugUsed" class="form-label text-dark fw-bold">Name of drug:</label>
+                                <input class="form-control" type="text" name='drugUsed' id="drugUsed" required>
                             </div>
-
                             <!--Disease Name-->
                             <div class="mb-3">
-                                <label for="diseaseName" class="form-label text-dark fw-bold">Name of disease:</label>
-                                <input class="form-control" type="text" name='diseaseName' id="diseaseName" required>
+                                <label for="disease" class="form-label text-dark fw-bold">Name of disease:</label>
+                                <input class="form-control" type="text" name='disease' id="disease" required>
                             </div>
-
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="vaccinationnotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='vaccinationnotes' id='vaccinationnotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-info" id="CattleVaccinationButton">Submit</button>
                     </div>
-
                 </div>
             </div>
         </div>
+        
         <!--/ Modal for cattle Vaccination -->
         <!--/Vaccination-->
 
@@ -131,4 +126,7 @@
             </div>
         </div>
     </div>
+    
+    <script src="{{url_for('static',filename='js/vaccination.js')}}"></script>
+
 {% endblock %}

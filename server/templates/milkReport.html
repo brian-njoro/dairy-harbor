@@ -3,25 +3,198 @@
 {% block title %}Reports{% endblock %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
     <!--Reports Card-->
-    <div class="col mb-3">
-        <div class="card text-white mb-3 shadow-sm">
-
-            <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;center;" src="{{url_for('static',filename='auth/img/milkreport.jpg')}}" alt="Image">
-
-            <div class="card-img-overlay">
-                <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">REPORTS</h3>
-                <p class="card-text text-white">Generate detailed reports on milk production, sales, and farm expenses with our comprehensive reporting tools.</p>
-
-                <!-- Button to add new cattle -->
-                <div class="mb-3">
-                    <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
-                        Reports
-                    </button>
+    <div class="container-xxl flex-grow-1 container-p-y mt-2">       
+            <div class="row">
+                <!-- Overview Cards -->
+                <div class="col-lg-4 col-md-4 order-0">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
+                            <div class="card border border-2 border-info shadow-md">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <span class="fw-medium d-block mb-1">Total Income</span>
+                                        <h6 id="totalIncome">$0</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
+                            <div class="card border border-2 border-info shadow-md">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <span class="fw-medium d-block mb-1">Total Expenses</span>
+                                        <h6 id="totalExpenses">$0</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
+                            <div class="card border border-2 border-info shadow-md">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <span class="fw-medium d-block mb-1">Net Profit/Loss</span>
+                                        <h6 id="netProfitLoss">$0</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
+                            <div class="card border border-2 border-info shadow-md">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                        <span class="fw-medium d-block mb-1">Total Income</span>
+                                        <h6 id="totalIncome">$0</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
+                <div class="col-12 col-md-8 col-lg-8 order-0">
+                    <div class="card mb-4 border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <h2 class="card-title">Income Analysis</h2>
+                            <div id="expenseChart"></div>
+                        </div>
+                </div>        
             </div>
-
+                <!-- Charts Section -->
+            <div class="row w-100">     
+                <div class="col-12 col-md-8 col-lg-8 order-0">
+                    <div class="card mb-4 border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <h2 class="card-title">Expense Analysis</h2>
+                            <div id="expenseChart"></div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <h2 class="card-title">Milk Production Analysis</h2>
+                            <div id="milkProductionChart"></div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <h2 class="card-title">Milk Sales Analysis</h2>
+                            <div id="milkSalesChart"></div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <h2 class="card-title">Profit/Loss Analysis</h2>
+                            <div id="profitLossChart"></div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <h2 class="card-title">Inventory Cost Analysis</h2>
+                            <div id="inventoryCostChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+               
+            <!-- Inventory Section -->
+            <div class="col-md-6 col-lg-4 col-xl-4 order-5 mb-4">
+                <div class="card h-100 border border-2 border-info shadow-md">
+                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                        <div class="card-title mb-0">
+                            <h5 class="m-0 me-2">Inventory</h5>
+                            <small class="text-muted">Maintenance Needed</small>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn p-0" type="button" id="inventoryOptions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="inventoryOptions">
+                                <a class="dropdown-item" href="javascript:void(0);">Select All</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                                <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="p-0 m-0">
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-primary"><i class="bx bx-food-menu"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Feed</h6>
+                                        <small class="text-muted">Various types</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">15% low</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-info"><i class="bx bx-tree"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Pasture</h6>
+                                        <small class="text-muted">Green and fresh</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">20% growth</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-warning"><i class="bx bx-wrench"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Dairy Farming Equipment</h6>
+                                        <small class="text-muted">Milking machines, etc.</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">5% maintenance</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex mb-4 pb-1">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-home"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Housing Materials</h6>
+                                        <small class="text-muted">Barns, shelters</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">10% renovation</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="d-flex">
+                                <div class="avatar flex-shrink-0 me-3">
+                                    <span class="avatar-initial rounded bg-label-danger"><i class="bx bx-hammer"></i></span>
+                                </div>
+                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                    <div class="me-2">
+                                        <h6 class="mb-0">Other Materials</h6>
+                                        <small class="text-muted">Various items</small>
+                                    </div>
+                                    <div class="user-progress">
+                                        <small class="fw-semibold">15% inspection</small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    
+    <script src="{{ url_for('static', filename='js/demcharts.js') }}"></script>
+
 {% endblock %}

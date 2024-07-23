@@ -1,52 +1,53 @@
-// Function to fetch and update the treatment list
-const updateTreatmentList = async () => {
-    console.log('Reached here treatmeeeee list fetch')
+// Function to fetch and update the vaccination list
+const updateVaccinationList = async () => {
+    console.log('Reached here vaccination list fetch')
 
     try {
-        const response = await fetch('/api/treatment');
-        const treatments = await response.json();
+        const response = await fetch('/api/vaccination');
+        const vaccinations = await response.json();
+        console.log('Reached here vaccination list fetch')
 
-        const treatmentList = document.getElementById('treatmentList');
-        treatmentList.innerHTML = ''; // Clear existing list
+        const vaccinationList = document.getElementById('vaccinationList');
+        vaccinationList.innerHTML = ''; // Clear existing list
 
-        treatments.forEach(treatment => {
+        vaccinations.forEach(vaccination => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(treatment.date).toLocaleDateString()}</td>
-                <td>${treatment.cattle_id}</td>
-                <td>${treatment.vet_name}</td>
-                <td>${treatment.method_of_administration}</td>
-                <td>${treatment.drug_used}</td>
-                <td>${treatment.disease}</td>
+                <td>${new Date(vaccination.date).toLocaleDateString()}</td>
+                <td>${vaccination.cattle_id}</td>
+                <td>${vaccination.vet_name}</td>
+                <td>${vaccination.method_of_administration}</td>
+                <td>${vaccination.drug_used}</td>
+                <td>${vaccination.disease}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteTreatment(${treatment.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
                 </td>
             `;
 
-            treatmentList.appendChild(row);
+            vaccinationList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error fetching treatment list:', error);
+        console.error('Error fetching vaccination list:', error);
     }
 };
 
 
-// Function to delete a treatment
-const deleteTreatment = async (id) => {
+// Function to delete a vaccination
+const deletevaccination = async (id) => {
     try {
-        const response = await fetch(`/api/treatment/${id}`, {
+        const response = await fetch(`/api/vaccination/${id}`, {
             method: 'DELETE'
         });
 
         if (response.ok) {
-            // Update the treatment list after deletion
-            updateTreatmentList();
+            // Update the vaccination list after deletion
+            updateVaccinationList();
         } else {
-            console.error('Failed to delete treatment:', await response.text());
+            console.error('Failed to delete vaccination:', await response.text());
         }
     } catch (error) {
-        console.error('Error deleting treatment:', error);
+        console.error('Error deleting vaccination:', error);
     }
 };
 
@@ -55,7 +56,7 @@ const populateCattleOptions = async () => {
     try {
         const response = await fetch('/api/cattle/get'); // Adjust endpoint if needed
         const cattleList = await response.json();
-        console.log('Reached here radiobutton')
+        console.log('I reached here')
 
         const cattleRadioButtonsContainer = document.getElementById('cattleRadioButtons');
         cattleRadioButtonsContainer.innerHTML = ''; // Clear existing options
@@ -82,9 +83,9 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('CattleTreatmentButton').addEventListener('click', async () => {
+document.getElementById('CattlevaccinationButton').addEventListener('click', async () => {
     const vetName = document.getElementById('vetName').value;
-    const dateOfTreatment = document.getElementById('dateOfTreatment').value;
+    const dateOfvaccination = document.getElementById('dateOfvaccination').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const drugUsed = document.getElementById('drugUsed').value;
     const methodOfAdministration = document.getElementById('methodOfAdministration').value;
@@ -96,9 +97,9 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
         return;
     }
 
-    const treatmentData = {
+    const vaccinationData = {
         vet_name: vetName,
-        date: dateOfTreatment,
+        date: dateOfvaccination,
         cattle_id: cattleId,
         drug_used: drugUsed,
         method_of_administration: methodOfAdministration,
@@ -107,36 +108,36 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
     };
 
     try {
-        const response = await fetch('/api/treatment', {
+        const response = await fetch('/api/vaccination', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(treatmentData)
+            body: JSON.stringify(vaccinationData)
         });
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattleTreatment .btn-close');
+            const modalCloseButton = document.querySelector('#modalCattlevaccination .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
                 console.error('Close button not found in modal');
             }
 
-            // Update the treatment list
-            updateTreatmentList();
+            // Update the vaccination list
+            updateVaccinationList();
         } else {
-            console.error('Failed to add treatment:', await response.text());
+            console.error('Failed to add vaccination:', await response.text());
         }
     } catch (error) {
-        console.error('Error submitting treatment:', error);
+        console.error('Error submitting vaccination:', error);
     }
 });
 
-// Initial fetch to populate the treatment list on page load
-updateTreatmentList();
+// Initial fetch to populate the vaccination list on page load
+updateVaccinationList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattleTreatment');
+const modal = document.getElementById('modalCattlevaccination');
 modal.addEventListener('show.bs.modal', populateCattleOptions);
