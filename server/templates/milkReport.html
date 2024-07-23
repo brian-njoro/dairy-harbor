@@ -5,98 +5,105 @@
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-    <!--Reports Card-->
-    <div class="container-xxl flex-grow-1 container-p-y mt-2">       
+<style>
+    .chart-container {
+        padding: 1px;
+    }
+</style>
+
+<!--Reports Card-->
+<div class="container-xxl flex-grow-1 container-p-y mt-2">       
+    <div class="row">
+        <!-- Overview Cards -->
+        <div class="col-lg-4 col-md-4 order-0">
             <div class="row">
-                <!-- Overview Cards -->
-                <div class="col-lg-4 col-md-4 order-0">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
-                            <div class="card border border-2 border-info shadow-md">
-                                <div class="card-body">
-                                    <div class="card-title d-flex align-items-start justify-content-between">
-                                        <span class="fw-medium d-block mb-1">Total Income</span>
-                                        <h6 id="totalIncome">$0</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
-                            <div class="card border border-2 border-info shadow-md">
-                                <div class="card-body">
-                                    <div class="card-title d-flex align-items-start justify-content-between">
-                                        <span class="fw-medium d-block mb-1">Total Expenses</span>
-                                        <h6 id="totalExpenses">$0</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
-                            <div class="card border border-2 border-info shadow-md">
-                                <div class="card-body">
-                                    <div class="card-title d-flex align-items-start justify-content-between">
-                                        <span class="fw-medium d-block mb-1">Net Profit/Loss</span>
-                                        <h6 id="netProfitLoss">$0</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
-                            <div class="card border border-2 border-info shadow-md">
-                                <div class="card-body">
-                                    <div class="card-title d-flex align-items-start justify-content-between">
-                                        <span class="fw-medium d-block mb-1">Total Income</span>
-                                        <h6 id="totalIncome">$0</h6>
-                                    </div>
-                                </div>
+                <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
+                    <div class="card border border-2 border-info shadow-md">
+                        <div class="card-body">
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <span class="fw-medium d-block mb-1">Total Income</span>
+                                <h6 id="totalIncome">$0</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-8 col-lg-8 order-0">
-                    <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="col-lg-6 col-md-12 col-6 mb-4 order-0">
+                    <div class="card border border-2 border-info shadow-md">
                         <div class="card-body">
-                            <h2 class="card-title">Income Analysis</h2>
-                            <div id="expenseChart"></div>
-                        </div>
-                </div>        
-            </div>
-                <!-- Charts Section -->
-            <div class="row w-100">     
-                <div class="col-12 col-md-8 col-lg-8 order-0">
-                    <div class="card mb-4 border border-2 border-info shadow-md">
-                        <div class="card-body">
-                            <h2 class="card-title">Expense Analysis</h2>
-                            <div id="expenseChart"></div>
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <span class="fw-medium d-block mb-1">Total Income</span>
+                                <h6 id="totalIncome">$0</h6>
+                            </div>
                         </div>
                     </div>
-                    <div class="card mb-4 border border-2 border-info shadow-md">
+                </div>
+                <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
+                    <div class="card border border-2 border-info shadow-md">
                         <div class="card-body">
-                            <h2 class="card-title">Milk Production Analysis</h2>
-                            <div id="milkProductionChart"></div>
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <span class="fw-medium d-block mb-1">Total Expenses</span>
+                                <h6 id="totalExpenses">$0</h6>
+                            </div>
                         </div>
                     </div>
-                    <div class="card mb-4 border border-2 border-info shadow-md">
+                </div>
+                <div class="col-lg-6 col-md-12 col-6 mb-4 order-1">
+                    <div class="card border border-2 border-info shadow-md">
                         <div class="card-body">
-                            <h2 class="card-title">Milk Sales Analysis</h2>
-                            <div id="milkSalesChart"></div>
-                        </div>
-                    </div>
-                    <div class="card mb-4 border border-2 border-info shadow-md">
-                        <div class="card-body">
-                            <h2 class="card-title">Profit/Loss Analysis</h2>
-                            <div id="profitLossChart"></div>
-                        </div>
-                    </div>
-                    <div class="card mb-4 border border-2 border-info shadow-md">
-                        <div class="card-body">
-                            <h2 class="card-title">Inventory Cost Analysis</h2>
-                            <div id="inventoryCostChart"></div>
+                            <div class="card-title d-flex align-items-start justify-content-between">
+                                <span class="fw-medium d-block mb-1">Net Profit/Loss</span>
+                                <h6 id="netProfitLoss">$0</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-               
+        </div>
+        <div class="col-12 col-md-8 col-lg-8 order-0">
+            <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">Income Analysis <h6>(In 1000s)</h6></h2>
+                    <div id="incomeChartReport" class="chart-container"></div>
+                </div>
+            </div>        
+        </div>        
+    </div>
+    
+    <!-- Charts Section -->
+    <div class="row w-100">     
+        <div class="col-12 col-md-8 col-lg-8 order-0">
+            <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">Expense Analysis <h6>(In 1000s)</h6></h2>
+                    <div id="expenseChart" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">Milk Production Analysis</h2>
+                    <div id="milkProductionChart" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">Milk Sales Analysis</h2>
+                    <div id="milkSalesChart" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">Profit/Loss Analysis</h2>
+                    <div id="profitLossChart" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="card mb-4 border border-2 border-info shadow-md">
+                <div class="card-body">
+                    <h2 class="card-title">Inventory Cost Analysis</h2>
+                    <div id="inventoryCostChart" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
             <!-- Inventory Section -->
             <div class="col-md-6 col-lg-4 col-xl-4 order-5 mb-4">
                 <div class="card h-100 border border-2 border-info shadow-md">
