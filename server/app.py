@@ -294,7 +294,7 @@ def farmer_signup():
     save_to_db(new_farmer)
     
     # Log the user in
-    login_user(new_farmer,remember=True)
+    login_user(new_farmer)
     
     # Redirect to the home page
     return jsonify({'message': 'Farmer registered and logged in successfully', 'redirect': url_for('home')})
