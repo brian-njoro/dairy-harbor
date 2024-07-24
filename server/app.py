@@ -241,8 +241,9 @@ def upload_photo():
         new_photo_url = url_for('static', filename='uploads/' + filename)
         current_user.photo_url = new_photo_url
         
-        # Optionally delete the old photo if it exists
-        if old_photo_url and old_photo_url != new_photo_url:
+        # Optionally delete the old photo if it exists and is not the default photo
+        default_photo_url = url_for('static', filename='uploads/user.png')
+        if old_photo_url and old_photo_url != new_photo_url and old_photo_url != default_photo_url:
             delete_old_photo(old_photo_url)
 
         # Here you should update the database with the new photo URL
@@ -257,6 +258,7 @@ def upload_photo():
         return {'success': True, 'photo_url': new_photo_url}
 
     return {'success': False, 'message': 'Invalid file type'}
+
 
 
 
