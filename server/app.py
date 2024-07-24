@@ -189,7 +189,7 @@ class ProfileResource(Resource):
 
         # Check user type and retrieve the appropriate user
         user_model = Farmer if current_user.user_type == 'farmer' else Worker
-        user = user_model.query.get(user_id)
+        user = db.session.get(user_model, user_id)
         
         if not user:
             return jsonify({'message': 'User not found'}), 404
@@ -207,19 +207,11 @@ class ProfileResource(Resource):
         user.email_address = data.get('email_address', user.email_address)
         user.phone_number = data.get('phone_number', user.phone_number)
         user.address = data.get('address', user.address)
-        
-        # Handle photo URL
-        if 'photo_url' in data:
-            old_photo_url = user.photo_url
-            new_photo_url = data.get('photo_url')
-            
-            if old_photo_url and old_photo_url != new_photo_url:
-                delete_old_photo(old_photo_url)  # Function to delete old photo from storage
-            
-            user.photo_url = new_photo_url
 
         db.session.commit()
         return jsonify({'message': 'Profile updated successfully'})
+
+
 
 
 
