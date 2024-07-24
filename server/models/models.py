@@ -11,6 +11,7 @@ class Farmer(db.Model, UserMixin, FlaskLoginUserMixin):
     password = db.Column(db.String(100))
     phone_number = db.Column(db.String(100))
     address = db.Column(db.String(255))
+    photo_url = db.Column(db.String(255), nullable=True)
 
     cattle = db.relationship('Cattle', back_populates='farmer')
     workers = db.relationship('Worker', back_populates='farmer')
@@ -32,6 +33,7 @@ class Worker(db.Model, UserMixin, FlaskLoginUserMixin):
     address = db.Column(db.String(255))
     role = db.Column(db.String(100))
     farmer_id = db.Column(db.Integer, db.ForeignKey('farmer.id'))
+    photo_url = db.Column(db.String(255), nullable=True)
 
     farmer = db.relationship('Farmer', back_populates='workers')
     log_message = db.relationship('LogMessage', uselist=False, back_populates='worker')
@@ -50,7 +52,6 @@ class Cattle(db.Model):
     serial_number = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     date_of_birth = db.Column(db.Date)
-    photo = db.Column(db.String(255), nullable=True)
     breed = db.Column(db.String(100))
     father_breed = db.Column(db.String(100))
     mother_breed = db.Column(db.String(100))
@@ -58,6 +59,7 @@ class Cattle(db.Model):
     status = db.Column(db.String(100))
     gender = db.Column(db.String(10))
     farmer_id = db.Column(db.Integer, db.ForeignKey('farmer.id'))
+    photo = db.Column(db.String(255), nullable=True)
 
     farmer = db.relationship('Farmer', back_populates='cattle')
     dehorning = db.relationship('Dehorning', uselist=False, back_populates='cattle')
