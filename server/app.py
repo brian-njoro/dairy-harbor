@@ -404,9 +404,8 @@ def worker_login():
 @login_required
 def home():
     
-    print(f'Current uer is a {current_user}')
     if session.get('user_type') != 'farmer':
-        logging.debug('Current user is not a farmer, redirecting')
+        logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('admin_login'))
     
     farmer = current_user
