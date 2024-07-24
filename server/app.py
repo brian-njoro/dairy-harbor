@@ -294,7 +294,7 @@ def farmer_signup():
     save_to_db(new_farmer)
     
     # Log the user in
-    login_user(new_farmer,remember=True)
+    login_user(new_farmer)
     
     # Redirect to the home page
     return jsonify({'message': 'Farmer registered and logged in successfully', 'redirect': url_for('home')})
@@ -315,7 +315,7 @@ def farmer_login():
             logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
             if isinstance(current_user, Worker):
                 logging.debug('Current user is a Worker, logging out')
-                logout_user(current_user,remember=True)
+                logout_user(current_user)
                 session.clear()  # Clear session data
                 logging.debug('Session cleared after Worker logout')
 
