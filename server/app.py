@@ -160,7 +160,7 @@ def farmer_signup():
     save_to_db(new_farmer)
     
     # Log the user in
-    login_user(new_farmer)
+    login_user(new_farmer,remember=True)
     
     # Redirect to the home page
     return jsonify({'message': 'Farmer registered and logged in successfully', 'redirect': url_for('home')})
@@ -181,7 +181,7 @@ def farmer_login():
             logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
             if isinstance(current_user, Worker):
                 logging.debug('Current user is a Worker, logging out')
-                logout_user()
+                logout_user(current_user,remember=True)
                 session.clear()  # Clear session data
                 logging.debug('Session cleared after Worker logout')
 
@@ -294,12 +294,12 @@ def home():
     ).filter_by(farmer_id=farmer.id).scalar() or 0
 
     return render_template('home.html', 
-                           farmer_name=farmer_name, 
-                           farm_name=farm_name, 
-                           total_sales=total_sales, 
-                           total_production=total_production, 
-                           total_cattle=total_cattle, 
-                           total_workers=total_workers)
+                            farmer_name=farmer_name, 
+                            farm_name=farm_name, 
+                            total_sales=total_sales, 
+                            total_production=total_production, 
+                            total_cattle=total_cattle, 
+                            total_workers=total_workers)
 
 
 @app.route('/milkReport', methods=['GET'])
@@ -386,13 +386,12 @@ def Ainsemination():
 def Ninsemination():
     return render_template('Ninsemination.html')
 
- 
 @app.route('/pregnancy', methods=['GET'])
 @login_required
 def pregnancy():
     return render_template('pregnancy.html')  
 
-  
+
 @app.route('/miscarriage', methods=['GET'])
 @login_required
 def miscarriage():
@@ -492,13 +491,13 @@ def cattle():
     status_heifer = Cattle.query.filter_by(farmer_id=farmer_id, status='heifer').count()
 
     return render_template('cattle.html', 
-                           farmer_id=farmer_id,
-                           total_cows=total_cows,
-                           male_cows=male_cows,
-                           status_calf=status_calf,
-                           status_sick=status_sick,
-                           status_pregnant=status_pregnant,
-                           status_heifer=status_heifer)
+                            farmer_id=farmer_id,
+                            total_cows=total_cows,
+                            male_cows=male_cows,
+                            status_calf=status_calf,
+                            status_sick=status_sick,
+                            status_pregnant=status_pregnant,
+                            status_heifer=status_heifer)
 
 @app.route('/api/income-data', methods=['GET'])
 @login_required
