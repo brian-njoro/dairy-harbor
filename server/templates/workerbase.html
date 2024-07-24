@@ -51,6 +51,26 @@ data-template="vertical-menu-template-free">
         <link rel="stylesheet"  href="{{ url_for('static', filename='auth/css/style1.css') }}">
         <link rel="stylesheet"  href="{{ url_for('static', filename='auth/css/style2.css') }}">
         <link rel="stylesheet"  href="{{ url_for('static', filename='auth/css/cattle.css') }}">
+        <style>
+            #successMessage {
+            margin: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: opacity 0.5s ease-in-out; /* Smooth fade out */
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #f30f26;
+        }
+        
+        </style>   
 
         <!-- Helpers -->
         <script src="{{ url_for('static', filename='assets/vendor/js/helpers.js') }}"></script>
@@ -87,19 +107,19 @@ data-template="vertical-menu-template-free">
                     </div>
         
                     <div class="menu-inner-shadow"></div>
-                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ farm_name }}</h1>
+                    <h1 class="fs-3 fw-bold text-black mb-0 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ current_user.farm_name }}</h1>
         
                     <ul class="menu-inner py-1 mt-3">
                         <!-- Dashboards -->
                         <li class="menu-item">
-                            <a href="/worker_dashboard" class="menu-link menu-toggle text-white fw-bold fs-5">
+                            <a href="/home" class="menu-link menu-toggle text-white fw-bold fs-5">
                                 <i class="menu-icon tf-icons bx bx-home-circle text-white"></i>
                                 <div data-i18n="Dashboards">Dashboard</div>
                             </a>
 
                             <ul class="menu-sub">
                                 <li class="menu-list">
-                                    <a href="/worker_dashboard" class="menu-link text-dark fs-6 fw-bold">
+                                    <a href="/home" class="menu-link text-dark fs-6 fw-bold">
                                         <div data-i18n="without menu">Home</div>
                                     </a>
                                 </li>
@@ -210,8 +230,8 @@ data-template="vertical-menu-template-free">
                             </li>
                         </li>
             
-                        <!-- Workers-->
                         
+
                         <!-- Milk-->
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
@@ -222,7 +242,7 @@ data-template="vertical-menu-template-free">
                             <ul class="menu-sub">
                                 <li class="menu-item mb-1 menu-list">
                                     <a
-                                    href="/milkP"
+                                    href="{{ url_for('milkProduction')}}"
                                     class="menu-link text-dark fs-6 fw-bold"
                                     target="_self">
                                         <div data-i18n="Landing">Daily Production</div>
@@ -276,8 +296,11 @@ data-template="vertical-menu-template-free">
                             </ul>
                         </li>
 
+                        <!-- Reports-->
                         
-                        
+
+                    
+                
 
                         <!-- Authetications -->
                         <li class="menu-item">
@@ -308,7 +331,7 @@ data-template="vertical-menu-template-free">
                 <div class="layout-page">
 
                     <div class="row bg-info border-bottom border-3 border-dark shadow-sm px-5 mt-0">
-                        <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ farm_name }}</h1>
+                        <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ current_user.farm_name }}</h1>
                     </div>
 
                     <!-- Navbar -->
@@ -355,7 +378,7 @@ data-template="vertical-menu-template-free">
                                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                     <a id="dropdownToggle" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);">
                                         <div class="avatar avatar-online">
-                                            <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
+                                            <img src="{{current_user.photo_url}}" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
                                         </div>
                                     </a>
 
@@ -365,13 +388,13 @@ data-template="vertical-menu-template-free">
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar avatar-online">
-                                                            <img src="../static/assets/img/avatars/1.jpeg" alt class="w-px-40 h-auto rounded-circle" />
+                                                            <img src="{{current_user.photo_url}}" alt class="w-px-40 h-auto rounded-circle" />
                                                         </div>
                                                     </div>
 
-                                                    <div class="flex-grow-1">
-                                                        <span class="fw-medium d-block">Farmer name</span>
-                                                        <small class="text-muted">Farmer</small>
+                                                    <div class="flex-grow-1" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
+                                                        <span class="fw-medium d-block">{{current_user.name}}</span>
+                                                        <small class="text-muted">{{current_user.user_type}}</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -382,16 +405,16 @@ data-template="vertical-menu-template-free">
                                         </li>
 
                                         <li>
-                                            <div class="dropdown-item cursor-pointer">
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
                                                 <i class="bx bx-user me-2"></i>
-                                                <span class="align-middle" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>My Profile</span>
-                                            </div>
+                                                <span class="align-middle" >My Profile</span>
+                                            </a>
                                         </li>
 
                                         <li>
-                                            <a class="dropdown-item" href="#">
+                                            <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#editProfileModal" id="editProfileButton">
                                                 <i class="bx bx-cog me-2"></i>
-                                                <span class="align-middle">Settings</span>
+                                                <span class="align-middle">Edit profile</span>
                                             </a>
                                         </li>
 
@@ -413,6 +436,9 @@ data-template="vertical-menu-template-free">
                             </ul>
                         </div>
                     </nav>
+<!-- Success and error message element -->
+<div id="successMessage" class="alert" role="alert" style="display:none;"></div>
+
                     <!-- / Navbar -->
 
                     <!-- Modal For My Profile -->
@@ -433,15 +459,14 @@ data-template="vertical-menu-template-free">
                                                 <div class="row g-0">
                                                     <div class="col bg-light">
                                                         <div class="px-auto ms-5">
-                                                            <img src="./static/auth/img/Brian.jpeg" class="card-img-top border border-1 border-info w-px-100 h-auto rounded-circle ms-5" alt="myprofile">
+                                                            <img src="{{current_user.photo_url}}" class="card-img-top border border-1 border-info w-px-100 h-auto rounded-circle ms-5" alt="myprofile">
                                                         </div>
                                                         <div class="card-body">
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>Name<span id="Name"></span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">Farm name</span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email:</span><span id="email"></span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Id:</span><span id="farmId"></span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmId"></span></p>
-                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number:</span><span id="phoneNumber"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>{{current_user.name}}<span id="Name"></span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">{{current_user.farm_name}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Email:</span><span id="email">{{current_user.email_address}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Location:</span><span id="farmId">{{current_user.address}}</span></p>
+                                                            <p class="card-text"><span class="text-info fw-bold fs-4">Phone Number:</span><span id="phoneNumber">{{current_user.phone_number}}</span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Cattle:</span><span id="cattleNo"></span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Number Of Workers:</span><span id="workersNo"></span></p>
                                                         </div>
@@ -455,13 +480,63 @@ data-template="vertical-menu-template-free">
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Edit</button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- / Modal For cow Profile-->
+                    <!-- / Modal For  Profile-->
+
+                    <!-- Modal For Edit Profile -->
+<!-- Modal For Edit Profile -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-2 border-info">
+            <div class="modal-header">
+                <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-profile-form" enctype="multipart/form-data">
+                    <!-- Photo Upload -->
+                    <div class="mb-3">
+                        <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                    </div>
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
+                    </div>
+                    <!-- Email Address -->
+                    <div class="mb-3">
+                        <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
+                        <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
+                    </div>
+                    <!-- Current Password (for validation) -->
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
+                        <input type="password" id="current_password" name="current_password" class="form-control" required>
+                    </div>
+                    <!-- Phone Number -->
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
+                    </div>
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label for="address" class="form-label text-dark fw-bold">Address:</label>
+                        <input type="text" id="address" name="address" class="form-control" value="{{ current_user.address }}" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
+            </div>
+        </div>
+    </div>
+</div>
+
         
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
@@ -518,56 +593,205 @@ data-template="vertical-menu-template-free">
             <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const dropdownToggle = document.getElementById('dropdownToggle');
-                const dropdownMenu = document.getElementById('dropdownMenu');
+     
 
-                dropdownToggle.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Prevent click event from bubbling up to document
-                    dropdownMenu.classList.toggle('show');
-                });
+<script>        
+    document.addEventListener('DOMContentLoaded', function() {
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const userId = "{{ current_user.id }}";
+    console.log('User ID:', userId);
 
-                document.addEventListener('click', function() {
-                    if (dropdownMenu.classList.contains('show')) {
-                        dropdownMenu.classList.remove('show');
-                    }
-                });
+    dropdownToggle.addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent click event from bubbling up to document
+        dropdownMenu.classList.toggle('show');
+        console.log('Dropdown toggled');
+    });
 
-                dropdownMenu.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
-                });
-            });
+    document.addEventListener('click', function() {
+        if (dropdownMenu.classList.contains('show')) {
+            dropdownMenu.classList.remove('show');
+            console.log('Dropdown menu closed');
+        }
+    });
+
+    dropdownMenu.addEventListener('click', function(event) {
+        event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
+    });
+
+    // Handle form submission for profile update
+    const submitProfileBtn = document.getElementById('submitProfileBtn');
+    if (submitProfileBtn) {
+        submitProfileBtn.addEventListener('click', function() {
+            console.log('Update Profile button clicked');
+            submitForm();
+        });
+    } else {
+        console.error('Submit Profile button not found');
+    }
+});
+
+// Define the submitForm function
+function submitForm() {
+    console.log('submitForm function called');
+    const form = document.getElementById('edit-profile-form');
+    const formData = new FormData(form);
+    const userId = "{{ current_user.id }}";
+    console.log('User ID in submitForm:', userId);
+
+    // First, upload the photo if a new one is selected
+    if (formData.get('photo').name) {
+        console.log('New photo selected, uploading...');
+        const photoFormData = new FormData();
+        photoFormData.append('photo', formData.get('photo'));
+
+        fetch('/upload-photo', {
+            method: 'POST',
+            body: photoFormData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Photo uploaded successfully');
+                // After successfully uploading the photo, update the profile
+                updateProfile(formData, data.photo_url);
+            } else {
+                showMessage('Error uploading photo: ' + data.message, 'danger');
+                console.error('Error uploading photo:', data.message);
+            }
+        })
+        .catch(error => {
+            showMessage('Error uploading photo: ' + error.message, 'danger');
+            console.error('Error uploading photo:', error);
+        });
+    } else {
+        console.log('No new photo selected, updating profile...');
+        // If no new photo is selected, just update the profile
+        updateProfile(formData);
+    }
+}
+
+function updateProfile(formData, photoUrl = null) {
+    console.log('updateProfile function called');
+    const userId = "{{ current_user.id }}";
+    const profileData = {
+        name: formData.get('name'),
+        email_address: formData.get('email_address'),
+        phone_number: formData.get('phone_number'),
+        address: formData.get('address'),
+        current_password: formData.get('current_password')
+    };
+
+    if (photoUrl) {
+        profileData.photo_url = photoUrl;
+    }
+
+    fetch(`/api/profile/${userId}`, {
+        method: 'PUT',
+        body: JSON.stringify(profileData),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Profile updated successfully') {
+            console.log('Profile updated successfully');
+            showMessage('Profile updated successfully', 'success');
+            // Optionally close the modal
+            $('#editProfileModal').modal('hide');
+            // Simulate click on close button
+            const modalCloseButton = document.querySelector('#editProfileModal .btn-close');
+            if (modalCloseButton) {
+                console.log('Closing modal...');
+                modalCloseButton.click(); // Simulate click on close button
+            } else {
+                console.error('Close button not found in modal');
+            }
+            fetchAndFillProfileData();
+            // Reload the page
+            window.location.reload();
+        } else {
+            showMessage('Error updating profile: ' + data.message, 'danger');
+            console.error('Error updating profile:', data.message);
+        }
+    })
+    .catch(error => {
+        showMessage('Error updating profile: ' + error.message, 'danger');
+        console.error('Error updating profile:', error);
+    });
+}
+
+function fetchAndFillProfileData() {
+    const userId = "{{ current_user.id }}"; // Replace with the actual user ID if necessary
+    fetch(`/api/profile/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.name) {
+                // Assuming you have elements with these IDs to update
+                document.getElementById('name').value = data.name;
+                document.getElementById('email_address').value = data.email_address;
+                document.getElementById('phone_number').value = data.phone_number;
+                document.getElementById('address').value = data.address;
+                // Update photo URL if applicable
+                const profilePic = document.getElementById('profilePic');
+                if (profilePic) {
+                    profilePic.src = data.photo_url || '/path/to/default/profile-pic.jpg';
+                }
+            } else {
+                console.error('Error fetching profile data:', data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching profile data:', error));
+}
+
+// Function to display messages
+function showMessage(message, type) {
+    const successMessage = document.getElementById('successMessage');
+    if (successMessage) {
+        // Set class based on message type
+        successMessage.className = `alert alert-${type}`;
+        successMessage.textContent = message;
+        successMessage.style.display = 'block'; // Show the message
+        setTimeout(() => {
+            successMessage.style.display = 'none'; // Hide the message after 5 seconds
+        }, 5000);
+    } else {
+        console.error('Success message element not found');
+    }
+}
+
 
 // HANDLING LOGOUT FOR FARMER
 
-    // Function to handle logout
-    async function handleLogout() {
-        const response = await fetch('/worker/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            // Redirect to login page after successful logout
-            window.location.href = data.redirect;
-        } else {
-            // Handle logout error (optional)
-            console.error('Logout failed:', data.message);
+// Function to handle logout
+async function handleLogout() {
+    console.log('handleLogout function called');
+    const response = await fetch('/farmer/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
         }
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        console.log('Logout successful');
+        // Redirect to login page after successful logout
+        window.location.href = data.redirect;
+    } else {
+        // Handle logout error (optional)
+        console.error('Logout failed:', data.message);
     }
+}
 
-    // Add event listeners to the logout links
-    document.getElementById('logoutLink1').addEventListener('click', handleLogout);
-    document.getElementById('logoutLink2').addEventListener('click', handleLogout);
+// Add event listeners to the logout links
+document.getElementById('logoutLink1').addEventListener('click', handleLogout);
+document.getElementById('logoutLink2').addEventListener('click', handleLogout);
 
-
-
-        </script>
+</script>                
+        
 
         
         <!-- Core JS -->
@@ -593,6 +817,8 @@ data-template="vertical-menu-template-free">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <!-- Include ApexCharts JS -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
         <!-- Include your custom script -->
 
 
