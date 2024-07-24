@@ -320,7 +320,7 @@ def farmer_login():
             logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
             if isinstance(current_user, Worker):
                 logging.debug('Current user is a Worker, logging out')
-                logout_user()
+                logout_user(current_user)
                 session.clear()  # Clear session data
                 logging.debug('Session cleared after Worker logout')
 
