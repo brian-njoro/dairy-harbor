@@ -181,6 +181,9 @@ class CattlePostResource(Resource):
         except ValueError:
             return {"error": "Invalid date format. Use YYYY-MM-DD."}, 400
 
+        default_photo_url = url_for('static', filename='uploads/cow.png')
+    
+
         new_cattle = Cattle(
             name=name,
             date_of_birth=date_of_birth,
@@ -191,7 +194,9 @@ class CattlePostResource(Resource):
             method_bred=method_bred,
             status=status,
             gender=gender,
-            farmer_id=farmer_id
+            farmer_id=farmer_id,
+            photo_url = default_photo_url
+
         )
 
         db.session.add(new_cattle)
