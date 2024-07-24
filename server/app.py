@@ -280,9 +280,20 @@ def farmer_signup():
     password = generate_password_hash(data.get('password'))
     phone_number = data.get('phone_number')
     address = data.get('address')
-    
 
-    new_farmer = Farmer(name=name, email_address=email_address, farm_name=farm_name, password=password, phone_number=phone_number, address=address)
+    # Default photo URL
+    default_photo_url = url_for('static', filename='uploads/user.png')
+
+    # Create new Farmer with default photo_url
+    new_farmer = Farmer(
+        name=name,
+        email_address=email_address,
+        farm_name=farm_name,
+        password=password,
+        phone_number=phone_number,
+        address=address,
+        photo_url=default_photo_url
+    )
     save_to_db(new_farmer)
     
     # Log the user in
