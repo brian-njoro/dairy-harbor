@@ -80,6 +80,8 @@ class WorkerViewResource(Resource):
         workers = Worker.query.all()
         return jsonify([worker.as_dict() for worker in workers])
 
+        
+
 # Worker view by ID resource
 class WorkerViewbyIdResource(Resource):
     def get(self, worker_id):

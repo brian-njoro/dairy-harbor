@@ -400,7 +400,7 @@ data-template="vertical-menu-template-free">
                                                         </div>
                                                     </div>
 
-                                                    <div class="flex-grow-1" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
+                                                    <div class="flex-grow-1">
                                                         <span class="fw-medium d-block">{{current_user.name}}</span>
                                                         <small class="text-muted">{{current_user.user_type}}</small>
                                                     </div>
@@ -443,8 +443,10 @@ data-template="vertical-menu-template-free">
                                 
                             </ul>
                         </div>
+
                     </nav>
                     <!-- / Navbar -->
+
 
                     <!-- Modal For My Profile -->
                     <div class="modal fade" id="modalMyProfile" tabindex="-1" aria-hidden="true">
@@ -490,65 +492,67 @@ data-template="vertical-menu-template-free">
                             </div>
                         </div>
                     </div>
-                    <!-- / Modal For  Profile-->
+                    <!-- / Modal For cow Profile-->
 
-                    <!-- Modal For Edit Profile -->
-                    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content border border-2 border-info">
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
-                                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                    
-                                <div class="modal-body">
-                                    <form id="edit-profile-form" enctype="multipart/form-data">
-                                        <!-- Photo Upload -->
-                                        <div class="mb-3">
-                                            <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
-                                            <button type="button" class="btn btn-info text-white fw-bold border border-3 shadow-sm" onclick="submitForm()">Upload</button>
-                                        </div>
-                    
-                                        <!-- Name -->
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                                            <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
-                                        </div>
-                    
-                                        <!-- Email Address -->
-                                        <div class="mb-3">
-                                            <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
-                                            <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
-                                        </div>
-                    
-                                        <!-- Current Password (for validation) -->
-                                        <div class="mb-3">
-                                            <label for="current_password" class="form-label text-dark fw-bold">Current Password:</label>
-                                            <input type="password" id="current_password" name="current_password" class="form-control" required>
-                                        </div>
-                    
-                                        <!-- Phone Number -->
-                                        <div class="mb-3">
-                                            <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
-                                            <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
-                                        </div>
-                    
-                                        <!-- Address -->
-                                        <div class="mb-3">
-                                            <label for="address" class="form-label text-dark fw-bold">Address:</label>
-                                            <input type="text" id="address" name="address" class="form-control" value="{{ current_user.address }}" required>
-                                        </div>
-                                    </form>
-                                </div>
-                    
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
-                                </div>
-                            </div>
-                        </div>
+
+                <!-- Modal for Editing -->
+<!-- Modal for Editing Profile -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-2 border-info">
+            <div class="modal-header">
+                <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="edit-profile-form" enctype="multipart/form-data">
+                    <!-- Photo Upload -->
+                    <div class="mb-3">
+                        <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                        <button type="button" class="btn btn-info text-white fw-bold border border-3 shadow-sm" onclick="submitForm()">Upload</button>
                     </div>
-        
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="mb-3">
+                        <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
+                        <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
+                    </div>
+
+                    <!-- Current Password (for validation) -->
+                    <div class="mb-3">
+                        <label for="current_password" class="form-label text-dark fw-bold">Current Password:</label>
+                        <input type="password" id="current_password" name="current_password" class="form-control" required>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label for="address" class="form-label text-dark fw-bold">Address:</label>
+                        <input type="text" id="address" name="address" class="form-control" value="{{ current_user.address }}" required>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
+            </div>
+        </div>
+    </div>
+</div>
+
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
 
@@ -604,29 +608,43 @@ data-template="vertical-menu-template-free">
             <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
+
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const dropdownToggle = document.getElementById('dropdownToggle');
-                const dropdownMenu = document.getElementById('dropdownMenu');
-
-                dropdownToggle.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Prevent click event from bubbling up to document
-                    dropdownMenu.classList.toggle('show');
-                });
-
-                document.addEventListener('click', function() {
-                    if (dropdownMenu.classList.contains('show')) {
-                        dropdownMenu.classList.remove('show');
-                    }
-                });
-
-                dropdownMenu.addEventListener('click', function(event) {
-                    event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
-                });
-            });
-
-            // Handle form submission for profile update
-            document.getElementById('submitProfileBtn').addEventListener('click', function() {
+            document.addEventListener("DOMContentLoaded", function() {
+                const editProfileModal = document.getElementById('editProfileModal');
+                const modalMyProfile = document.getElementById('modalMyProfile');
+                const userId = "{{ current_user.id }}";
+            
+                // Fetch user data and pre-fill the profile display and edit profile forms
+                const fetchAndFillProfileData = () => {
+                    fetch(`/api/profile/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('modalMyProfile').querySelector('img').src = data.photo_url;
+                        document.getElementById('modalMyProfile').querySelector('#Name').textContent = data.name;
+                        document.getElementById('modalMyProfile').querySelector('#farmName').textContent = data.farm_name;
+                        document.getElementById('modalMyProfile').querySelector('#email').textContent = data.email_address;
+                        document.getElementById('modalMyProfile').querySelector('#farmId').textContent = data.address;
+                        document.getElementById('modalMyProfile').querySelector('#phoneNumber').textContent = data.phone_number;
+                        document.getElementById('modalMyProfile').querySelector('#cattleNo').textContent = data.cattle_number;
+                        document.getElementById('modalMyProfile').querySelector('#workersNo').textContent = data.worker_number;
+            
+                        document.getElementById('name').value = data.name;
+                        document.getElementById('email_address').value = data.email_address;
+                        document.getElementById('phone_number').value = data.phone_number;
+                        document.getElementById('address').value = data.address;
+                    })
+                    .catch(error => console.error('Error fetching profile data:', error));
+                };
+            
+                // Event listener for "My Profile" modal
+                document.getElementById('myProfile').addEventListener('click', fetchAndFillProfileData);
+            
+                // Event listener for "Edit Profile" modal
+                document.getElementById('editProfileButton').addEventListener('click', fetchAndFillProfileData);
+            
+                // Handle form submission for profile update
+                document.getElementById('submitProfileBtn').addEventListener('click', function() {
                     const form = document.getElementById('edit-profile-form');
                     const formData = new FormData(form);
             
@@ -657,36 +675,16 @@ data-template="vertical-menu-template-free">
                     })
                     .catch(error => console.error('Error updating profile:', error));
                 });
+            });
+            </script>
+            
 
-// HANDLING LOGOUT FOR FARMER
-
-    // Function to handle logout
-    async function handleLogout() {
-        const response = await fetch('/farmer/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            // Redirect to login page after successful logout
-            window.location.href = data.redirect;
-        } else {
-            // Handle logout error (optional)
-            console.error('Logout failed:', data.message);
-        }
-    }
-
-    // Add event listeners to the logout links
-    document.getElementById('logoutLink1').addEventListener('click', handleLogout);
-    document.getElementById('logoutLink2').addEventListener('click', handleLogout);
-
-
-
-        </script>
+        
+            
+        
+            
+            
+        
 
         
         <!-- Core JS -->
@@ -712,8 +710,6 @@ data-template="vertical-menu-template-free">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <!-- Include ApexCharts JS -->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
         <!-- Include your custom script -->
 
 

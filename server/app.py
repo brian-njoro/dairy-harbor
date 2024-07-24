@@ -35,6 +35,8 @@ from models.models import (
 )
 
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+
 
 from flask_login import LoginManager, UserMixin, login_user, current_user, login_required, logout_user
 import flask_login
@@ -59,15 +61,17 @@ api = Api(app)
 CORS(app)
 
 
-#folder to store cattle profile images
-UPLOAD_FOLDER = './media'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Configure the upload folder and allowed file extensions
+app.config['UPLOAD_FOLDER'] = 'static/uploads/'
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 def allowed_file(filename):
     return '.' in filename and \
-            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
+
 
 # Create the instance folder if it doesn't exist
 instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
@@ -133,6 +137,136 @@ from models.ApiResources import (
     RecordLogMessageResource,
     RecordNotificationResource
 )
+
+
+def delete_old_photo(old_photo_url):
+    # Logic to delete the old photo from the local filesystem
+    try:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], old_photo_url.rsplit('/', 1)[-1])
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    except Exception as e:
+        print(f"Error deleting old photo: {e}")
+
+
+class ProfileResource(Resource):
+    def get(self, user_id):
+        # Ensure the user is logged in
+        if not current_user.is_authenticated:
+            return jsonify({'message': 'Unauthorized'}), 401
+
+        # Check user type and retrieve the appropriate user
+        user_model = Farmer if current_user.user_type == 'farmer' else Worker
+        user = user_model.query.get(user_id)
+        
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+
+        # Check if the current user is authorized to view this profile
+        if current_user.id != user_id:
+            return jsonify({'message': 'Unauthorized'}), 403
+
+        # Fetch user details
+        user_data = {
+            'name': user.name,
+            'email_address': user.email_address,
+            'phone_number': user.phone_number,
+            'address': user.address,
+            'photo_url': user.photo_url,
+            'farm_name': user.farm_name if hasattr(user, 'farm_name') else None,
+            'cattle_number': user.cattle_number if hasattr(user, 'cattle_number') else None,
+            'worker_number': user.worker_number if hasattr(user, 'worker_number') else None,
+        }
+
+        return jsonify(user_data)
+
+    def put(self, user_id):
+        # Ensure the user is logged in
+        if not current_user.is_authenticated:
+            return jsonify({'message': 'Unauthorized'}), 401
+
+        data = request.get_json()
+
+        # Check user type and retrieve the appropriate user
+        user_model = Farmer if current_user.user_type == 'farmer' else Worker
+        user = user_model.query.get(user_id)
+        
+        if not user:
+            return jsonify({'message': 'User not found'}), 404
+        
+        # Check if the current user is authorized to edit this profile
+        if current_user.id != user_id:
+            return jsonify({'message': 'Unauthorized'}), 403
+
+        # Validate current password
+        if not check_password_hash(user.password, data.get('current_password')):
+            return jsonify({'message': 'Invalid current password'}), 403
+        
+        # Update fields
+        user.name = data.get('name', user.name)
+        user.email_address = data.get('email_address', user.email_address)
+        user.phone_number = data.get('phone_number', user.phone_number)
+        user.address = data.get('address', user.address)
+        
+        # Handle photo URL
+        if 'photo_url' in data:
+            old_photo_url = user.photo_url
+            new_photo_url = data.get('photo_url')
+            
+            if old_photo_url and old_photo_url != new_photo_url:
+                delete_old_photo(old_photo_url)  # Function to delete old photo from storage
+            
+            user.photo_url = new_photo_url
+
+        db.session.commit()
+        return jsonify({'message': 'Profile updated successfully'})
+
+
+
+@app.route('/upload-photo', methods=['POST'])
+@login_required
+def upload_photo():
+    print(request.files)  # Debugging statement
+    if 'photo' not in request.files:
+        return {'success': False, 'message': 'No file part'}
+
+    file = request.files['photo']
+
+    if file.filename == '':
+        return {'success': False, 'message': 'No selected file'}
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
+        # Save the new file
+        file.save(file_path)
+
+        # Get current user's photo URL
+        old_photo_url = current_user.photo_url
+
+        # Update the current user's photo URL
+        new_photo_url = url_for('static', filename='uploads/' + filename)
+        current_user.photo_url = new_photo_url
+        
+        # Optionally delete the old photo if it exists
+        if old_photo_url and old_photo_url != new_photo_url:
+            delete_old_photo(old_photo_url)
+
+        # Here you should update the database with the new photo URL
+        # Update user's photo URL in the database
+        if current_user.user_type == 'farmer':
+            # Update the Farmer model
+            db.session.commit()
+        elif current_user.user_type == 'worker':
+            # Update the Worker model
+            db.session.commit()
+
+        return {'success': True, 'photo_url': new_photo_url}
+
+    return {'success': False, 'message': 'Invalid file type'}
+
+
 
 
 # Utility function to save to database
@@ -262,7 +396,7 @@ def worker_login():
 @app.route('/home', methods=['GET'])
 @login_required
 def home():
-
+    
     if session.get('user_type') != 'farmer':
         logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('admin_login'))
@@ -549,6 +683,10 @@ def get_inventory_cost_data():
             inventory_cost_data.append({'date': item.purchase_date.strftime('%Y-%m-%d'), 'cost': item.price})
     return jsonify(inventory_cost_data)
 
+
+
+## PROFILE EDIT
+api.add_resource(ProfileResource, '/api/profile/<int:user_id>')
 
 # API routes for Farmer
 api.add_resource(FarmerDeleteResource, '/farmer/delete/<int:farmer_id>')
