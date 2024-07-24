@@ -320,7 +320,7 @@ def farmer_login():
             logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
             if isinstance(current_user, Worker):
                 logging.debug('Current user is a Worker, logging out')
-                logout_user(current_user,remember=True)
+                logout_user()
                 session.clear()  # Clear session data
                 logging.debug('Session cleared after Worker logout')
 
@@ -352,8 +352,10 @@ def worker_signup():
     address = data.get('address')
     role = data.get('role')
     farmer_id = current_user.id  # Use the current farmer's ID
+
+    default_photo_url = url_for('static', filename='uploads/user.png')
     
-    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role, farmer_id=farmer_id)
+    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role, farmer_id=farmer_id, photo_url=default_photo_url)
     save_to_db(new_worker)
     
     return jsonify({'message': 'Worker registered successfully'})
@@ -546,6 +548,7 @@ def pestControl():
 @login_required
 def worker_dashboard():
     logging.debug(f'Current user in worker_dashboard: {current_user}')
+    print(f'Current user in worker_dashboard: {current_user}')
     if session.get('user_type') != 'worker':
         logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('workerLogin'))  # Redirect to login if current user is not a Worker
