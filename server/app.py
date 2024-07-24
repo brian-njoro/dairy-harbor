@@ -189,7 +189,7 @@ class ProfileResource(Resource):
 
         # Check user type and retrieve the appropriate user
         user_model = Farmer if current_user.user_type == 'farmer' else Worker
-        user = user_model.query.get(user_id)
+        user = db.session.get(user_model, user_id)
         
         if not user:
             return jsonify({'message': 'User not found'}), 404
@@ -207,19 +207,11 @@ class ProfileResource(Resource):
         user.email_address = data.get('email_address', user.email_address)
         user.phone_number = data.get('phone_number', user.phone_number)
         user.address = data.get('address', user.address)
-        
-        # Handle photo URL
-        if 'photo_url' in data:
-            old_photo_url = user.photo_url
-            new_photo_url = data.get('photo_url')
-            
-            if old_photo_url and old_photo_url != new_photo_url:
-                delete_old_photo(old_photo_url)  # Function to delete old photo from storage
-            
-            user.photo_url = new_photo_url
 
         db.session.commit()
         return jsonify({'message': 'Profile updated successfully'})
+
+
 
 
 
@@ -249,8 +241,9 @@ def upload_photo():
         new_photo_url = url_for('static', filename='uploads/' + filename)
         current_user.photo_url = new_photo_url
         
-        # Optionally delete the old photo if it exists
-        if old_photo_url and old_photo_url != new_photo_url:
+        # Optionally delete the old photo if it exists and is not the default photo
+        default_photo_url = url_for('static', filename='uploads/user.png')
+        if old_photo_url and old_photo_url != new_photo_url and old_photo_url != default_photo_url:
             delete_old_photo(old_photo_url)
 
         # Here you should update the database with the new photo URL
@@ -265,6 +258,7 @@ def upload_photo():
         return {'success': True, 'photo_url': new_photo_url}
 
     return {'success': False, 'message': 'Invalid file type'}
+
 
 
 
@@ -288,9 +282,20 @@ def farmer_signup():
     password = generate_password_hash(data.get('password'))
     phone_number = data.get('phone_number')
     address = data.get('address')
-    
 
-    new_farmer = Farmer(name=name, email_address=email_address, farm_name=farm_name, password=password, phone_number=phone_number, address=address)
+    # Default photo URL
+    default_photo_url = url_for('static', filename='uploads/user.png')
+
+    # Create new Farmer with default photo_url
+    new_farmer = Farmer(
+        name=name,
+        email_address=email_address,
+        farm_name=farm_name,
+        password=password,
+        phone_number=phone_number,
+        address=address,
+        photo_url=default_photo_url
+    )
     save_to_db(new_farmer)
     
     # Log the user in
@@ -347,8 +352,10 @@ def worker_signup():
     address = data.get('address')
     role = data.get('role')
     farmer_id = current_user.id  # Use the current farmer's ID
+
+    default_photo_url = url_for('static', filename='uploads/user.png')
     
-    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role, farmer_id=farmer_id)
+    new_worker = Worker(name=name, email_address=email_address, password=password, phone_number=phone_number, address=address, role=role, farmer_id=farmer_id, photo_url=default_photo_url)
     save_to_db(new_worker)
     
     return jsonify({'message': 'Worker registered successfully'})
@@ -541,6 +548,7 @@ def pestControl():
 @login_required
 def worker_dashboard():
     logging.debug(f'Current user in worker_dashboard: {current_user}')
+    print(f'Current user in worker_dashboard: {current_user}')
     if session.get('user_type') != 'worker':
         logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('workerLogin'))  # Redirect to login if current user is not a Worker
