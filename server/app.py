@@ -259,6 +259,27 @@ def upload_photo():
 
     return {'success': False, 'message': 'Invalid file type'}
 
+class CattlePhotoUploadResource(Resource):
+    @login_required
+    def post(self):
+        if 'photo' not in request.files:
+            return {"error": "No photo part in the request"}, 400
+
+        photo = request.files['photo']
+        if photo.filename == '':
+            return {"error": "No selected photo"}, 400
+
+        # Save the photo
+        filename = secure_filename(photo.filename)
+        photo_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        photo.save(photo_path)
+
+        # Generate the URL for the uploaded photo
+        photo_url = url_for('static', filename='uploads/' + filename)
+
+        return jsonify({"photo_url": photo_url})
+
+
 
 
 
@@ -716,6 +737,7 @@ api.add_resource(CattlePostResource, '/api/cattle/post', endpoint='cattle_post')
 api.add_resource(CattleGetByIdResource, '/api/cattle/get/<int:cattle_id>', endpoint='cattle_get_by_id')
 api.add_resource(CattleEditResource, '/api/cattle/edit/<int:cattle_id>', endpoint='cattle_edit')
 api.add_resource(CattleDeleteResource, '/api/cattle/delete/<int:serial_number>', endpoint='cattle_delete')
+api.add_resource(CattlePhotoUploadResource, '/api/cattle/upload-photo')
 
 
 # Add resources to the API

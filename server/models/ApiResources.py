@@ -148,13 +148,15 @@ class CattleGetResource(Resource):
         return jsonify(cattle_data)
 
 
+
+
 class CattlePostResource(Resource):
     @login_required
     def post(self):
         data = request.get_json()
         name = data.get('name')
         date_of_birth_str = data.get('date_of_birth')
-        photo = data.get('photo')
+        photo = data.get('photo')  # This can be None or a URL
         breed = data.get('breed')
         father_breed = data.get('father_breed')
         mother_breed = data.get('mother_breed')
@@ -181,13 +183,15 @@ class CattlePostResource(Resource):
         except ValueError:
             return {"error": "Invalid date format. Use YYYY-MM-DD."}, 400
 
+        # Define the default photo URL
         default_photo_url = url_for('static', filename='uploads/cow.png')
-    
+
+        # Use the provided photo URL or fall back to the default
+        photo_url = photo if photo else default_photo_url
 
         new_cattle = Cattle(
             name=name,
             date_of_birth=date_of_birth,
-            photo=photo,
             breed=breed,
             father_breed=father_breed,
             mother_breed=mother_breed,
@@ -195,8 +199,7 @@ class CattlePostResource(Resource):
             status=status,
             gender=gender,
             farmer_id=farmer_id,
-            photo_url = default_photo_url
-
+            photo=photo_url  # Use the final photo URL
         )
 
         db.session.add(new_cattle)
@@ -216,6 +219,7 @@ class CattlePostResource(Resource):
         db.session.commit()
 
         return jsonify(new_cattle.as_dict())
+
 
 class CattleGetByIdResource(Resource):
     @login_required
