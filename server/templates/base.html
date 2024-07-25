@@ -52,6 +52,7 @@ data-template="vertical-menu-template-free">
         <link rel="stylesheet"  href="{{ url_for('static', filename='auth/css/style2.css') }}">
         <link rel="stylesheet"  href="{{ url_for('static', filename='auth/css/cattle.css') }}">
         <style>
+
             #successMessage {
             margin: 20px;
             padding: 10px;
@@ -68,6 +69,27 @@ data-template="vertical-menu-template-free">
         .alert-danger {
             background-color: #f8d7da;
             color: #f30f26;
+        }
+
+        .custom-btn {
+            
+            background-color: white;
+            border: 2px solid black;
+            width: 50px;  /* Adjust the width to fit the text */
+            color: black;
+            margin-right: 30px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            margin-right: 30px;
         }
         
         </style>   
@@ -392,21 +414,19 @@ data-template="vertical-menu-template-free">
                             <!-- /Search -->
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
-
-                                <!-- Place this tag where you want the button to render. -->
-                                <li class="nav-item lh-1 me-3 ms-2">
-                                    <a
-                                        class="github-button"
-                                        href="#"
-                                        data-icon="octicon-star"
-                                        data-size="large"
-                                        data-show-count="true"
-                                        aria-label="Star"
-                                        >Messages .</a>
+                                <!-- Notification Icon -->
+                                <li class="nav-item lh-1 me-3 ms-2 position-relative">
+                                    <button 
+                                        type="button"
+                                        class="btn custom-btn shadow-md"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#notificationModal"
+                                        id="notificationButton">
+                                        <i class='bx bx-bell'></i>
+                                        <span id="notificationBadge" class="notification-badge d-none"></span>
+                                    </button>
                                 </li>
-                
-
-
+                        
                                 <!-- User -->
                                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                     <a id="dropdownToggle" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);">
@@ -414,7 +434,6 @@ data-template="vertical-menu-template-free">
                                             <img src="{{current_user.photo_url}}" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
                                         </div>
                                     </a>
-
                                     <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <a class="dropdown-item" href="#">
@@ -424,7 +443,6 @@ data-template="vertical-menu-template-free">
                                                             <img src="{{current_user.photo_url}}" alt class="w-px-40 h-auto rounded-circle" />
                                                         </div>
                                                     </div>
-
                                                     <div class="flex-grow-1" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
                                                         <span class="fw-medium d-block">{{current_user.name}}</span>
                                                         <small class="text-muted">{{current_user.user_type}}</small>
@@ -432,29 +450,24 @@ data-template="vertical-menu-template-free">
                                                 </div>
                                             </a>
                                         </li>
-
                                         <li>
                                             <div class="dropdown-divider"></div>
                                         </li>
-
                                         <li>
                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
                                                 <i class="bx bx-user me-2"></i>
-                                                <span class="align-middle" >My Profile</span>
+                                                <span class="align-middle">My Profile</span>
                                             </a>
                                         </li>
-
                                         <li>
-                                            <a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#editProfileModal" id="editProfileButton">
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editProfileModal" id="editProfileButton">
                                                 <i class="bx bx-cog me-2"></i>
                                                 <span class="align-middle">Edit profile</span>
                                             </a>
                                         </li>
-
                                         <li>
                                             <div class="dropdown-divider"></div>
                                         </li>
-
                                         <li>
                                             <a class="dropdown-item" href="/index">
                                                 <i class="bx bx-power-off me-2"></i>
@@ -463,9 +476,6 @@ data-template="vertical-menu-template-free">
                                         </li>
                                     </ul>
                                 </li>
-                                
-                                <!--/ User -->
-                                
                             </ul>
                         </div>
                     </nav>
@@ -630,30 +640,32 @@ data-template="vertical-menu-template-free">
             <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
-        <script>        
+     
+
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const dropdownToggle = document.getElementById('dropdownToggle');
                 const dropdownMenu = document.getElementById('dropdownMenu');
                 const userId = "{{ current_user.id }}";
                 console.log('User ID:', userId);
-
+    
                 dropdownToggle.addEventListener('click', function(event) {
                     event.stopPropagation(); // Prevent click event from bubbling up to document
                     dropdownMenu.classList.toggle('show');
                     console.log('Dropdown toggled');
                 });
-
+    
                 document.addEventListener('click', function() {
                     if (dropdownMenu.classList.contains('show')) {
                         dropdownMenu.classList.remove('show');
                         console.log('Dropdown menu closed');
                     }
                 });
-
+    
                 dropdownMenu.addEventListener('click', function(event) {
                     event.stopPropagation(); // Prevent click event from hiding the menu when clicking inside it
                 });
-
+    
                 // Handle form submission for profile update
                 const submitProfileBtn = document.getElementById('submitProfileBtn');
                 if (submitProfileBtn) {
@@ -664,8 +676,49 @@ data-template="vertical-menu-template-free">
                 } else {
                     console.error('Submit Profile button not found');
                 }
+    
+                // Fetch notifications count
+                function fetchUnreadNotificationsCount() {
+                    $.ajax({
+                        url: '/api/notification',
+                        method: 'GET',
+                        success: function(data) {
+                            const unreadCount = data.filter(notification => !notification.is_read).length;
+                            const badge = $('#notificationBadge');
+                            if (unreadCount > 0) {
+                                badge.text(unreadCount).removeClass('d-none');
+                            } else {
+                                badge.addClass('d-none');
+                            }
+                        },
+                        error: function(error) {
+                            console.error('Error fetching notifications:', error);
+                        }
+                    });
+                }
+    
+                // Fetch notifications on modal show
+                $('#notificationModal').on('show.bs.modal', function (e) {
+                    $.ajax({
+                        url: '/api/notification',
+                        method: 'GET',
+                        success: function(data) {
+                            let notifications = '';
+                            data.forEach(notification => {
+                                notifications += `<li class="list-group-item">${notification.message}</li>`;
+                            });
+                            $('#notificationList').html(notifications);
+                        },
+                        error: function(error) {
+                            console.error('Error fetching notifications:', error);
+                        }
+                    });
+                });
+    
+                // Fetch unread notifications count on page load
+                fetchUnreadNotificationsCount();
             });
-
+    
             // Define the submitForm function
             function submitForm() {
                 console.log('submitForm function called');
@@ -673,13 +726,13 @@ data-template="vertical-menu-template-free">
                 const formData = new FormData(form);
                 const userId = "{{ current_user.id }}";
                 console.log('User ID in submitForm:', userId);
-
+    
                 // First, upload the photo if a new one is selected
                 if (formData.get('photo').name) {
                     console.log('New photo selected, uploading...');
                     const photoFormData = new FormData();
                     photoFormData.append('photo', formData.get('photo'));
-
+    
                     fetch('/upload-photo', {
                         method: 'POST',
                         body: photoFormData
@@ -705,7 +758,7 @@ data-template="vertical-menu-template-free">
                     updateProfile(formData);
                 }
             }
-
+    
             function updateProfile(formData, photoUrl = null) {
                 console.log('updateProfile function called');
                 const userId = "{{ current_user.id }}";
@@ -716,11 +769,11 @@ data-template="vertical-menu-template-free">
                     address: formData.get('address'),
                     current_password: formData.get('current_password')
                 };
-
+    
                 if (photoUrl) {
                     profileData.photo_url = photoUrl;
                 }
-
+    
                 fetch(`/api/profile/${userId}`, {
                     method: 'PUT',
                     body: JSON.stringify(profileData),
@@ -756,7 +809,7 @@ data-template="vertical-menu-template-free">
                     console.error('Error updating profile:', error);
                 });
             }
-
+    
             function fetchAndFillProfileData() {
                 const userId = "{{ current_user.id }}"; // Replace with the actual user ID if necessary
                 fetch(`/api/profile/${userId}`)
@@ -779,7 +832,7 @@ data-template="vertical-menu-template-free">
                     })
                     .catch(error => console.error('Error fetching profile data:', error));
             }
-
+    
             // Function to display messages
             function showMessage(message, type) {
                 const successMessage = document.getElementById('successMessage');
@@ -790,15 +843,14 @@ data-template="vertical-menu-template-free">
                     successMessage.style.display = 'block'; // Show the message
                     setTimeout(() => {
                         successMessage.style.display = 'none'; // Hide the message after 5 seconds
-                    }, 5000);
+                    }, 7000);
                 } else {
                     console.error('Success message element not found');
                 }
             }
-
-
+    
             // HANDLING LOGOUT FOR FARMER
-
+    
             // Function to handle logout
             async function handleLogout() {
                 console.log('handleLogout function called');
@@ -808,9 +860,9 @@ data-template="vertical-menu-template-free">
                         'Content-Type': 'application/json',
                     }
                 });
-
+    
                 const data = await response.json();
-
+    
                 if (response.ok) {
                     console.log('Logout successful');
                     // Redirect to login page after successful logout
@@ -820,12 +872,13 @@ data-template="vertical-menu-template-free">
                     console.error('Logout failed:', data.message);
                 }
             }
-
+    
             // Add event listeners to the logout links
             document.getElementById('logoutLink1').addEventListener('click', handleLogout);
             document.getElementById('logoutLink2').addEventListener('click', handleLogout);
-
         </script>                
+        
+
         
         <!-- Core JS -->
         <!-- build:js assets/vendor/js/core.js -->

@@ -3,7 +3,26 @@
 {% block title %}Medicine{% endblock %}
 
 {% block content %}
-<!--medicines-->
+<!-- Modal for Notifications -->
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-2 border-info">
+            <div class="modal-header">
+                <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <ul id="notificationList" class="list-group">
+                    <!-- Notifications will be appended here -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Feeds-->
 <div class="card text-white mb-3 border border-1 border-info shadow-lg">
     <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/medicine.jpg')}}" alt="Image">
     <div class="card-img-overlay">
@@ -104,68 +123,4 @@
         <!--medicine History-->
     </div>
 </div>
-
-<!-- Modal For Edit Profile -->
-<div class="modal fade" id="editMedicineModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-profile-form" enctype="multipart/form-data">
-                    <!-- Current Password (for validation) -->
-                    <div class="mb-3">
-                        <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
-                        <input type="password" id="current_password" name="current_password" class="form-control" required>
-                    </div>
-
-                    <!--Date of Buying -->
-                    <div class="mb-3">
-                        <label for="purchase_date" class="form-label fw-bold text-dark">Date Of Buying:</label>
-                        <input type="date" id="purchase_date" name="purchase_date" class="form-control" required>
-                    </div>
-
-                    <!-- medicine Name -->
-                    <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
-                    </div>
-
-                    <!-- Agent -->
-                    <div class="mb-3">
-                        <label for="agent" class="form-label text-dark fw-bold">Agent:</label>
-                        <input type="text" id="agent" name="agent" class="form-control" required>
-                    </div>
-
-                    <!--Quantity -->
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label fw-bold text-dark">Quantity:</label>
-                        <input type="text" id="quantity" class="form-control" required>
-                    </div>
-
-                    <!-- Price -->
-                    <div class="mb-3">
-                        <label for="price" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
-                        <input type="number" id="price" name="price" class="form-control" required>
-                    </div>
-
-                    <!-- worker_id -->
-                    <div class="mb-3">
-                        <label for="farmer_id" class="form-label text-dark fw-bold">worker Id:</label>
-                        <input type="number" id="worker_id" name="worker_id" class="form-control">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- / Modal For Edit Profile-->
-
-<script src="{{url_for('static',filename='js/medicine.js')}}"></script>
 {% endblock %}
