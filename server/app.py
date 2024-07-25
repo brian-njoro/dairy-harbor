@@ -469,6 +469,14 @@ def home():
 def milkReport():
     return render_template('milkReport.html')
 
+@app.route('/sales', methods=['GET'])
+@login_required
+def sales():
+    return render_template('sales.html')
+
+
+
+
 
 
 #Index Page
