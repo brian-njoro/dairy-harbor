@@ -3,11 +3,30 @@
 {% block title %}Miscarriage{% endblock %}
 
 {% block content %}
+<!-- Modal for Notifications -->
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-2 border-info">
+            <div class="modal-header">
+                <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                <ul id="notificationList" class="list-group">
+                    <!-- Notifications will be appended here -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="container-fluid" id='dehorn-list'>
         <!--Miscarriage-->
         <div class="col mb-3">
             <div class="card text-white mb-3 border border-info border-1 shadow-lg">
-                <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;top;" src="{{url_for('static',filename='auth/img/stress.jpg')}}" alt="Image">
+                <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position:top;" src="{{url_for('static',filename='auth/img/stress.jpg')}}" alt="Image">
 
                 <div class="card-img-overlay">
                     <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">MISCARRIAGE</h3>
