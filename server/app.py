@@ -536,13 +536,23 @@ def deworm():
 @app.route('/milkProduction', methods=['GET'])
 @login_required
 def milkProduction():
-    return render_template('milkProduction.html')    
+    return render_template('milkProduction.html')   
+
+@app.route('/sales', methods=['GET'])
+@login_required
+def milkSales():
+    return render_template('sales.html') 
 
 
 @app.route('/heat', methods=['GET'])
 @login_required
 def heat():
     return render_template('heat.html')
+
+@app.route('/calving', methods=['GET'])
+@login_required
+def calving():
+    return render_template('calving.html')
 
     
 @app.route('/Ainsemination', methods=['GET'])

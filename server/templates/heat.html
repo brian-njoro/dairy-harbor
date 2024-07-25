@@ -3,25 +3,27 @@
 {% block title %}Heat{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+
     <div class="container-fluid" id='dehorn-list'>
         <!--Cow Heat-->
         <div class="col mb-3">
@@ -55,10 +57,12 @@
 
                     <div class="modal-body">
                         <form id="cattleHeatForm">
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--Date Of detection -->
@@ -67,10 +71,16 @@
                                 <input type="date" id="dateOfDetection" class="form-control" required>
                             </div>
 
+                            <!-- detectedBy -->
+                            <div class="mb-3">
+                                <label for="detectedBy" class="form-label fw-bold text-dark">Detected By:</label>
+                                <input type="text" name='detectedBy' id='detectedBy' class='form-control'/>
+                            </div>
+
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="heatnotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='heatnotes' id='heatnotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>

@@ -106,7 +106,7 @@ document.getElementById('cattleMiscarriageButton').addEventListener('click', asy
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattlemiscarriage .btn-close');
+            const modalCloseButton = document.querySelector('#modalMiscarriagedCattle .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
@@ -127,5 +127,5 @@ document.getElementById('cattleMiscarriageButton').addEventListener('click', asy
 updatemiscarriageList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattlemiscarriage');
+const modal = document.getElementById('modalMiscarriagedCattle');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

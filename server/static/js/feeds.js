@@ -1,5 +1,5 @@
                 //THIS FILE HAS TO BE REVIEWED AGAIN 
-                //Some sections are not relevant such as cattle Id
+                //Some sections are not relevant such as cattle Id and cattle functions
 
 
 // Function to fetch and update the feed list
@@ -22,12 +22,8 @@ const updatefeedList = async () => {
                 <td>${feed.quantity}</td>
                 <td>${feed.price}</td>
                 <td>${feed.total_cost}</td>
-                <td>
-                    <button class="btn btn-btn btn-sm btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#editFeedModal" onclick="deletefeed(${feed.id})">Delete</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletefeed(${feed.id})">Delete</button>
-                </td>
+                <td><button class="btn btn-btn btn-sm btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#editFeedModal" onclick="deletefeed(${feed.id})">Delete</button></td>
+                <td><button class="btn btn-danger btn-sm" onclick="deletefeed(${feed.id})">Delete</button></td>
             `;
 
             feedList.appendChild(row);
