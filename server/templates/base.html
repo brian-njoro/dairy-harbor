@@ -545,30 +545,35 @@ data-template="vertical-menu-template-free">
                                 </div>
                                 <div class="modal-body">
                                     <form id="edit-profile-form" enctype="multipart/form-data">
-                                        <!-- Photo Upload -->
-                                        <div class="mb-3">
-                                            <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
-                                        </div>
-                                        <!-- Name -->
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                                            <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
-                                        </div>
-                                        <!-- Email Address -->
-                                        <div class="mb-3">
-                                            <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
-                                            <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
-                                        </div>
                                         <!-- Current Password (for validation) -->
                                         <div class="mb-3">
                                             <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
                                             <input type="password" id="current_password" name="current_password" class="form-control" required>
                                         </div>
+
+                                        <!-- Photo Upload -->
+                                        <div class="mb-3">
+                                            <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                                        </div>
+
+                                        <!-- Name -->
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label text-dark fw-bold">Name:</label>
+                                            <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
+                                        </div>
+
+                                        <!-- Email Address -->
+                                        <div class="mb-3">
+                                            <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
+                                            <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
+                                        </div>
+                                        
                                         <!-- Phone Number -->
                                         <div class="mb-3">
                                             <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
                                             <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
                                         </div>
+                                        
                                         <!-- Address -->
                                         <div class="mb-3">
                                             <label for="address" class="form-label text-dark fw-bold">Address:</label>
@@ -640,7 +645,6 @@ data-template="vertical-menu-template-free">
             <i class='bx bxs-up-arrow icon text-white'></i>
         </a>
 
-     
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
