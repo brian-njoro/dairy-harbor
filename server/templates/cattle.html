@@ -107,8 +107,8 @@
                 <form id="cattleForm">
                     <!--Cattle Name-->
                     <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="name" class="form-control" required>
+                        <label for="cattleName" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="cattleName" name='cattleName' class="form-control" required>
                     </div>
 
                     <!--Date Of Birth-->
@@ -433,7 +433,7 @@ function uploadPhoto(photoFile) {
 function addCattle() {
     console.log('Add Cattle button clicked');
 
-    const name = document.getElementById('name').value;
+    const name = document.getElementById('cattleName').value;
     const dateOfBirth = document.getElementById('dateOfBirth').value;
     const breed = document.getElementById('breed').value;
     const status = document.getElementById('status').value;
