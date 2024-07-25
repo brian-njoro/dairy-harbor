@@ -68,7 +68,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+        filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
 
@@ -543,6 +543,11 @@ def miscarriage():
 @login_required
 def pestControl():
     return render_template('pestControl.html')
+
+@app.route('/death', methods=['GET'])
+@login_required
+def death():
+    return render_template('death.html')
 
 @app.route('/worker_dashboard', methods=['GET'])
 @login_required
