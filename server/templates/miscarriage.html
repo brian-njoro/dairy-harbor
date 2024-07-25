@@ -15,7 +15,7 @@
 
                     <!-- Button to add new miscarriaged cattle -->
                     <div class="mb-3">
-                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalMiscarriagedCattle" id='cattlepregnancy'>
+                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalMiscarriagedCattle" id='cattlemiscarriage'>
                             Miscarriaged
                         </button>
                     </div>
@@ -35,11 +35,13 @@
                     </div>
 
                     <div class="modal-body">
-                        <form id="cattlePregnancyForm">
-                            <!--Serial Number -->
+                        <form id="cattlemiscarriageForm">
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--Date Of Miscarriage -->
@@ -50,15 +52,15 @@
 
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="miscarriagenotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='miscarriagenotes' id='miscarriagenotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-info" id="cattlemiscarriageButton">Submit</button>
+                        <button type="button" class="btn btn-info" id="cattleMiscarriageButton">Submit</button>
                     </div>
 
                 </div>
@@ -79,10 +81,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-info fw-bold">Serial Number</th>
-                                    <th class="text-info fw-bold">Name</th>
-                                    <th class="text-info fw-bold">Breed</th>
                                     <th class="text-info fw-bold">Miscarriage Date</th>
-                                    
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 

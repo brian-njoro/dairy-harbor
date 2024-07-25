@@ -43,34 +43,18 @@
                                 <input type="date" id="dateOfInsemination" class="form-control" required>
                             </div>
 
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
-                            <!--Donor's Breed-->
+                            <!-- donor Breed -->
                             <div class="mb-3">
                                 <label for="donorBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
                                 <select class="form-control" name="donorBreed" id="donorBreed" required>
-                                    <option value="Holstein_Friesian">Holstein Friesian</option>
-                                    <option value="Jersey">Jersey</option>
-                                    <option value="Guernsey">Guernsey</option>
-                                    <option value="Brown_Swiss">Brown Swiss</option>
-                                    <option value="Ayrshire">Ayrshire</option>
-                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
-                                    <option value="Swedish_Red_White">Swedish Red and White</option>
-                                    <option value="Montbéliarde">Montbéliarde</option>
-                                    <option value="Norwegian_Red">Norwegian Red</option>
-                                    <option value="Ayrshire">Ayrshire</option>
-                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
-                                </select>
-                            </div>
-
-                            <!--expected Breed-->
-                            <div class="mb-3">
-                                <label for="calfBreed" class="form-label text-dark fw-bold">Expected Calf Breed:</label>
-                                <select class="form-control" name="calfBreed" id="calfBreed" required>
                                     <option value="Holstein_Friesian">Holstein Friesian</option>
                                     <option value="Jersey">Jersey</option>
                                     <option value="Guernsey">Guernsey</option>
@@ -117,9 +101,7 @@
                                     <th class="text-info fw-bold">Date</th>
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Vet Name</th>
-                                    <th class="text-info fw-bold">Father Breed</th>
-                                    <th class="text-info fw-bold">Mother Breed</th>
-                                    <th class="text-info fw-bold">Calf Breed</th>
+                                    <th class="text-info fw-bold">Donor Breed</th>
                                 </tr>
                             </thead>
 
@@ -133,4 +115,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/NInsemination.js')}}"></script>
 {% endblock %}

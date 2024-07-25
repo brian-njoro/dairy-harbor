@@ -40,6 +40,7 @@
                                 <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
                                 <input class="form-control" type="text" name='vetName' id="vetName" required>
                             </div>
+
                             <!--Date-->
                             <div class="mb-3">
                                 <label for="dateOfvaccination" class="form-label text-dark fw-bold">Date:</label>
@@ -53,6 +54,7 @@
                                     <!-- Radio buttons will be dynamically inserted here -->
                                 </div>
                             </div>
+
                             <!--Method of vaccination-->
                             <div class="mb-3">
                                 <label for="methodOfAdministration" class="form-label text-dark fw-bold">Method of vaccination:</label>
@@ -67,21 +69,31 @@
                                     <option value="Aerosol">Aerosol Vaccination</option>
                                 </select>
                             </div>
+
                             <!--Drug Name-->
                             <div class="mb-3">
                                 <label for="drugUsed" class="form-label text-dark fw-bold">Name of drug:</label>
                                 <input class="form-control" type="text" name='drugUsed' id="drugUsed" required>
                             </div>
+
                             <!--Disease Name-->
                             <div class="mb-3">
                                 <label for="disease" class="form-label text-dark fw-bold">Name of disease:</label>
                                 <input class="form-control" type="text" name='disease' id="disease" required>
                             </div>
+
+                            <!-- Dose -->
+                            <div class="mb-3">
+                                <label for="dose" class="form-label text-dark fw-bold">Dose:</label>
+                                <input class="form-control" type="number" name='dose' id="dose" required>
+                            </div>
+
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
                                 <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
+
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -111,8 +123,8 @@
                                     <th class="text-info fw-bold">Vet Name</th>
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Drug</th>
+                                    <th class="text-info fw-bold">Dose</th>
                                     <th class="text-info fw-bold">Disease</th>
-                                    
                                 </tr>
                             </thead>
 
@@ -126,7 +138,6 @@
             </div>
         </div>
     </div>
-    
-    <script src="{{url_for('static',filename='js/vaccination.js')}}"></script>
 
+    <script src="{{url_for('static',filename='js/vaccination.js')}}"></script>
 {% endblock %}

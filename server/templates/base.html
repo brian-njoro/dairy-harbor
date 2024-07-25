@@ -94,7 +94,7 @@ data-template="vertical-menu-template-free">
                                 <div class='col container-fluid'>
                                     <a href="index.html" class="navbar-brand d-flex">
                                         <!--<div class="logo-1-container">-->
-                                            <img class="logo-1-icon " style="width:100px; height:100px; border:1px solid rgb(0, 162, 255); border-radius:60px; border-bottom:10px solid rgb(0, 162, 255); margin-top:10px; margin-bottom:10px; margin-left:-10px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
+                                        <img class="logo-1-icon " style="width:100px; height:100px; border:1px solid rgb(0, 162, 255); border-radius:60px; border-bottom:10px solid rgb(0, 162, 255); margin-top:10px; margin-bottom:10px; margin-left:-10px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
                                         <!--</div>-->
                                     </a>
                                 </div>
@@ -150,8 +150,8 @@ data-template="vertical-menu-template-free">
                             </a>
         
                                 <ul class="menu-sub menu-list">
-                                     <!--Treatment-->
-                                     <li class="menu-item mb-1 ">
+                                    <!--Treatment-->
+                                    <li class="menu-item mb-1 ">
                                         <a href="/treatment" class="menu-link text-dark fs-6 fw-bold" target="_self" >
                                             <div data-i18n="without menu">Treatment</div>
                                         </a>
@@ -316,19 +316,17 @@ data-template="vertical-menu-template-free">
                         </li>
 
                         <!-- Reports-->
-                        <li class="menu-item mb-1 menu-list">
+                        <li class="menu-item">
                             <a
                                 href="{{ url_for('milkReport')}}"
-                                class="menu-link text-dark fs-6 fw-bold"
+                                class="menu-link text-white fw-bold fs-5"
                                 target="_self">
+                                    <i class="menu-icon tf-icons bx bx-layout text-white"></i>
                                     <div data-i18n="Pricing">
                                         Reports
                                     </div>
                             </a>
                         </li>
-
-                    
-                
 
                         <!-- Authetications -->
                         <li class="menu-item">

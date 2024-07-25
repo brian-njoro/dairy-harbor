@@ -44,14 +44,16 @@
 
                             <!--Date Of Deworming -->
                             <div class="mb-3">
-                                <label for="dateOfDehorning" class="form-label fw-bold text-dark">Date Of Deworming:</label>
-                                <input type="date" id="dateOfDehorning" class="form-control" required>
+                                <label for="dateOfDeworming" class="form-label fw-bold text-dark">Date Of Deworming:</label>
+                                <input type="date" id="dateOfDeworming" name="dateOfDeworming"  class="form-control" required>
                             </div>
 
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--Deworming Method-->
@@ -62,21 +64,21 @@
 
                             <!--Disease Name-->
                             <div class="mb-3">
-                                <label for="diseaseName" class="form-label fw-bold text-dark">Name of disease:</label>
-                                <input class="form-control" name="diseaseName" id="diseaseName" required>
+                                <label for="disease" class="form-label fw-bold text-dark">Name of disease:</label>
+                                <input class="form-control" name="disease" id="disease" required>
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="dewormnotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='dewormnotes' id='dewormnotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-info" id="dewormCattleButton">Submit</button>
+                        <button type="button" class="btn btn-info" id="cattleDewormButton">Submit</button>
                     </div>
 
                 </div>
@@ -101,6 +103,7 @@
                                     <th class="text-info fw-bold">Vet Name</th>
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Disease</th>
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 
@@ -114,4 +117,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/deworm.js')}}"></script>
 {% endblock %}

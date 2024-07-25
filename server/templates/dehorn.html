@@ -48,10 +48,12 @@
                                 <input type="date" id="dateOfDehorning" class="form-control" required>
                             </div>
 
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--Dehorning Method-->
@@ -62,8 +64,8 @@
 
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="dehornnotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='dehornnotes' id='dehornnotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>
@@ -90,11 +92,11 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-info fw-bold">Dehorn Id</th>
                                     <th class="text-info fw-bold">Date</th>
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Vet Name</th>
                                     <th class="text-info fw-bold">Method</th>
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 
@@ -108,4 +110,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/dehorn.js')}}"></script>
 {% endblock %}

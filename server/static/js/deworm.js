@@ -1,52 +1,52 @@
-// Function to fetch and update the vaccination list
-const updatevaccinationList = async () => {
-    console.log('Reached here treatmeeeee list fetch')
+// Function to fetch and update the deworm list
+const updateDewormingList = async () => {
+    console.log('Reached here deworming list fetch')
 
     try {
-        const response = await fetch('/api/vaccination');
-        const vaccinations = await response.json();
+        const response = await fetch('/api/deworming');
+        const deworms = await response.json();
 
-        const vaccinationList = document.getElementById('vaccinationList');
-        vaccinationList.innerHTML = ''; // Clear existing list
+        const dewormList = document.getElementById('dewormList');
+        dewormList.innerHTML = ''; // Clear existing list
 
-        vaccinations.forEach(vaccination => {
+        deworms.forEach(deworm => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(vaccination.date).toLocaleDateString()}</td>
-                <td>${vaccination.cattle_id}</td>
-                <td>${vaccination.vet_name}</td>
-                <td>${vaccination.method_of_administration}</td>
-                <td>${vaccination.drug_used}</td>
-                <td>${vaccination.disease}</td>
+                <td>${new Date(deworm.date).toLocaleDateString()}</td>
+                <td>${deworm.cattle_id}</td>
+                <td>${deworm.vet_name}</td>
+                <td>${deworm.drugUsed}</td>
+                <td>${deworm.DewormingMethod}</td>
+                <td>${deworm.disease}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteN_insemination(${N_insemination.id})">Delete</button>
                 </td>
             `;
 
-            vaccinationList.appendChild(row);
+            dewormList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error fetching vaccination list:', error);
+        console.error('Error fetching deworm list:', error);
     }
 };
 
 
-// Function to delete a vaccination
-const deletevaccination = async (id) => {
+// Function to delete a deworm
+const deleteDeworming = async (id) => {
     try {
-        const response = await fetch(`/api/vaccination/${id}`, {
+        const response = await fetch(`/api/Deworming/${id}`, {
             method: 'DELETE'
         });
 
         if (response.ok) {
-            // Update the vaccination list after deletion
-            updatevaccinationList();
+            // Update the deworm list after deletion
+            updateDewormingList();
         } else {
-            console.error('Failed to delete vaccination:', await response.text());
+            console.error('Failed to delete deworm:', await response.text());
         }
     } catch (error) {
-        console.error('Error deleting vaccination:', error);
+        console.error('Error deleting deworm:', error);
     }
 };
 
@@ -82,12 +82,12 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {
+document.getElementById('cattleDewormButton').addEventListener('click', async () => {
     const vetName = document.getElementById('vetName').value;
-    const dateOfvaccination = document.getElementById('dateOfvaccination').value;
+    const dateOfdeworm = document.getElementById('dateOfDeworming').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const drugUsed = document.getElementById('drugUsed').value;
-    const methodOfAdministration = document.getElementById('methodOfAdministration').value;
+    const DewormingMethod = document.getElementById('DewormingMethod').value;
     const disease = document.getElementById('disease').value;
     const notes = document.getElementById('notes').value;
 
@@ -96,47 +96,47 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
         return;
     }
 
-    const vaccinationData = {
+    const dewormData = {
         vet_name: vetName,
-        date: dateOfvaccination,
+        date: dateOfdeworm,
         cattle_id: cattleId,
-        drug_used: drugUsed,
-        method_of_administration: methodOfAdministration,
+        drugUsed: drugUsed,
+        DewormingMethod: DewormingMethod,
         disease: disease,
-        notes: notes
+        notes: notes,
     };
 
     try {
-        const response = await fetch('/api/vaccination', {
+        const response = await fetch('/api/deworming', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(vaccinationData)
+            body: JSON.stringify(dewormData)
         });
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattlevaccination .btn-close');
+            const modalCloseButton = document.querySelector('#modalCattleDeworming .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
                 console.error('Close button not found in modal');
             }
 
-            // Update the vaccination list
-            updatevaccinationList();
+            // Update the deworm list
+            updateDewormingList();
         } else {
-            console.error('Failed to add vaccination:', await response.text());
+            console.error('Failed to add Deworming:', await response.text());
         }
     } catch (error) {
-        console.error('Error submitting vaccination:', error);
+        console.error('Error submitting Deworming:', error);
     }
 });
 
-// Initial fetch to populate the vaccination list on page load
-updatevaccinationList();
+// Initial fetch to populate the deworm list on page load
+updateDewormingList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattlevaccination');
+const modal = document.getElementById('modalCattleDeworming');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

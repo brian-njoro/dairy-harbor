@@ -15,7 +15,7 @@
 
                     <!-- Button to add new pregnant cattle -->
                     <div class="mb-3">
-                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalPregnantCattle" id='cattlepregnancy'>
+                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattlepregnancy" id='cattlepregnancy'>
                             Pregnancy
                         </button>
                     </div>
@@ -26,7 +26,7 @@
         </div>
 
         <!-- Modal for Pregnant Cattle -->
-        <div class="modal fade" id="modalPregnantCattle" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="modalCattlepregnancy" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-3 border-info">
                     <div class="modal-header">
@@ -36,19 +36,21 @@
 
                     <div class="modal-body">
                         <form id="cattlePregnancyForm">
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
-                            <!--Date Of conceiving -->
+                            <!--Date Of Detection -->
                             <div class="mb-3">
-                                <label for="dateOfConceiving" class="form-label fw-bold text-dark">Date Of conceiving:</label>
-                                <input type="date" id="dateOfConceiving" class="form-control" required>
+                                <label for="dateOfDetection" class="form-label fw-bold text-dark">Date Of conceiving:</label>
+                                <input type="date" id="dateOfDetection" name="dateOfDetection" class="form-control" required>
                             </div>
 
-                            <!--Date Of birth -->
+                            <!--expected Date Of birth -->
                             <div class="mb-3">
                                 <label for="expectedDateOfBirth" class="form-label fw-bold text-dark">Expected Date Of Birth:</label>
                                 <input type="date" id="expectedDateOfBirth" class="form-control" required>
@@ -100,4 +102,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/pregnancy.js')}}"></script>
 {% endblock %}
