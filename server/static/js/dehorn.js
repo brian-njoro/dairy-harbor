@@ -18,7 +18,7 @@ const updateDehorningList = async () => {
                 <td>${dehorn.vet_name}</td>
                 <td>${dehorn.dehorningMethod}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteN_insemination(${N_insemination.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteDehorning(${dehorning.id})">Delete</button>
                 </td>
             `;
 

@@ -479,10 +479,15 @@ data-template="vertical-menu-template-free">
                             </ul>
                         </div>
                     </nav>
-<!-- Success and error message element -->
-<div id="successMessage" class="alert" role="alert" style="display:none;"></div>
-
                     <!-- / Navbar -->
+
+                    <!-- SHOULD REVIEW -->
+                    <!-- Success and error message element -->
+                    {% if alert == 'success' %}
+                        <div id="successMessage" class="alert alert-success" role="alert" style="display:none;"></div>
+                    {% else %}
+                        <div id="successMessage" class="alert alert-danger" role="alert" style="display:none;"></div>
+                    {% endif %}
 
                     <!-- Modal For My Profile -->
                     <div class="modal fade" id="modalMyProfile" tabindex="-1" aria-hidden="true">
@@ -531,56 +536,55 @@ data-template="vertical-menu-template-free">
                     <!-- / Modal For  Profile-->
 
                     <!-- Modal For Edit Profile -->
-<!-- Modal For Edit Profile -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-profile-form" enctype="multipart/form-data">
-                    <!-- Photo Upload -->
-                    <div class="mb-3">
-                        <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border border-2 border-info">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
+                                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="edit-profile-form" enctype="multipart/form-data">
+                                        <!-- Photo Upload -->
+                                        <div class="mb-3">
+                                            <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                                        </div>
+                                        <!-- Name -->
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label text-dark fw-bold">Name:</label>
+                                            <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
+                                        </div>
+                                        <!-- Email Address -->
+                                        <div class="mb-3">
+                                            <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
+                                            <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
+                                        </div>
+                                        <!-- Current Password (for validation) -->
+                                        <div class="mb-3">
+                                            <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
+                                            <input type="password" id="current_password" name="current_password" class="form-control" required>
+                                        </div>
+                                        <!-- Phone Number -->
+                                        <div class="mb-3">
+                                            <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
+                                            <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
+                                        </div>
+                                        <!-- Address -->
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label text-dark fw-bold">Address:</label>
+                                            <input type="text" id="address" name="address" class="form-control" value="{{ current_user.address }}" required>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Name -->
-                    <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" value="{{ current_user.name }}" required>
-                    </div>
-                    <!-- Email Address -->
-                    <div class="mb-3">
-                        <label for="email_address" class="form-label text-dark fw-bold">Email:</label>
-                        <input type="email" id="email_address" name="email_address" class="form-control" value="{{ current_user.email_address }}" required>
-                    </div>
-                    <!-- Current Password (for validation) -->
-                    <div class="mb-3">
-                        <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
-                        <input type="password" id="current_password" name="current_password" class="form-control" required>
-                    </div>
-                    <!-- Phone Number -->
-                    <div class="mb-3">
-                        <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
-                        <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
-                    </div>
-                    <!-- Address -->
-                    <div class="mb-3">
-                        <label for="address" class="form-label text-dark fw-bold">Address:</label>
-                        <input type="text" id="address" name="address" class="form-control" value="{{ current_user.address }}" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
-            </div>
-        </div>
-    </div>
-</div>
+                    <!-- / Modal For Edit Profile-->
 
-        
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
 
@@ -892,8 +896,6 @@ data-template="vertical-menu-template-free">
         <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
 
-
-
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -902,7 +904,6 @@ data-template="vertical-menu-template-free">
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
         <!-- Include your custom script -->
-
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -923,6 +924,5 @@ data-template="vertical-menu-template-free">
 
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
-        
     </body>
 </html>

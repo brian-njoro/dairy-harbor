@@ -29,7 +29,6 @@ const updatedeathList = async () => {
     }
 };
 
-
 // Function to delete a death
 const deletedeath = async (id) => {
     try {
