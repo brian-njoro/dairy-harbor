@@ -1,6 +1,6 @@
 // Function to fetch and update the treatment list
 const updateTreatmentList = async () => {
-    console.log('Reached here treatmeeeee list fetch')
+    console.log('Reached here treatment list fetch')
 
     try {
         const response = await fetch('/api/treatment');

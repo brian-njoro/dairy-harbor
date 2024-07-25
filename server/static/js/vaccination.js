@@ -1,6 +1,6 @@
 // Function to fetch and update the vaccination list
 const updatevaccinationList = async () => {
-    console.log('Reached here treatmeeeee list fetch')
+    console.log('Reached here vaccination list fetch')
 
     try {
         const response = await fetch('/api/vaccination');
@@ -84,12 +84,10 @@ const populateCattleOptions = async () => {
 
 // Event listener for the submit button
 document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {
-    const vetName = document.getElementById('vetName').value;
     const dateOfvaccination = document.getElementById('dateOfvaccination').value;
+    const vetName = document.getElementById('vetName').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const drugUsed = document.getElementById('drugUsed').value;
-    const methodOfAdministration = document.getElementById('methodOfAdministration').value;
-    const disease = document.getElementById('disease').value;
+    const vaccineName = document.getElementById('vaccineName').value;
     const dose = document.getElementById('dose').value;
     const notes = document.getElementById('notes').value;
 
@@ -99,12 +97,10 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
     }
 
     const vaccinationData = {
-        vet_name: vetName,
         date: dateOfvaccination,
+        vet_name: vetName,
         cattle_id: cattleId,
-        drug_used: drugUsed,
-        method_of_administration: methodOfAdministration,
-        disease: disease,
+        vaccine_name: vaccineName,
         dose: dose,
         notes: notes
     };
