@@ -3,25 +3,26 @@
 {% block title %}Natural Insemination{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
     <div class="container-fluid " id='insemination-list'>
         <!--Natural Insemination-->
         <div class="card text-white mb-3 border border-info border-1 shadow-lg">
@@ -79,19 +80,19 @@
                                     <option value="Guernsey">Guernsey</option>
                                     <option value="Brown_Swiss">Brown Swiss</option>
                                     <option value="Ayrshire">Ayrshire</option>
-                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
-                                    <option value="Swedish_Red_White">Swedish Red and White</option>
-                                    <option value="Montbéliarde">Montbéliarde</option>
-                                    <option value="Norwegian_Red">Norwegian Red</option>
-                                    <option value="Ayrshire">Ayrshire</option>
-                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
                                 </select>
+                            </div>
+
+                            <!-- Father Id -->
+                            <div class="mb-3">
+                                <label for="fatherId" class="form-label fw-bold text-dark">Father Id:</label>
+                                <input type="number" id="fatherId" name="fatherId" class="form-control" required>
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="Ninseminationnotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='Ninseminationnotes' id='Ninseminationnotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>

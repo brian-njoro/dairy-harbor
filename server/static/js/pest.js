@@ -1,49 +1,52 @@
-// Function to fetch and update the death list
-const updatedeathList = async () => {
-    console.log('Reached here death list fetch')
+// Function to fetch and update the pest list
+const updatepestList = async () => {
+    console.log('Reached here pest list fetch')
 
     try {
-        const response = await fetch('/api/death');
-        const deaths = await response.json();
+        const response = await fetch('/api/pest_control');
+        const pests = await response.json();
 
-        const deathList = document.getElementById('deathList');
-        deathList.innerHTML = ''; // Clear existing list
+        const pestList = document.getElementById('pestControlList');
+        pestList.innerHTML = ''; // Clear existing list
 
-        deaths.forEach(death => {
+        pests.forEach(pest => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${death.cattle_id}</td>
-                <td>${new Date(death.dateOfdeath).toLocaleDateString()}</td>
+                <td>${new Date(pest.date).toLocaleDateString()}</td>
+                <td>${pest.cattle_id}</td>
+                <td>${pest.vet_name}</td>
+                <td>${pest.drugUsed}</td>
+                <td>${pest.pestMethod}</td>
+                <td>${pest.disease}</td>
                 <td>
-                <td>${death.CauseOfDeath}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletedeath(${death.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletepest(${pest.id})">Delete</button>
                 </td>
             `;
 
-            deathList.appendChild(row);
+            pestList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error fetching death list:', error);
+        console.error('Error fetching pest list:', error);
     }
 };
 
-// Function to delete a death
-const deletedeath = async (id) => {
+
+// Function to delete a pest
+const deletepest = async (id) => {
     try {
-        const response = await fetch(`/api/death/${id}`, {
+        const response = await fetch(`/api/pest_control/${id}`, {
             method: 'DELETE'
         });
 
         if (response.ok) {
-            // Update the death list after deletion
-            updatedeathList();
+            // Update the pest list after deletion
+            updatepestList();
         } else {
-            console.error('Failed to delete death:', await response.text());
+            console.error('Failed to delete pest:', await response.text());
         }
     } catch (error) {
-        console.error('Error deleting death:', error);
+        console.error('Error deleting pest:', error);
     }
 };
 
@@ -79,10 +82,13 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('CattleDeathButton').addEventListener('click', async () => {
-    const dateOfDeath = document.getElementById('dateOfDeath').value;
+document.getElementById('pestControlButton').addEventListener('click', async () => {
+    const vet_name = document.getElementById('vetName').value;
+    const controlDate = document.getElementById('controlDate').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const CauseOfDeath = document.getElementById('CauseOfDeath').value;
+    const controlMethod = document.getElementById('controlMethod').value;
+    const pesticide = document.getElementById('pesticide').value;
+    const pestName = document.getElementById('pestName').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -90,44 +96,47 @@ document.getElementById('CattleDeathButton').addEventListener('click', async () 
         return;
     }
 
-    const deathData = {
+    const pestData = {
+        vet_name:vet_name,
         cattle_id: cattleId,
-        dateOfDeath: dateOfDeath,
-        CauseOfDeath:CauseOfDeath,
+        control_date: controlDate,
+        pest_type: pestName,
+        method_used: controlMethod,
+        pesticide_used:pesticide,
         notes: notes,
     };
 
     try {
-        const response = await fetch('/api/death', {
+        const response = await fetch('/api/pest', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(deathData)
+            body: JSON.stringify(pestData)
         });
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattleDeath .btn-close');
+            const modalCloseButton = document.querySelector('#modalPestControl .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
                 console.error('Close button not found in modal');
             }
 
-            // Update the death list
-            updatedeathList();
+            // Update the pest list
+            updatepestList();
         } else {
-            console.error('Failed to add death:', await response.text());
+            console.error('Failed to add pest:', await response.text());
         }
     } catch (error) {
-        console.error('Error submitting death:', error);
+        console.error('Error submitting pest:', error);
     }
 });
 
-// Initial fetch to populate the death list on page load
-updatedeathList();
+// Initial fetch to populate the pest list on page load
+updatepestList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattleDeath');
+const modal = document.getElementById('modalPestControl');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

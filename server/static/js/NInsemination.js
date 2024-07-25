@@ -1,12 +1,12 @@
 // Function to fetch and update the N_insemination list
 const updateNinseminationList = async () => {
-    console.log('Reached here treatmeeeee list fetch')
+    console.log('Reached here natural Insemination list fetch')
 
     try {
         const response = await fetch('/api/natural_insemination');
         const N_inseminations = await response.json();
 
-        const N_inseminationList = document.getElementById('N_inseminationList');
+        const N_inseminationList = document.getElementById('NInseminationList');
         N_inseminationList.innerHTML = ''; // Clear existing list
 
         N_inseminations.forEach(N_insemination => {
@@ -25,7 +25,7 @@ const updateNinseminationList = async () => {
             N_inseminationList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error fetching Natural insemination list:', error);
+        console.log('Error fetching Natural insemination list:', error);
     }
 };
 
@@ -75,16 +75,16 @@ const populateCattleOptions = async () => {
             cattleRadioButtonsContainer.appendChild(radioButton);
         });
     } catch (error) {
-        console.error('Error fetching cattle data:', error);
+        console.log('Error fetching cattle data:', error);
     }
 };
 
 // Event listener for the submit button
 document.getElementById('CattleNInseminationButton').addEventListener('click', async () => {
-    const vetName = document.getElementById('vetName').value;
-    const dateOfN_insemination = document.getElementById('dateOfInsemination').value;
+    const dateOfNinsemination = document.getElementById('dateOfInsemination').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const donorBreed = document.getElementById('donorBreed').value;
+    const fatherId = document.getElementById('fatherId').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -93,10 +93,10 @@ document.getElementById('CattleNInseminationButton').addEventListener('click', a
     }
 
     const N_inseminationData = {
-        vet_name: vetName,
-        date: dateOfN_insemination,
         cattle_id: cattleId,
-        donorBreed: donorBreed,
+        father_breed: donorBreed,
+        father_id:fatherId,
+        date: dateOfNinsemination,
         notes: notes,
     };
 

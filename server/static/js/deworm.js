@@ -20,7 +20,7 @@ const updateDewormingList = async () => {
                 <td>${deworm.DewormingMethod}</td>
                 <td>${deworm.disease}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteN_insemination(${N_insemination.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteDeworming(${deworming.id})">Delete</button>
                 </td>
             `;
 

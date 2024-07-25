@@ -18,6 +18,7 @@ const updatevaccinationList = async () => {
                 <td>${vaccination.vet_name}</td>
                 <td>${vaccination.method_of_administration}</td>
                 <td>${vaccination.drug_used}</td>
+                <td>${vaccination.dose}</td>
                 <td>${vaccination.disease}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
@@ -89,6 +90,7 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
     const drugUsed = document.getElementById('drugUsed').value;
     const methodOfAdministration = document.getElementById('methodOfAdministration').value;
     const disease = document.getElementById('disease').value;
+    const dose = document.getElementById('dose').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -103,6 +105,7 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
         drug_used: drugUsed,
         method_of_administration: methodOfAdministration,
         disease: disease,
+        dose: dose,
         notes: notes
     };
 
@@ -117,7 +120,7 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattlevaccination .btn-close');
+            const modalCloseButton = document.querySelector('#modalCattleVaccination .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
@@ -138,5 +141,5 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
 updatevaccinationList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattlevaccination');
+const modal = document.getElementById('modalCattleVaccination');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

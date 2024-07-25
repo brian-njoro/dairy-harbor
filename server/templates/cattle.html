@@ -3,37 +3,37 @@
 {% block title %}Cattle{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
     <div class="container-fluid">
         <!-- Cattle management content -->
         <h2 class="mt-5 mb-3 fw-bold text-info text-center">Cattle Management</h2>
 
         <!--Cattle summary-->
         <div class="row mb-3">
-
             <!-- Cattle Numbers -->
             <div class="col-sm-4 text-center mb-3 mb-sm-0">
                 <div class="card border border-1 border-info shadow-lg bg-white">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold">Total Cattle</h5>
+                        <h5 class="card-title text-info fw-bold">HERD DISTRIBUTION</h5>
                         <p class="card-text text-info">
                             Cows:<span class="text-dark" id="totalCows">{{total_cows}}</span>
                         </p>
@@ -54,7 +54,7 @@
             <div class="col-sm-4 text-center mb-3 mb-sm-0">
                 <div class="card border border-1 border-info shadow-lg bg-white">
                     <div class="card-body">
-                        <h5 class="card-title fw-bold">Cattle Status</h5>
+                        <h5 class="card-title text-info fw-bold">HERD STATUS</h5>
                         <p class="card-text text-info">
                             Sick Cows:<span class="text-dark" id="sickCows">{{status_sick}}</span>
                         </p>
@@ -64,7 +64,9 @@
                         <p class="card-text text-info">
                             Heifers Calves:<span class="text-dark" id="totalCows">{{status_heifer}}</span>
                         </p>
-                        
+                        <p class="card-text text-info">
+                            Dead Cows:<span class="text-dark" id="totalCalves"> {{status_calf}}</span>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -74,7 +76,7 @@
                 <div class="card border border-1 border-info shadow-lg bg-white">
                     <div class="card-body">
                         <h5 class="card-title text-info fw-bold">ADD CATTLE</h5>
-                        <p class="card-text">Add and manage cattle profiles by tracking all animals health and productivity history.</p>
+                        <p class="card-text">Add and manage cattle profiles by tracking health and productivity history of all mature and expected animals in your herd.</p>
 
                         <!-- Button to add new cattle -->
                         <div class="mb-0">
@@ -87,471 +89,594 @@
             </div>
 
             <!-- Modal for Cattle Registration -->
-            <!-- Modal for Cattle Registration -->
-<div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Add Cattle</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal fade" id="modalCattleRegistration" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content border border-1 border-info">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold">Add Cattle</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <form id="cattleForm">
+                                <!-- Photo Upload -->
+                                <div class="mb-3">
+                                    <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                                </div>
+
+                                <!--Cattle Name-->
+                                <div class="mb-3">
+                                    <label for="cattleName" class="form-label text-dark fw-bold">Name:</label>
+                                    <input type="text" id="cattleName" name='cattleName' class="form-control" required>
+                                </div>
+
+                                <!--Date Of Birth-->
+                                <div class="mb-3">
+                                    <label for="dateOfBirth" class="form-label text-dark fw-bold">Date of Birth:</label>
+                                    <input type="date" id="dateOfBirth" class="form-control" required>
+                                </div>
+
+                                <!--Gender-->
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label text-dark fw-bold">Gender:</label>
+                                    <select class="form-control" name="gender" id="gender" required>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+
+                                <!--Cattle Breed-->
+                                <div class="mb-3">
+                                    <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
+                                    <select class="form-control" name="breed" id="breed" required>
+                                        <option value="Holstein_Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown_Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                        <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                        <option value="Red_White_Holstein">Red and White Holstein</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    </select>
+                                </div>
+
+                                <!--Father's Breed-->
+                                <div class="mb-3">
+                                    <label for="fatherBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
+                                    <select class="form-control" name="fatherBreed" id="fatherBreed" required>
+                                        <option value="Holstein_Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown_Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                        <option value="Swedish_Red_White">Swedish Red and White</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Norwegian_Red">Norwegian Red</option>
+                                        <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                    </select>
+                                </div>
+
+                                <!--Mother's Breed-->
+                                <div class="mb-3">
+                                    <label for="motherBreed" class="form-label text-dark fw-bold">Mother's Breed:</label>
+                                    <select class="form-control" name="motherBreed" id="motherBreed" required>
+                                        <option value="Holstein_Friesian">Holstein Friesian</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Guernsey">Guernsey</option>
+                                        <option value="Brown_Swiss">Brown Swiss</option>
+                                        <option value="Ayrshire">Ayrshire</option>
+                                        <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                        <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                        <option value="Red_White_Holstein">Red and White Holstein</option>
+                                        <option value="Montbéliarde">Montbéliarde</option>
+                                        <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    </select>
+                                </div>
+
+                                <!--Method Of Breeding-->
+                                <div class="mb-3">
+                                    <label for="methodBred" class="form-label text-dark fw-bold">Method Bred:</label>
+                                    <select class="form-control" name="methodBred" id="methodBred" required>
+                                        <option value="Natural">Natural</option>
+                                        <option value="ArtificialInsemination">Artificial Insemination</option>
+                                    </select>
+                                </div>
+
+                                <!--Status-->
+                                <div class="mb-3">
+                                    <label for="status" class="form-label text-dark fw-bold">Status:</label>
+                                    <select class="form-control" name="status" id="status" required>
+                                        <option value="healthy">Milking</option>
+                                        <option value="pregnant">Pregnant</option>
+                                        <option value="weaning">Weaning</option>
+                                        <option value="sick">Sick</option>
+                                        <option value="calf">calf</option>
+                                        <option value="Heifer">Heifer</option>
+                                    </select>
+                                </div>
+
+                                <!-- Hidden Fields -->
+                                <div class="mb-3">
+                                    <input type="hidden" id="farmerId" value="{{ current_user.id }}">
+                                    <input type="hidden" id="photoUrl" value=""> <!-- Placeholder for photo URL -->
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="modal-body">
-                <form id="photoUploadForm" enctype="multipart/form-data">
-                    <!--Photo Upload-->
-                    <div class="mb-3">
-                        <input class="form-control profile-pic-input" type="file" id="photoFile" name="photoFile" accept="image/jpeg, image/png, image/jpg"/>
-                    </div>
-                </form>
-
-                <form id="cattleForm">
-                    <!--Cattle Name-->
-                    <div class="mb-3">
-                        <label for="cattleName" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="cattleName" name='cattleName' class="form-control" required>
-                    </div>
-
-                    <!--Date Of Birth-->
-                    <div class="mb-3">
-                        <label for="dateOfBirth" class="form-label text-dark fw-bold">Date of Birth:</label>
-                        <input type="date" id="dateOfBirth" class="form-control" required>
-                    </div>
-
-                    <!--Cattle Breed-->
-                    <div class="mb-3">
-                        <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
-                        <select class="form-control" name="breed" id="breed" required>
-                            <option value="Holstein_Friesian">Holstein Friesian</option>
-                            <option value="Jersey">Jersey</option>
-                            <option value="Guernsey">Guernsey</option>
-                            <option value="Brown_Swiss">Brown Swiss</option>
-                            <option value="Ayrshire">Ayrshire</option>
-                            <option value="Milking_Shorthorn">Milking Shorthorn</option>
-                            <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
-                            <option value="Red_White_Holstein">Red and White Holstein</option>
-                            <option value="Montbéliarde">Montbéliarde</option>
-                            <option value="Swedish_Red_White">Swedish Red and White</option>
-                        </select>
-                    </div>
-
-                    <!--Father's Breed-->
-                    <div class="mb-3">
-                        <label for="fatherBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
-                        <select class="form-control" name="fatherBreed" id="fatherBreed" required>
-                            <option value="Holstein_Friesian">Holstein Friesian</option>
-                            <option value="Jersey">Jersey</option>
-                            <option value="Guernsey">Guernsey</option>
-                            <option value="Brown_Swiss">Brown Swiss</option>
-                            <option value="Ayrshire">Ayrshire</option>
-                            <option value="Milking_Shorthorn">Milking Shorthorn</option>
-                            <option value="Swedish_Red_White">Swedish Red and White</option>
-                            <option value="Montbéliarde">Montbéliarde</option>
-                            <option value="Norwegian_Red">Norwegian Red</option>
-                            <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
-                        </select>
-                    </div>
-
-                    <!--Mother's Breed-->
-                    <div class="mb-3">
-                        <label for="motherBreed" class="form-label text-dark fw-bold">Mother's Breed:</label>
-                        <select class="form-control" name="motherBreed" id="motherBreed" required>
-                            <option value="Holstein_Friesian">Holstein Friesian</option>
-                            <option value="Jersey">Jersey</option>
-                            <option value="Guernsey">Guernsey</option>
-                            <option value="Brown_Swiss">Brown Swiss</option>
-                            <option value="Ayrshire">Ayrshire</option>
-                            <option value="Milking_Shorthorn">Milking Shorthorn</option>
-                            <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
-                            <option value="Red_White_Holstein">Red and White Holstein</option>
-                            <option value="Montbéliarde">Montbéliarde</option>
-                            <option value="Swedish_Red_White">Swedish Red and White</option>
-                        </select>
-                    </div>
-
-                    <!--Method Of Breeding-->
-                    <div class="mb-3">
-                        <label for="methodBred" class="form-label text-dark fw-bold">Method Bred:</label>
-                        <select class="form-control" name="methodBred" id="methodBred" required>
-                            <option value="Natural">Natural</option>
-                            <option value="ArtificialInsemination">Artificial Insemination</option>
-                        </select>
-                    </div>
-
-                    <!--Status-->
-                    <div class="mb-3">
-                        <label for="status" class="form-label text-dark fw-bold">Status:</label>
-                        <select class="form-control" name="status" id="status" required>
-                            <option value="healthy">Milking</option>
-                            <option value="pregnant">Pregnant</option>
-                            <option value="weaning">Weaning</option>
-                            <option value="sick">Sick</option>
-                            <option value="calf">calf</option>
-                            <option value="Heifer">Heifer</option>
-                        </select>
-                    </div>
-
-                    <!--Gender-->
-                    <div class="mb-3">
-                        <label for="gender" class="form-label text-dark fw-bold">Gender:</label>
-                        <select class="form-control" name="gender" id="gender" required>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-
-                    <!-- Hidden Fields -->
-                    <div class="mb-3">
-                        <input type="hidden" id="farmerId" value="{{ current_user.id }}">
-                        <input type="hidden" id="photoUrl" value=""> <!-- Placeholder for photo URL -->
-                    </div>
-
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
-            </div>
-        </div>
-    </div>
-</div>
 
             
         </div>
         <!-- / Cattle summary -->
 
-        
-
-        <div class="row justify-content-between mx-auto px-auto">
-
-        </div>
-
-        <div class="card text-center bg-transparent border border-info">
+        <!--<div class="row justify-content-between mx-auto px-auto"></div>-->
             
-            <div class="card-body">
-                
-                <!-- Cattle List -->
-                <div class="mt-5" id='cattle-List'>
-                    <h3 class="fs-3 text-info fw-bold text-center">Cattle List</h3>
-                    <div class="card border border-info border-1 shadow-lg cattle-table">
-                        <!-- Cattle History -->
-                        <div class="card bg-light border-none ">
-                            <div class="table-responsive text-nowrap border">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-info fw-bold">#</th>
-                                            <th class="text-info fw-bold">Serial Number</th>
-                                            <th class="text-info fw-bold">Name</th>
-                                            <th class="text-info fw-bold">Breed</th>
-                                            <th class="text-info fw-bold">Status</th>
-                                            <th class="text-info fw-bold">Date Of Birth</th>
-                                            <th class="text-info fw-bold">Delete</th>
-                                            
-                                        </tr>
-                                    </thead>
+        <div class="card-body">
+            
+            <!-- Cattle List -->
+            <div class="mt-5" id='cattle-List'>
+                <h3 class="fs-3 text-info fw-bold text-center">Cattle List</h3>
+                <div class="card border border-info border-1 shadow-lg cattle-table">
+                    <!-- Cattle History -->
+                    <div class="card bg-light border-none ">
+                        <div class="table-responsive text-nowrap border">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-info fw-bold">#</th>
+                                        <th class="text-info fw-bold">Serial Number</th>
+                                        <th class="text-info fw-bold">Name</th>
+                                        <th class="text-info fw-bold">Breed</th>
+                                        <th class="text-info fw-bold">Status</th>
+                                        <th class="text-info fw-bold">Date Of Birth</th>
+                                        <th class="text-info fw-bold">Edit</th>
+                                        <th class="text-info fw-bold">Delete</th>
+                                        
+                                    </tr>
+                                </thead>
 
-                                    <tbody id="cattleList">
-                                        <!-- Cattle items will be dynamically added here -->
-                                    </tbody>
-                                </table>
-                            </div>
+                                <tbody id="cattleList">
+                                    <!-- Cattle items will be dynamically added here -->
+                                </tbody>
+                            </table>
                         </div>
-                        <!--Cattle History-->
                     </div>
+                    <!--Cattle History-->
                 </div>
-                <!-- / Cattle List -->
+            </div>
+            <!-- / Cattle List -->
 
-                <!-- Modal For Cow Profile -->
-                <div class="modal fade" id="modalCowProfile" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content border border-3 border-info">
+            <!-- Modal For Cow Profile -->
+            <div class="modal fade" id="modalCowProfile" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content border border-1 border-info">
 
-                            <div class="modal-header">
-                                <h5 class="modal-title text-info fw-bold fs-2">Cow Profile</h5>
-                                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                
-                            <div class="modal-body">
-                                <!-- Cow Profile -->
-                                <div class="row mb-5">
-                                    <div class="col-lg">
-                                        <div class="card mb-3 border border-2 border-info shadow-lg">
-                                            <div class="row g-0">
-                                                <div class="col bg-light">
-                                                    <img src="./static/auth/img/p10.png" class="card-img-top" alt="cowprofile" id="cow-profile-pic">
-                                                    <div class="card-body">
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Serial Number:</span> <span id="serialNumber"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span> <span id="cowName"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Date Of birth:</span> <span id="dateOfBirth"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Breed:</span> <span id="cowBreed"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Father's Breed:</span> <span id="fatherBreed"></span></p>
-                                                        <p class="card-text"><span class="text-info fw-bold fs-4">Mother Breed:</span> <span id="motherBreed"></span></p>
-                                                        <a id="delete" class="btn btn-danger ms-2">Delete</a>
-                                                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                                    </div>
+                        <div class="modal-header">
+                            <h5 class="modal-title text-info fw-bold fs-2">Cow Profile</h5>
+                            <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+            
+                        <div class="modal-body">
+                            <!-- Cow Profile -->
+                            <div class="row mb-5">
+                                <div class="col-lg">
+                                    <div class="card mb-3 border border-1 border-info shadow-lg">
+                                        <div class="row g-0">
+                                            <div class=" d-flex bg-light">
+                                                <div class="container rounded w-25 col-3 p-2 border-right text-center border-2 border-info align-content-center ms-0 px-auto">
+                                                    <img src="./static/auth/img/p10.png" class="mx-auto w-px-100 h-px-100 object-fit-cover rounded-circle border border-info border-1" alt="cowprofile" id="cow-profile-pic">
+                                                </div>
+                                                <div class="col-9 p-2">
+                                                    <p class="card-text"><span class="text-info fs-4">Serial Number:</span> <span id="serialNumber"></span></p>
+                                                    <p class="card-text"><span class="text-info fs-4">Name:</span> <span id="cowName"></span></p>
+                                                    <p class="card-text"><span class="text-info fs-4">Date Of birth:</span> <span id="dateOfBirth"></span></p>
+                                                    <p class="card-text"><span class="text-info fs-4">Breed:</span> <span id="cowBreed"></span></p>
+                                                    <p class="card-text"><span class="text-info fs-4">Father's Breed:</span> <span id="fatherBreed"></span></p>
+                                                    <p class="card-text"><span class="text-info fs-4">Mother Breed:</span> <span id="motherBreed"></span></p>
+                                                    <a id="delete" class="btn btn-danger ms-2">Delete</a>
+                                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--/ Cow Profile -->
+                            </div>
+                            <!--/ Cow Profile -->
 
-                                <!-- Cow History Table rows -->
-                                <div class="card bg-light border border-info border-2 shadow-lg mb-5">
-                                    <h5 class="card-header text-dark fw-4 fw-bold">History</h5>
-                                    <div class="table-responsive text-nowrap border">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th class='text-info fw-bold fs-6'>Serial Number</th>
-                                                    <th class='text-info fw-bold fs-6'>Name</th>
-                                                    <th class='text-info fw-bold fs-6'>Breed</th>
-                                                    <th class='text-info fw-bold fs-6'>Date Of Birth</th>
-                                                </tr>
-                                            </thead>
+                            <!-- Cow History Table rows -->
+                            <div class="card bg-light border border-info border-2 shadow-lg mb-5">
+                                <h5 class="card-header text-dark fw-4 fw-bold">History</h5>
+                                <div class="table-responsive text-nowrap border">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class='text-info fw-bold fs-6'>Serial Number</th>
+                                                <th class='text-info fw-bold fs-6'>Name</th>
+                                                <th class='text-info fw-bold fs-6'>Breed</th>
+                                                <th class='text-info fw-bold fs-6'>Date Of Birth</th>
+                                            </tr>
+                                        </thead>
 
-                                            <tbody class="table-border-bottom-0" id="cattleHistory">
-                                            </tbody>
+                                        <tbody class="table-border-bottom-0" id="cattleHistory">
+                                        </tbody>
 
-                                        </table>
-                                    </div>
+                                    </table>
                                 </div>
-                                <!--/ Cow History Table rows -->
                             </div>
+                            <!--/ Cow History Table rows -->
+                        </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-                <!-- / Modal For cow Profile-->
-
             </div>
+            <!-- / Modal For cow Profile-->
+
         </div>
 
+        <!-- Modal For Edit Profile -->
+        <div class="modal fade" id="editCowModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content border border-1 border-info">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
+                        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="edit-profile-form" enctype="multipart/form-data">
+                            <!-- Current Password (for validation) -->
+                            <div class="mb-3">
+                                <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
+                                <input type="password" id="current_password" name="current_password" class="form-control" required>
+                            </div>
+
+                            <!-- Photo Upload -->
+                            <div class="mb-3">
+                                <input class="form-control profile-pic-input" type="file" id="photoFile" name="photo" accept="image/jpeg, image/png, image/jpg"/>
+                            </div>
+
+                            <!--Cattle Name-->
+                            <div class="mb-3">
+                                <label for="cattleName" class="form-label text-dark fw-bold">Name:</label>
+                                <input type="text" id="cattleName" name='cattleName' class="form-control" required>
+                            </div>
+
+                            <!--Date Of Birth-->
+                            <div class="mb-3">
+                                <label for="dateOfBirth" class="form-label text-dark fw-bold">Date of Birth:</label>
+                                <input type="date" id="dateOfBirth" class="form-control" required>
+                            </div>
+
+                            <!--Gender-->
+                            <div class="mb-3">
+                                <label for="gender" class="form-label text-dark fw-bold">Gender:</label>
+                                <select class="form-control" name="gender" id="gender" required>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+
+                            <!--Cattle Breed-->
+                            <div class="mb-3">
+                                <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
+                                <select class="form-control" name="breed" id="breed" required>
+                                    <option value="Holstein_Friesian">Holstein Friesian</option>
+                                    <option value="Jersey">Jersey</option>
+                                    <option value="Guernsey">Guernsey</option>
+                                    <option value="Brown_Swiss">Brown Swiss</option>
+                                    <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                    <option value="Red_White_Holstein">Red and White Holstein</option>
+                                    <option value="Montbéliarde">Montbéliarde</option>
+                                    <option value="Swedish_Red_White">Swedish Red and White</option>
+                                </select>
+                            </div>
+
+                            <!--Father's Breed-->
+                            <div class="mb-3">
+                                <label for="fatherBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
+                                <select class="form-control" name="fatherBreed" id="fatherBreed" required>
+                                    <option value="Holstein_Friesian">Holstein Friesian</option>
+                                    <option value="Jersey">Jersey</option>
+                                    <option value="Guernsey">Guernsey</option>
+                                    <option value="Brown_Swiss">Brown Swiss</option>
+                                    <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                    <option value="Swedish_Red_White">Swedish Red and White</option>
+                                    <option value="Montbéliarde">Montbéliarde</option>
+                                    <option value="Norwegian_Red">Norwegian Red</option>
+                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                </select>
+                            </div>
+
+                            <!--Mother's Breed-->
+                            <div class="mb-3">
+                                <label for="motherBreed" class="form-label text-dark fw-bold">Mother's Breed:</label>
+                                <select class="form-control" name="motherBreed" id="motherBreed" required>
+                                    <option value="Holstein_Friesian">Holstein Friesian</option>
+                                    <option value="Jersey">Jersey</option>
+                                    <option value="Guernsey">Guernsey</option>
+                                    <option value="Brown_Swiss">Brown Swiss</option>
+                                    <option value="Ayrshire">Ayrshire</option>
+                                    <option value="Milking_Shorthorn">Milking Shorthorn</option>
+                                    <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
+                                    <option value="Red_White_Holstein">Red and White Holstein</option>
+                                    <option value="Montbéliarde">Montbéliarde</option>
+                                    <option value="Swedish_Red_White">Swedish Red and White</option>
+                                </select>
+                            </div>
+
+                            <!--Method Of Breeding-->
+                            <div class="mb-3">
+                                <label for="methodBred" class="form-label text-dark fw-bold">Method Bred:</label>
+                                <select class="form-control" name="methodBred" id="methodBred" required>
+                                    <option value="Natural">Natural</option>
+                                    <option value="ArtificialInsemination">Artificial Insemination</option>
+                                </select>
+                            </div>
+
+                            <!--Status-->
+                            <div class="mb-3">
+                                <label for="status" class="form-label text-dark fw-bold">Status:</label>
+                                <select class="form-control" name="status" id="status" required>
+                                    <option value="healthy">Milking</option>
+                                    <option value="pregnant">Pregnant</option>
+                                    <option value="weaning">Weaning</option>
+                                    <option value="sick">Sick</option>
+                                    <option value="calf">calf</option>
+                                    <option value="Heifer">Heifer</option>
+                                </select>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / Modal For Edit Profile-->
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Document is ready');
-    
-            // Fetch cattle list when the page is loaded
-            fetchCattleList();
-    
-            // Add event listener for the "Add Cattle" button
-            const addCattleButton = document.getElementById('addCattleButton');
-            if (addCattleButton) {
-                addCattleButton.addEventListener('click', addCattle);
-            } else {
-                console.error('Add Cattle button not found');
-            }
-        });
-    
+                console.log('Document is ready');
+        
+                // Fetch cattle list when the page is loaded
+                fetchCattleList();
+        
+                // Add event listener for the "Add Cattle" button
+                const addCattleButton = document.getElementById('addCattleButton');
+                if (addCattleButton) {
+                    addCattleButton.addEventListener('click', addCattle);
+                } else {
+                    console.error('Add Cattle button not found');
+                }
+            });
+        
         function fetchCattleList() {
-            console.log('Fetching cattle list...');
-            fetch('/api/cattle/get')
+                console.log('Fetching cattle list...');
+                fetch('/api/cattle/get')
+                    .then(response => {
+                        console.log('Received response from /api/cattle/get');
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.error) {
+                            console.error('Error fetching cattle list:', data.error);
+                            return;
+                        }
+        
+                        console.log('Received data:', data);
+                        const cattleList = document.getElementById('cattleList');
+                        cattleList.innerHTML = ''; // Clear existing list items
+        
+                        data.forEach((cattle, index) => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td><button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalCowProfile">
+                                    <i class="bi bi-person-square fs-4"></i>
+                                </button></td>
+                                <td>${cattle.serial_number}</td>
+                                <td>${cattle.name}</td>
+                                <td>${cattle.breed}</td>
+                                <td>${cattle.status}</td>
+                                <td>${cattle.date_of_birth}</td>
+                                <td>
+                                    <button type="button" class="btn btn-info shadow-md" data-bs-toggle="modal" data-bs-target="#editCowModal" id='cattleProfile'>
+                                    Edit
+                                </button></td>
+                                <td><button class="btn btn-danger btn-sm" onclick="deleteCattle(${cattle.serial_number})">Delete</button></td>
+                            `;
+                            cattleList.appendChild(row);
+                        });
+        
+                        // Update cattle count
+                        updateCattleCount(data.length);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cattle list:', error);
+                    });
+        }
+        
+        function deleteCattle(serialNumber) {
+            if (!serialNumber) {
+                console.error('Invalid cattle serial number:', serialNumber);
+                return;
+            }
+
+            console.log(`Deleting cattle with serial number ${serialNumber}`);
+            fetch(`/api/cattle/delete/${serialNumber}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                console.log('Received response from DELETE /api/cattle/delete');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                console.log(`Cattle with serial number ${serialNumber} deleted successfully.`);
+                // Refresh cattle list after deletion
+                fetchCattleList();
+            })
+            .catch(error => {
+                console.error(`Error deleting cattle with serial number ${serialNumber}:`, error);
+            });
+        }
+    
+        // Function to handle photo upload
+        function uploadPhoto(photoFile) {
+            const formData = new FormData();
+            formData.append('photo', photoFile);
+
+            return fetch('/api/cattle/upload-photo', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => data.photo_url);
+        }
+
+        // Function to handle cattle addition
+        function addCattle() {
+            console.log('Add Cattle button clicked');
+
+            const name = document.getElementById('cattleName').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            const breed = document.getElementById('breed').value;
+            const status = document.getElementById('status').value;
+            const fatherBreed = document.getElementById('fatherBreed').value;
+            const motherBreed = document.getElementById('motherBreed').value;
+            const methodBred = document.getElementById('methodBred').value;
+            const gender = document.getElementById('gender').value;
+            const photoFile = document.getElementById('photoFile').files[0]; // Get the file object
+
+            // Get the farmer ID from the hidden input field
+            const farmerId = document.getElementById('farmerId') ? document.getElementById('farmerId').value : null;
+
+            // Prepare the form data object
+            const formData = {
+                name: name,
+                date_of_birth: dateOfBirth,
+                breed: breed,
+                father_breed: fatherBreed,
+                mother_breed: motherBreed,
+                method_bred: methodBred,
+                status: status,
+                gender: gender,
+                farmer_id: farmerId
+            };
+
+            console.log('Form Data before photo upload:', formData);
+
+            if (photoFile) {
+                uploadPhoto(photoFile)
+                    .then(photoUrl => {
+                        console.log('Photo URL received:', photoUrl);
+
+                        // Add photo URL to the form data
+                        formData.photo = photoUrl;
+
+                        // Post cattle data
+                        return fetch('/api/cattle/post', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Cattle added successfully:', data);
+                        // Close the modal
+                        const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
+                        if (modalCloseButton) {
+                            modalCloseButton.click(); // Simulate click on close button
+                        } else {
+                            console.error('Close button not found in modal');
+                        }
+                        // Clear input fields
+                        clearFormFields();
+                        // Refresh cattle list
+                        fetchCattleList();
+                    })
+                    .catch(error => {
+                        console.error('Error adding cattle:', error);
+                    });
+            } else {
+                // If no photo is selected, continue without uploading
+                console.log('No photo selected');
+                formData.photo = null; // Explicitly set photo to null if no photo is provided
+
+                // Post cattle data
+                fetch('/api/cattle/post', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
                 .then(response => {
-                    console.log('Received response from /api/cattle/get');
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    if (data.error) {
-                        console.error('Error fetching cattle list:', data.error);
-                        return;
+                    console.log('Cattle added successfully:', data);
+                    // Close the modal
+                    const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
+                    if (modalCloseButton) {
+                        modalCloseButton.click(); // Simulate click on close button
+                    } else {
+                        console.error('Close button not found in modal');
                     }
-    
-                    console.log('Received data:', data);
-                    const cattleList = document.getElementById('cattleList');
-                    cattleList.innerHTML = ''; // Clear existing list items
-    
-                    data.forEach((cattle, index) => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${index + 1}</td>
-                            <td>${cattle.serial_number}</td>
-                            <td>${cattle.name}</td>
-                            <td>${cattle.breed}</td>
-                            <td>${cattle.status}</td>
-                            <td>${cattle.date_of_birth}</td>
-                            <td><button class="btn btn-danger btn-sm" onclick="deleteCattle(${cattle.serial_number})">Delete</button></td>
-                        `;
-                        cattleList.appendChild(row);
-                    });
-    
-                    // Update cattle count
-                    updateCattleCount(data.length);
+                    // Clear input fields
+                    clearFormFields();
+                    // Refresh cattle list
+                    fetchCattleList();
                 })
                 .catch(error => {
-                    console.error('Error fetching cattle list:', error);
+                    console.error('Error adding cattle:', error);
                 });
-        }
-    
-        function deleteCattle(serialNumber) {
-    if (!serialNumber) {
-        console.error('Invalid cattle serial number:', serialNumber);
-        return;
-    }
-
-    console.log(`Deleting cattle with serial number ${serialNumber}`);
-    fetch(`/api/cattle/delete/${serialNumber}`, {
-        method: 'DELETE',
-    })
-    .then(response => {
-        console.log('Received response from DELETE /api/cattle/delete');
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        console.log(`Cattle with serial number ${serialNumber} deleted successfully.`);
-        // Refresh cattle list after deletion
-        fetchCattleList();
-    })
-    .catch(error => {
-        console.error(`Error deleting cattle with serial number ${serialNumber}:`, error);
-    });
-}
-
-    
-// Function to handle photo upload
-function uploadPhoto(photoFile) {
-    const formData = new FormData();
-    formData.append('photo', photoFile);
-
-    return fetch('/api/cattle/upload-photo', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => data.photo_url);
-}
-
-// Function to handle cattle addition
-function addCattle() {
-    console.log('Add Cattle button clicked');
-
-    const name = document.getElementById('cattleName').value;
-    const dateOfBirth = document.getElementById('dateOfBirth').value;
-    const breed = document.getElementById('breed').value;
-    const status = document.getElementById('status').value;
-    const fatherBreed = document.getElementById('fatherBreed').value;
-    const motherBreed = document.getElementById('motherBreed').value;
-    const methodBred = document.getElementById('methodBred').value;
-    const gender = document.getElementById('gender').value;
-    const photoFile = document.getElementById('photoFile').files[0]; // Get the file object
-
-    // Get the farmer ID from the hidden input field
-    const farmerId = document.getElementById('farmerId') ? document.getElementById('farmerId').value : null;
-
-    // Prepare the form data object
-    const formData = {
-        name: name,
-        date_of_birth: dateOfBirth,
-        breed: breed,
-        father_breed: fatherBreed,
-        mother_breed: motherBreed,
-        method_bred: methodBred,
-        status: status,
-        gender: gender,
-        farmer_id: farmerId
-    };
-
-    console.log('Form Data before photo upload:', formData);
-
-    if (photoFile) {
-        uploadPhoto(photoFile)
-            .then(photoUrl => {
-                console.log('Photo URL received:', photoUrl);
-
-                // Add photo URL to the form data
-                formData.photo = photoUrl;
-
-                // Post cattle data
-                return fetch('/api/cattle/post', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Cattle added successfully:', data);
-                // Close the modal
-                const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
-                if (modalCloseButton) {
-                    modalCloseButton.click(); // Simulate click on close button
-                } else {
-                    console.error('Close button not found in modal');
-                }
-                // Clear input fields
-                clearFormFields();
-                // Refresh cattle list
-                fetchCattleList();
-            })
-            .catch(error => {
-                console.error('Error adding cattle:', error);
-            });
-    } else {
-        // If no photo is selected, continue without uploading
-        console.log('No photo selected');
-        formData.photo = null; // Explicitly set photo to null if no photo is provided
-
-        // Post cattle data
-        fetch('/api/cattle/post', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Cattle added successfully:', data);
-            // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattleRegistration .btn-close');
-            if (modalCloseButton) {
-                modalCloseButton.click(); // Simulate click on close button
-            } else {
-                console.error('Close button not found in modal');
-            }
-            // Clear input fields
-            clearFormFields();
-            // Refresh cattle list
-            fetchCattleList();
-        })
-        .catch(error => {
-            console.error('Error adding cattle:', error);
-        });
-    }
-}
-// Helper function to clear form fields
-function clearFormFields() {
-    document.getElementById('name').value = '';
-    document.getElementById('dateOfBirth').value = '';
-    document.getElementById('breed').value = '';
-    document.getElementById('status').value = '';
-    document.getElementById('fatherBreed').value = '';
-    document.getElementById('motherBreed').value = '';
-    document.getElementById('methodBred').value = '';
-    document.getElementById('gender').value = '';
-    document.getElementById('photoFile').value = ''; // Clear the file input
-}
-
+        }
+        // Helper function to clear form fields
+        function clearFormFields() {
+            document.getElementById('name').value = '';
+            document.getElementById('dateOfBirth').value = '';
+            document.getElementById('breed').value = '';
+            document.getElementById('status').value = '';
+            document.getElementById('fatherBreed').value = '';
+            document.getElementById('motherBreed').value = '';
+            document.getElementById('methodBred').value = '';
+            document.getElementById('gender').value = '';
+            document.getElementById('photoFile').value = ''; // Clear the file input
+        }
     
         function updateCattleCount(count) {
             const totalCowsSpan = document.getElementById('totalCows');
@@ -562,7 +687,4 @@ function clearFormFields() {
             }
         }
     </script>
-    
-    
-        
 {% endblock %}
