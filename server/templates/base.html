@@ -77,7 +77,8 @@ data-template="vertical-menu-template-free">
             border: 2px solid black;
             width: 50px;  /* Adjust the width to fit the text */
             color: black;
-            margin-right: 30px;
+            margin-right: 0px;
+            margin-left: 0;
         }
 
         .notification-badge {
@@ -89,7 +90,7 @@ data-template="vertical-menu-template-free">
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 10px;
-            margin-right: 30px;
+            margin-right: 0px;
         }
         
         </style>   
@@ -415,21 +416,9 @@ data-template="vertical-menu-template-free">
                             <!-- /Search -->
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
-                                <!-- Notification Icon -->
-                                <li class="nav-item lh-1 me-3 ms-2 position-relative">
-                                    <button 
-                                        type="button"
-                                        class="btn custom-btn shadow-md"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#notificationModal"
-                                        id="notificationButton">
-                                        <i class='bx bx-bell'></i>
-                                        <span id="notificationBadge" class="notification-badge d-none"></span>
-                                    </button>
-                                </li>
-                        
+                                                        
                                 <!-- User -->
-                                <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                                <li class="nav-item navbar-dropdown dropdown-user dropdown mr-3">
                                     <a id="dropdownToggle" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);">
                                         <div class="avatar avatar-online">
                                             <img src="{{current_user.photo_url}}" alt="Farmer Profile" class="mx-auto w-px-25 h-px-25 object-fit-cover rounded-circle border border-info border-1" />
@@ -477,6 +466,19 @@ data-template="vertical-menu-template-free">
                                         </li>
                                     </ul>
                                 </li>
+
+                                <!-- Notification Icon -->
+                                <li class="nav-item lh-1 me-3 ms-2 position-relative">
+                                    <button 
+                                        type="button"
+                                        class="btn custom-btn shadow-md"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#notificationModal"
+                                        id="notificationButton">
+                                        <i class='bx bx-bell'></i>
+                                        <span id="notificationBadge" class="notification-badge d-none"></span>
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                     </nav>
@@ -507,9 +509,9 @@ data-template="vertical-menu-template-free">
                                             <div class="card mb-3 border border-1 border-info shadow-lg">
                                                 <div class="row g-0">
                                                     <div class="col bg-light">
-                                                        <div class="px-0 w-px-100 h-px-100 rounded text-center">
-                                                            <img src="{{current_user.photo_url}}" class="card-img-top border border-1 border-info w-px-100 h-px-100 rounded ms-5" alt="myprofile">
-                                                        </div>
+                                                        
+                                                            <img src="{{current_user.photo_url}}" class="card-img-top border border-1 border-info w-100 h-auto" alt="myprofile">
+                                                        
                                                         <div class="card-body">
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Name:</span>{{current_user.name}}<span id="Name"></span></p>
                                                             <p class="card-text"><span class="text-info fw-bold fs-4">Farm Name:</span> <span id="farmName">{{current_user.farm_name}}</span></p>
