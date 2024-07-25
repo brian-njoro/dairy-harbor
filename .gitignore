@@ -1,5 +1,9 @@
 __pycache__/
-server/instance/app.db
-
+*.pyc
+*.pyo
+*.pyd
+static/uploads/
+*.db
+*.sqlite3
 
 
