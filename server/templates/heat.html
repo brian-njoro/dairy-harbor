@@ -15,7 +15,7 @@
 
                     <!-- Button to add new pregnant cattle -->
                     <div class="mb-3">
-                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalheatCattle" id='cattleheatdetection'>
+                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleheat" id='cattleheatdetection'>
                             Detect Heat
                         </button>
                     </div>
@@ -26,7 +26,7 @@
         </div>
 
         <!-- Modal for Pregnant Cattle -->
-        <div class="modal fade" id="modalheatCattle" tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id="modalCattleheat" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-1 border-info">
                     <div class="modal-header">
@@ -80,6 +80,7 @@
                                 <tr>
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Date of detection</th>
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 
@@ -93,4 +94,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/heat.js')}}"></script>
 {% endblock %}

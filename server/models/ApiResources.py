@@ -293,12 +293,12 @@ class CattleEditResource(Resource):
 class CattleDeleteResource(Resource):
     def delete(self, serial_number):
         
-         # Fetch the cattle by its serial_number
+        # Fetch the cattle by its serial_number
         cattle = Cattle.query.get(int(serial_number))
         if cattle is None:
             return {'message': 'Cattle not found'}, 404
 
-       # Delete the cattle and commit changes
+        # Delete the cattle and commit changes
         try:
             db.session.delete(cattle)
             db.session.commit()
@@ -308,8 +308,6 @@ class CattleDeleteResource(Resource):
             logger.error(f"Error occurred while deleting cattle with serial number {serial_number}: {e}")
             db.session.rollback()
             return {'message': 'An error occurred while deleting the cattle'}, 500
-
-
 
         
 
@@ -584,15 +582,15 @@ class RecordTreatmentResource(Resource):
         return {'message': 'Treatment record deleted'}, 200
 
 
-
 class RecordDehorningResource(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
         self.parser.add_argument('date', type=str, help='Date is required')
         self.parser.add_argument('vet_name', type=str)
+        self.parser.add_argument('cattle_id', type=int)
         self.parser.add_argument('method', type=str, help='Method is required')
         self.parser.add_argument('notes', type=str)
-        self.parser.add_argument('cattle_id', type=int)
+        
 
     def _create_log_message(self, cattle_id, message):
         if current_user.user_type == 'farmer':

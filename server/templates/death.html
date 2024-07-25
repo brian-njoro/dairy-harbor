@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Miscarriage{% endblock %}
+{% block title %}Cattle Death{% endblock %}
 
 {% block content %}
     <div class="container-fluid" id='dehorn-list'>
-        <!--Miscarriage-->
+        <!--Cattle Death-->
         <div class="col mb-3">
             <div class="card text-white mb-3 border border-info border-1 shadow-lg">
-                <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;top;" src="{{url_for('static',filename='auth/img/stress.jpg')}}" alt="Image">
+                <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position;top;" src="{{url_for('static',filename='auth/img/death.jpg')}}" alt="Image">
 
                 <div class="card-img-overlay">
-                    <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">MISCARRIAGE</h3>
-                    <p class="card-text text-white">Document the unfortunate event of a cow's miscarriage to track reproductive health issues and adjust future breeding strategies for your herd..</p>
+                    <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Cattle Death</h3>
+                    <p class="card-text text-white">Document the unfortunate event of a cow's Cattle Death to analyze herd health, adjust breeding strategies, and optimize farm productivity.</p>
 
-                    <!-- Button to add new miscarriaged cattle -->
+                    <!-- Button to add new Cattle Deathd cattle -->
                     <div class="mb-3">
-                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalMiscarriagedCattle" id='cattlemiscarriage'>
-                            Miscarriaged
+                        <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleDeath" id='Cattledeath'>
+                            Cattle Death
                         </button>
                     </div>
 
@@ -25,17 +25,17 @@
             </div>
         </div>
 
-        <!-- Modal for miscarriaged Cattle -->
-        <div class="modal fade" id="modalMiscarriagedCattle" tabindex="-1" aria-hidden="true">
+        <!-- Modal for Cattle Death Cattle -->
+        <div class="modal fade" id="modalCattleDeath" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border border-1 border-info">
                     <div class="modal-header">
-                        <h5 class="modal-title text-info fw-bold text-info">Cattle Miscarriage</h5>
+                        <h5 class="modal-title text-info fw-bold text-info">Cattle Death</h5>
                         <button type="button" class="btn-close bg-danger border border-1 border-info" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
-                        <form id="cattlemiscarriageForm">
+                        <form id="cattleDeathForm">
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
                                 <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
@@ -44,10 +44,16 @@
                                 </div>
                             </div>
 
-                            <!--Date Of Miscarriage -->
+                            <!--Date Of Cattle Death -->
                             <div class="mb-3">
-                                <label for="dateOfMiscarriage" class="form-label fw-bold text-dark">Date Of Miscarriage:</label>
-                                <input type="date" id="dateOfMiscarriage" class="form-control" required>
+                                <label for="dateOfDeath" class="form-label fw-bold text-dark">Date Of Cattle Death:</label>
+                                <input type="date" id="dateOfDeath" name="dateOfDeath" class="form-control" required>
+                            </div>
+
+                            <!-- Cause Of Death -->
+                            <div class="mb-3">
+                                <label for="CauseOfDeath" class="form-label fw-bold text-dark">Cause of Death:</label>
+                                <input type="text" id="CauseOfDeath" name="CauseOfDeath" class="form-control" required>
                             </div>
 
                             <!-- Notes -->
@@ -60,42 +66,43 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-info" id="cattleMiscarriageButton">Submit</button>
+                        <button type="button" class="btn btn-info" id="CattleDeathButton">Submit</button>
                     </div>
 
                 </div>
             </div>
         </div>
-        <!--/ Modal for Cattle Miscarriage -->
-        <!--/ Miscarriage -->
+        <!--/ Modal for Cattle Death -->
+        <!--/ Cattle Death -->
 
 
-        <!-- Miscarriage List -->
-        <div class="mt-5" id='dehorn-List'>
-            <h3 class="fs-3 text-info fw-bold text-center">Miscarriage List</h3>
+        <!-- Cattle Death List -->
+        <div class="mt-5" id='death-List'>
+            <h3 class="fs-3 text-info fw-bold text-center">Cattle Death List</h3>
             <div class="card border border-info border-1 shadow-lg cattle-table">
-                <!-- Miscarriage History -->
+                <!-- Cattle Death History -->
                 <div class="card bg-light border-none ">
                     <div class="table-responsive text-nowrap border">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th class="text-info fw-bold">Serial Number</th>
-                                    <th class="text-info fw-bold">Miscarriage Date</th>
+                                    <th class="text-info fw-bold">Date Of Death</th>
+                                    <th class="text-info fw-bold">Cause Of Death</th>
                                     <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 
-                            <tbody id="miscarriageList">
-                                <!-- Cattle Miscarriage will be dynamically added here -->
+                            <tbody id="Cattle DeathList">
+                                <!-- Cattle Cattle Death will be dynamically added here -->
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <!--Miscarriage History-->
+                <!--Cattle Death History-->
             </div>
         </div>
     </div>
 
-    <script src="{{url_for('static',filename='js/miscarriage.js')}}"></script>
+    <script src="{{url_for('static',filename='js/death.js')}}"></script>
 {% endblock %}

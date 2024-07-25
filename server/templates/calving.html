@@ -36,22 +36,24 @@
 
                     <div class="modal-body">
                         <form id="calfForm">
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serialNumber" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--Calf Number -->
                             <div class="mb-3">
-                                <label for="calfSerialNumber" class="form-label fw-bold text-dark">Calf Serial Number:</label>
-                                <input type="Number" id="calfSerialNumber" class="form-control" required>
+                                <label for="calfId" class="form-label fw-bold text-dark">Calf Serial Number:</label>
+                                <input type="Number" id="calfId" name="calfId" class="form-control" required>
                             </div>
 
                             <!-- Calving Outcome -->
                             <div class="mb-3">
-                                <label for="calvingOutcome" class="form-label fw-bold text-dark">Calving Outcome:</label>
-                                <input class="form-control" type="text" name='calvingOutcome' id="calvingOutcome">
+                                <label for="outcome" class="form-label fw-bold text-dark">Calving Outcome:</label>
+                                <input class="form-control" type="text" name='outcome' id="outcome">
                             </div>
 
                             <!-- Date Of calving -->
@@ -62,21 +64,21 @@
 
                             <!-- Assisted By -->
                             <div class="mb-3">
-                                <label for="workerId" class="form-label fw-bold text-dark">Assisted By:</label>
-                                <input class="form-control" name="workerId" id="workerId" required>
+                                <label for="assistedBy" class="form-label fw-bold text-dark">Assisted By:</label>
+                                <input class="form-control" name="assistedBy" id="assistedBy" required>
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
-                                <label for="calvingnotes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='calvingnotes' id='calvingnotes' class='form-control'></textarea>
+                                <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                                <textarea name='notes' id='notes' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-info" id="addCalfButton">Submit</button>
+                        <button type="button" class="btn btn-info" id="cattleCalvingButton">Submit</button>
                     </div>
 
                 </div>
@@ -100,6 +102,7 @@
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Date of Birth</th>
                                     <th class="text-info fw-bold">Calving Outcome</th>
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 
@@ -113,4 +116,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/calving.js')}}"></script>
 {% endblock %}

@@ -68,7 +68,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+        filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
 
@@ -404,9 +404,8 @@ def worker_login():
 @login_required
 def home():
     
-    print(f'Current uer is a {current_user}')
     if session.get('user_type') != 'farmer':
-        logging.debug('Current user is not a farmer, redirecting')
+        logging.debug('Current user is not a Worker, redirecting')
         return redirect(url_for('admin_login'))
     
     farmer = current_user
@@ -544,6 +543,11 @@ def miscarriage():
 @login_required
 def pestControl():
     return render_template('pestControl.html')
+
+@app.route('/death', methods=['GET'])
+@login_required
+def death():
+    return render_template('death.html')
 
 @app.route('/worker_dashboard', methods=['GET'])
 @login_required

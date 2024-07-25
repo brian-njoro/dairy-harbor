@@ -72,20 +72,12 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content border border-2 border-info">
                         <div class="modal-header">
-                            <h5 class="modal-title text-info fw-bold">Add Cattle</h5>
+                            <h5 class="modal-title text-info fw-bold text-center">Add Cattle</h5>
                             <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
             
                         <div class="modal-body">
-                            <form id="photo" enctype="multipart/form-data">
-                                <!--Photo-->
-                                <div class="mb-3">
-                                    <input class="form-control profile-pic-input" type="file" id="photoFile" name="photoFile" accept="image/jpeg, image/png, image/jpg"/>
-                                    <button type='submit' value='Upload' class="btn btn-info text-white fw-bold border border-3 shadow-sm">Upload</button>
-                                </div>
-                            </form>
-
-                            <form id="cattleForm">
+                            <form id="cattleForm" enctype="multipart/form-data">
                                 <!--Cattle Name-->
                                 <div class="mb-3">
                                     <label for="name" class="form-label text-dark fw-bold">Name:</label>
@@ -96,6 +88,15 @@
                                 <div class="mb-3">
                                     <label for="dateOfBirth" class="form-label text-dark fw-bold">Date of Birth:</label>
                                     <input type="date" id="dateOfBirth" class="form-control" required>
+                                </div>
+
+                                <!--Gender-->
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label text-dark fw-bold">Gender:</label>
+                                    <select class="form-control" name="gender" id="gender" required>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
                                 </div>
             
                                 <!--Cattle Breed-->
@@ -162,36 +163,21 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label text-dark fw-bold">Status:</label>
                                     <select class="form-control" name="status" id="status" required>
-                                        <option value="healthy">Milking</option>
-                                        <option value="pregnant">Pregnant</option>
-                                        <option value="weaning">Weaning</option>
+                                        <option value="healthy">Healthy</option>
                                         <option value="sick">Sick</option>
-                                        <option value="calf">calf</option>
-                                        <option value="Heifer">Heifer</option>
-                                    </select>
-                                </div>
-            
-                                <!--Gender-->
-                                <div class="mb-3">
-                                    <label for="gender" class="form-label text-dark fw-bold">Gender:</label>
-                                    <select class="form-control" name="gender" id="gender" required>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
                                     </select>
                                 </div>
             
                                 <!--Photo-->
                                 <div class="mb-3">
-                                    <label for="photo" class="form-label text-dark fw-bold">Photo URL:</label>
-                                    <input type="text" id="photo" class="form-control" required>
+                                    <label for="photo" class="form-label text-dark fw-bold">Photo:</label>
+                                    <input class="form-control profile-pic-input" type="file" id="photo" name="photo" accept="image/jpeg, image/png, image/jpg"/>
                                 </div>
             
                                 <!-- Farmer ID -->
                                 <div class="mb-3">
-                                    <input type="hidden" id="farmerId" value="{{ current_user.id }}">
-                                    
+                                    <input type="hidden" id="farmer_id" value="{{ current_user.id }}">
                                 </div>
-
                             </form>
                         </div>
             
