@@ -17,7 +17,7 @@ const updatepregnancyList = async () => {
                 <td>${new Date(pregnancy.dateOfDetection).toLocaleDateString()}</td>
                 <td>${pregnancy.dateOfDelivery}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteN_insemination(${pregnancy.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletepregnancy(${pregnancy.id})">Delete</button>
                 </td>
             `;
 
@@ -80,7 +80,6 @@ const populateCattleOptions = async () => {
 
 // Event listener for the submit button
 document.getElementById('cattlepregnancyButton').addEventListener('click', async () => {
-    const vetName = document.getElementById('vetName').value;
     const dateOfDetection = document.getElementById('dateOfDetection').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const dateOfDelivery = document.getElementById('dateOfDelivery').value;
@@ -92,7 +91,6 @@ document.getElementById('cattlepregnancyButton').addEventListener('click', async
     }
 
     const pregnancyData = {
-        vet_name: vetName,
         cattle_id: cattleId,
         dateOfDetection: dateOfDetection,
         dateOfDelivery: dateOfDelivery,

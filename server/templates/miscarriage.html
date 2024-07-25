@@ -3,25 +3,26 @@
 {% block title %}Miscarriage{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
     <div class="container-fluid" id='dehorn-list'>
         <!--Miscarriage-->
         <div class="col mb-3">
@@ -90,7 +91,7 @@
 
 
         <!-- Miscarriage List -->
-        <div class="mt-5" id='dehorn-List'>
+        <div class="mt-5" id='miscarriage-List'>
             <h3 class="fs-3 text-info fw-bold text-center">Miscarriage List</h3>
             <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- Miscarriage History -->
@@ -116,5 +117,5 @@
         </div>
     </div>
 
-    <script src="{{url_for('static',filename='js/miscarriage.js')}}"></script>
+    <script src="{{url_for('static',filename='js/miscarriages.js')}}"></script>
 {% endblock %}

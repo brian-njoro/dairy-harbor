@@ -1,12 +1,12 @@
 // Function to fetch and update the A_insemination list
 const updateAinseminationList = async () => {
-    console.log('Reached here treatmeeeee list fetch')
+    console.log('Reached here artificial insemination list fetch')
 
     try {
         const response = await fetch('/api/artificial_insemination');
         const A_inseminations = await response.json();
 
-        const A_inseminationList = document.getElementById('A_inseminationList');
+        const A_inseminationList = document.getElementById('AInseminationList');
         A_inseminationList.innerHTML = ''; // Clear existing list
 
         A_inseminations.forEach(A_insemination => {
@@ -25,7 +25,7 @@ const updateAinseminationList = async () => {
             A_inseminationList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error fetching A_insemination list:', error);
+        console.log('Error fetching A_insemination list:', error);
     }
 };
 
@@ -80,11 +80,12 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('CattleAinseminationButton').addEventListener('click', async () => {
+document.getElementById('CattleAInseminationButton').addEventListener('click', async () => {
     const vetName = document.getElementById('vetName').value;
-    const dateOfA_insemination = document.getElementById('dateOfInsemination').value;
+    const dateOfAinsemination = document.getElementById('dateOfInsemination').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const donorBreed = document.getElementById('donorBreed').value;
+    const sexed =document.getElementById('sexed').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -92,11 +93,12 @@ document.getElementById('CattleAinseminationButton').addEventListener('click', a
         return;
     }
 
-    const A_inseminationData = {
+    const AinseminationData = {
         vet_name: vetName,
-        date: dateOfA_insemination,
+        insemination_date: dateOfAinsemination,
         cattle_id: cattleId,
-        donorBreed: donorBreed,
+        semen_breed: donorBreed,
+        sexed:sexed,
         notes: notes,
     };
 
@@ -106,12 +108,12 @@ document.getElementById('CattleAinseminationButton').addEventListener('click', a
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(A_inseminationData)
+            body: JSON.stringify(AinseminationData)
         });
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattleAInsemination .btn-close');
+            const modalCloseButton = document.querySelector('#modalCattleInsemination .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
@@ -121,10 +123,10 @@ document.getElementById('CattleAinseminationButton').addEventListener('click', a
             // Update the A_insemination list
             updateAinseminationList();
         } else {
-            console.error('Failed to add Natural insemination:', await response.text());
+            console.error('Failed to add artificial insemination:', await response.text());
         }
     } catch (error) {
-        console.error('Error submitting Natural insemination:', error);
+        console.error('Error submitting artificial insemination:', error);
     }
 });
 
@@ -132,5 +134,5 @@ document.getElementById('CattleAinseminationButton').addEventListener('click', a
 updateAinseminationList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattleAInsemination');
+const modal = document.getElementById('modalCattleInsemination');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

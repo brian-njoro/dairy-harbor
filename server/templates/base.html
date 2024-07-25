@@ -108,9 +108,8 @@ data-template="vertical-menu-template-free">
         <!-- Layout wrapper -->
         <div class="layout-wrapper layout-content-navbar bg-light">
             <div class="layout-container">
-
                 <!-- Menu -->
-                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info border-end border-5 border-white rounded-end-circle">
+                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-info border-end border-5 border-dark rounded-end-circle">
                     <div class="app-brand d-flex flex-column mb-0">
                         <div class='p-2'>
                             <div class="d-flex d-flex-row">
@@ -385,7 +384,6 @@ data-template="vertical-menu-template-free">
 
                 <!-- Layout container -->
                 <div class="layout-page">
-
                     <div class="row bg-info border-bottom border-3 border-dark shadow-sm px-5 mt-0">
                         <h1 class="fs-2 fw-bolder text-white mb-1 text-center" style="font-family:Times New Roman,Arial,San Serif;" id="farmName">{{ current_user.farm_name }}</h1>
                     </div>
@@ -401,17 +399,20 @@ data-template="vertical-menu-template-free">
         
                         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                             <!-- Search -->
-                            <div class="navbar-nav align-items-center mt-3">
-                                <div class="nav-item d-flex align-items-center">
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            class="form-control border-0 shadow-none ps-1 ps-sm-2"
-                                            placeholder="Search..."
-                                            aria-label="Search..." />
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2 align-items-center mt-3" placeholder="Search..." aria-label="Search..." />
+                            <!--
+                                <div class="navbar-nav align-items-center mt-3">
+                                                <div class="nav-item d-flex align-items-center">
+                                                    <div class="input-group">
+                                                        <input
+                                                            type="text"
+                                                            class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                                                            placeholder="Search..."
+                                                            aria-label="Search..." />
+                                                    </div>
+                                                </div>
+                                            </div>
+                            -->
                             <!-- /Search -->
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -420,7 +421,7 @@ data-template="vertical-menu-template-free">
                                 <li class="nav-item navbar-dropdown dropdown-user dropdown mr-3">
                                     <a id="dropdownToggle" class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);">
                                         <div class="avatar avatar-online">
-                                            <img src="{{current_user.photo_url}}" alt class="w-px-40 h-auto rounded-circle border border-2 border-info" />
+                                            <img src="{{current_user.photo_url}}" alt="Farmer Profile" class="mx-auto w-px-25 h-px-25 object-fit-cover rounded-circle border border-info border-1" />
                                         </div>
                                     </a>
                                     <ul id="dropdownMenu" class="dropdown-menu dropdown-menu-end">
@@ -429,7 +430,7 @@ data-template="vertical-menu-template-free">
                                                 <div class="d-flex">
                                                     <div class="flex-shrink-0 me-3">
                                                         <div class="avatar avatar-online">
-                                                            <img src="{{current_user.photo_url}}" alt class="w-px-40 h-auto rounded-circle" />
+                                                            <img src="{{current_user.photo_url}}" alt class="mx-auto w-px-25 h-px-25 object-fit-cover rounded-circle border border-info border-1" />
                                                         </div>
                                                     </div>
                                                     <div class="flex-grow-1" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
@@ -445,13 +446,13 @@ data-template="vertical-menu-template-free">
                                         <li>
                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalMyProfile" id='myProfile'>
                                                 <i class="bx bx-user me-2"></i>
-                                                <span class="align-middle">My Profile</span>
+                                                <span class="align-middle cursor-pointer">My Profile</span>
                                             </a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editProfileModal" id="editProfileButton">
                                                 <i class="bx bx-cog me-2"></i>
-                                                <span class="align-middle">Edit profile</span>
+                                                <span class="align-middle cursor-pointer">Edit profile</span>
                                             </a>
                                         </li>
                                         <li>
@@ -493,11 +494,11 @@ data-template="vertical-menu-template-free">
 
                     <!-- Modal For My Profile -->
                     <div class="modal fade" id="modalMyProfile" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content border border-3 border-info">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content border border-1 border-info">
 
                                 <div class="modal-header">
-                                    <h5 class="modal-title text-info fw-bold fs-2">My Profile</h5>
+                                    <h5 class="modal-title text-info text-center fw-bold fs-2">My Profile</h5>
                                     <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                     
@@ -505,7 +506,7 @@ data-template="vertical-menu-template-free">
                                     <!-- My Profile -->
                                     <div class="row mb-5">
                                         <div class="col-lg">
-                                            <div class="card mb-3 border border-2 border-info shadow-lg">
+                                            <div class="card mb-3 border border-1 border-info shadow-lg">
                                                 <div class="row g-0">
                                                     <div class="col bg-light">
                                                         
@@ -539,7 +540,7 @@ data-template="vertical-menu-template-free">
 
                     <!-- Modal For Edit Profile -->
                     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
-                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content border border-2 border-info">
                                 <div class="modal-header">
                                     <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
@@ -575,7 +576,7 @@ data-template="vertical-menu-template-free">
                                             <label for="phone_number" class="form-label text-dark fw-bold">Phone Number:</label>
                                             <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{ current_user.phone_number }}" required>
                                         </div>
-                                        
+
                                         <!-- Address -->
                                         <div class="mb-3">
                                             <label for="address" class="form-label text-dark fw-bold">Address:</label>
@@ -611,7 +612,7 @@ data-template="vertical-menu-template-free">
                                     </div>
                                     &nbsp;
 
-                                    <div class="col">©</div>
+                                    <div class="col ms-3">©</div>
                                     &nbsp;
 
                                     <script>
@@ -620,10 +621,11 @@ data-template="vertical-menu-template-free">
                                     <a href="#" target="_self" class="footer-link fw-medium text-brown">&nbsp;DAIRY HARBOR</a>
                                 </div>
                                 
-                                <div class="d-none d-lg-inline-block ms-auto">
-                                    <a href="#" class="footer-link me-4" target="_self">License</a>
-                                    <a href="#" target="_self" class="footer-link me-4">Documentation</a>
-                                    <a href="#" target="_self" class="footer-link">Support</a>
+                                <div class=" ms-auto align-items-center mb-2 mb-md-0 d-flex">
+                                    <!--d-none d-lg-inline-block-->
+                                    <a href="#" target="_self" class="footer-link me-4 align-items-center" >License</a>
+                                    <a href="#" target="_self" class="footer-link me-4 align-items-center">Documentation</a>
+                                    <a href="#" target="_self" class="footer-link align-items-center">Support</a>
                                 </div>
                             </div>
                         </footer>
@@ -880,8 +882,8 @@ data-template="vertical-menu-template-free">
             }
     
             // Add event listeners to the logout links
-            document.getElementById('logoutLink1').addEventListener('click', handleLogout);
-            document.getElementById('logoutLink2').addEventListener('click', handleLogout);
+            //document.getElementById('logoutLink1').addEventListener('click', handleLogout);
+            //document.getElementById('logoutLink2').addEventListener('click', handleLogout);
         </script>                
         
 

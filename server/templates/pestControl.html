@@ -47,7 +47,7 @@
         <!-- Modal for Cattle Pest Control -->
         <div class="modal fade" id="modalPestControl" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content border border-3 border-info">
+                <div class="modal-content border border-1 border-info">
                     <div class="modal-header">
                         <h5 class="modal-title text-info fw-bold">Cattle Pest Control</h5>
                         <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -63,14 +63,16 @@
 
                             <!--Date Of pest control -->
                             <div class="mb-3">
-                                <label for="dateOfDehorning" class="form-label fw-bold text-dark">Date Of pest control:</label>
-                                <input type="date" id="dateOfDehorning" class="form-control" required>
+                                <label for="controlDate" class="form-label fw-bold text-dark">Date Of pest control:</label>
+                                <input type="date" id="controlDate" name="controlDate" class="form-control" required>
                             </div>
 
-                            <!--Serial Number -->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="serial Number" class="form-label fw-bold text-dark">Cattle Serial Number:</label>
-                                <input type="Number" id="serialNumber" class="form-control" required>
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--pest control method -->
@@ -85,7 +87,7 @@
 
                             <!-- pest -->
                             <div class="mb-3">
-                                <label for="pestMethod" class="form-label fw-bold text-dark">Pest Name:</label>
+                                <label for="pestName" class="form-label fw-bold text-dark">Pest Name:</label>
                                 <input class="form-control" name="pestName" id="pestName" required>
                             </div>
 
@@ -118,7 +120,7 @@
         <!-- pest List -->
         <div class="mt-5" id='pestControl-List'>
             <h3 class="fs-3 text-info fw-bold">Pest Control List</h3>
-            <div class="card border border-info border-3 shadow-lg cattle-table">
+            <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- pest control History -->
                 <div class="card bg-light border-none ">
                     <div class="table-responsive text-nowrap border">
@@ -144,4 +146,6 @@
             </div>
         </div>
     </div>
+
+    <script src="{{url_for('static',filename='js/pest.js')}}"></script>
 {% endblock %}

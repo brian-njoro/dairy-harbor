@@ -3,25 +3,26 @@
 {% block title %}Cattle Treatment{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    
     <div class="container-fluid" id='treatment-list'>
         <!-- Treatment Card -->
         <div class="col mb-3">
@@ -45,10 +46,9 @@
         </div>
 
         <!-- Modal for Cattle Treatment -->
-        <!-- Modal for Cattle Treatment -->
         <div class="modal fade" id="modalCattleTreatment" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content border border-3 border-info">
+                <div class="modal-content border border-1 border-info">
                     <div class="modal-header">
                         <h5 class="modal-title text-info fw-bold">Cattle Treatment</h5>
                         <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <!-- / Modal for Edit Treatment -->
+        
         <!-- Edit Treatment Modal -->
         <div class="modal fade" id="modalEditTreatment" tabindex="-1" aria-labelledby="modalEditTreatmentLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -155,14 +155,14 @@
                 </div>
             </div>
         </div>
+        <!-- / Modal for Edit Treatment -->
 
 
-        <!-- /Modal for Cattle Treatment -->
         
         <!-- Treatment List -->
         <div class="mt-5" id='treatment-list'>
             <h3 class="fs-3 text-info fw-bold">Treatment List</h3>
-            <div class="card border border-info border-3 shadow-lg cattle-table">
+            <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- Treatment History -->
                 <div class="card bg-light border-none">
                     <div class="table-responsive text-nowrap border">
@@ -175,7 +175,7 @@
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Medicine</th>
                                     <th class="text-info fw-bold">Disease</th>
-                                    <th class="text-info fw-bold">Actions</th>
+                                    <th class="text-info fw-bold">delete</th>
                                 </tr>
                             </thead>
                             <tbody id="treatmentList">

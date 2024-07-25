@@ -1,53 +1,52 @@
-// Function to fetch and update the vaccination list
-const updatevaccinationList = async () => {
-    console.log('Reached here vaccination list fetch')
+// Function to fetch and update the pest list
+const updatepestList = async () => {
+    console.log('Reached here pest list fetch')
 
     try {
-        const response = await fetch('/api/vaccination');
-        const vaccinations = await response.json();
+        const response = await fetch('/api/pest_control');
+        const pests = await response.json();
 
-        const vaccinationList = document.getElementById('vaccinationList');
-        vaccinationList.innerHTML = ''; // Clear existing list
+        const pestList = document.getElementById('pestControlList');
+        pestList.innerHTML = ''; // Clear existing list
 
-        vaccinations.forEach(vaccination => {
+        pests.forEach(pest => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(vaccination.date).toLocaleDateString()}</td>
-                <td>${vaccination.cattle_id}</td>
-                <td>${vaccination.vet_name}</td>
-                <td>${vaccination.method_of_administration}</td>
-                <td>${vaccination.drug_used}</td>
-                <td>${vaccination.dose}</td>
-                <td>${vaccination.disease}</td>
+                <td>${new Date(pest.date).toLocaleDateString()}</td>
+                <td>${pest.cattle_id}</td>
+                <td>${pest.vet_name}</td>
+                <td>${pest.drugUsed}</td>
+                <td>${pest.pestMethod}</td>
+                <td>${pest.disease}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletepest(${pest.id})">Delete</button>
                 </td>
             `;
 
-            vaccinationList.appendChild(row);
+            pestList.appendChild(row);
         });
     } catch (error) {
-        console.error('Error fetching vaccination list:', error);
+        console.error('Error fetching pest list:', error);
     }
 };
 
 
-// Function to delete a vaccination
-const deletevaccination = async (id) => {
+// Function to delete a pest
+const deletepest = async (id) => {
     try {
-        const response = await fetch(`/api/vaccination/${id}`, {
+        const response = await fetch(`/api/pest_control/${id}`, {
             method: 'DELETE'
         });
 
         if (response.ok) {
-            // Update the vaccination list after deletion
-            updatevaccinationList();
+            // Update the pest list after deletion
+            updatepestList();
         } else {
-            console.error('Failed to delete vaccination:', await response.text());
+            console.error('Failed to delete pest:', await response.text());
         }
     } catch (error) {
-        console.error('Error deleting vaccination:', error);
+        console.error('Error deleting pest:', error);
     }
 };
 
@@ -83,12 +82,13 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {
-    const dateOfvaccination = document.getElementById('dateOfvaccination').value;
-    const vetName = document.getElementById('vetName').value;
+document.getElementById('pestControlButton').addEventListener('click', async () => {
+    const vet_name = document.getElementById('vetName').value;
+    const controlDate = document.getElementById('controlDate').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const vaccineName = document.getElementById('vaccineName').value;
-    const dose = document.getElementById('dose').value;
+    const controlMethod = document.getElementById('controlMethod').value;
+    const pesticide = document.getElementById('pesticide').value;
+    const pestName = document.getElementById('pestName').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -96,46 +96,47 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
         return;
     }
 
-    const vaccinationData = {
-        date: dateOfvaccination,
-        vet_name: vetName,
+    const pestData = {
+        vet_name:vet_name,
         cattle_id: cattleId,
-        vaccine_name: vaccineName,
-        dose: dose,
-        notes: notes
+        control_date: controlDate,
+        pest_type: pestName,
+        method_used: controlMethod,
+        pesticide_used:pesticide,
+        notes: notes,
     };
 
     try {
-        const response = await fetch('/api/vaccination', {
+        const response = await fetch('/api/pest', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(vaccinationData)
+            body: JSON.stringify(pestData)
         });
 
         if (response.ok) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattleVaccination .btn-close');
+            const modalCloseButton = document.querySelector('#modalPestControl .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
                 console.error('Close button not found in modal');
             }
 
-            // Update the vaccination list
-            updatevaccinationList();
+            // Update the pest list
+            updatepestList();
         } else {
-            console.error('Failed to add vaccination:', await response.text());
+            console.error('Failed to add pest:', await response.text());
         }
     } catch (error) {
-        console.error('Error submitting vaccination:', error);
+        console.error('Error submitting pest:', error);
     }
 });
 
-// Initial fetch to populate the vaccination list on page load
-updatevaccinationList();
+// Initial fetch to populate the pest list on page load
+updatepestList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattleVaccination');
+const modal = document.getElementById('modalPestControl');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

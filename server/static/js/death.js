@@ -79,7 +79,7 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('cattleDeathButton').addEventListener('click', async () => {
+document.getElementById('CattleDeathButton').addEventListener('click', async () => {
     const dateOfDeath = document.getElementById('dateOfDeath').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const CauseOfDeath = document.getElementById('CauseOfDeath').value;
