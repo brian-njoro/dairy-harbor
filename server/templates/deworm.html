@@ -77,14 +77,27 @@
 
                             <!--Deworming Method-->
                             <div class="mb-3">
-                                <label for="dehorningMethod" class="form-label fw-bold text-dark">Method Of Deworming:</label>
-                                <input class="form-control" name="dewormingMethod" id="dewormingMethod" required>
+                                <label for="DewormingMethod" class="form-label fw-bold text-dark">Method Of Deworming:</label>
+                                <select class="form-control" name="DewormingMethod" id="DewormingMethod" required>
+                                    <option value="Pour-On">Pour-On</option>
+                                    <option value="oral">Oral Drench</option>
+                                    <option value="Injectable">Injectable</option>
+                                    <option value="Additive">Feed Additive</option>
+                                    <option value="Bolus">Bolus</option>
+                                    <option value="Paste">Paste</option>
+                                </select>
                             </div>
 
                             <!--Disease Name-->
                             <div class="mb-3">
                                 <label for="disease" class="form-label fw-bold text-dark">Name of disease:</label>
                                 <input class="form-control" name="disease" id="disease" required>
+                            </div>
+
+                            <!-- Drug Name -->
+                            <div class="mb-3">
+                                <label for="drugUsed" class="form-label fw-bold text-dark">Name of disease:</label>
+                                <input class="form-control" name="drugUsed" id="drugUsed" required>
                             </div>
 
                             <!-- Notes -->
@@ -120,6 +133,7 @@
                                     <th class="text-info fw-bold">Date</th>
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Vet Name</th>
+                                    <th class="text-info fw-bold">Drug Name</th>
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Disease</th>
                                     <th class="text-info fw-bold">Delete</th>

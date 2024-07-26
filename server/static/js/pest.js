@@ -13,12 +13,12 @@ const updatepestList = async () => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(pest.date).toLocaleDateString()}</td>
+                <td>${new Date(pest.control_date).toLocaleDateString()}</td>
                 <td>${pest.cattle_id}</td>
                 <td>${pest.vet_name}</td>
-                <td>${pest.drugUsed}</td>
-                <td>${pest.pestMethod}</td>
-                <td>${pest.disease}</td>
+                <td>${pest.pesticide_used}</td>
+                <td>${pest.method_used}</td>
+                <td>${pest.pest_type}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletepest(${pest.id})">Delete</button>
                 </td>
@@ -107,7 +107,7 @@ document.getElementById('pestControlButton').addEventListener('click', async () 
     };
 
     try {
-        const response = await fetch('/api/pest', {
+        const response = await fetch('/api/pest_control', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

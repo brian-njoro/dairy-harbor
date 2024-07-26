@@ -1,6 +1,6 @@
 // Function to fetch and update the deworm list
 const updateDewormingList = async () => {
-    console.log('Reached here deworming list fetch')
+    console.log('Reached here at deworming list fetch')
 
     try {
         const response = await fetch('/api/deworming');
@@ -16,11 +16,11 @@ const updateDewormingList = async () => {
                 <td>${new Date(deworm.date).toLocaleDateString()}</td>
                 <td>${deworm.cattle_id}</td>
                 <td>${deworm.vet_name}</td>
-                <td>${deworm.drugUsed}</td>
-                <td>${deworm.DewormingMethod}</td>
+                <td>${deworm.drug_used}</td>
+                <td>${deworm.method_of_administration}</td>
                 <td>${deworm.disease}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteDeworming(${deworming.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteDeworming(${deworm.id})">Delete</button>
                 </td>
             `;
 
@@ -35,7 +35,7 @@ const updateDewormingList = async () => {
 // Function to delete a deworm
 const deleteDeworming = async (id) => {
     try {
-        const response = await fetch(`/api/Deworming/${id}`, {
+        const response = await fetch(`/api/deworming/${id}`, {
             method: 'DELETE'
         });
 
@@ -100,8 +100,8 @@ document.getElementById('cattleDewormButton').addEventListener('click', async ()
         vet_name: vetName,
         date: dateOfdeworm,
         cattle_id: cattleId,
-        drugUsed: drugUsed,
-        DewormingMethod: DewormingMethod,
+        drug_used: drugUsed,
+        method_of_administration: DewormingMethod,
         disease: disease,
         notes: notes,
     };

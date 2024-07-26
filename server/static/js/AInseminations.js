@@ -13,10 +13,10 @@ const updateAinseminationList = async () => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(A_insemination.date).toLocaleDateString()}</td>
+                <td>${new Date(A_insemination.insemination_date).toLocaleDateString()}</td>
                 <td>${A_insemination.cattle_id}</td>
                 <td>${A_insemination.vet_name}</td>
-                <td>${A_insemination.donorBreed}</td>
+                <td>${A_insemination.semen_breed}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deleteAinsemination(${A_insemination.id})">Delete</button>
                 </td>
@@ -84,7 +84,7 @@ document.getElementById('CattleAInseminationButton').addEventListener('click', a
     const vetName = document.getElementById('vetName').value;
     const dateOfAinsemination = document.getElementById('dateOfInsemination').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const donorBreed = document.getElementById('donorBreed').value;
+    const semen_breed = document.getElementById('semen_breed').value;
     const sexed =document.getElementById('sexed').value;
     const notes = document.getElementById('notes').value;
 
@@ -97,7 +97,7 @@ document.getElementById('CattleAInseminationButton').addEventListener('click', a
         vet_name: vetName,
         insemination_date: dateOfAinsemination,
         cattle_id: cattleId,
-        semen_breed: donorBreed,
+        semen_breed: semen_breed,
         sexed:sexed,
         notes: notes,
     };
@@ -116,6 +116,7 @@ document.getElementById('CattleAInseminationButton').addEventListener('click', a
             const modalCloseButton = document.querySelector('#modalCattleInsemination .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
+                console.log("Insemination data sent successfully!")
             } else {
                 console.error('Close button not found in modal');
             }

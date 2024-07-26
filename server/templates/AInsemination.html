@@ -60,7 +60,7 @@
                             <!--Date Of Insemination -->
                             <div class="mb-3">
                                 <label for="dateOfInsemination" class="form-label fw-bold text-dark">Date Of Insemination:</label>
-                                <input type="date" id="dateOfInsemination" class="form-control" required>
+                                <input type="date" id="dateOfInsemination" name="dateOfInsemination" class="form-control" required>
                             </div>
 
                             <!-- Cattle Serial Number -->
@@ -73,8 +73,8 @@
 
                             <!--semen Breed-->
                             <div class="mb-3">
-                                <label for="donorBreed" class="form-label text-dark fw-bold">Semen Breed:</label>
-                                <select class="form-control" name="donorBreed" id="donorBreed" required>
+                                <label for="semen_breed" class="form-label text-dark fw-bold">Semen Breed:</label>
+                                <select class="form-control" name="semen_breed" id="semen_breed" required>
                                     <option value="Holstein_Friesian">Holstein Friesian</option>
                                     <option value="Jersey">Jersey</option>
                                     <option value="Guernsey">Guernsey</option>
@@ -85,7 +85,7 @@
 
                             <!-- sexed -->
                             <div class="mb-3">
-                                <label for="sexed" class="form-label text-dark fw-bold">Father's Breed:</label>
+                                <label for="sexed" class="form-label text-dark fw-bold">Sexed:</label>
                                 <select class="form-control" name="sexed" id="sexed" required>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -140,5 +140,5 @@
         </div>
     </div>
 
-    <script src="{{url_for('static',filename='js/AInsemination.js')}}"></script>
+    <script src="{{url_for('static',filename='js/AInseminations.js')}}"></script>
 {% endblock %}
