@@ -321,8 +321,8 @@ class RecordVaccinationResource(Resource):
         self.parser.add_argument('date', type=str, help='Date is required')
         self.parser.add_argument('vet_name', type=str)
         self.parser.add_argument('cattle_id', type=int)
-        self.parser.add_argument('vaccine_name', type=str, help='Vaccine name is required')
-        self.parser.add_argument('dose', type=str)
+        self.parser.add_argument('drug', type=str, help='Vaccine name is required')
+        self.parser.add_argument('disease', type=str)
         self.parser.add_argument('notes', type=str)
 
     def _create_log_message(self, cattle_id, message):
@@ -426,9 +426,8 @@ class RecordVaccinationResource(Resource):
         
         for key, value in args.items():
             if value is not None:
-                setattr(record, key, value)
+                setattr(record, key, value)    
         
-                
         db.session.commit()
 
         # Log message for updated record
@@ -440,8 +439,8 @@ class RecordVaccinationResource(Resource):
     def delete(self, id):
         record = Vaccination.query.get(id)
         if not record:
-            return {'message': 'Vaccination record not found'}, 404
-                
+            return {'message': 'Vaccination record not found'}, 404       
+        
         db.session.delete(record)
         db.session.commit()
 

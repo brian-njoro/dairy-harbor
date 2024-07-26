@@ -66,6 +66,16 @@
                                 <label for="dateOfvaccination" class="form-label text-dark fw-bold">Date:</label>
                                 <input type="date" id="dateOfvaccination" class="form-control" required>
                             </div>
+
+                            <!--method-->
+                            <div class="mb-3">
+                                <label for="method" class="form-label text-dark fw-bold">Gender:</label>
+                                <select class="form-control" name="method" id="method" required>
+                                    <option value="injection">injection</option>
+                                    <option value="Oral">Oral</option>
+                                    <option value="Intranasal">Intranasal</option>
+                                </select>
+                            </div>
                             
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
@@ -122,8 +132,8 @@
                                     <th class="text-info fw-bold">Vet Name</th>
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Drug</th>
-                                    <th class="text-info fw-bold">Dose</th>
                                     <th class="text-info fw-bold">Disease</th>
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 

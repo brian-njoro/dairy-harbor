@@ -1,6 +1,6 @@
 // Function to fetch and update the dehorn list
 const updateDehorningList = async () => {
-    console.log('Reached here deworming list fetch')
+    console.log('Reached here at deworming list fetch')
 
     try {
         const response = await fetch('/api/dehorning');
@@ -16,9 +16,9 @@ const updateDehorningList = async () => {
                 <td>${new Date(dehorn.date).toLocaleDateString()}</td>
                 <td>${dehorn.cattle_id}</td>
                 <td>${dehorn.vet_name}</td>
-                <td>${dehorn.dehorningMethod}</td>
+                <td>${dehorn.method}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deleteDehorning(${dehorning.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteDehorning(${dehorn.id})">Delete</button>
                 </td>
             `;
 
@@ -96,7 +96,7 @@ document.getElementById('cattleDehornButton').addEventListener('click', async ()
         vet_name: vetName,
         date: dateOfdehorn,
         cattle_id: cattleId,
-        dehorningMethod: dehorningMethod,
+        method: dehorningMethod,
         notes: notes,
     };
 

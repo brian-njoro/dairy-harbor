@@ -18,7 +18,6 @@ const updatevaccinationList = async () => {
                 <td>${vaccination.vet_name}</td>
                 <td>${vaccination.method_of_administration}</td>
                 <td>${vaccination.drug_used}</td>
-                <td>${vaccination.dose}</td>
                 <td>${vaccination.disease}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
@@ -86,6 +85,7 @@ const populateCattleOptions = async () => {
 document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {
     const dateOfvaccination = document.getElementById('dateOfvaccination').value;
     const vetName = document.getElementById('vetName').value;
+    const method = document.getElementById('method').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const vaccineName = document.getElementById('vaccineName').value;
     const dose = document.getElementById('dose').value;
@@ -100,9 +100,10 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
         date: dateOfvaccination,
         vet_name: vetName,
         cattle_id: cattleId,
-        vaccine_name: vaccineName,
-        dose: dose,
-        notes: notes
+        method:method,
+        drug: vaccineName,
+        disease: dose,
+        notes: notes,
     };
 
     try {

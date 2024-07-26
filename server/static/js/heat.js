@@ -3,19 +3,19 @@ const updateheatList = async () => {
     console.log('Reached here heat list fetch')
 
     try {
-        const response = await fetch('/api/heat');
+        const response = await fetch('/api/heat_detection');
         const heats = await response.json();
 
-        const heatList = document.getElementById('heatList');
+        const heatList = document.getElementById('heatDetectionList');
         heatList.innerHTML = ''; // Clear existing list
 
         heats.forEach(heat => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
+                <td>${new Date(heat.detection_date).toLocaleDateString()}</td>
                 <td>${heat.cattle_id}</td>
-                <td>${new Date(heat.dateOfDetection).toLocaleDateString()}</td>
-                <td>${heat.detectedBy}</td>
+                <td>${heat.detected_by}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deleteheat(${heat.id})">Delete</button>
                 </td>
@@ -32,7 +32,7 @@ const updateheatList = async () => {
 // Function to delete a heat
 const deleteheat = async (id) => {
     try {
-        const response = await fetch(`/api/heat/${id}`, {
+        const response = await fetch(`/api/heat_detection/${id}`, {
             method: 'DELETE'
         });
 
@@ -92,13 +92,13 @@ document.getElementById('cattleheatButton').addEventListener('click', async () =
 
     const heatData = {
         cattle_id: cattleId,
-        dateOfDetection: dateOfDetection,
-        detectedBy: detectedBy,
+        detection_date: dateOfDetection,
+        detected_by: detectedBy,
         notes: notes,
     };
 
     try {
-        const response = await fetch('/api/heat', {
+        const response = await fetch('/api/heat_detection', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
