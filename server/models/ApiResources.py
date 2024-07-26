@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -217,6 +217,61 @@ class CattlePostResource(Resource):
 
         db.session.add(log_message)
         db.session.commit()
+
+        # Schedule notifications if status is 'just_born'
+        if status == 'just_born':
+            # Calculate expected dates
+            dehorning_date = date_of_birth + timedelta(days=7)
+            deworming_start_date = date_of_birth + timedelta(days=14)
+            deworming_end_date = date_of_birth + timedelta(days=21)
+            vaccination_date = date_of_birth + timedelta(days=28)
+            multi_vitamin_date_start = date_of_birth + timedelta(days=28)
+            multi_vitamin_date_end = date_of_birth + timedelta(days=56)
+            status_change_date = date_of_birth + timedelta(days=7)
+
+            # Define messages
+            notifications = [
+                {
+                    "message": f"Expected dehorning date for {name} is {dehorning_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                    "admin_id": farmer_id,
+                    "worker_id": worker_id,
+                    "cattle_id": new_cattle.serial_number,
+                    "is_read": False
+                },
+                {
+                    "message": f"Expected deworming period for {name} is between {deworming_start_date.strftime('%Y-%m-%d')} and {deworming_end_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                    "admin_id": farmer_id,
+                    "worker_id": worker_id,
+                    "cattle_id": new_cattle.serial_number,
+                    "is_read": False
+                },
+                {
+                    "message": f"Expected multi-vitamin injection period for {name} is between {multi_vitamin_date_start.strftime('%Y-%m-%d')} and {multi_vitamin_date_end.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                    "admin_id": farmer_id,
+                    "worker_id": worker_id,
+                    "cattle_id": new_cattle.serial_number,
+                    "is_read": False
+                },
+                {
+                    "message": f"Expected status change check for {name} should be done after {status_change_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                    "admin_id": farmer_id,
+                    "worker_id": worker_id,
+                    "cattle_id": new_cattle.serial_number,
+                    "is_read": False
+                }
+            ]
+
+            # Add notifications to the database
+            for notification in notifications:
+                db.session.add(Notification(
+                    admin_id=notification["admin_id"],
+                    worker_id=notification["worker_id"],
+                    message=notification["message"],
+                    created_by=current_user.name if current_user.is_authenticated else 'Anonymous',
+                    cattle_id=notification["cattle_id"],
+                    is_read=notification["is_read"]  # Set is_read to False
+                ))
+            db.session.commit()
 
         return jsonify(new_cattle.as_dict())
 
@@ -1502,6 +1557,10 @@ class RecordMilkProductionResource(Resource):
         self.parser.add_argument('cattle_id', type=int, required=True, help='Cattle ID is required')
         self.parser.add_argument('date', type=str, required=True, help='Date is required')
         self.parser.add_argument('quantity', type=float, required=True, help='Quantity is required')
+        self.parser.add_argument('given_to_calf', type=float)
+        self.parser.add_argument('consumed_by_staff', type=float)
+        self.parser.add_argument('spillage', type=float)
+        self.parser.add_argument('spoiled', type=float)
         self.parser.add_argument('price_per_litre', type=float, required=True, help='Price is required')
         self.parser.add_argument('recorded_by', type=int)
         self.parser.add_argument('notes', type=str)
@@ -1559,6 +1618,7 @@ class RecordMilkProductionResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Milk production record deleted'}, 200
+
         
 
 class RecordMaintenanceCostResource(Resource):
