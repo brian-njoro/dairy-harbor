@@ -37,13 +37,13 @@
                             <label for="date" class="form-label text-dark fw-bold">Date:</label>
                             <input type="date" id="date" class="form-control" required>
                         </div>
-
+                    
                         <!--Serial Number-->
                         <div class="mb-3">
                             <label class="form-label text-dark fw-bold" for="serialNumber">Serial Number:</label>
-                            <input type="Number" class="form-control" id="serialNumber" placeholder="1" required/>
+                            <input type="number" class="form-control" id="serialNumber" placeholder="1" required/>
                         </div>
-
+                    
                         <!--Cattle Breed-->
                         <div class="mb-3">
                             <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
@@ -60,21 +60,46 @@
                                 <option value="Swedish_Red_White">Swedish Red and White</option>
                             </select>
                         </div>
-
+                    
                         <!--Milk Liters-->
                         <div class="mb-3">
                             <label class="form-label text-dark fw-bold" for="milkLiters">Milk In Liters:</label>
-                            <input type="number" class="form-control" id="milkLiters"  required/>
+                            <input type="number" class="form-control" id="milkLiters" required/>
                         </div>
-
-                        <!--worker Id-->
+                    
+                        <!--Given to Calf-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="givenToCalf">Given to Calf (Liters):</label>
+                            <input type="number" class="form-control" id="givenToCalf"/>
+                        </div>
+                    
+                        <!--Consumed by Staff-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="consumedByStaff">Consumed by Staff (Liters):</label>
+                            <input type="number" class="form-control" id="consumedByStaff"/>
+                        </div>
+                    
+                        <!--Spillage-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="spillage">Spillage (Liters):</label>
+                            <input type="number" class="form-control" id="spillage"/>
+                        </div>
+                    
+                        <!--Spoiled-->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="spoiled">Spoiled (Liters):</label>
+                            <input type="number" class="form-control" id="spoiled"/>
+                        </div>
+                    
+                        <!--Worker Id-->
                         <div class="mb-3">
                             <label class="form-label text-dark fw-bold" for="workerId">Worker Number:</label>
                             <input type="number" class="form-control" id="workerId" placeholder="1" required/>
                         </div>
-
+                    
                         <button type="submit" class="btn btn-info" id="submit">Submit</button>
                     </form>
+                    
                 </div>
 
             </div>

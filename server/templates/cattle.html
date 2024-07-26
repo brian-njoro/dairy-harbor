@@ -83,6 +83,7 @@
                             <button type="button" class="btn btn-info shadow-md" data-bs-toggle="modal" data-bs-target="#modalCattleRegistration" id='cattleRegistration'>
                                 Add Cattle
                             </button>
+                            
                         </div>
                     </div>
                 </div>
@@ -121,8 +122,8 @@
                                 <div class="mb-3">
                                     <label for="gender" class="form-label text-dark fw-bold">Gender:</label>
                                     <select class="form-control" name="gender" id="gender" required>
-                                        <option value="male">Male</option>
                                         <option value="female">Female</option>
+                                        <option value="male">Male</option>
                                     </select>
                                 </div>
 
@@ -130,6 +131,7 @@
                                 <div class="mb-3">
                                     <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
                                     <select class="form-control" name="breed" id="breed" required>
+                                        <option value="Indiginious_breed">Indiginious breed</option>
                                         <option value="Holstein_Friesian">Holstein Friesian</option>
                                         <option value="Jersey">Jersey</option>
                                         <option value="Guernsey">Guernsey</option>
@@ -147,6 +149,7 @@
                                 <div class="mb-3">
                                     <label for="fatherBreed" class="form-label text-dark fw-bold">Father's Breed:</label>
                                     <select class="form-control" name="fatherBreed" id="fatherBreed" required>
+                                        <option value="Indiginious_breed">Indiginious breed</option>
                                         <option value="Holstein_Friesian">Holstein Friesian</option>
                                         <option value="Jersey">Jersey</option>
                                         <option value="Guernsey">Guernsey</option>
@@ -164,6 +167,7 @@
                                 <div class="mb-3">
                                     <label for="motherBreed" class="form-label text-dark fw-bold">Mother's Breed:</label>
                                     <select class="form-control" name="motherBreed" id="motherBreed" required>
+                                        <option value="Indiginious_breed">Indiginious breed</option>
                                         <option value="Holstein_Friesian">Holstein Friesian</option>
                                         <option value="Jersey">Jersey</option>
                                         <option value="Guernsey">Guernsey</option>
@@ -190,7 +194,8 @@
                                 <div class="mb-3">
                                     <label for="status" class="form-label text-dark fw-bold">Status:</label>
                                     <select class="form-control" name="status" id="status" required>
-                                        <option value="healthy">Milking</option>
+                                        <option value="just_born">Born</option>
+                                        <option value="Milking">Milking</option>
                                         <option value="pregnant">Pregnant</option>
                                         <option value="weaning">Weaning</option>
                                         <option value="sick">Sick</option>
@@ -211,6 +216,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-info" id="addCattleButton">Add Cattle</button>
+                            
                         </div>
                     </div>
                 </div>
