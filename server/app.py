@@ -662,8 +662,20 @@ def worker_List():
 @app.route('/cattle')
 @login_required
 def cattle():
-    farmer_id = current_user.id  # Assuming the farmer's ID is stored in the 'id' attribute
-    
+
+    # Determine farmer_id and worker_id based on user type
+    if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+    elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+    else:
+            return {"error": "Invalid user type"}, 400    
+  
     # Querying the number of cows for the logged-in farmer
     total_cows = Cattle.query.filter_by(farmer_id=farmer_id).count()
 
@@ -676,14 +688,46 @@ def cattle():
     status_pregnant = Cattle.query.filter_by(farmer_id=farmer_id, status='pregnant').count()
     status_heifer = Cattle.query.filter_by(farmer_id=farmer_id, status='heifer').count()
 
-    return render_template('cattle.html', 
-                            farmer_id=farmer_id,
+    return render_template('cattle.html',
+                            farmer_id=farmer_id, 
                             total_cows=total_cows,
                             male_cows=male_cows,
                             status_calf=status_calf,
                             status_sick=status_sick,
                             status_pregnant=status_pregnant,
                             status_heifer=status_heifer)
+
+
+
+@app.route('/api/notification/read', methods=['POST'])
+@login_required
+def mark_notifications_as_read():
+    # Determine farmer_id and worker_id based on user type
+    if current_user.user_type == 'farmer':
+        farmer_id = current_user.id
+        worker_id = None
+    elif current_user.user_type == 'worker':
+        worker = Worker.query.filter_by(id=current_user.id).first()
+        if not worker:
+            return jsonify({"error": "Worker not found"}), 404
+        farmer_id = worker.farmer_id
+        worker_id = current_user.id
+    else:
+        return jsonify({"error": "Invalid user type"}), 400
+
+    # Mark notifications as read
+    notifications = Notification.query.filter(
+        (Notification.admin_id == farmer_id) |
+        (Notification.worker_id == worker_id)
+    ).all()
+
+    for notification in notifications:
+        notification.is_read = True
+
+    db.session.commit()
+
+    return jsonify({'message': 'Notifications marked as read'}), 200
+                            
 
 @app.route('/api/income-data', methods=['GET'])
 @login_required

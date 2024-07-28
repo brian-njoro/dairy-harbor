@@ -88,7 +88,7 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
     const method = document.getElementById('method').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const vaccineName = document.getElementById('vaccineName').value;
-    const dose = document.getElementById('dose').value;
+    const disease = document.getElementById('disease').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -100,6 +100,8 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
         date: dateOfvaccination,
         vet_name: vetName,
         cattle_id: cattleId,
+        drug: vaccineName,
+        disease: disease,
         method:method,
         drug: vaccineName,
         disease: dose,

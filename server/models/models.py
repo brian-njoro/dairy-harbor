@@ -146,6 +146,18 @@ class Vaccination(db.Model):
 
     cattle = db.relationship('Cattle', back_populates='vaccinations')
 
+    def as_dict(self):
+        return {
+            'vaccination_id': self.vaccination_id,
+            'date': self.date.strftime('%Y-%m-%d'),
+            'vet_name': self.vet_name,
+            'method': self.method,
+            'drug': self.drug,
+            'disease': self.disease,
+            'cattle_id': self.cattle_id,
+            'notes': self.notes
+        }
+
 
 class Treatment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -158,6 +170,18 @@ class Treatment(db.Model):
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='treatments')
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'date': self.date.strftime('%Y-%m-%d'),
+            'vet_name': self.vet_name,
+            'cattle_id': self.cattle_id,
+            'drug_used': self.drug_used,
+            'method_of_administration': self.method_of_administration,
+            'disease': self.disease,
+            'notes': self.notes
+        }
 
 
 class HeatDetection(db.Model):
