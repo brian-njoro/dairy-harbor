@@ -16,9 +16,9 @@ const updatevaccinationList = async () => {
                 <td>${new Date(vaccination.date).toLocaleDateString()}</td>
                 <td>${vaccination.cattle_id}</td>
                 <td>${vaccination.vet_name}</td>
-                <td>${vaccination.method_of_administration}</td>
-                <td>${vaccination.drug_used}</td>
-                <td>${vaccination.dose}</td>
+                <td>${vaccination.method}</td>
+                <td>${vaccination.drug}</td>
+                <td>${vaccination.disease}</td>
                 <td>${vaccination.disease}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
@@ -88,7 +88,7 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
     const vetName = document.getElementById('vetName').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const vaccineName = document.getElementById('vaccineName').value;
-    const dose = document.getElementById('dose').value;
+    const disease = document.getElementById('disease').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -100,8 +100,8 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
         date: dateOfvaccination,
         vet_name: vetName,
         cattle_id: cattleId,
-        vaccine_name: vaccineName,
-        dose: dose,
+        drug: vaccineName,
+        disease: disease,
         notes: notes
     };
 

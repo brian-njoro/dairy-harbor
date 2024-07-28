@@ -35,6 +35,9 @@ from models.models import (
     cattle_worker_association
 )
 
+import http.client
+import json
+
 from .schemas import (
     VaccinationSchema, TreatmentSchema, ArtificialInseminationSchema, NaturalInseminationSchema,
     DehorningSchema, DewormingSchema, FeedsSchema, HeatDetectionSchema, PestControlSchema, 
@@ -231,80 +234,95 @@ class CattlePostResource(Resource):
 
             # Define messages
             notifications = [
-                {
-                    "message": f"Expected dehorning date for {name} is {dehorning_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
-                    "admin_id": farmer_id,
-                    "worker_id": worker_id,
-                    "cattle_id": new_cattle.serial_number,
-                    "is_read": False
-                },
-                {
-                    "message": f"Expected deworming period for {name} is between {deworming_start_date.strftime('%Y-%m-%d')} and {deworming_end_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
-                    "admin_id": farmer_id,
-                    "worker_id": worker_id,
-                    "cattle_id": new_cattle.serial_number,
-                    "is_read": False
-                },
-                {
-                    "message": f"Expected multi-vitamin injection period for {name} is between {multi_vitamin_date_start.strftime('%Y-%m-%d')} and {multi_vitamin_date_end.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
-                    "admin_id": farmer_id,
-                    "worker_id": worker_id,
-                    "cattle_id": new_cattle.serial_number,
-                    "is_read": False
-                },
-                {
-                    "message": f"Expected status change check for {name} should be done after {status_change_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
-                    "admin_id": farmer_id,
-                    "worker_id": worker_id,
-                    "cattle_id": new_cattle.serial_number,
-                    "is_read": False
-                }
+                f"Expected dehorning date for {name} is {dehorning_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                f"Expected deworming period for {name} is between {deworming_start_date.strftime('%Y-%m-%d')} and {deworming_end_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                f"Expected multi-vitamin injection period for {name} is between {multi_vitamin_date_start.strftime('%Y-%m-%d')} and {multi_vitamin_date_end.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}",
+                f"Expected status change check for {name} should be done after {status_change_date.strftime('%Y-%m-%d')}, the calf was born on {date_of_birth.strftime('%Y-%m-%d')}"
             ]
+
+            # Combine notifications into one message
+            combined_message = "\n".join(notifications)
+
+            # Send the combined message via SMS
+            # farmer = Farmer.query.get(farmer_id)
+            # if farmer:
+            #     send_sms(farmer.phone_number, combined_message)  # Assuming Farmer model has a phone_number field
 
             # Add notifications to the database
             for notification in notifications:
                 db.session.add(Notification(
-                    admin_id=notification["admin_id"],
-                    worker_id=notification["worker_id"],
-                    message=notification["message"],
+                    admin_id=farmer_id,
+                    worker_id=worker_id,
+                    message=notification,
                     created_by=current_user.name if current_user.is_authenticated else 'Anonymous',
-                    cattle_id=notification["cattle_id"],
-                    is_read=notification["is_read"]  # Set is_read to False
+                    cattle_id=new_cattle.serial_number,
+                    is_read=False  # Set is_read to False
                 ))
             db.session.commit()
 
         return jsonify(new_cattle.as_dict())
+    
+
+def send_sms(to, message):
+    conn = http.client.HTTPSConnection("gg3jkj.api.infobip.com")
+    payload = json.dumps({
+        "messages": [
+            {
+                "destinations": [{"to": to}],
+                "from": "ServiceSMS",
+                "text": message
+            }
+        ]
+    })
+    headers = {
+        'Authorization': 'App c062a6d8ef8b068edc6e42da708c2404-4ee122ca-4196-465b-9a14-e7a40af0a067',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+    conn.request("POST", "/sms/2/text/advanced", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    print(data.decode("utf-8"))    
 
 
 class CattleGetByIdResource(Resource):
     @login_required
     def get(self, cattle_id):
-        try:
-            # Determine farmer_id based on user type
-            if current_user.user_type == 'farmer':
-                farmer_id = current_user.id
-            elif current_user.user_type == 'worker':
-                worker = Worker.query.filter_by(id=current_user.id).first()
-                if not worker:
-                    logger.error("Worker with ID %s not found", current_user.id)
-                    return {"error": "Worker not found"}, 404
-                farmer_id = worker.farmer_id
-            else:
-                logger.error("Invalid user type: %s", current_user.user_type)
-                return {"error": "Invalid user type"}, 400
+        # Get cattle details
+        cattle = Cattle.query.get(cattle_id)
+        if not cattle:
+            return {"error": "Cattle not found"}, 404
 
-            # Fetch the cattle by its ID and ensure it's associated with the correct farmer_id
-            cattle = Cattle.query.filter_by(id=cattle_id, farmer_id=farmer_id).first()
-            if cattle is None:
-                logger.error("Cattle with ID %s not found for farmer_id %s", cattle_id, farmer_id)
-                return {'message': 'Cattle not found'}, 404
+        # Get related procedures
+        procedures = []
+        procedures += Dehorning.query.filter_by(cattle_id=cattle_id).all()
+        procedures += Deworming.query.filter_by(cattle_id=cattle_id).all()
+        procedures += Vaccination.query.filter_by(cattle_id=cattle_id).all()
+        procedures += Treatment.query.filter_by(cattle_id=cattle_id).all()
+        procedures += PestControl.query.filter_by(cattle_id=cattle_id).all()
+        procedures += NaturalInsemination.query.filter_by(cattle_id=cattle_id).all()
+        procedures += Pregnancy.query.filter_by(cattle_id=cattle_id).all()
+        procedures += Miscarriage.query.filter_by(cattle_id=cattle_id).all()
+        procedures += HeatDetection.query.filter_by(cattle_id=cattle_id).all()
+        procedures += ArtificialInsemination.query.filter_by(cattle_id=cattle_id).all()
+        procedures += Calving.query.filter_by(cattle_id=cattle_id).all()
+        procedures += CattleDeath.query.filter_by(cattle_id=cattle_id).all()
 
-            logger.debug("Cattle found: %s", cattle.as_dict())
-            return jsonify(cattle.as_dict())
+        # Serialize the cattle data and its procedures
+        cattle_data = {
+            "serial_number": cattle.serial_number,
+            "name": cattle.name,
+            "date_of_birth": cattle.date_of_birth.strftime('%Y-%m-%d'),
+            "breed": cattle.breed,
+            "father_breed": cattle.father_breed,
+            "mother_breed": cattle.mother_breed,
+            "photo": cattle.photo,
+            "procedures": [
+                {"type": type(proc).__name__, "details": proc.as_dict()} for proc in procedures
+            ]
+        }
+        return jsonify(cattle_data)
         
-        except Exception as e:
-            logger.exception("An unexpected error occurred while fetching cattle with ID %s", cattle_id)
-            return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 
 class CattleEditResource(Resource):
     @login_required
@@ -423,19 +441,16 @@ class RecordVaccinationResource(Resource):
             else:
                 return {"error": "Invalid user type"}, 400
             
-            schema = VaccinationSchema(many=True)
-            return schema.dump(records), 200
+            return {'vaccinations': [record.as_dict() for record in records]}, 200
         else:
             # Get a specific vaccination record by ID
             record = Vaccination.query.get(id)
             if record:
-                schema = VaccinationSchema()
-                return schema.dump(record), 200
+                return {'vaccination': record.as_dict()}, 200
             return {'message': 'Vaccination record not found'}, 404
 
     def post(self):
         data = request.get_json()
-        schema = VaccinationSchema(session=db.session)
         
         # Determine farmer_id and worker_id based on user type
         if current_user.user_type == 'farmer':
@@ -451,7 +466,14 @@ class RecordVaccinationResource(Resource):
             return {"error": "Invalid user type"}, 400
 
         try:
-            record = schema.load(data)
+            record = Vaccination(
+                date=datetime.strptime(data['date'], '%Y-%m-%d').date(),
+                vet_name=data.get('vet_name'),
+                cattle_id=data.get('cattle_id'),
+                vaccine_name=data.get('vaccine_name'),
+                dose=data.get('dose'),
+                notes=data.get('notes')
+            )
             record.farmer_id = farmer_id
             record.worker_id = worker_id
             db.session.add(record)
@@ -460,7 +482,7 @@ class RecordVaccinationResource(Resource):
             # Log message for the new record
             self._create_log_message(record.cattle_id, "New vaccination record added")
             
-            return schema.dump(record), 201
+            return {'vaccination': record.as_dict()}, 201
         except Exception as e:
             db.session.rollback()
             return {"message": str(e)}, 400
@@ -483,14 +505,12 @@ class RecordVaccinationResource(Resource):
             if value is not None:
                 setattr(record, key, value)
         
-                
         db.session.commit()
 
         # Log message for updated record
         self._create_log_message(record.cattle_id, "Vaccination record updated")
         
-        schema = VaccinationSchema()
-        return schema.dump(record), 200
+        return {'vaccination': record.as_dict()}, 200
 
     def delete(self, id):
         record = Vaccination.query.get(id)
@@ -504,6 +524,7 @@ class RecordVaccinationResource(Resource):
         self._create_log_message(record.cattle_id, "Vaccination record deleted")
         
         return {'message': 'Vaccination record deleted'}, 200
+
 
 class RecordTreatmentResource(Resource):
     def __init__(self):
@@ -1879,8 +1900,8 @@ class RecordNotificationResource(Resource):
 
     def get(self, id=None):
         if id is None:
-            # Get all notifications
-            records = Notification.query.all()
+            # Get all notifications sorted by created_at in descending order
+            records = Notification.query.order_by(Notification.created_at.desc()).all()
             schema = NotificationSchema(many=True)
             return schema.dump(records), 200
         else:
@@ -1921,4 +1942,4 @@ class RecordNotificationResource(Resource):
             return {'message': 'Notification not found'}, 404
         db.session.delete(record)
         db.session.commit()
-        return {'message': 'Notification deleted'}, 200        
+        return {'message': 'Notification deleted'}, 200

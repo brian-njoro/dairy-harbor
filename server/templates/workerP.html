@@ -1,4 +1,9 @@
-{% extends "base.html" %}
+{% if current_user.user_type == 'farmer' %}
+    {% extends "base.html" %}   
+{% else %}
+    {% extends "workerbase.html" %}
+{% endif %}
+
 {% block title%}Workers{% endblock %}
 
 {% block content %}
