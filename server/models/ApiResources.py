@@ -470,9 +470,11 @@ class RecordVaccinationResource(Resource):
                 date=datetime.strptime(data['date'], '%Y-%m-%d').date(),
                 vet_name=data.get('vet_name'),
                 cattle_id=data.get('cattle_id'),
-                vaccine_name=data.get('vaccine_name'),
-                dose=data.get('dose'),
-                notes=data.get('notes')
+                drug=data.get('drug'),
+                method = data.get('method'),
+                disease=data.get('disease'),
+                notes=data.get('notes'),
+                cost = data.get('cost')
             )
             record.farmer_id = farmer_id
             record.worker_id = worker_id

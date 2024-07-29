@@ -84,8 +84,11 @@ document.getElementById('cattleDehornButton').addEventListener('click', async ()
     const vetName = document.getElementById('vetName').value;
     const dateOfdehorn = document.getElementById('dateOfDehorning').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const dehorningMethod = document.getElementById('dehorningMethod').value;
+    const method = document.getElementById('method').value;
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
+
 
     if (!cattleId) {
         alert('Please select a cattle.');
@@ -96,8 +99,9 @@ document.getElementById('cattleDehornButton').addEventListener('click', async ()
         vet_name: vetName,
         date: dateOfdehorn,
         cattle_id: cattleId,
-        method: dehorningMethod,
+        method: method,
         notes: notes,
+        cost: cost
     };
 
     try {

@@ -86,10 +86,13 @@ document.getElementById('pestControlButton').addEventListener('click', async () 
     const vet_name = document.getElementById('vetName').value;
     const controlDate = document.getElementById('controlDate').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const controlMethod = document.getElementById('controlMethod').value;
+    const method = document.getElementById('method').value;
     const pesticide = document.getElementById('pesticide').value;
     const pestName = document.getElementById('pestName').value;
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
+
 
     if (!cattleId) {
         alert('Please select a cattle.');
@@ -101,9 +104,10 @@ document.getElementById('pestControlButton').addEventListener('click', async () 
         cattle_id: cattleId,
         control_date: controlDate,
         pest_type: pestName,
-        method_used: controlMethod,
+        method_used: method,
         pesticide_used:pesticide,
         notes: notes,
+        cost: cost
     };
 
     try {

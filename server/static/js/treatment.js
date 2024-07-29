@@ -89,6 +89,7 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
     const drugUsed = document.getElementById('drugUsed').value;
     const methodOfAdministration = document.getElementById('methodOfAdministration').value;
     const disease = document.getElementById('disease').value;
+    const cost = document.getElementById('cost').value;
     const notes = document.getElementById('notes').value;
 
     if (!cattleId) {
@@ -103,6 +104,7 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
         drug_used: drugUsed,
         method_of_administration: methodOfAdministration,
         disease: disease,
+        cost: cost,
         notes: notes
     };
 
