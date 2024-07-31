@@ -6,25 +6,26 @@
 {% block title %}Calves{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
     <div class="container-fluid" id='deworm-list'>
         <!--Calving-->
         <div class="col mb-3">
@@ -66,34 +67,34 @@
                                 </div>
                             </div>
 
-                            <!--Calf Number -->
-                            <div class="mb-3">
-                                <label for="calfId" class="form-label fw-bold text-dark">Calf Serial Number:</label>
-                                <input type="Number" id="calfId" name="calfId" class="form-control" required>
-                            </div>
-
-                            <!-- Calving Outcome -->
-                            <div class="mb-3">
-                                <label for="outcome" class="form-label fw-bold text-dark">Calving Outcome:</label>
-                                <input class="form-control" type="text" name='outcome' id="outcome">
-                            </div>
-
                             <!-- Date Of calving -->
                             <div class="mb-3">
                                 <label for="dateOfCalving" class="form-label fw-bold text-dark">Date Of Calving:</label>
                                 <input type="date" id="dateOfCalving" class="form-control" required>
                             </div>
 
+                            <!--Calf Number -->
+                            <div class="mb-3">
+                                <label for="calfId" class="form-label fw-bold text-dark">Calf Serial Number:</label>
+                                <input type="Number" id="calfId" name="calfId" class="form-control" required placeholder="1">
+                            </div>
+
+                            <!-- Calving Outcome -->
+                            <div class="mb-3">
+                                <label for="outcome" class="form-label fw-bold text-dark">Calving Outcome:</label>
+                                <input class="form-control" type="text" name='outcome' id="outcome" placeholder="Success">
+                            </div>
+
                             <!-- Assisted By -->
                             <div class="mb-3">
-                                <label for="assistedBy" class="form-label fw-bold text-dark">Assisted By:</label>
-                                <input class="form-control" name="assistedBy" id="assistedBy" required>
+                                <label for="assistedBy" class="form-label fw-bold text-dark">Worker Id:</label>
+                                <input class="form-control" type="number" name="assistedBy" id="assistedBy" placeholder="1">
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='notes' id='notes' class='form-control'></textarea>
+                                <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
                             </div>
                         </form>
                     </div>
@@ -120,10 +121,9 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-info fw-bold">Calf Number</th>
-                                    <th class="text-info fw-bold">Serial Number</th>
-                                    <th class="text-info fw-bold">Date of Birth</th>
-                                    <th class="text-info fw-bold">Calving Outcome</th>
+                                    <th class="text-info fw-bold">Date</th>
+                                    <th class="text-info fw-bold">Cattle Id</th>
+                                    <th class="text-info fw-bold">Outcome</th>
                                     <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>

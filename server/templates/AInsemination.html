@@ -32,14 +32,13 @@
             <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/service-1.jpg')}}" alt="Image">
             <div class="card-img-overlay">
                 <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">ARTIFICIAL INSEMINATION</h3>
-            <p class="card-text text-white">Record AI procedures to manage breeding schedules, track genetic improvements, and enhance your herd's reproductive efficiency.</p>
-            <!-- Button to add newly inseminated cattle -->
-            <div class="mb-3">
-                <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleInsemination" id='cattleInsemination'>
-                    A. Inseminate
-                </button>
-            </div>
-            <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
+                <p class="card-text text-white">Record AI procedures to manage breeding schedules, track genetic improvements, and enhance your herd's reproductive efficiency.</p>
+                <!-- Button to add newly inseminated cattle -->
+                <div class="mb-3">
+                    <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleInsemination" id='cattleInsemination'>
+                        A. Inseminate
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -54,10 +53,12 @@
 
                     <div class="modal-body">
                         <form id="cattleForm">
-                            <!--Vet Name-->
+                            <!-- Cattle Serial Number -->
                             <div class="mb-3">
-                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
-                                <input class="form-control" type="text" name='vetName' id="vetName">
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
                             </div>
 
                             <!--Date Of Insemination -->
@@ -66,12 +67,10 @@
                                 <input type="date" id="dateOfInsemination" name="dateOfInsemination" class="form-control" required>
                             </div>
 
-                            <!-- Cattle Serial Number -->
+                            <!--Vet Name-->
                             <div class="mb-3">
-                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
-                                <div id="cattleRadioButtons" class="form-check">
-                                    <!-- Radio buttons will be dynamically inserted here -->
-                                </div>
+                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName" placeholder="Dr. Dairy">
                             </div>
 
                             <!--semen Breed-->
@@ -98,7 +97,7 @@
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='notes' id='notes' class='form-control'></textarea>
+                                <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
                             </div>
 
                             <!-- Cost -->
@@ -122,7 +121,7 @@
 
         <!-- Artificial Insemination List -->
         <div class="mt-5" id='AInsemination-List'>
-            <h3 class="fs-3 text-info fw-bold text-center">Vaccination List</h3>
+            <h3 class="fs-3 text-info fw-bold text-center">Artificial Insemination List</h3>
             <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- Artificial Insemination History -->
                 <div class="card bg-light border-none ">

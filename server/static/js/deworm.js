@@ -14,7 +14,7 @@ const updateDewormingList = async () => {
 
             row.innerHTML = `
                 <td>${new Date(deworm.date).toLocaleDateString()}</td>
-                <td>${deworm.cattle_id}</td>
+                <td>${Array.isArray(deworm.cattle_id) ? deworm.cattle_id.join(', ') : deworm.cattle_id}</td>
                 <td>${deworm.vet_name}</td>
                 <td>${deworm.drug_used}</td>
                 <td>${deworm.method_of_administration}</td>
@@ -30,7 +30,6 @@ const updateDewormingList = async () => {
         console.error('Error fetching deworm list:', error);
     }
 };
-
 
 // Function to delete a deworm
 const deleteDeworming = async (id) => {
@@ -50,31 +49,53 @@ const deleteDeworming = async (id) => {
     }
 };
 
-// Function to fetch and populate cattle radio buttons in the modal
+// Function to handle "Select All" checkbox
+const handleSelectAll = (selectAllCheckbox) => {
+    const cattleCheckboxes = document.querySelectorAll('input[name="cattleId"]');
+    cattleCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+};
+
+// Function to fetch and populate cattle checkboxes in the modal
 const populateCattleOptions = async () => {
     try {
         const response = await fetch('/api/cattle/get'); // Adjust endpoint if needed
         const cattleList = await response.json();
-        console.log('Reached here radiobutton')
+        console.log('Reached here checkbox')
 
-        const cattleRadioButtonsContainer = document.getElementById('cattleRadioButtons');
-        cattleRadioButtonsContainer.innerHTML = ''; // Clear existing options
+        const cattleCheckboxesContainer = document.getElementById('cattleRadioButtons');
+        cattleCheckboxesContainer.innerHTML = ''; // Clear existing options
+
+        // Add "Select All" checkbox
+        const selectAllCheckbox = document.createElement('div');
+        selectAllCheckbox.classList.add('form-check');
+        selectAllCheckbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" id="selectAllCattle">
+            <label class="form-check-label" for="selectAllCattle">
+                Select All
+            </label>
+        `;
+        cattleCheckboxesContainer.appendChild(selectAllCheckbox);
+
+        // Add event listener to "Select All" checkbox
+        selectAllCheckbox.querySelector('input').addEventListener('change', (e) => handleSelectAll(e.target));
 
         if (cattleList.length === 0) {
-            cattleRadioButtonsContainer.innerHTML = '<p>No cattle available.</p>';
+            cattleCheckboxesContainer.innerHTML += '<p>No cattle available.</p>';
             return;
         }
 
         cattleList.forEach(cattle => {
-            const radioButton = document.createElement('div');
-            radioButton.classList.add('form-check');
-            radioButton.innerHTML = `
-                <input class="form-check-input" type="radio" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}" required>
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('form-check');
+            checkbox.innerHTML = `
+                <input class="form-check-input" type="checkbox" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}">
                 <label class="form-check-label" for="cattle-${cattle.serial_number}">
                     ${cattle.serial_number} - ${cattle.name}  <!-- Adjust based on available cattle fields -->
                 </label>
             `;
-            cattleRadioButtonsContainer.appendChild(radioButton);
+            cattleCheckboxesContainer.appendChild(checkbox);
         });
     } catch (error) {
         console.error('Error fetching cattle data:', error);
@@ -84,19 +105,27 @@ const populateCattleOptions = async () => {
 // Event listener for the submit button
 document.getElementById('cattleDewormButton').addEventListener('click', async () => {
     const vetName = document.getElementById('vetName').value;
-    const dateOfdeworm = document.getElementById('dateOfDeworming').value;
-    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
+    const dateOfDeworm = document.getElementById('dateOfDeworming').value;
+    const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const drugUsed = document.getElementById('drugUsed').value;
+<<<<<<< HEAD
+    const dewormingMethod = document.getElementById('DewormingMethod').value;
+=======
     const method = document.getElementById('method').value;
+>>>>>>> origin/main
     const disease = document.getElementById('disease').value;
     const notes = document.getElementById('notes').value;
     const cost = document.getElementById('cost').value;
 
-    if (!cattleId) {
-        alert('Please select a cattle.');
+    if (selectedCattleCheckboxes.length === 0) {
+        alert('Please select at least one cattle.');
         return;
     }
 
+<<<<<<< HEAD
+    const dewormingPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
+        const cattleId = checkbox.value;
+=======
     const dewormData = {
         vet_name: vetName,
         date: dateOfdeworm,
@@ -107,17 +136,39 @@ document.getElementById('cattleDewormButton').addEventListener('click', async ()
         notes: notes,
         cost: cost
     };
+>>>>>>> origin/main
 
-    try {
-        const response = await fetch('/api/deworming', {
+        const dewormData = {
+            vet_name: vetName,
+            date: dateOfDeworm,
+            cattle_id: cattleId,
+            drug_used: drugUsed,
+            method_of_administration: dewormingMethod,
+            disease: disease,
+            notes: notes,
+        };
+
+        return fetch('/api/deworming', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(dewormData)
         });
+    });
 
-        if (response.ok) {
+    try {
+        const responses = await Promise.all(dewormingPromises);
+
+        let allSuccessful = true;
+        for (const response of responses) {
+            if (!response.ok) {
+                allSuccessful = false;
+                console.error('Failed to add deworming:', await response.text());
+            }
+        }
+
+        if (allSuccessful) {
             // Close the modal
             const modalCloseButton = document.querySelector('#modalCattleDeworming .btn-close');
             if (modalCloseButton) {
@@ -129,10 +180,10 @@ document.getElementById('cattleDewormButton').addEventListener('click', async ()
             // Update the deworm list
             updateDewormingList();
         } else {
-            console.error('Failed to add Deworming:', await response.text());
+            console.error('Some deworming entries failed.');
         }
     } catch (error) {
-        console.error('Error submitting Deworming:', error);
+        console.error('Error submitting deworming:', error);
     }
 });
 
