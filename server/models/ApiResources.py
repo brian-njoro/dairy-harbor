@@ -1687,7 +1687,7 @@ class RecordEquipmentResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Equipment record deleted'}, 200
-           
+
 
 class RecordCattleDeathResource(Resource):
     def __init__(self):

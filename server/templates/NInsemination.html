@@ -51,24 +51,18 @@
 
                     <div class="modal-body">
                         <form id="cattleForm">
-                            <!--Vet Name-->
-                            <div class="mb-3">
-                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
-                                <input class="form-control" type="text" name='vetName' id="vetName">
-                            </div>
-
-                            <!--Date Of Insemination -->
-                            <div class="mb-3">
-                                <label for="dateOfInsemination" class="form-label fw-bold text-dark">Date Of Insemination:</label>
-                                <input type="date" id="dateOfInsemination" class="form-control" required>
-                            </div>
-
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
                                 <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
                                 <div id="cattleRadioButtons" class="form-check">
                                     <!-- Radio buttons will be dynamically inserted here -->
                                 </div>
+                            </div>
+
+                            <!--Date Of Insemination -->
+                            <div class="mb-3">
+                                <label for="dateOfInsemination" class="form-label fw-bold text-dark">Date Of Insemination:</label>
+                                <input type="date" id="dateOfInsemination" class="form-control" required>
                             </div>
 
                             <!-- donor Breed -->
@@ -86,13 +80,13 @@
                             <!-- Father Id -->
                             <div class="mb-3">
                                 <label for="fatherId" class="form-label fw-bold text-dark">Father Id:</label>
-                                <input type="number" id="fatherId" name="fatherId" class="form-control" required>
+                                <input type="number" id="fatherId" name="fatherId" class="form-control" placeholder="1" required>
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='notes' id='notes' class='form-control'></textarea>
+                                <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
                             </div>
                         </form>
                     </div>
@@ -119,9 +113,9 @@
                             <thead>
                                 <tr>
                                     <th class="text-info fw-bold">Date</th>
-                                    <th class="text-info fw-bold">Serial Number</th>
-                                    <th class="text-info fw-bold">Vet Name</th>
-                                    <th class="text-info fw-bold">Donor Breed</th>
+                                    <th class="text-info fw-bold">Cattle Id</th>
+                                    <th class="text-info fw-bold">Father Breed</th>
+                                    <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 

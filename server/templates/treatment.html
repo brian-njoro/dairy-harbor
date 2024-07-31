@@ -56,9 +56,17 @@
 
                     <div class="modal-body">
                         <form id="cattleTreatmentForm">
+                            <!-- Cattle Serial Number -->
+                            <div class="mb-3">
+                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                                <div id="cattleRadioButtons" class="form-check">
+                                    <!-- Radio buttons will be dynamically inserted here -->
+                                </div>
+                            </div>
+
                             <!-- Vet Name -->
                             <div class="mb-3">
-                                <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
+                                <label for="vetName" class="form-label text-dark fw-bold" placeholder="Dr. Dairy">Veterinary Doctor's Name:</label>
                                 <input class="form-control" type="text" name='vetName' id="vetName" required>
                             </div>
 
@@ -66,14 +74,6 @@
                             <div class="mb-3">
                                 <label for="dateOfTreatment" class="form-label text-dark fw-bold">Date Of Treatment:</label>
                                 <input type="date" id="dateOfTreatment" class="form-control" required>
-                            </div>
-
-                            <!-- Cattle Serial Number -->
-                            <div class="mb-3">
-                                <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
-                                <div id="cattleRadioButtons" class="form-check">
-                                    <!-- Radio buttons will be dynamically inserted here -->
-                                </div>
                             </div>
 
                             <!-- Drug Used -->
@@ -160,7 +160,7 @@
         
         <!-- Treatment List -->
         <div class="mt-5" id='treatment-list'>
-            <h3 class="fs-3 text-info fw-bold">Treatment List</h3>
+            <h3 class="fs-3 text-info fw-bold text-center">Treatment List</h3>
             <div class="card border border-info border-1 shadow-lg cattle-table">
                 <!-- Treatment History -->
                 <div class="card bg-light border-none">

@@ -53,30 +53,9 @@
                         <h5 class="modal-title text-info fw-bold text-center">Vaccination</h5>
                         <button type="button" class="btn-close bg-danger border border-info border-1" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
                     <div class="modal-body">
                         <form id="cattleVaccinationForm">
-                            <!--Vet Name-->
-                            <div class="mb-3">
-                                <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
-                                <input class="form-control" type="text" name='vetName' id="vetName" required>
-                            </div>
-
-                            <!--Date-->
-                            <div class="mb-3">
-                                <label for="dateOfvaccination" class="form-label text-dark fw-bold">Date:</label>
-                                <input type="date" id="dateOfvaccination" class="form-control" required>
-                            </div>
-
-                            <!--method-->
-                            <div class="mb-3">
-                                <label for="method" class="form-label text-dark fw-bold">Gender:</label>
-                                <select class="form-control" name="method" id="method" required>
-                                    <option value="injection">injection</option>
-                                    <option value="Oral">Oral</option>
-                                    <option value="Intranasal">Intranasal</option>
-                                </select>
-                            </div>
-                            
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
                                 <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
@@ -85,22 +64,34 @@
                                 </div>
                             </div>
 
+                            <!--Vet Name-->
+                            <div class="mb-3">
+                                <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName" placeholder="Dr. Dairy" required>
+                            </div>
+
+                            <!--Date-->
+                            <div class="mb-3">
+                                <label for="dateOfvaccination" class="form-label text-dark fw-bold">Date:</label>
+                                <input type="date" id="dateOfvaccination" class="form-control" placeholder="date" required>
+                            </div>
+
                             <!--Vaccine Name-->
                             <div class="mb-3">
                                 <label for="vaccineName" class="form-label text-dark fw-bold">Name of vaccine:</label>
-                                <input type="text" class="form-control" name='vaccineName' id="vaccineName" required>
+                                <input type="text" class="form-control" name='vaccineName' id="vaccineName" placeholder="vaccine name" required>
                             </div>
 
-                            <!-- Dose -->
+                            <!-- Disease -->
                             <div class="mb-3">
-                                <label for="dose" class="form-label text-dark fw-bold">Dose:</label>
-                                <input type="text" class="form-control" name='dose' id="dose" required>
+                                <label for="dose" class="form-label text-dark fw-bold">Disease:</label>
+                                <input type="text" class="form-control" name='dose' id="dose" placeholder="Viral Diarrhea" required>
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='notes' id='notes' class='form-control'></textarea>
+                                <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
                             </div>
 
                         </form>
@@ -130,7 +121,6 @@
                                     <th class="text-info fw-bold">Date</th>
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Vet Name</th>
-                                    <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Drug</th>
                                     <th class="text-info fw-bold">Disease</th>
                                     <th class="text-info fw-bold">Delete</th>
