@@ -1,4 +1,8 @@
-{% extends "base.html" %}
+{% if current_user.user_type == 'farmer' %}
+    {% extends "base.html" %}   
+{% else %}
+    {% extends "workerbase.html" %}
+{% endif %}
 
 {% block title %}Deworm{% endblock %}
 
@@ -78,8 +82,8 @@
 
                             <!--Deworming Method-->
                             <div class="mb-3">
-                                <label for="DewormingMethod" class="form-label fw-bold text-dark">Method Of Deworming:</label>
-                                <select class="form-control" name="DewormingMethod" id="DewormingMethod" required>
+                                <label for="method" class="form-label fw-bold text-dark">Method Of Deworming:</label>
+                                <select class="form-control" name="method" id="method" required>
                                     <option value="Pour-On">Pour-On</option>
                                     <option value="oral">Oral Drench</option>
                                     <option value="Injectable">Injectable</option>
@@ -97,14 +101,25 @@
 
                             <!-- Drug Name -->
                             <div class="mb-3">
+<<<<<<< HEAD
                                 <label for="drugUsed" class="form-label fw-bold text-dark">Name of medicine:</label>
                                 <input class="form-control" name="drugUsed" id="drugUsed" placeholder="Dewormer" required>
+=======
+                                <label for="drugUsed" class="form-label fw-bold text-dark">Drug Used:</label>
+                                <input class="form-control" name="drugUsed" id="drugUsed" required>
+>>>>>>> origin/main
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
                                 <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
+                            </div>
+
+                            <!-- Cost -->
+                            <div class="mb-3">
+                                <label for="cost" class="form-label fw-bold text-dark">Cost:</label>
+                                <textarea name='cost' id='cost' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>

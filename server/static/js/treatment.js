@@ -253,6 +253,7 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
     const drugUsed = document.getElementById('drugUsed').value;
     const methodOfAdministration = document.getElementById('methodOfAdministration').value;
     const disease = document.getElementById('disease').value;
+    const cost = document.getElementById('cost').value;
     const notes = document.getElementById('notes').value;
 
     if (selectedCattle.length === 0) {
@@ -260,6 +261,7 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
         return;
     }
 
+<<<<<<< HEAD
     for (const cattleId of selectedCattle) {
         const treatmentData = {
             vet_name: vetName,
@@ -270,6 +272,18 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
             disease: disease,
             notes: notes
         };
+=======
+    const treatmentData = {
+        vet_name: vetName,
+        date: dateOfTreatment,
+        cattle_id: cattleId,
+        drug_used: drugUsed,
+        method_of_administration: methodOfAdministration,
+        disease: disease,
+        cost: cost,
+        notes: notes
+    };
+>>>>>>> origin/main
 
         try {
             const response = await fetch('/api/treatment', {

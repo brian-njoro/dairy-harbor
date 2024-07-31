@@ -102,18 +102,38 @@ const populateCattleOptions = async () => {
 // Event listener for the submit button
 document.getElementById('cattleDehornButton').addEventListener('click', async () => {
     const vetName = document.getElementById('vetName').value;
+<<<<<<< HEAD
     const dateOfDehorn = document.getElementById('dateOfDehorning').value;
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const dehorningMethod = document.getElementById('dehorningMethod').value;
+=======
+    const dateOfdehorn = document.getElementById('dateOfDehorning').value;
+    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
+    const method = document.getElementById('method').value;
+>>>>>>> origin/main
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
+
 
     if (selectedCattleCheckboxes.length === 0) {
         alert('Please select at least one cattle.');
         return;
     }
 
+<<<<<<< HEAD
     const dehorningPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
         const cattleId = checkbox.value;
+=======
+    const dehornData = {
+        vet_name: vetName,
+        date: dateOfdehorn,
+        cattle_id: cattleId,
+        method: method,
+        notes: notes,
+        cost: cost
+    };
+>>>>>>> origin/main
 
         const dehornData = {
             vet_name: vetName,

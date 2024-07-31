@@ -56,6 +56,31 @@
 
                     <div class="modal-body">
                         <form id="cattleVaccinationForm">
+<<<<<<< HEAD
+=======
+                            <!--Vet Name-->
+                            <div class="mb-3">
+                                <label for="vetName" class="form-label text-dark fw-bold">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName" required>
+                            </div>
+
+                            <!--Date-->
+                            <div class="mb-3">
+                                <label for="dateOfvaccination" class="form-label text-dark fw-bold">Date:</label>
+                                <input type="date" id="dateOfvaccination" class="form-control" required>
+                            </div>
+
+                            <!--method-->
+                            <div class="mb-3">
+                                <label for="method" class="form-label text-dark fw-bold">Method:</label>
+                                <select class="form-control" name="method" id="method" required>
+                                    <option value="injection">injection</option>
+                                    <option value="Oral">Oral</option>
+                                    <option value="Intranasal">Intranasal</option>
+                                </select>
+                            </div>
+                            
+>>>>>>> origin/main
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
                                 <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
@@ -78,6 +103,7 @@
 
                             <!--Vaccine Name-->
                             <div class="mb-3">
+<<<<<<< HEAD
                                 <label for="vaccineName" class="form-label text-dark fw-bold">Name of vaccine:</label>
                                 <input type="text" class="form-control" name='vaccineName' id="vaccineName" placeholder="vaccine name" required>
                             </div>
@@ -86,12 +112,28 @@
                             <div class="mb-3">
                                 <label for="dose" class="form-label text-dark fw-bold">Disease:</label>
                                 <input type="text" class="form-control" name='dose' id="dose" placeholder="Viral Diarrhea" required>
+=======
+                                <label for="drug" class="form-label text-dark fw-bold">Vaccine Drug used:</label>
+                                <input type="text" class="form-control" name='drug' id="drug" required>
+                            </div>
+
+                            <!-- disease -->
+                            <div class="mb-3">
+                                <label for="disease" class="form-label text-dark fw-bold">disease:</label>
+                                <input type="text" class="form-control" name='disease' id="disease" required>
+>>>>>>> origin/main
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
                                 <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
+                            </div>
+
+                            <!-- disease -->
+                            <div class="mb-3">
+                                <label for="cost" class="form-label text-dark fw-bold">Cost:</label>
+                                <input type="text" class="form-control" name='cost' id="cost" required>
                             </div>
 
                         </form>
@@ -119,7 +161,6 @@
                             <thead>
                                 <tr>
                                     <th class="text-info fw-bold">Date</th>
-                                    <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Vet Name</th>
                                     <th class="text-info fw-bold">Drug</th>
                                     <th class="text-info fw-bold">Disease</th>

@@ -269,19 +269,40 @@ const populateCattleOptions = async () => {
 document.getElementById('pestControlButton').addEventListener('click', async () => {
     const vetName = document.getElementById('vetName').value;
     const controlDate = document.getElementById('controlDate').value;
+<<<<<<< HEAD
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const controlMethod = document.getElementById('controlMethod').value;
+=======
+    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
+    const method = document.getElementById('method').value;
+>>>>>>> origin/main
     const pesticide = document.getElementById('pesticide').value;
     const pestName = document.getElementById('pestName').value;
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
+
 
     if (selectedCattleCheckboxes.length === 0) {
         alert('Please select at least one cattle.');
         return;
     }
 
+<<<<<<< HEAD
     const pestControlPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
         const cattleId = checkbox.value;
+=======
+    const pestData = {
+        vet_name:vet_name,
+        cattle_id: cattleId,
+        control_date: controlDate,
+        pest_type: pestName,
+        method_used: method,
+        pesticide_used:pesticide,
+        notes: notes,
+        cost: cost
+    };
+>>>>>>> origin/main
 
         const pestData = {
             vet_name: vetName,

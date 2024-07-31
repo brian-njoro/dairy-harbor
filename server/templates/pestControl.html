@@ -1,4 +1,8 @@
-{% extends "base.html" %}
+{% if current_user.user_type == 'farmer' %}
+    {% extends "base.html" %}   
+{% else %}
+    {% extends "workerbase.html" %}
+{% endif %}
 
 {% block title %}Pest control{% endblock %}
 
@@ -78,8 +82,8 @@
 
                             <!--pest control method -->
                             <div class="mb-3">
-                                <label for="controlMethod" class="form-label fw-bold text-dark">Pest Control Method:</label>
-                                <select class="form-control" name="controlMethod" id="controlMethod" required>
+                                <label for="method" class="form-label fw-bold text-dark">Pest Control Method:</label>
+                                <select class="form-control" name="method" id="method" required>
                                     <option value="spraying">Spraying</option>
                                     <option value="oral">Oral Administration</option>
                                     <option value="Dipping">Dipping</option>
@@ -102,6 +106,12 @@
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
                                 <textarea name='notes' id='notes' class='form-control'></textarea>
+                            </div>
+
+                            <!-- Cost -->
+                            <div class="mb-3">
+                                <label for="cost" class="form-label fw-bold text-dark">Cost:</label>
+                                <textarea name='cost' id='cost' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>

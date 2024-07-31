@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const milkProductionForm = document.querySelector('milkProduction');
+    const milkProductionForm = document.getElementById('milkProduction');
     const milkList = document.getElementById('milkList');
 
     milkProductionForm.addEventListener('submit', function(event) {
@@ -8,13 +8,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Capture form data
         const serialNumber = document.getElementById('serialNumber').value;
         const milkLiters = document.getElementById('milkLiters').value;
-        const Date = document.getElementById('date').value;
+        const date = document.getElementById('date').value;
         const breed = document.getElementById('breed').value;
         const workerId = document.getElementById('workerId').value;
+        const givenToCalf = document.getElementById('givenToCalf').value;
+        const consumedByStaff = document.getElementById('consumedByStaff').value;
+        const spillage = document.getElementById('spillage').value;
+        const spoiled = document.getElementById('spoiled').value;
 
         // Validate form data
-        if (!serialNumber || !milkLiters || !workerId || !Date || !breed) {
-            alert('Please fill in all fields.');
+        if (!serialNumber || !milkLiters || !workerId || !date || !breed) {
+            alert('Please fill in all required fields.');
             return;
         }
 
@@ -27,15 +31,22 @@ document.addEventListener('DOMContentLoaded', function() {
         const litersCell = document.createElement('td');
         const breedCell = document.createElement('td');
         const workerCell = document.createElement('td');
+        const givenToCalfCell = document.createElement('td');
+        const consumedByStaffCell = document.createElement('td');
+        const spillageCell = document.createElement('td');
+        const spoiledCell = document.createElement('td');
         const deleteCell = document.createElement('td');
 
         // Set cell content
-        const currentDate = new Date().toLocaleDateString();
-        dateCell.textContent = currentDate;
+        dateCell.textContent = new Date(date).toLocaleDateString();
         serialNumberCell.textContent = serialNumber;
         litersCell.textContent = milkLiters;
         breedCell.textContent = breed;
         workerCell.textContent = workerId;
+        givenToCalfCell.textContent = givenToCalf || '0';
+        consumedByStaffCell.textContent = consumedByStaff || '0';
+        spillageCell.textContent = spillage || '0';
+        spoiledCell.textContent = spoiled || '0';
 
         // Create delete button
         const deleteButton = document.createElement('button');
@@ -53,6 +64,10 @@ document.addEventListener('DOMContentLoaded', function() {
         newRow.appendChild(litersCell);
         newRow.appendChild(breedCell);
         newRow.appendChild(workerCell);
+        newRow.appendChild(givenToCalfCell);
+        newRow.appendChild(consumedByStaffCell);
+        newRow.appendChild(spillageCell);
+        newRow.appendChild(spoiledCell);
         newRow.appendChild(deleteCell);
 
         // Append row to table

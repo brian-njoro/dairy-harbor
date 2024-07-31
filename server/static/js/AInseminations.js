@@ -109,6 +109,10 @@ document.getElementById('CattleAInseminationButton').addEventListener('click', a
     const semen_breed = document.getElementById('semen_breed').value;
     const sexed = document.getElementById('sexed').value;
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
+
+
 
     if (selectedCattleCheckboxes.length === 0) {
         alert('Please select at least one cattle.');

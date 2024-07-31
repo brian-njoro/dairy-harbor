@@ -102,6 +102,7 @@ class Dehorning(db.Model):
     vet_name = db.Column(db.String(100),nullable=True)
     method = db.Column(db.String(100))
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
     cattle_id = db.Column(db.Integer, db.ForeignKey('cattle.serial_number'))
 
     cattle = db.relationship('Cattle', back_populates='dehorning')
@@ -115,6 +116,7 @@ class Deworming(db.Model):
     drug_used = db.Column(db.String(100))
     method_of_administration = db.Column(db.String(100))
     disease = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='dewormings')
@@ -126,6 +128,8 @@ class PestControl(db.Model):
     method_used = db.Column(db.String(100))
     pest_type = db.Column(db.String(100))
     pesticide_used = db.Column(db.String(100))
+    vet_name = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     vet_name = db.Column(db.String(100), nullable=True)
     notes = db.Column(db.Text)
 
@@ -141,10 +145,23 @@ class Vaccination(db.Model):
     method = db.Column(db.String(100))
     drug = db.Column(db.String(100))
     disease = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     cattle_id = db.Column(db.Integer, db.ForeignKey('cattle.serial_number'))
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='vaccinations')
+
+    def as_dict(self):
+        return {
+            'vaccination_id': self.vaccination_id,
+            'date': self.date.strftime('%Y-%m-%d'),
+            'vet_name': self.vet_name,
+            'method': self.method,
+            'drug': self.drug,
+            'disease': self.disease,
+            'cattle_id': self.cattle_id,
+            'notes': self.notes
+        }
 
 
 class Treatment(db.Model):
@@ -155,9 +172,22 @@ class Treatment(db.Model):
     drug_used = db.Column(db.String(100))
     method_of_administration = db.Column(db.String(100))
     disease = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='treatments')
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'date': self.date.strftime('%Y-%m-%d'),
+            'vet_name': self.vet_name,
+            'cattle_id': self.cattle_id,
+            'drug_used': self.drug_used,
+            'method_of_administration': self.method_of_administration,
+            'disease': self.disease,
+            'notes': self.notes
+        }
 
 
 class HeatDetection(db.Model):
@@ -176,6 +206,8 @@ class ArtificialInsemination(db.Model):
     insemination_date = db.Column(db.Date)
     semen_breed = db.Column(db.String(100))
     sexed = db.Column(db.Boolean)
+    vet_name = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     vet_name = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.Text)
 
@@ -188,6 +220,7 @@ class NaturalInsemination(db.Model):
     father_breed = db.Column(db.String(100))
     father_id = db.Column(db.String(100), nullable=True)
     date = db.Column(db.Date)
+    cost = db.Column(db.Float, nullable=True)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='natural_inseminations')
@@ -229,6 +262,7 @@ class Pregnancy(db.Model):
     detection_date = db.Column(db.Date)
     expected_delivery_date = db.Column(db.Date)
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
 
     cattle = db.relationship('Cattle', back_populates='pregnancies')
 
@@ -238,6 +272,7 @@ class Miscarriage(db.Model):
     date = db.Column(db.Date)
     cattle_id = db.Column(db.Integer, db.ForeignKey('cattle.serial_number'))
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
 
     cattle = db.relationship('Cattle', back_populates='miscarriages')
 
@@ -249,6 +284,7 @@ class Calving(db.Model):
     calf_id = db.Column(db.Integer, nullable=True)
     outcome = db.Column(db.String(100))
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
     assisted_by = db.Column(db.Integer, db.ForeignKey('worker.id'))
 
     cattle = db.relationship('Cattle', back_populates='calvings')

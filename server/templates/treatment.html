@@ -1,4 +1,8 @@
-{% extends "base.html" %}
+{% if current_user.user_type == 'farmer' %}
+    {% extends "base.html" %}   
+{% else %}
+    {% extends "workerbase.html" %}
+{% endif %}
 
 {% block title %}Cattle Treatment{% endblock %}
 
@@ -92,6 +96,12 @@
                             <div class="mb-3">
                                 <label for="disease" class="form-label text-dark fw-bold">Name Of Disease:</label>
                                 <input class="form-control" type="text" name='disease' id="disease" required>
+                            </div>
+
+                            <!-- Disease Name -->
+                            <div class="mb-3">
+                                <label for="cost" class="form-label text-dark fw-bold">Cost of treatment:</label>
+                                <input class="form-control" type="text" name='cost' id="cost" required>
                             </div>
 
                             <!-- Notes -->

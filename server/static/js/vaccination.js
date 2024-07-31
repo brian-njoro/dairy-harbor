@@ -1,17 +1,23 @@
 // Function to fetch and update the vaccination list
+<<<<<<< HEAD
 const updateVaccinationList = async () => {
     console.log('Reached here vaccination list fetch')
+=======
+// Function to fetch and update the vaccination list
+const updatevaccinationList = async () => {
+    console.log('Reached here vaccination list fetch');
+>>>>>>> origin/main
 
     try {
         const response = await fetch('/api/vaccination');
-        const vaccinations = await response.json();
+        const data = await response.json();
 
-        const vaccinationList = document.getElementById('vaccinationList');
-        vaccinationList.innerHTML = ''; // Clear existing list
+        console.log('Response data:', data); // Log the response data
 
-        vaccinations.forEach(vaccination => {
-            const row = document.createElement('tr');
+        // Access the vaccinations array within the response object
+        const vaccinations = data.vaccinations;
 
+<<<<<<< HEAD
             row.innerHTML = `
                 <td>${new Date(vaccination.date).toLocaleDateString()}</td>
                 <td>${Array.isArray(vaccination.cattle_id) ? vaccination.cattle_id.join(', ') : vaccination.cattle_id}</td>
@@ -22,16 +28,46 @@ const updateVaccinationList = async () => {
                     <button class="btn btn-danger btn-sm" onclick="deleteVaccination(${vaccination.id})">Delete</button>
                 </td>
             `;
+=======
+        // Check if vaccinations is an array
+        if (Array.isArray(vaccinations)) {
+            const vaccinationList = document.getElementById('vaccinationList');
+            vaccinationList.innerHTML = ''; // Clear existing list
+>>>>>>> origin/main
 
-            vaccinationList.appendChild(row);
-        });
+            vaccinations.forEach(vaccination => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${new Date(vaccination.date).toLocaleDateString()}</td>
+                    <td>${vaccination.vet_name}</td>
+                    <td>${vaccination.method}</td>
+                    <td>${vaccination.drug}</td>
+                    <td>${vaccination.disease}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
+                    </td>
+                `;
+
+                vaccinationList.appendChild(row);
+            });
+        } else {
+            console.error('Error: The vaccinations property is not an array:', vaccinations);
+        }
     } catch (error) {
         console.error('Error fetching vaccination list:', error);
     }
 };
 
+<<<<<<< HEAD
 // Function to delete a Vaccination
 const deleteVaccination = async (id) => {
+=======
+
+
+// Function to delete a vaccination
+const deletevaccination = async (id) => {
+>>>>>>> origin/main
     try {
         const response = await fetch(`/api/vaccination/${id}`, {
             method: 'DELETE'
@@ -106,18 +142,41 @@ const populateCattleOptions = async () => {
 document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {
     const dateOfVaccination = document.getElementById('dateOfvaccination').value;
     const vetName = document.getElementById('vetName').value;
+<<<<<<< HEAD
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const vaccineName = document.getElementById('vaccineName').value;
     const dose = document.getElementById('dose').value;
+=======
+    const method = document.getElementById('method').value;
+    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
+    const drug = document.getElementById('drug').value;
+    const disease = document.getElementById('disease').value;
+>>>>>>> origin/main
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
 
     if (selectedCattleCheckboxes.length === 0) {
         alert('Please select at least one cattle.');
         return;
     }
 
+<<<<<<< HEAD
     const vaccinationPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
         const cattleId = checkbox.value;
+=======
+    const vaccinationData = {
+        date: dateOfvaccination,
+        vet_name: vetName,
+        cattle_id: cattleId,
+        drug: drug,
+        method:method,
+        drug: drug,
+        disease: disease,
+        notes: notes,
+        cost: cost
+    };
+>>>>>>> origin/main
 
         const vaccinationData = {
             date: dateOfVaccination,
