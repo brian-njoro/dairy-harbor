@@ -19,6 +19,7 @@ const updateTreatmentList = async () => {
                 <td>${treatment.method_of_administration}</td>
                 <td>${treatment.drug_used}</td>
                 <td>${treatment.disease}</td>
+                <td>${treatment.cost}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deleteTreatment(${treatment.id})">Delete</button>
                 </td>
@@ -127,7 +128,8 @@ document.getElementById('CattleTreatmentButton').addEventListener('click', async
             drug_used: drugUsed,
             method_of_administration: methodOfAdministration,
             disease: disease,
-            notes: notes
+            notes: notes,
+            cost:cost,
         };
 
         try {

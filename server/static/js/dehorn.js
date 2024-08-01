@@ -104,9 +104,8 @@ document.getElementById('cattleDehornButton').addEventListener('click', async ()
     const vetName = document.getElementById('vetName').value;
     const dateOfDehorn = document.getElementById('dateOfDehorning').value;
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
-    const dehorningMethod = document.getElementById('dehorningMethod').value;
+    const dehorningMethod = document.getElementById('method').value;
     const notes = document.getElementById('notes').value;
-    const cost = document.getElementById('cost').value;
 
 
 

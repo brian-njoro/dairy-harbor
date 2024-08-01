@@ -108,10 +108,9 @@ document.getElementById('cattleDewormButton').addEventListener('click', async ()
     const dateOfDeworm = document.getElementById('dateOfDeworming').value;
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const drugUsed = document.getElementById('drugUsed').value;
-    const dewormingMethod = document.getElementById('DewormingMethod').value;
+    const dewormingMethod = document.getElementById('method').value;
     const disease = document.getElementById('disease').value;
     const notes = document.getElementById('notes').value;
-    const cost = document.getElementById('cost').value;
 
     if (selectedCattleCheckboxes.length === 0) {
         alert('Please select at least one cattle.');

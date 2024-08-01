@@ -107,7 +107,7 @@ document.getElementById('pestControlButton').addEventListener('click', async () 
     const controlDate = document.getElementById('controlDate').value;
 
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
-    const controlMethod = document.getElementById('controlMethod').value;
+    const controlMethod = document.getElementById('method').value;
     const pesticide = document.getElementById('pesticide').value;
     const pestName = document.getElementById('pestName').value;
     const notes = document.getElementById('notes').value;

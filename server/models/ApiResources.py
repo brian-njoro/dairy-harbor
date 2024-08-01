@@ -397,6 +397,7 @@ class RecordVaccinationResource(Resource):
         self.parser.add_argument('drug', type=str, help='Vaccine name is required')
         self.parser.add_argument('disease', type=str)
         self.parser.add_argument('notes', type=str)
+        self.parser.add_argument('cost', type=float)
 
     def _create_log_message(self, cattle_id, message):
         if current_user.user_type == 'farmer':
