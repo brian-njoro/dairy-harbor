@@ -81,36 +81,6 @@ const populateCattleOptions = async () => {
     }
 };
 
-
-// Function to fetch and update the heat list
-// const updateHeatList = async () => {
-//     console.log('Reached here heat list fetch')
-
-//     try {
-//         const response = await fetch('/api/heat_detection');
-//         const heats = await response.json();
-
-//         const heatList = document.getElementById('heatDetectionList');
-//         heatList.innerHTML = ''; // Clear existing list
-
-//         heats.forEach(heat => {
-//             const row = document.createElement('tr');
-
-//             row.innerHTML = `
-//                 <td>${new Date(heat.detection_date).toLocaleDateString()}</td>
-//                 <td>${Array.isArray(heat.cattle_id) ? heat.cattle_id.join(', ') : heat.cattle_id}</td>
-//                 <td>
-//                     <button class="btn btn-danger btn-sm" onclick="deleteHeat(${heat.id})">Delete</button>
-//                 </td>
-//             `;
-
-//             heatList.appendChild(row);
-//         });
-//     } catch (error) {
-//         console.error('Error fetching heat list:', error);
-//     }
-// };
-
 // Function to delete a heat
 const deleteHeat = async (id) => {
     try {
@@ -120,7 +90,7 @@ const deleteHeat = async (id) => {
 
         if (response.ok) {
             // Update the heat list after deletion
-            updateHeatList();
+            updateheatList();
         } else {
             console.error('Failed to delete heat:', await response.text());
         }
@@ -129,9 +99,8 @@ const deleteHeat = async (id) => {
     }
 };
 
-
 // Event listener for the submit button
-document.getElementById('cattleHeatButton').addEventListener('click', async () => {
+document.getElementById('cattleheatButton').addEventListener('click', async () => {
     const dateOfDetection = document.getElementById('dateOfDetection').value;
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const detectedBy = document.getElementById('detectedBy').value;
@@ -174,7 +143,7 @@ document.getElementById('cattleHeatButton').addEventListener('click', async () =
 
         if (allSuccessful) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattleHeat .btn-close');
+            const modalCloseButton = document.querySelector('#modalCattleheat .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
@@ -182,7 +151,7 @@ document.getElementById('cattleHeatButton').addEventListener('click', async () =
             }
 
             // Update the heat list
-            updateHeatList();
+            updateheatList();
         } else {
             console.error('Some heat detection entries failed.');
         }
@@ -192,8 +161,8 @@ document.getElementById('cattleHeatButton').addEventListener('click', async () =
 });
 
 // Initial fetch to populate the heat list on page load
-updateHeatList();
+updateheatList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattleHeat');
+const modal = document.getElementById('modalCattleheat');
 modal.addEventListener('show.bs.modal', populateCattleOptions);

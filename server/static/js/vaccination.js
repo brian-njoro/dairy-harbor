@@ -16,9 +16,9 @@ const updateVaccinationList = async () => {
                 <td>${new Date(vaccination.date).toLocaleDateString()}</td>
                 <td>${Array.isArray(vaccination.cattle_id) ? vaccination.cattle_id.join(', ') : vaccination.cattle_id}</td>
                 <td>${vaccination.vet_name}</td>
-                <td>${vaccination.method_of_administration}</td>
-                <td>${vaccination.drug_used}</td>
+                <td>${vaccination.drug}</td>
                 <td>${vaccination.disease}</td>
+                <td>${vaccination.cost}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
                 </td>
@@ -105,12 +105,12 @@ const populateCattleOptions = async () => {
 };
 
 // Event listener for the submit button
-document.getElementById('CattlevaccinationButton').addEventListener('click', async () => {
+document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {
     const dateOfvaccination = document.getElementById('dateOfvaccination').value;
     const vetName = document.getElementById('vetName').value;
     const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const vaccineName = document.getElementById('vaccineName').value;
-    const dose = document.getElementById('dose').value;
+    const disease = document.getElementById('disease').value;
     const notes = document.getElementById('notes').value;
     const cost = document.getElementById('cost').value;
 
@@ -129,8 +129,9 @@ document.getElementById('CattlevaccinationButton').addEventListener('click', asy
             vet_name: vetName,
             cattle_id: cattleId,
             drug: vaccineName,
-            disease: dose,
+            disease: disease,
             notes: notes,
+            cost:cost,
         };
 
         return fetch('/api/vaccination', {
@@ -155,7 +156,7 @@ document.getElementById('CattlevaccinationButton').addEventListener('click', asy
 
         if (allSuccessful) {
             // Close the modal
-            const modalCloseButton = document.querySelector('#modalCattlevaccination .btn-close');
+            const modalCloseButton = document.querySelector('#modalCattleVaccination .btn-close');
             if (modalCloseButton) {
                 modalCloseButton.click(); // Simulate click on close button
             } else {
@@ -176,5 +177,5 @@ document.getElementById('CattlevaccinationButton').addEventListener('click', asy
 updateVaccinationList();
 
 // Populate cattle options when the modal is shown
-const modal = document.getElementById('modalCattlevaccination');
+const modal = document.getElementById('modalCattleVaccination');
 modal.addEventListener('show.bs.modal', populateCattleOptions);
