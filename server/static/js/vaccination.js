@@ -14,13 +14,13 @@ const updateVaccinationList = async () => {
 
             row.innerHTML = `
                 <td>${new Date(vaccination.date).toLocaleDateString()}</td>
-                <td>${Array.isArray(vaccination.cattle_id) ? vaccination.cattle_id.join(', ') : vaccination.cattle_id}</td>
+                <td>${vaccination.cattle_id}</td>
                 <td>${vaccination.vet_name}</td>
                 <td>${vaccination.drug}</td>
                 <td>${vaccination.disease}</td>
                 <td>${vaccination.cost}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletevaccination(${vaccination.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteVaccination(${vaccination.id})">Delete</button>
                 </td>
             `;
 
@@ -32,7 +32,7 @@ const updateVaccinationList = async () => {
 };
 
 // Function to delete a vaccination
-const deletevaccination = async (id) => {
+const deleteVaccination = async (id) => {
     try {
         const response = await fetch(`/api/vaccination/${id}`, {
             method: 'DELETE'
