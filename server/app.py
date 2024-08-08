@@ -338,39 +338,40 @@ def farmer_signup():
 
 @app.route('/login/farmer', methods=['POST'])
 def farmer_login():
-    data = request.get_json()
-    email_address = data.get('email_address')
-    password = data.get('password')
+    if request.method == 'POST':
+        data = request.get_json()
+        email_address = data.get('email_address')
+        password = data.get('password')
 
-    logging.debug(f'Received login request with email: {email_address}')
+        logging.debug(f'Received login request with email: {email_address}')
 
-    farmer = Farmer.query.filter_by(email_address=email_address).first()
-    if farmer and check_password_hash(farmer.password, password):
-        logging.debug('Credentials are valid')
+        farmer = Farmer.query.filter_by(email_address=email_address).first()
+        if farmer and check_password_hash(farmer.password, password):
+            logging.debug('Credentials are valid')
 
-        if current_user.is_authenticated:
-            logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
-            if isinstance(current_user, Worker):
-                logging.debug('Current user is a Worker, logging out')
-                logout_user(current_user)
-                session.clear()  # Clear session data
-                logging.debug('Session cleared after Worker logout')
+            if current_user.is_authenticated:
+                logging.debug(f'Existing session detected with user ID: {session.get("_user_id")}')
+                if isinstance(current_user, Worker):
+                    logging.debug('Current user is a Worker, logging out')
+                    logout_user(current_user)
+                    session.clear()  # Clear session data
+                    logging.debug('Session cleared after Worker logout')
 
-        login_user(farmer)
-        session['user_type'] = 'farmer'  # Add user_type to session
-        logging.debug(f'Logged in Farmer: {farmer}')
-        session.permanent = True
-        app.permanent_session_lifetime = timedelta(minutes=30)
+            login_user(farmer)
+            session['user_type'] = 'farmer'  # Add user_type to session
+            logging.debug(f'Logged in Farmer: {farmer}')
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(minutes=30)
 
-        logging.debug(f'Current user after login: {current_user}')
-        logging.debug(f'Session after login: {session}')
+            logging.debug(f'Current user after login: {current_user}')
+            logging.debug(f'Session after login: {session}')
 
-        response = jsonify({'message': 'Login successful', 'redirect': url_for('home')})
-        response.status_code = 200
-        return response
-    else:
-        logging.debug('Invalid credentials provided')
-        return jsonify({'message': 'Invalid credentials'}), 401
+            response = jsonify({'message': 'Login successful', 'redirect': url_for('home')})
+            response.status_code = 200
+            return response
+        else:
+            logging.debug('Invalid credentials provided')
+            return jsonify({'message': 'Invalid credentials'}), 401
 
 
 

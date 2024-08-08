@@ -99,7 +99,7 @@ class Cattle(db.Model):
 class Dehorning(db.Model):
     dehorning_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
-    vet_name = db.Column(db.String(100))
+    vet_name = db.Column(db.String(100),nullable=True)
     method = db.Column(db.String(100))
     notes = db.Column(db.Text)
     cost = db.Column(db.Float, nullable=True)
@@ -130,6 +130,7 @@ class PestControl(db.Model):
     pesticide_used = db.Column(db.String(100))
     vet_name = db.Column(db.String(100))
     cost = db.Column(db.Float, nullable=True)
+    vet_name = db.Column(db.String(100), nullable=True)
     notes = db.Column(db.Text)
 
     # Relationship with Cattle
@@ -207,6 +208,7 @@ class ArtificialInsemination(db.Model):
     sexed = db.Column(db.Boolean)
     vet_name = db.Column(db.String(100))
     cost = db.Column(db.Float, nullable=True)
+    vet_name = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='artificial_inseminations')

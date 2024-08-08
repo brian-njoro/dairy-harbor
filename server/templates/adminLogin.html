@@ -52,7 +52,7 @@
     <!--Navbar-->
     <nav class="header nav-container shadow-lg navbar navbar-expand-lg bg-white navbar-light  px-3">
 
-      <a href="index.html" class="navbar-brand d-flex align-items-center">
+      <a href="/index" class="navbar-brand d-flex align-items-center">
           <div class="logo-1-container">
               <img class="logo-1-icon d-none d-md-block d-lg-block d-xl-block img-fluid" style="width:100px; height:100px; border:1px solid rgb(0, 162, 255); border-radius:60px; border-bottom:10px solid rgb(0, 162, 255); margin-bottom:-40px;" alt="" src="{{ url_for('static', filename='auth/img/logo.png') }}"/>
           </div>
@@ -194,12 +194,11 @@
                 </div>
             
                 <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" type="button" id="loginButton">Sign in</button>
+                    <button class="btn btn-primary d-grid w-100" type="button" id="loginButton" name="loginButton">Sign in</button>
                 </div>
             </form>
             
             <!-- Form end -->
-
               <p class="text-center text-dark">
                 <span>New on our platform?</span>
                 <a href="/sign-up">
@@ -232,7 +231,7 @@
               // Check for required fields
               if (!emailUsername || !password) {
                   console.warn('Validation Error: All fields are required.');
-                  alert('Email/Username and password are required.');
+                  alert('Email and password are required.');
                   return;
               }
   
@@ -265,9 +264,7 @@
               });
           });
       });
-  </script>
-  
-
+    </script>
 
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{url_for('static', filename='auth/static/assets/vendor/libs/jquery/jquery.js')}}"></script>
@@ -276,7 +273,6 @@
     <script src="{{ url_for('static', filename='auth/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ url_for('static', filename='auth/static/assets/vendor/js/menu.js') }}"></script>
     <!-- endbuild -->
-
 
     <!-- Main JS -->
     <script src="{{ url_for('static', filename='auth/static/assets/js/main.js')}}"></script>
