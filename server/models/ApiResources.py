@@ -1090,6 +1090,7 @@ class RecordDewormingResource(Resource):
         db.session.commit()
         return {'message': 'Deworming record deleted'}, 200
 
+
 class RecordFeedsResource(Resource):
     def __init__(self):
         self.parser = reqparse.RequestParser()
@@ -1101,7 +1102,7 @@ class RecordFeedsResource(Resource):
         self.parser.add_argument('farmer_id', type=int)
         self.parser.add_argument('worker_id', type=int)
 
-    @login_required
+    
     def get(self, id=None):
         if current_user.user_type == 'farmer':
             farmer_id = current_user.id
@@ -1126,9 +1127,22 @@ class RecordFeedsResource(Resource):
                 return schema.dump(record), 200
             return {'message': 'Feed record not found'}, 404
 
-    @login_required
+    
     def post(self):
         data = request.get_json()
+
+        if current_user.user_type == 'farmer':
+            data['farmer_id'] = current_user.id
+            data['worker_id'] = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            data['farmer_id'] = worker.farmer_id
+            data['worker_id'] = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         schema = FeedsSchema(session=db.session)
         try:
             record = schema.load(data)
@@ -1139,7 +1153,7 @@ class RecordFeedsResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
-    @login_required
+    
     def put(self, id):
         record = Feeds.query.get(id)
         if not record:
@@ -1159,7 +1173,7 @@ class RecordFeedsResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
-    @login_required
+    
     def delete(self, id):
         record = Feeds.query.get(id)
         if not record:
@@ -1167,6 +1181,7 @@ class RecordFeedsResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Feed record deleted'}, 200
+
 
 class RecordHeatDetectionResource(Resource):
     def __init__(self):
@@ -1528,22 +1543,47 @@ class RecordMedicineResource(Resource):
         self.parser.add_argument('farmer_id', type=int)
         self.parser.add_argument('worker_id', type=int)
 
+    
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all medicine records
-            records = Medicine.query.all()
+            # Get all medicine records for the farmer
+            records = Medicine.query.filter_by(farmer_id=farmer_id).all()
             schema = MedicineSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific medicine record by ID
-            record = Medicine.query.get(id)
+            # Get a specific medicine record by ID for the farmer
+            record = Medicine.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = MedicineSchema()
                 return schema.dump(record), 200
             return {'message': 'Medicine record not found'}, 404
 
+    
     def post(self):
         data = request.get_json()
+
+        if current_user.user_type == 'farmer':
+            data['farmer_id'] = current_user.id
+            data['worker_id'] = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            data['farmer_id'] = worker.farmer_id
+            data['worker_id'] = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         schema = MedicineSchema(session=db.session)
         try:
             record = schema.load(data)
@@ -1554,6 +1594,7 @@ class RecordMedicineResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    
     def put(self, id):
         record = Medicine.query.get(id)
         if not record:
@@ -1573,6 +1614,7 @@ class RecordMedicineResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    
     def delete(self, id):
         record = Medicine.query.get(id)
         if not record:
@@ -1878,22 +1920,47 @@ class RecordEquipmentResource(Resource):
         self.parser.add_argument('farmer_id', type=int)
         self.parser.add_argument('worker_id', type=int)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all equipment records
-            records = Equipment.query.all()
+            # Get all equipment records for the farmer
+            records = Equipment.query.filter_by(farmer_id=farmer_id).all()
             schema = EquipmentSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific equipment record by ID
-            record = Equipment.query.get(id)
+            # Get a specific equipment record by ID for the farmer
+            record = Equipment.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = EquipmentSchema()
                 return schema.dump(record), 200
             return {'message': 'Equipment record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
+
+        if current_user.user_type == 'farmer':
+            data['farmer_id'] = current_user.id
+            data['worker_id'] = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            data['farmer_id'] = worker.farmer_id
+            data['worker_id'] = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         schema = EquipmentSchema(session=db.session)
         try:
             record = schema.load(data)
@@ -1904,6 +1971,7 @@ class RecordEquipmentResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = Equipment.query.get(id)
         if not record:
@@ -1923,6 +1991,7 @@ class RecordEquipmentResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = Equipment.query.get(id)
         if not record:

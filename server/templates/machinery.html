@@ -4,165 +4,77 @@
     {% extends "workerbase.html" %}
 {% endif %}
 
-{% block title%}Farm Machinery{% endblock %}
+{% block title %}Equipments{% endblock %}
 
 {% block content %}
 <!-- Modal for Notifications -->
 <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border border-1 border-info">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border border-2 border-info">
             <div class="modal-header">
                 <h5 class="modal-title text-info fw-bold">Notifications</h5>
                 <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
             <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                 <ul id="notificationList" class="list-group">
                     <!-- Notifications will be appended here -->
                 </ul>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-<!--Farm Machinery-->
-<div class="card text-white mb-3 border border-1 border-info shadow-lg">
+
+<!-- Equipments -->
+<div class="card text-white mb-3">
     <img class="card-img lazy" style="filter:brightness(40%); max-height:300px; object-fit:cover; object-position:center;" src="{{url_for('static',filename='auth/img/farmmachinery.jpg')}}" alt="Image">
     <div class="card-img-overlay">
-        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Farm Machinery</h3>
-        <p class="card-text text-white mb-3">Track and manage your farm machinery with comprehensive insights into maintenance schedules, operational efficiency, and utilization rates, all centralized for your convenience</p>
-        <!-- Button to add new machinery -->
-        <div class="mb-0">
-            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalFarmMachinery" id='farmMachineryButton'>
-                Add Machinery
+        <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">Equipments</h3>
+        <p class="card-text text-white">Track and manage equipment purchases, usage, and schedules to ensure smooth farm operations.</p>
+        <!-- Button to add new equipment -->
+        <div class="mb-3">
+            <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalEquipment" id='addEquipmentButton'>
+                Add Equipment
             </button>
         </div>
     </div>
 </div>
 
-<!-- Modal for Farm Machinery -->
-<div class="modal fade" id="modalFarmMachinery" tabindex="-1" aria-hidden="true">
+<!-- Modal for Equipment -->
+<div class="modal fade" id="modalEquipment" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border border-1 border-info">
             <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Feeds</h5>
+                <h5 class="modal-title text-info fw-bold">Equipment</h5>
                 <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
-                <form id="farmMachinery">
-                    <!--Date of Buying -->
+                <form id="equipmentForm">
+                    <!-- Date of Purchase -->
                     <div class="mb-3">
-                        <label for="machineryDate" class="form-label fw-bold text-dark">Date Of Buying:</label>
-                        <input type="date" id="machineryDate" class="form-control" required>
+                        <label for="purchaseDate" class="form-label fw-bold text-dark">Date Of Purchase:</label>
+                        <input type="date" id="purchaseDate" name="purchaseDate" class="form-control" required>
                     </div>
-
-                    <!--feedName-->
+                
+                    <!-- Equipment Name -->
                     <div class="mb-3">
-                        <label for="machineryName" class="form-label text-dark fw-bold">Name of Machinery:</label>
-                        <input type="text" id="machineryName" class="form-control" required>
+                        <label for="equipmentName" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="equipmentName" name="equipmentName" class="form-control" required>
                     </div>
-
-                    <!--machineryAgent-->
+                
+                    <!-- Quantity -->
                     <div class="mb-3">
-                        <label for="machineryAgent" class="form-label text-dark fw-bold">Agent:</label>
-                        <input type="text" id="machineryAgent" class="form-control" required>
+                        <label for="quantity" class="form-label fw-bold text-dark">Size:</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" required>
                     </div>
-
-                    <!--Quantity -->
+                
+                    <!-- Price -->
                     <div class="mb-3">
-                        <label for="quantity" class="form-label fw-bold text-dark">Quantity:</label>
-                        <input type="text" id="quantity" class="form-control" required>
-                    </div>
-
-                    <!--Machinery Function-->
-                    <div class="mb-3">
-                        <label for="function" class="form-label text-dark fw-bold">Function:</label>
-                        <input type="text" id="function" class="form-control" required>
-                    </div>
-
-                    <!--Total Cost-->
-                    <div class="mb-3">
-                        <label for="cost" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
-                        <input type="number" id="cost" class="form-control" required>
-                    </div>
-
-                    <!-- Notes -->
-                    <div class="mb-3">
-                        <label for="machinerynotes" class="form-label fw-bold text-dark">Notes:</label>
-                        <textarea name='machinerynotes' id='machinerynotes' class='form-control'></textarea>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="addMachineryButton">Submit</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!--/ Modal for Farm Machinery --> 
-
-<!-- Farm Machinery List -->
-<div class="mt-5" id='machinery-List'>
-    <h3 class="fs-3 text-info fw-bold text-center">Farm Machinery List</h3>
-    <div class="card border border-info border-1 shadow-lg cattle-table">
-        <!-- Farm Machinery History -->
-        <div class="card bg-light border-none ">
-            <div class="table-responsive text-nowrap border">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th class="text-info fw-bold">Date</th>
-                            <th class="text-info fw-bold">Machinery Name</th>                            
-                            <th class="text-info fw-bold">Agent</th>
-                            <th class="text-info fw-bold">Quantity</th>
-                            <th class="text-info fw-bold">Function</th>
-                            <th class="text-info fw-bold">Total Cost (Ksh.)</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="machineryList">
-                        <!-- machinery will be dynamically added here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!--machinery History-->
-    </div>
-</div>
-
-<!-- Modal For Edit Profile -->
-<div class="modal fade" id="editMachineryModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-profile-form" enctype="multipart/form-data">
-                    <!-- Current Password (for validation) -->
-                    <div class="mb-3">
-                        <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
-                        <input type="password" id="current_password" name="current_password" class="form-control" required>
-                    </div>
-
-                    <!--Date of Buying -->
-                    <div class="mb-3">
-                        <label for="purchase_date" class="form-label fw-bold text-dark">Date Of Buying:</label>
-                        <input type="date" id="purchase_date" name="purchase_date" class="form-control" required>
-                    </div>
-
-                    <!-- machinery Name -->
-                    <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <label for="price" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
+                        <input type="number" id="price" name="price" class="form-control" required>
                     </div>
 
                     <!-- Agent -->
@@ -170,34 +82,102 @@
                         <label for="agent" class="form-label text-dark fw-bold">Agent:</label>
                         <input type="text" id="agent" name="agent" class="form-control" required>
                     </div>
-
-                    <!--Quantity -->
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label fw-bold text-dark">Quantity:</label>
-                        <input type="text" id="quantity" class="form-control" required>
-                    </div>
-
-                    <!-- Price -->
-                    <div class="mb-3">
-                        <label for="price" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
-                        <input type="number" id="price" name="price" class="form-control" required>
-                    </div>
-
-                    <!-- worker_id -->
-                    <div class="mb-3">
-                        <label for="farmer_id" class="form-label text-dark fw-bold">worker Id:</label>
-                        <input type="number" id="worker_id" name="worker_id" class="form-control">
-                    </div>
                 </form>
+                
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
+                <button type="button" class="btn btn-info" id="addEquipment">Add Equipment</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- / Modal for Equipment -->
+
+<!-- Equipment List -->
+<div class="mt-5" id='equipment-List'>
+    <h3 class="fs-3 text-info fw-bold">Equipment List</h3>
+    <div class="card border border-info border-1 shadow-lg equipment-table shadow-lg">
+        <!-- Equipment History -->
+        <div class="card bg-light border-none ">
+            <div class="table-responsive text-nowrap border">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-info fw-bold">Date</th>
+                            <th class="text-info fw-bold">Equipment Name</th>
+                            <th class="text-info fw-bold">Quantity</th>
+                            <th class="text-info fw-bold">Price</th>
+                            <th class="text-info fw-bold">Agent</th>
+                            <th class="text-info fw-bold">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="equipmentTable">
+                        <!-- Equipment data will be dynamically appended here -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
-<!-- / Modal For Edit Profile-->
 
-<script src="{{url_for('static',filename='js/machinery.js')}}"></script>
+<!-- Modal for Editing Equipment -->
+<div class="modal fade" id="editEquipmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border border-1 border-info">
+            <div class="modal-header">
+                <h5 class="modal-title text-info fw-bold">Edit Equipment</h5>
+                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="editEquipmentForm">
+                    <input type="hidden" id="editEquipmentId" name="id">
+
+                    <!-- Date of Purchase -->
+                    <div class="mb-3">
+                        <label for="editModalPurchaseDate" class="form-label fw-bold text-dark">Date Of Purchase:</label>
+                        <input type="date" id="editModalPurchaseDate" name="purchaseDate" class="form-control" required>
+                    </div>
+                
+                    <!-- Equipment Name -->
+                    <div class="mb-3">
+                        <label for="editModalName" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="editModalName" name="name" class="form-control" required>
+                    </div>
+                
+                    <!-- Quantity -->
+                    <div class="mb-3">
+                        <label for="editModalQuantity" class="form-label fw-bold text-dark">Quantity:</label>
+                        <input type="number" id="editModalQuantity" name="quantity" class="form-control" required>
+                    </div>
+                
+                    <!-- Price -->
+                    <div class="mb-3">
+                        <label for="editModalPrice" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
+                        <input type="number" id="editModalPrice" name="price" class="form-control" required>
+                    </div>
+
+                    <!-- Agent -->
+                    <div class="mb-3">
+                        <label for="editModalAgent" class="form-label text-dark fw-bold">Agent:</label>
+                        <input type="text" id="editModalAgent" name="agent" class="form-control" required>
+                    </div>
+                </form>
+                
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" id="updateEquipmentButton">Update Equipment</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- / Modal for Editing Equipment -->
+<script src="{{url_for('static',filename='js/equipment.js')}}"></script>
+
 {% endblock %}

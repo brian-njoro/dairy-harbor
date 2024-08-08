@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+static/uploads/
+*.db
+*.sqlite3
+/server/instance/app.db
+
+

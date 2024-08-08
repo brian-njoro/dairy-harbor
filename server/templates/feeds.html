@@ -53,42 +53,37 @@
 
             <div class="modal-body">
                 <form id="cattleForm">
-                    <!--Date of Buying -->
+                    <!-- Date of Buying -->
                     <div class="mb-3">
-                        <label for="purchase_date" class="form-label fw-bold text-dark">Date Of Buying:</label>
-                        <input type="date" id="purchase_date" name="purchase_date" class="form-control" required>
+                        <label for="purchaseDate" class="form-label fw-bold text-dark">Date Of Buying:</label>
+                        <input type="date" id="purchaseDate" name="purchaseDate" class="form-control" required>
                     </div>
-
+                
                     <!-- Feed Name -->
                     <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <label for="feedName" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="feedName" name="feedName" class="form-control" required>
                     </div>
-
+                
                     <!-- Agent -->
                     <div class="mb-3">
                         <label for="agent" class="form-label text-dark fw-bold">Agent:</label>
                         <input type="text" id="agent" name="agent" class="form-control" required>
                     </div>
-
-                    <!--Quantity -->
+                
+                    <!-- Quantity -->
                     <div class="mb-3">
                         <label for="quantity" class="form-label fw-bold text-dark">Quantity:</label>
-                        <input type="text" id="quantity" class="form-control" required>
+                        <input type="number" id="quantity" name="quantity" class="form-control" required>
                     </div>
-
+                
                     <!-- Price -->
                     <div class="mb-3">
                         <label for="price" class="form-label text-dark fw-bold">Total Cost (Ksh.):</label>
                         <input type="number" id="price" name="price" class="form-control" required>
                     </div>
-
-                    <!-- worker_id -->
-                    <div class="mb-3">
-                        <label for="farmer_id" class="form-label text-dark fw-bold">worker Id:</label>
-                        <input type="number" id="worker_id" name="worker_id" class="form-control">
-                    </div>
                 </form>
+                
             </div>
 
             <div class="modal-footer">
@@ -99,7 +94,7 @@
         </div>
     </div>
 </div>
-<!--/ Modal for Cattle insemination --> 
+<!-- / Modal for Feeds -->
 
 <!-- feeds List -->
 <div class="mt-5" id='feeds-List'>
@@ -127,71 +122,64 @@
                 </table>
             </div>
         </div>
-        <!--feeds History-->
+        <!-- feeds History -->
     </div>
 </div>
 
-<!-- Modal For Edit Profile -->
-<div class="modal fade" id="editFeedModal" tabindex="-1" aria-hidden="true" data-user-id="{{ current_user.id }}">
+<!-- Modal For Edit Feed -->
+<div class="modal fade" id="editFeedModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border border-2 border-info">
             <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Edit Profile</h5>
+                <h5 class="modal-title text-info fw-bold">Edit Feed</h5>
                 <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="edit-profile-form" enctype="multipart/form-data">
-                    <!-- Current Password (for validation) -->
+                <form id="editFeedForm">
+                    <!-- Hidden field to store the feed ID -->
+                    <input type="hidden" id="editFeedId">
+                    
+                    <!-- Date of Buying -->
                     <div class="mb-3">
-                        <label for="current_password" class="form-label text-dark fw-bold">Current Password (Confirm it is you):</label>
-                        <input type="password" id="current_password" name="current_password" class="form-control" required>
-                    </div>
-
-                    <!--Date of Buying -->
-                    <div class="mb-3">
-                        <label for="purchase_date" class="form-label fw-bold text-dark">Date Of Buying:</label>
-                        <input type="date" id="purchase_date" name="purchase_date" class="form-control" required>
+                        <label for="editModalPurchaseDate" class="form-label fw-bold text-dark">Date Of Buying:</label>
+                        <input type="date" id="editModalPurchaseDate" name="editModalPurchaseDate" class="form-control" required>
                     </div>
 
                     <!-- Feed Name -->
                     <div class="mb-3">
-                        <label for="name" class="form-label text-dark fw-bold">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <label for="editModalName" class="form-label text-dark fw-bold">Name:</label>
+                        <input type="text" id="editModalName" name="editModalName" class="form-control" required>
                     </div>
 
                     <!-- Agent -->
                     <div class="mb-3">
-                        <label for="agent" class="form-label text-dark fw-bold">Agent:</label>
-                        <input type="text" id="agent" name="agent" class="form-control" required>
+                        <label for="editModalAgent" class="form-label text-dark fw-bold">Agent:</label>
+                        <input type="text" id="editModalAgent" name="editModalAgent" class="form-control" required>
                     </div>
 
-                    <!--Quantity -->
+                    <!-- Quantity -->
                     <div class="mb-3">
-                        <label for="quantity" class="form-label fw-bold text-dark">Quantity:</label>
-                        <input type="text" id="quantity" class="form-control" required>
+                        <label for="editModalQuantity" class="form-label fw-bold text-dark">Quantity:</label>
+                        <input type="number" id="editModalQuantity" name="editModalQuantity" class="form-control" required>
                     </div>
 
                     <!-- Price -->
                     <div class="mb-3">
-                        <label for="price" class="form-label text-dark fw-bold">Price:</label>
-                        <input type="number" id="price" name="price" class="form-control" required>
-                    </div>
-
-                    <!-- worker_id -->
-                    <div class="mb-3">
-                        <label for="farmer_id" class="form-label text-dark fw-bold">worker Id:</label>
-                        <input type="number" id="worker_id" name="worker_id" class="form-control">
+                        <label for="editModalPrice" class="form-label text-dark fw-bold">Price:</label>
+                        <input type="number" id="editModalPrice" name="editModalPrice" class="form-control" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" id="submitProfileBtn">Update Profile</button>
+                <button type="button" class="btn btn-info" id="updateFeedButton">Update Feed</button>
             </div>
         </div>
     </div>
 </div>
-<!-- / Modal For Edit Profile-->
+<!-- / Modal For Edit Feed -->
+
+
 
 <script src="{{url_for('static',filename='js/feeds.js')}}"></script>
 {% endblock %}
