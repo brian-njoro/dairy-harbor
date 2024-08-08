@@ -31,7 +31,6 @@ const updateVaccinationList = async () => {
     }
 };
 
-
 // Function to delete a vaccination
 const deletevaccination = async (id) => {
     try {
@@ -49,7 +48,6 @@ const deletevaccination = async (id) => {
         console.error('Error deleting vaccination:', error);
     }
 };
-
 
 // Function to handle "Select All" checkbox
 const handleSelectAll = (selectAllCheckbox) => {
@@ -114,12 +112,10 @@ document.getElementById('CattleVaccinationButton').addEventListener('click', asy
     const notes = document.getElementById('notes').value;
     const cost = document.getElementById('cost').value;
 
-
     if (selectedCattleCheckboxes.length === 0) {
         alert('Please select at least one cattle.');
         return;
     }
-
 
     const vaccinationPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
         const cattleId = checkbox.value;
