@@ -7,30 +7,31 @@
 {% block title %}Dehorn{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    
     <div class="container-fluid" id='dehorn-list'>
         <!--Dehorn-->
         <div class="col mb-3">
             <div class="card text-white mb-3">
-                <img class="card-img lazy" style="filter:brightness(50%); max-height:300px; object-fit:cover; object-position:top;" src="{{url_for('static',filename='auth/img/dehorn.jpg')}}" alt="Image">
+                <img class="card-img lazy" style="filter:brightness(35%); max-height:300px; object-fit:cover; object-position:top;" src="{{url_for('static',filename='auth/img/dehorn.jpg')}}" alt="Image">
 
                 <div class="card-img-overlay">
                     <h3 class="card-title text-info fw-bold" style="font-family:Times New Roman,Arial;">DEHORNING</h3>
@@ -59,18 +60,6 @@
 
                     <div class="modal-body">
                         <form id="cattleForm">
-                            <!--Vet Name-->
-                            <div class="mb-3">
-                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
-                                <input class="form-control" type="text" name='vetName' id="vetName" required>
-                            </div>
-
-                            <!--Date Of Dehorning -->
-                            <div class="mb-3">
-                                <label for="dateOfDehorning" class="form-label fw-bold text-dark">Date Of Dehorning:</label>
-                                <input type="date" id="dateOfDehorning" class="form-control" required>
-                            </div>
-
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
                                 <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
@@ -79,10 +68,22 @@
                                 </div>
                             </div>
 
+                            <!--Date Of Dehorning -->
+                            <div class="mb-3">
+                                <label for="dateOfDehorning" class="form-label fw-bold text-dark">Date Of Dehorning:</label>
+                                <input type="date" id="dateOfDehorning" class="form-control" required>
+                            </div>
+
+                            <!--Vet Name-->
+                            <div class="mb-3">
+                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName">
+                            </div>
+
                             <!--Dehorning Method-->
                             <div class="mb-3">
-                                <label for="dehorningMethod" class="form-label fw-bold text-dark">Method Of Dehorning:</label>
-                                <input class="form-control" name="dehorningMethod" id="dehorningMethod" required>
+                                <label for="method" class="form-label fw-bold text-dark">Method Of Dehorning:</label>
+                                <input class="form-control" name="method" id="method" required>
                             </div>
 
                             <!-- Notes -->
@@ -116,14 +117,13 @@
                             <thead>
                                 <tr>
                                     <th class="text-info fw-bold">Date</th>
-                                    <th class="text-info fw-bold">Serial Number</th>
-                                    <th class="text-info fw-bold">Vet Name</th>
+                                    <th class="text-info fw-bold">Cattle Id</th>
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Delete</th>
                                 </tr>
                             </thead>
 
-                            <tbody id="dehornList">
+                            <tbody id="dehorningList">
                                 <!-- dehorn will be dynamically added here -->
                             </tbody>
                         </table>

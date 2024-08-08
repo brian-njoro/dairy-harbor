@@ -7,25 +7,26 @@
 {% block title %}Deworm{% endblock %}
 
 {% block content %}
-<!-- Modal for Notifications -->
-<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border border-2 border-info">
-            <div class="modal-header">
-                <h5 class="modal-title text-info fw-bold">Notifications</h5>
-                <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <ul id="notificationList" class="list-group">
-                    <!-- Notifications will be appended here -->
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+    <!-- Modal for Notifications -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border border-2 border-info">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info fw-bold">Notifications</h5>
+                    <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="list-group">
+                        <!-- Notifications will be appended here -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
     <div class="container-fluid" id='deworm-list'>
         <!--Deworm-->
         <div class="col mb-3">
@@ -59,18 +60,6 @@
 
                     <div class="modal-body">
                         <form id="cattleForm">
-                            <!--Vet Name-->
-                            <div class="mb-3">
-                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
-                                <input class="form-control" type="text" name='vetName' id="vetName">
-                            </div>
-
-                            <!--Date Of Deworming -->
-                            <div class="mb-3">
-                                <label for="dateOfDeworming" class="form-label fw-bold text-dark">Date Of Deworming:</label>
-                                <input type="date" id="dateOfDeworming" name="dateOfDeworming"  class="form-control" required>
-                            </div>
-
                             <!-- Cattle Serial Number -->
                             <div class="mb-3">
                                 <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
@@ -79,22 +68,47 @@
                                 </div>
                             </div>
 
+                            <!--Date Of Deworming -->
+                            <div class="mb-3">
+                                <label for="dateOfDeworming" class="form-label fw-bold text-dark">Date Of Deworming:</label>
+                                <input type="date" id="dateOfDeworming" name="dateOfDeworming"  class="form-control" required>
+                            </div>
+
+                            <!--Vet Name-->
+                            <div class="mb-3">
+                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
+                                <input class="form-control" type="text" name='vetName' id="vetName" placeholder="Dr. Dairy">
+                            </div>
+
                             <!--Deworming Method-->
                             <div class="mb-3">
-                                <label for="dehorningMethod" class="form-label fw-bold text-dark">Method Of Deworming:</label>
-                                <input class="form-control" name="dewormingMethod" id="dewormingMethod" required>
+                                <label for="method" class="form-label fw-bold text-dark">Method Of Deworming:</label>
+                                <select class="form-control" name="method" id="method" required>
+                                    <option value="Pour-On">Pour-On</option>
+                                    <option value="oral">Oral Drench</option>
+                                    <option value="Injectable">Injectable</option>
+                                    <option value="Additive">Feed Additive</option>
+                                    <option value="Bolus">Bolus</option>
+                                    <option value="Paste">Paste</option>
+                                </select>
                             </div>
 
                             <!--Disease Name-->
                             <div class="mb-3">
                                 <label for="disease" class="form-label fw-bold text-dark">Name of disease:</label>
-                                <input class="form-control" name="disease" id="disease" required>
+                                <input class="form-control" name="disease" id="disease" placeholder="Ivermectin" required>
+                            </div>
+
+                            <!-- Drug Name -->
+                            <div class="mb-3">
+                                <label for="drugUsed" class="form-label fw-bold text-dark">Name of medicine:</label>
+                                <input class="form-control" name="drugUsed" id="drugUsed" placeholder="Dewormer" required>
                             </div>
 
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
-                                <textarea name='notes' id='notes' class='form-control'></textarea>
+                                <textarea name='notes' id='notes' class='form-control' placeholder="Comment"></textarea>
                             </div>
                         </form>
                     </div>
@@ -124,6 +138,7 @@
                                     <th class="text-info fw-bold">Date</th>
                                     <th class="text-info fw-bold">Serial Number</th>
                                     <th class="text-info fw-bold">Vet Name</th>
+                                    <th class="text-info fw-bold">Drug Name</th>
                                     <th class="text-info fw-bold">Method</th>
                                     <th class="text-info fw-bold">Disease</th>
                                     <th class="text-info fw-bold">Delete</th>

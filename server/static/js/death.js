@@ -3,7 +3,7 @@ const updatedeathList = async () => {
     console.log('Reached here death list fetch')
 
     try {
-        const response = await fetch('/api/death');
+        const response = await fetch('/api/cattle_death');
         const deaths = await response.json();
 
         const deathList = document.getElementById('deathList');
@@ -13,12 +13,11 @@ const updatedeathList = async () => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${death.cattle_id}</td>
-                <td>${new Date(death.dateOfdeath).toLocaleDateString()}</td>
+                <td>${new Date(death.date).toLocaleDateString()}</td>
+                <td>${Array.isArray(death.cattle_id) ? death.cattle_id.join(', ') : death.cattle_id}</td>
+                <td>${death.cause_of_death}</td>
                 <td>
-                <td>${death.CauseOfDeath}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletedeath(${death.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteDeath(${death.id})">Delete</button>
                 </td>
             `;
 
@@ -30,9 +29,9 @@ const updatedeathList = async () => {
 };
 
 // Function to delete a death
-const deletedeath = async (id) => {
+const deleteDeath = async (id) => {
     try {
-        const response = await fetch(`/api/death/${id}`, {
+        const response = await fetch(`/api/cattle_death/${id}`, {
             method: 'DELETE'
         });
 
@@ -47,31 +46,53 @@ const deletedeath = async (id) => {
     }
 };
 
-// Function to fetch and populate cattle radio buttons in the modal
+// Function to handle "Select All" checkbox
+const handleSelectAll = (selectAllCheckbox) => {
+    const cattleCheckboxes = document.querySelectorAll('input[name="cattleId"]');
+    cattleCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+};
+
+// Function to fetch and populate cattle checkboxes in the modal
 const populateCattleOptions = async () => {
     try {
         const response = await fetch('/api/cattle/get'); // Adjust endpoint if needed
         const cattleList = await response.json();
-        console.log('Reached here radiobutton')
+        console.log('Reached here checkbox')
 
-        const cattleRadioButtonsContainer = document.getElementById('cattleRadioButtons');
-        cattleRadioButtonsContainer.innerHTML = ''; // Clear existing options
+        const cattleCheckboxesContainer = document.getElementById('cattleRadioButtons');
+        cattleCheckboxesContainer.innerHTML = ''; // Clear existing options
+
+        // Add "Select All" checkbox
+        const selectAllCheckbox = document.createElement('div');
+        selectAllCheckbox.classList.add('form-check');
+        selectAllCheckbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" id="selectAllCattle">
+            <label class="form-check-label" for="selectAllCattle">
+                Select All
+            </label>
+        `;
+        cattleCheckboxesContainer.appendChild(selectAllCheckbox);
+
+        // Add event listener to "Select All" checkbox
+        selectAllCheckbox.querySelector('input').addEventListener('change', (e) => handleSelectAll(e.target));
 
         if (cattleList.length === 0) {
-            cattleRadioButtonsContainer.innerHTML = '<p>No cattle available.</p>';
+            cattleCheckboxesContainer.innerHTML += '<p>No cattle available.</p>';
             return;
         }
 
         cattleList.forEach(cattle => {
-            const radioButton = document.createElement('div');
-            radioButton.classList.add('form-check');
-            radioButton.innerHTML = `
-                <input class="form-check-input" type="radio" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}" required>
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('form-check');
+            checkbox.innerHTML = `
+                <input class="form-check-input" type="checkbox" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}">
                 <label class="form-check-label" for="cattle-${cattle.serial_number}">
                     ${cattle.serial_number} - ${cattle.name}  <!-- Adjust based on available cattle fields -->
                 </label>
             `;
-            cattleRadioButtonsContainer.appendChild(radioButton);
+            cattleCheckboxesContainer.appendChild(checkbox);
         });
     } catch (error) {
         console.error('Error fetching cattle data:', error);
@@ -81,32 +102,46 @@ const populateCattleOptions = async () => {
 // Event listener for the submit button
 document.getElementById('CattleDeathButton').addEventListener('click', async () => {
     const dateOfDeath = document.getElementById('dateOfDeath').value;
-    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const CauseOfDeath = document.getElementById('CauseOfDeath').value;
+    const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
+    const cause_of_death = document.getElementById('CauseOfDeath').value;
     const notes = document.getElementById('notes').value;
 
-    if (!cattleId) {
-        alert('Please select a cattle.');
+    if (selectedCattleCheckboxes.length === 0) {
+        alert('Please select at least one cattle.');
         return;
     }
 
-    const deathData = {
-        cattle_id: cattleId,
-        dateOfDeath: dateOfDeath,
-        CauseOfDeath:CauseOfDeath,
-        notes: notes,
-    };
+    const deathPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
+        const cattleId = checkbox.value;
 
-    try {
-        const response = await fetch('/api/death', {
+        const deathData = {
+            date: dateOfDeath,
+            cause_of_death: cause_of_death,
+            cattle_id: cattleId,
+            notes: notes,
+        };
+
+        return fetch('/api/cattle_death', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(deathData)
         });
+    });
 
-        if (response.ok) {
+    try {
+        const responses = await Promise.all(deathPromises);
+
+        let allSuccessful = true;
+        for (const response of responses) {
+            if (!response.ok) {
+                allSuccessful = false;
+                console.error('Failed to add death:', await response.text());
+            }
+        }
+
+        if (allSuccessful) {
             // Close the modal
             const modalCloseButton = document.querySelector('#modalCattleDeath .btn-close');
             if (modalCloseButton) {
@@ -118,7 +153,7 @@ document.getElementById('CattleDeathButton').addEventListener('click', async () 
             // Update the death list
             updatedeathList();
         } else {
-            console.error('Failed to add death:', await response.text());
+            console.error('Some deaths failed.');
         }
     } catch (error) {
         console.error('Error submitting death:', error);

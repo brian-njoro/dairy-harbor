@@ -394,9 +394,10 @@ class RecordVaccinationResource(Resource):
         self.parser.add_argument('date', type=str, help='Date is required')
         self.parser.add_argument('vet_name', type=str)
         self.parser.add_argument('cattle_id', type=int)
-        self.parser.add_argument('vaccine_name', type=str, help='Vaccine name is required')
-        self.parser.add_argument('dose', type=str)
+        self.parser.add_argument('drug', type=str, help='Vaccine name is required')
+        self.parser.add_argument('disease', type=str)
         self.parser.add_argument('notes', type=str)
+        self.parser.add_argument('cost', type=float)
 
     def _create_log_message(self, cattle_id, message):
         if current_user.user_type == 'farmer':
@@ -470,9 +471,11 @@ class RecordVaccinationResource(Resource):
                 date=datetime.strptime(data['date'], '%Y-%m-%d').date(),
                 vet_name=data.get('vet_name'),
                 cattle_id=data.get('cattle_id'),
-                vaccine_name=data.get('vaccine_name'),
-                dose=data.get('dose'),
-                notes=data.get('notes')
+                drug=data.get('drug'),
+                method = data.get('method'),
+                disease=data.get('disease'),
+                notes=data.get('notes'),
+                cost = data.get('cost')
             )
             record.farmer_id = farmer_id
             record.worker_id = worker_id
@@ -503,7 +506,7 @@ class RecordVaccinationResource(Resource):
         
         for key, value in args.items():
             if value is not None:
-                setattr(record, key, value)
+                setattr(record, key, value)    
         
         db.session.commit()
 
@@ -515,8 +518,8 @@ class RecordVaccinationResource(Resource):
     def delete(self, id):
         record = Vaccination.query.get(id)
         if not record:
-            return {'message': 'Vaccination record not found'}, 404
-                
+            return {'message': 'Vaccination record not found'}, 404       
+        
         db.session.delete(record)
         db.session.commit()
 
@@ -1769,7 +1772,7 @@ class RecordEquipmentResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Equipment record deleted'}, 200
-           
+
 
 class RecordCattleDeathResource(Resource):
     def __init__(self):

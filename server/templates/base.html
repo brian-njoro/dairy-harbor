@@ -39,7 +39,6 @@ data-template="vertical-menu-template-free">
         
         <!-- Vendors CSS -->
         <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apex-charts.css') }}" />
 
         <!-- Page CSS -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -99,6 +98,7 @@ data-template="vertical-menu-template-free">
         <script src="{{ url_for('static', filename='assets/vendor/js/helpers.js') }}"></script>
         <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
         <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- FontAwesome CDN -->
         <script src="{{url_for('static',filename='assets/js/config.js')}}"></script>
 
     </head>
@@ -135,7 +135,7 @@ data-template="vertical-menu-template-free">
                         <!-- Dashboards -->
                         <li class="menu-item">
                             <a href="/home" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-home-circle text-white"></i>
+                                <i class='menu-icon bx bxs-dashboard text-white'></i>
                                 <div data-i18n="Dashboards">Dashboard</div>
                             </a>
 
@@ -167,7 +167,7 @@ data-template="vertical-menu-template-free">
                         <!-- Procedures -->
                         <li class="menu-item ">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-layout text-white"></i>
+                                <i class='menu-icon bx bxs-customize text-white'></i>
                                 <div data-i18n="Layouts text-info">Procedures</div>
                             </a>
         
@@ -262,8 +262,8 @@ data-template="vertical-menu-template-free">
                         <!-- Workers-->
                         <li class="menu-item menu-list">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-dock-top text-white"></i>
-                                <div data-i18n="Front Pages">Manage Workers</div>
+                                <i class='menu-icon bx bx-meh text-white'></i>
+                                <div data-i18n="Front Pages">Workers</div>
                             </a>
 
                             <ul class="menu-sub">
@@ -311,7 +311,7 @@ data-template="vertical-menu-template-free">
                         <!-- Inventory-->
                         <li class="menu-item">
                             <a href="javascript:void(0);" class="menu-link menu-toggle text-white fw-bold fs-5">
-                                <i class="menu-icon tf-icons bx bx-layout text-white"></i>
+                                <i class="menu-icon tf-icons bx bx-cabinet text-white"></i>
                                 <div data-i18n="Front Pages">Inventory</div>
                             </a>
                             <ul class="menu-sub">
@@ -350,7 +350,7 @@ data-template="vertical-menu-template-free">
                                 href="{{ url_for('milkReport')}}"
                                 class="menu-link text-white fw-bold fs-5"
                                 target="_self">
-                                    <i class="menu-icon tf-icons bx bx-layout text-white"></i>
+                                    <i class='menu-icon bx bx-paste text-white'></i>
                                     <div data-i18n="Pricing">
                                         Reports
                                     </div>
@@ -913,7 +913,6 @@ fetchUnreadNotificationsCount();
         <!-- endbuild -->
 
         <!-- Vendors JS -->
-        <!-- <script src="{{ url_for('static', filename='assets/vendor/libs/apex-charts/apexcharts.js') }}"></script> -->
 
         <!-- Main JS -->
         <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
@@ -923,9 +922,6 @@ fetchUnreadNotificationsCount();
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <!-- Include ApexCharts JS -->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script type="module" src="{{ url_for( 'static', filename='/assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
         <!-- Include your custom script -->
 
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -944,7 +940,7 @@ fetchUnreadNotificationsCount();
         <!-- Page JS -->
         <script src="{{ url_for('static', filename='assets/js/dashboards-analytics.js') }}"></script>
         <script src="{{url_for('static',filename='js/login.js')}}"></script>
-
+        
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script> 
     </body>

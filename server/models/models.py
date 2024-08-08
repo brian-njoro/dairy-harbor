@@ -99,9 +99,10 @@ class Cattle(db.Model):
 class Dehorning(db.Model):
     dehorning_id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
-    vet_name = db.Column(db.String(100))
+    vet_name = db.Column(db.String(100),nullable=True)
     method = db.Column(db.String(100))
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
     cattle_id = db.Column(db.Integer, db.ForeignKey('cattle.serial_number'))
 
     cattle = db.relationship('Cattle', back_populates='dehorning')
@@ -115,6 +116,7 @@ class Deworming(db.Model):
     drug_used = db.Column(db.String(100))
     method_of_administration = db.Column(db.String(100))
     disease = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='dewormings')
@@ -127,6 +129,8 @@ class PestControl(db.Model):
     pest_type = db.Column(db.String(100))
     pesticide_used = db.Column(db.String(100))
     vet_name = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
+    vet_name = db.Column(db.String(100), nullable=True)
     notes = db.Column(db.Text)
 
     # Relationship with Cattle
@@ -141,6 +145,7 @@ class Vaccination(db.Model):
     method = db.Column(db.String(100))
     drug = db.Column(db.String(100))
     disease = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     cattle_id = db.Column(db.Integer, db.ForeignKey('cattle.serial_number'))
     notes = db.Column(db.Text)
 
@@ -167,6 +172,7 @@ class Treatment(db.Model):
     drug_used = db.Column(db.String(100))
     method_of_administration = db.Column(db.String(100))
     disease = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='treatments')
@@ -201,6 +207,8 @@ class ArtificialInsemination(db.Model):
     semen_breed = db.Column(db.String(100))
     sexed = db.Column(db.Boolean)
     vet_name = db.Column(db.String(100))
+    cost = db.Column(db.Float, nullable=True)
+    vet_name = db.Column(db.String(100), nullable=False)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='artificial_inseminations')
@@ -212,6 +220,7 @@ class NaturalInsemination(db.Model):
     father_breed = db.Column(db.String(100))
     father_id = db.Column(db.String(100), nullable=True)
     date = db.Column(db.Date)
+    cost = db.Column(db.Float, nullable=True)
     notes = db.Column(db.Text)
 
     cattle = db.relationship('Cattle', back_populates='natural_inseminations')
@@ -253,6 +262,7 @@ class Pregnancy(db.Model):
     detection_date = db.Column(db.Date)
     expected_delivery_date = db.Column(db.Date)
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
 
     cattle = db.relationship('Cattle', back_populates='pregnancies')
 
@@ -262,6 +272,7 @@ class Miscarriage(db.Model):
     date = db.Column(db.Date)
     cattle_id = db.Column(db.Integer, db.ForeignKey('cattle.serial_number'))
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
 
     cattle = db.relationship('Cattle', back_populates='miscarriages')
 
@@ -273,6 +284,7 @@ class Calving(db.Model):
     calf_id = db.Column(db.Integer, nullable=True)
     outcome = db.Column(db.String(100))
     notes = db.Column(db.Text)
+    cost = db.Column(db.Float, nullable=True)
     assisted_by = db.Column(db.Integer, db.ForeignKey('worker.id'))
 
     cattle = db.relationship('Cattle', back_populates='calvings')

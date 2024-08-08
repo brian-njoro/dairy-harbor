@@ -1,6 +1,6 @@
 // Function to fetch and update the miscarriage list
 const updatemiscarriageList = async () => {
-    console.log('Reached here miscarriage list fetch')
+    console.log('Reached here at miscarriage list fetch')
 
     try {
         const response = await fetch('/api/miscarriage');
@@ -13,8 +13,8 @@ const updatemiscarriageList = async () => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${miscarriage.cattle_id}</td>
-                <td>${new Date(miscarriage.dateOfMiscarriage).toLocaleDateString()}</td>
+                <td>${new Date(miscarriage.date).toLocaleDateString()}</td>
+                <td>${Array.isArray(miscarriage.cattle_id) ? miscarriage.cattle_id.join(', ') : miscarriage.cattle_id}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletemiscarriage(${miscarriage.id})">Delete</button>
                 </td>
@@ -26,7 +26,6 @@ const updatemiscarriageList = async () => {
         console.error('Error fetching miscarriage list:', error);
     }
 };
-
 
 // Function to delete a miscarriage
 const deletemiscarriage = async (id) => {
@@ -46,31 +45,53 @@ const deletemiscarriage = async (id) => {
     }
 };
 
-// Function to fetch and populate cattle radio buttons in the modal
+// Function to handle "Select All" checkbox
+const handleSelectAll = (selectAllCheckbox) => {
+    const cattleCheckboxes = document.querySelectorAll('input[name="cattleId"]');
+    cattleCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+};
+
+// Function to fetch and populate cattle checkboxes in the modal
 const populateCattleOptions = async () => {
     try {
         const response = await fetch('/api/cattle/get'); // Adjust endpoint if needed
         const cattleList = await response.json();
-        console.log('Reached here radiobutton')
+        console.log('Reached here checkbox')
 
-        const cattleRadioButtonsContainer = document.getElementById('cattleRadioButtons');
-        cattleRadioButtonsContainer.innerHTML = ''; // Clear existing options
+        const cattleCheckboxesContainer = document.getElementById('cattleRadioButtons');
+        cattleCheckboxesContainer.innerHTML = ''; // Clear existing options
+
+        // Add "Select All" checkbox
+        const selectAllCheckbox = document.createElement('div');
+        selectAllCheckbox.classList.add('form-check');
+        selectAllCheckbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" id="selectAllCattle">
+            <label class="form-check-label" for="selectAllCattle">
+                Select All
+            </label>
+        `;
+        cattleCheckboxesContainer.appendChild(selectAllCheckbox);
+
+        // Add event listener to "Select All" checkbox
+        selectAllCheckbox.querySelector('input').addEventListener('change', (e) => handleSelectAll(e.target));
 
         if (cattleList.length === 0) {
-            cattleRadioButtonsContainer.innerHTML = '<p>No cattle available.</p>';
+            cattleCheckboxesContainer.innerHTML += '<p>No cattle available.</p>';
             return;
         }
 
         cattleList.forEach(cattle => {
-            const radioButton = document.createElement('div');
-            radioButton.classList.add('form-check');
-            radioButton.innerHTML = `
-                <input class="form-check-input" type="radio" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}" required>
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('form-check');
+            checkbox.innerHTML = `
+                <input class="form-check-input" type="checkbox" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}">
                 <label class="form-check-label" for="cattle-${cattle.serial_number}">
                     ${cattle.serial_number} - ${cattle.name}  <!-- Adjust based on available cattle fields -->
                 </label>
             `;
-            cattleRadioButtonsContainer.appendChild(radioButton);
+            cattleCheckboxesContainer.appendChild(checkbox);
         });
     } catch (error) {
         console.error('Error fetching cattle data:', error);
@@ -79,32 +100,45 @@ const populateCattleOptions = async () => {
 
 // Event listener for the submit button
 document.getElementById('cattleMiscarriageButton').addEventListener('click', async () => {
-    const vetName = document.getElementById('vetName').value;
     const dateOfMiscarriage = document.getElementById('dateOfMiscarriage').value;
-    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
+    const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const notes = document.getElementById('notes').value;
 
-    if (!cattleId) {
-        alert('Please select a cattle.');
+    if (selectedCattleCheckboxes.length === 0) {
+        alert('Please select at least one cattle.');
         return;
     }
 
-    const miscarriageData = {
-        cattle_id: cattleId,
-        dateOfMiscarriage: dateOfMiscarriage,
-        notes: notes,
-    };
+    const miscarriagePromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
+        const cattleId = checkbox.value;
 
-    try {
-        const response = await fetch('/api/miscarriage', {
+        const miscarriageData = {
+            date: dateOfMiscarriage,
+            cattle_id: cattleId,
+            notes: notes,
+        };
+
+        return fetch('/api/miscarriage', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(miscarriageData)
         });
+    });
 
-        if (response.ok) {
+    try {
+        const responses = await Promise.all(miscarriagePromises);
+
+        let allSuccessful = true;
+        for (const response of responses) {
+            if (!response.ok) {
+                allSuccessful = false;
+                console.error('Failed to add miscarriage:', await response.text());
+            }
+        }
+
+        if (allSuccessful) {
             // Close the modal
             const modalCloseButton = document.querySelector('#modalMiscarriagedCattle .btn-close');
             if (modalCloseButton) {
@@ -116,7 +150,7 @@ document.getElementById('cattleMiscarriageButton').addEventListener('click', asy
             // Update the miscarriage list
             updatemiscarriageList();
         } else {
-            console.error('Failed to add miscarriage:', await response.text());
+            console.error('Some miscarriage entries failed.');
         }
     } catch (error) {
         console.error('Error submitting miscarriage:', error);

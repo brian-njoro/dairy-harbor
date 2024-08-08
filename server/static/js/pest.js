@@ -1,5 +1,5 @@
 // Function to fetch and update the pest list
-const updatepestList = async () => {
+const updatePestList = async () => {
     console.log('Reached here pest list fetch')
 
     try {
@@ -13,14 +13,13 @@ const updatepestList = async () => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(pest.date).toLocaleDateString()}</td>
-                <td>${pest.cattle_id}</td>
-                <td>${pest.vet_name}</td>
-                <td>${pest.drugUsed}</td>
-                <td>${pest.pestMethod}</td>
-                <td>${pest.disease}</td>
+                <td>${new Date(pest.control_date).toLocaleDateString()}</td>
+                <td>${Array.isArray(pest.cattle_id) ? pest.cattle_id.join(', ') : pest.cattle_id}</td>
+                <td>${pest.pest_type}</td>
+                <td>${pest.pesticide_used}</td>
+                <td>${pest.method_used}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="deletepest(${pest.id})">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="deletePest(${pest.id})">Delete</button>
                 </td>
             `;
 
@@ -31,9 +30,8 @@ const updatepestList = async () => {
     }
 };
 
-
 // Function to delete a pest
-const deletepest = async (id) => {
+const deletePest = async (id) => {
     try {
         const response = await fetch(`/api/pest_control/${id}`, {
             method: 'DELETE'
@@ -41,7 +39,7 @@ const deletepest = async (id) => {
 
         if (response.ok) {
             // Update the pest list after deletion
-            updatepestList();
+            updatePestList();
         } else {
             console.error('Failed to delete pest:', await response.text());
         }
@@ -50,31 +48,53 @@ const deletepest = async (id) => {
     }
 };
 
-// Function to fetch and populate cattle radio buttons in the modal
+// Function to handle "Select All" checkbox
+const handleSelectAll = (selectAllCheckbox) => {
+    const cattleCheckboxes = document.querySelectorAll('input[name="cattleId"]');
+    cattleCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+};
+
+// Function to fetch and populate cattle checkboxes in the modal
 const populateCattleOptions = async () => {
     try {
         const response = await fetch('/api/cattle/get'); // Adjust endpoint if needed
         const cattleList = await response.json();
-        console.log('Reached here radiobutton')
+        console.log('Reached here checkbox')
 
-        const cattleRadioButtonsContainer = document.getElementById('cattleRadioButtons');
-        cattleRadioButtonsContainer.innerHTML = ''; // Clear existing options
+        const cattleCheckboxesContainer = document.getElementById('cattleRadioButtons');
+        cattleCheckboxesContainer.innerHTML = ''; // Clear existing options
+
+        // Add "Select All" checkbox
+        const selectAllCheckbox = document.createElement('div');
+        selectAllCheckbox.classList.add('form-check');
+        selectAllCheckbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" id="selectAllCattle">
+            <label class="form-check-label" for="selectAllCattle">
+                Select All
+            </label>
+        `;
+        cattleCheckboxesContainer.appendChild(selectAllCheckbox);
+
+        // Add event listener to "Select All" checkbox
+        selectAllCheckbox.querySelector('input').addEventListener('change', (e) => handleSelectAll(e.target));
 
         if (cattleList.length === 0) {
-            cattleRadioButtonsContainer.innerHTML = '<p>No cattle available.</p>';
+            cattleCheckboxesContainer.innerHTML += '<p>No cattle available.</p>';
             return;
         }
 
         cattleList.forEach(cattle => {
-            const radioButton = document.createElement('div');
-            radioButton.classList.add('form-check');
-            radioButton.innerHTML = `
-                <input class="form-check-input" type="radio" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}" required>
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('form-check');
+            checkbox.innerHTML = `
+                <input class="form-check-input" type="checkbox" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}">
                 <label class="form-check-label" for="cattle-${cattle.serial_number}">
                     ${cattle.serial_number} - ${cattle.name}  <!-- Adjust based on available cattle fields -->
                 </label>
             `;
-            cattleRadioButtonsContainer.appendChild(radioButton);
+            cattleCheckboxesContainer.appendChild(checkbox);
         });
     } catch (error) {
         console.error('Error fetching cattle data:', error);
@@ -83,39 +103,58 @@ const populateCattleOptions = async () => {
 
 // Event listener for the submit button
 document.getElementById('pestControlButton').addEventListener('click', async () => {
-    const vet_name = document.getElementById('vetName').value;
+    const vetName = document.getElementById('vetName').value;
     const controlDate = document.getElementById('controlDate').value;
-    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
-    const controlMethod = document.getElementById('controlMethod').value;
+
+    const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
+    const controlMethod = document.getElementById('method').value;
     const pesticide = document.getElementById('pesticide').value;
     const pestName = document.getElementById('pestName').value;
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
 
-    if (!cattleId) {
-        alert('Please select a cattle.');
+
+
+    if (selectedCattleCheckboxes.length === 0) {
+        alert('Please select at least one cattle.');
         return;
     }
 
-    const pestData = {
-        vet_name:vet_name,
-        cattle_id: cattleId,
-        control_date: controlDate,
-        pest_type: pestName,
-        method_used: controlMethod,
-        pesticide_used:pesticide,
-        notes: notes,
-    };
 
-    try {
-        const response = await fetch('/api/pest', {
+    const pestControlPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
+        const cattleId = checkbox.value;
+
+        const pestData = {
+            vet_name: vetName,
+            cattle_id: cattleId,
+            control_date: controlDate,
+            pest_type: pestName,
+            method_used: controlMethod,
+            pesticide_used: pesticide,
+            notes: notes,
+        };
+
+        return fetch('/api/pest_control', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(pestData)
         });
+    });
 
-        if (response.ok) {
+    try {
+        const responses = await Promise.all(pestControlPromises);
+
+        let allSuccessful = true;
+        for (const response of responses) {
+            if (!response.ok) {
+                allSuccessful = false;
+                console.error('Failed to add pest control:', await response.text());
+            }
+        }
+
+        if (allSuccessful) {
             // Close the modal
             const modalCloseButton = document.querySelector('#modalPestControl .btn-close');
             if (modalCloseButton) {
@@ -125,17 +164,17 @@ document.getElementById('pestControlButton').addEventListener('click', async () 
             }
 
             // Update the pest list
-            updatepestList();
+            updatePestList();
         } else {
-            console.error('Failed to add pest:', await response.text());
+            console.error('Some pest control entries failed.');
         }
     } catch (error) {
-        console.error('Error submitting pest:', error);
+        console.error('Error submitting pest control:', error);
     }
 });
 
 // Initial fetch to populate the pest list on page load
-updatepestList();
+updatePestList();
 
 // Populate cattle options when the modal is shown
 const modal = document.getElementById('modalPestControl');

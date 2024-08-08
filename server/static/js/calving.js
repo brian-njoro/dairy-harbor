@@ -13,12 +13,9 @@ const updatecalvingList = async () => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${new Date(calving.date).toLocaleDateString()}</td>
-                <td>${calving.cattle_id}</td>
-                <td>${calving.vet_name}</td>
-                <td>${calving.drugUsed}</td>
-                <td>${calving.calvingMethod}</td>
-                <td>${calving.disease}</td>
+                <td>${new Date(calving.calving_date).toLocaleDateString()}</td>
+                <td>${Array.isArray(calving.cattle_id) ? calving.cattle_id.join(', ') : calving.cattle_id}</td>
+                <td>${calving.outcome}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletecalving(${calving.id})">Delete</button>
                 </td>
@@ -30,7 +27,6 @@ const updatecalvingList = async () => {
         console.error('Error fetching calving list:', error);
     }
 };
-
 
 // Function to delete a calving
 const deletecalving = async (id) => {
@@ -50,31 +46,53 @@ const deletecalving = async (id) => {
     }
 };
 
-// Function to fetch and populate cattle radio buttons in the modal
+// Function to handle "Select All" checkbox
+const handleSelectAll = (selectAllCheckbox) => {
+    const cattleCheckboxes = document.querySelectorAll('input[name="cattleId"]');
+    cattleCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+};
+
+// Function to fetch and populate cattle checkboxes in the modal
 const populateCattleOptions = async () => {
     try {
         const response = await fetch('/api/cattle/get'); // Adjust endpoint if needed
         const cattleList = await response.json();
-        console.log('Reached here radiobutton')
+        console.log('Reached here checkbox')
 
-        const cattleRadioButtonsContainer = document.getElementById('cattleRadioButtons');
-        cattleRadioButtonsContainer.innerHTML = ''; // Clear existing options
+        const cattleCheckboxesContainer = document.getElementById('cattleRadioButtons');
+        cattleCheckboxesContainer.innerHTML = ''; // Clear existing options
+
+        // Add "Select All" checkbox
+        const selectAllCheckbox = document.createElement('div');
+        selectAllCheckbox.classList.add('form-check');
+        selectAllCheckbox.innerHTML = `
+            <input class="form-check-input" type="checkbox" id="selectAllCattle">
+            <label class="form-check-label" for="selectAllCattle">
+                Select All
+            </label>
+        `;
+        cattleCheckboxesContainer.appendChild(selectAllCheckbox);
+
+        // Add event listener to "Select All" checkbox
+        selectAllCheckbox.querySelector('input').addEventListener('change', (e) => handleSelectAll(e.target));
 
         if (cattleList.length === 0) {
-            cattleRadioButtonsContainer.innerHTML = '<p>No cattle available.</p>';
+            cattleCheckboxesContainer.innerHTML += '<p>No cattle available.</p>';
             return;
         }
 
         cattleList.forEach(cattle => {
-            const radioButton = document.createElement('div');
-            radioButton.classList.add('form-check');
-            radioButton.innerHTML = `
-                <input class="form-check-input" type="radio" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}" required>
+            const checkbox = document.createElement('div');
+            checkbox.classList.add('form-check');
+            checkbox.innerHTML = `
+                <input class="form-check-input" type="checkbox" name="cattleId" id="cattle-${cattle.serial_number}" value="${cattle.serial_number}">
                 <label class="form-check-label" for="cattle-${cattle.serial_number}">
                     ${cattle.serial_number} - ${cattle.name}  <!-- Adjust based on available cattle fields -->
                 </label>
             `;
-            cattleRadioButtonsContainer.appendChild(radioButton);
+            cattleCheckboxesContainer.appendChild(checkbox);
         });
     } catch (error) {
         console.error('Error fetching cattle data:', error);
@@ -83,36 +101,51 @@ const populateCattleOptions = async () => {
 
 // Event listener for the submit button
 document.getElementById('cattleCalvingButton').addEventListener('click', async () => {
-    const calfId = document.getElementById('calfId').value;
     const dateOfCalving = document.getElementById('dateOfCalving').value;
-    const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
+    const calfId = document.getElementById('calfId').value;
+    const selectedCattleCheckboxes = document.querySelectorAll('input[name="cattleId"]:checked');
     const outcome = document.getElementById('outcome').value;
     const assistedBy = document.getElementById('assistedBy').value;
     const notes = document.getElementById('notes').value;
 
-    if (!cattleId) {
-        alert('Please select a cattle.');
+    if (selectedCattleCheckboxes.length === 0) {
+        alert('Please select at least one cattle.');
         return;
     }
 
-    const calvingData = {
-        calfId: calfId,
-        dateOfCalving: dateOfCalving,
-        cattle_id: cattleId,
-        assistedBy: assistedBy,
-        notes: notes,
-    };
+    const calvingPromises = Array.from(selectedCattleCheckboxes).map(checkbox => {
+        const cattleId = checkbox.value;
 
-    try {
-        const response = await fetch('/api/calving', {
+        const calvingData = {
+            calving_date: dateOfCalving,
+            calf_id: calfId,
+            cattle_id: cattleId,
+            outcome: outcome,
+            assisted_by: assistedBy,
+            notes: notes,
+        };
+
+        return fetch('/api/calving', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(calvingData)
         });
+    });
 
-        if (response.ok) {
+    try {
+        const responses = await Promise.all(calvingPromises);
+
+        let allSuccessful = true;
+        for (const response of responses) {
+            if (!response.ok) {
+                allSuccessful = false;
+                console.error('Failed to add calving:', await response.text());
+            }
+        }
+
+        if (allSuccessful) {
             // Close the modal
             const modalCloseButton = document.querySelector('#modalNewCalf .btn-close');
             if (modalCloseButton) {
@@ -124,7 +157,7 @@ document.getElementById('cattleCalvingButton').addEventListener('click', async (
             // Update the calving list
             updatecalvingList();
         } else {
-            console.error('Failed to add calving:', await response.text());
+            console.error('Some calvings failed.');
         }
     } catch (error) {
         console.error('Error submitting calving:', error);

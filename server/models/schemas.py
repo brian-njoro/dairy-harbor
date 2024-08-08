@@ -32,6 +32,7 @@ class ArtificialInseminationSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = ArtificialInsemination
         load_instance = True
+        include_fk = True
         sqla_session = db.session
 
 class NaturalInseminationSchema(SQLAlchemyAutoSchema):
