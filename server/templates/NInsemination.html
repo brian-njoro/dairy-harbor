@@ -37,7 +37,7 @@
             <!-- Button to add new cattle -->
             <div class="mb-3">
                 <button type="button" class="btn btn-info shadow-sm" data-bs-toggle="modal" data-bs-target="#modalCattleNInsemination" id='cattleNaturalInsemination'>
-                    N.Inseminate
+                    Natural INSEMINATION
                 </button>
             </div>
             <p class="card-text text-white"><small>Last updated 3 mins ago</small></p>
@@ -55,12 +55,7 @@
 
                     <div class="modal-body">
                         <form id="cattleForm">
-                            <!--Vet Name-->
-                            <div class="mb-3">
-                                <label for="vetName" class="form-label fw-bold text-dark">Veterinary Doctor's Name:</label>
-                                <input class="form-control" type="text" name='vetName' id="vetName">
-                            </div>
-
+                            
                             <!--Date Of Insemination -->
                             <div class="mb-3">
                                 <label for="dateOfInsemination" class="form-label fw-bold text-dark">Date Of Insemination:</label>
@@ -93,10 +88,18 @@
                                 <input type="number" id="fatherId" name="fatherId" class="form-control" required>
                             </div>
 
+                            
+                            
                             <!-- Notes -->
                             <div class="mb-3">
                                 <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
                                 <textarea name='notes' id='notes' class='form-control'></textarea>
+                            </div>
+
+                            <!-- Cost -->
+                            <div class="mb-3">
+                                <label for="cost" class="form-label fw-bold text-dark">Cost:</label>
+                                <textarea name='cost' id='cost' class='form-control'></textarea>
                             </div>
                         </form>
                     </div>

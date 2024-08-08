@@ -14,8 +14,8 @@ const updatepregnancyList = async () => {
 
             row.innerHTML = `
                 <td>${pregnancy.cattle_id}</td>
-                <td>${new Date(pregnancy.dateOfDetection).toLocaleDateString()}</td>
-                <td>${pregnancy.dateOfDelivery}</td>
+                <td>${new Date(pregnancy.detection_date).toLocaleDateString()}</td>
+                <td>${pregnancy.expected_delivery_date}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deletepregnancy(${pregnancy.id})">Delete</button>
                 </td>
@@ -83,7 +83,10 @@ document.getElementById('cattlepregnancyButton').addEventListener('click', async
     const dateOfDetection = document.getElementById('dateOfDetection').value;
     const cattleId = document.querySelector('input[name="cattleId"]:checked')?.value;
     const dateOfDelivery = document.getElementById('dateOfDelivery').value;
-    const notes = document.getElementById('notes').value;
+    const notes = document.getElementById('pregnancynotes').value;
+    const cost = document.getElementById('cost').value;
+
+
 
     if (!cattleId) {
         alert('Please select a cattle.');
@@ -92,9 +95,10 @@ document.getElementById('cattlepregnancyButton').addEventListener('click', async
 
     const pregnancyData = {
         cattle_id: cattleId,
-        dateOfDetection: dateOfDetection,
-        dateOfDelivery: dateOfDelivery,
+        detection_date: dateOfDetection,
+        expected_delivery_date: dateOfDelivery,
         notes: notes,
+        cost: cost
     };
 
     try {

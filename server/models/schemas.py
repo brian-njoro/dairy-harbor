@@ -39,6 +39,7 @@ class NaturalInseminationSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = NaturalInsemination
         load_instance = True
+        include_fk = True
         sqla_session = db.session
 
 class DewormingSchema(SQLAlchemyAutoSchema):

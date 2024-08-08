@@ -62,28 +62,57 @@
                     <form id="salesForm">
                         <!--Customer Name-->
                         <div class="mb-3">
-                            <label for="customerName" class="form-label fw-bold text-dark">Agent/Organisation:</label>
-                            <input class="form-control" type="text" name='customerName' id="customerName">
+                            <label for="buyerName" class="form-label fw-bold text-dark">Buyer Name:</label>
+                            <input class="form-control" type="text" name='buyerName' id="buyerName">
                         </div>
 
                         <!--Date -->
                         <div class="mb-3">
-                            <label for="dateOfSales" class="form-label fw-bold text-dark">Date:</label>
-                            <input type="date" id="dateOfSales" class="form-control" required>
+                            <label for="date" class="form-label fw-bold text-dark">Date:</label>
+                            <input class="form-control" type="date" name='date' id="date">
                         </div>
 
                         <!--Total Liters -->
                         <div class="mb-3">
-                            <label for="milkSold" class="form-label fw-bold text-dark">Milk Sold(Ltr):</label>
-                            <input type="Number" id="milkSold" class="form-control" required>
+                            <label for="quantity" class="form-label fw-bold text-dark">Milk Sold(Ltr):</label>
+                            <input class="form-control" type="number" name='quantity' id="quantity">
                         </div>
 
-                        <!--Unit price-->
+                        <!--Price per litre -->
                         <div class="mb-3">
-                            <label for="unitPrice" class="form-label fw-bold text-dark">Unit Price(Ksh):</label>
-                            <input class="form-control" name="unitPrice" id="unitPrice" required>
+                            <label for="pricePerLitre" class="form-label fw-bold text-dark">Price per Litre:</label>
+                            <input class="form-control" type="number" name='pricePerLitre' id="pricePerLitre">
                         </div>
-                    </form>
+
+
+
+                        <!--Buyer Type -->
+                        <div class="mb-3">
+                            <label for="buyerType" class="form-label fw-bold text-dark">Buyer Type:</label>
+                            <input class="form-control" type="text" name='buyerType' id="buyerType">
+                        </div>
+
+                        <!--Buyer Contact -->
+                        <div class="mb-3">
+                            <label for="buyerCOntact" class="form-label fw-bold text-dark">Buyer Contact:</label>
+                            <input class="form-control" type="text" name='buyerCOntact' id="buyerCOntact">
+                        </div>
+
+                        <!--SOld By -->
+                        <div class="mb-3">
+                            <label for="soldBy" class="form-label fw-bold text-dark">Sold By:</label>
+                            <input class="form-control" type="text" name='soldBy' id="soldBy">
+                        </div>
+
+                        <!-- NOtes -->
+                        <div class="mb-3">
+                            <label for="notes" class="form-label fw-bold text-dark">Notes:</label>
+                            <input class="form-control" type="text" name='notes' id="notes">
+                        </div>
+
+                        
+
+                        </form>
                 </div>
 
                 <div class="modal-footer">
@@ -124,4 +153,6 @@
         </div>
     </div>
 </div>
+<script src="{{url_for('static',filename='js/sales.js')}}"></script>
+
 {% endblock %}

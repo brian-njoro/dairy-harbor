@@ -126,20 +126,16 @@ class WorkerDeleteResource(Resource):
 class CattleGetResource(Resource):
     @login_required
     def get(self):
-        logger.debug("Entered CattleGetResource get method")
 
         # Determine farmer_id based on user type
         if current_user.user_type == 'farmer':
-            logger.debug("User is a farmer")
             farmer_id = current_user.id
         elif current_user.user_type == 'worker':
-            logger.debug("User is a worker")
             worker = Worker.query.filter_by(id=current_user.id).first()
             if not worker:
                 logger.error("Worker not found for user_id %s", current_user.id)
                 return {"error": "Worker not found"}, 404
             farmer_id = worker.farmer_id
-            logger.debug("Worker found, farmer_id: %s", farmer_id)
         else:
             logger.error("Invalid user type: %s", current_user.user_type)
             return {"error": "Invalid user type"}, 400
@@ -147,7 +143,6 @@ class CattleGetResource(Resource):
         cattle_list = Cattle.query.filter_by(farmer_id=farmer_id).all()
         cattle_data = [cattle.as_dict() for cattle in cattle_list]
         
-        logger.debug("Cattle data retrieved: %s", cattle_data)
         return jsonify(cattle_data)
 
 
@@ -263,26 +258,26 @@ class CattlePostResource(Resource):
         return jsonify(new_cattle.as_dict())
     
 
-def send_sms(to, message):
-    conn = http.client.HTTPSConnection("gg3jkj.api.infobip.com")
-    payload = json.dumps({
-        "messages": [
-            {
-                "destinations": [{"to": to}],
-                "from": "ServiceSMS",
-                "text": message
-            }
-        ]
-    })
-    headers = {
-        'Authorization': 'App c062a6d8ef8b068edc6e42da708c2404-4ee122ca-4196-465b-9a14-e7a40af0a067',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
-    conn.request("POST", "/sms/2/text/advanced", payload, headers)
-    res = conn.getresponse()
-    data = res.read()
-    print(data.decode("utf-8"))    
+# def send_sms(to, message):
+#     conn = http.client.HTTPSConnection("gg3jkj.api.infobip.com")
+#     payload = json.dumps({
+#         "messages": [
+#             {
+#                 "destinations": [{"to": to}],
+#                 "from": "ServiceSMS",
+#                 "text": message
+#             }
+#         ]
+#     })
+#     headers = {
+#         'Authorization': 'App c062a6d8ef8b068edc6e42da708c2404-4ee122ca-4196-465b-9a14-e7a40af0a067',
+#         'Content-Type': 'application/json',
+#         'Accept': 'application/json'
+#     }
+#     conn.request("POST", "/sms/2/text/advanced", payload, headers)
+#     res = conn.getresponse()
+#     data = res.read()
+#     print(data.decode("utf-8"))    
 
 
 class CattleGetByIdResource(Resource):
@@ -945,20 +940,33 @@ class RecordNaturalInseminationResource(Resource):
         self.parser.add_argument('date', type=str)
         self.parser.add_argument('notes', type=str)
 
+    @login_required
     def get(self, id=None):
+        # Determine the farmer_id based on the user type
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all natural insemination records
-            records = NaturalInsemination.query.all()
+            # Get all natural insemination records for the farmer
+            records = NaturalInsemination.query.filter_by(farmer_id=farmer_id).all()
             schema = NaturalInseminationSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific natural insemination record by ID
-            record = NaturalInsemination.query.get(id)
+            # Get a specific natural insemination record by ID for the farmer
+            record = NaturalInsemination.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = NaturalInseminationSchema()
                 return schema.dump(record), 200
             return {'message': 'Natural Insemination record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
         schema = NaturalInseminationSchema(session=db.session)
@@ -971,6 +979,7 @@ class RecordNaturalInseminationResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = NaturalInsemination.query.get(id)
         if not record:
@@ -982,7 +991,7 @@ class RecordNaturalInseminationResource(Resource):
                 args['date'] = datetime.strptime(args['date'], '%Y-%m-%d').date()
             except ValueError:
                 return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
-            
+
         schema = NaturalInseminationSchema()
         for key, value in args.items():
             if value is not None:
@@ -990,6 +999,7 @@ class RecordNaturalInseminationResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = NaturalInsemination.query.get(id)
         if not record:
@@ -1011,20 +1021,33 @@ class RecordDewormingResource(Resource):
         self.parser.add_argument('disease', type=str)
         self.parser.add_argument('notes', type=str)
 
+    @login_required
     def get(self, id=None):
+        # Determine the farmer_id based on the user type
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all deworming records
-            records = Deworming.query.all()
+            # Get all deworming records for the farmer
+            records = Deworming.query.filter_by(farmer_id=farmer_id).all()
             schema = DewormingSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific deworming record by ID
-            record = Deworming.query.get(id)
+            # Get a specific deworming record by ID for the farmer
+            record = Deworming.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = DewormingSchema()
                 return schema.dump(record), 200
             return {'message': 'Deworming record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
         schema = DewormingSchema(session=db.session)
@@ -1037,6 +1060,7 @@ class RecordDewormingResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = Deworming.query.get(id)
         if not record:
@@ -1048,7 +1072,7 @@ class RecordDewormingResource(Resource):
                 args['date'] = datetime.strptime(args['date'], '%Y-%m-%d').date()
             except ValueError:
                 return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
-            
+
         schema = DewormingSchema()
         for key, value in args.items():
             if value is not None:
@@ -1056,6 +1080,7 @@ class RecordDewormingResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = Deworming.query.get(id)
         if not record:
@@ -1075,20 +1100,32 @@ class RecordFeedsResource(Resource):
         self.parser.add_argument('farmer_id', type=int)
         self.parser.add_argument('worker_id', type=int)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all feeds records
-            records = Feeds.query.all()
+            # Get all feeds records for the farmer
+            records = Feeds.query.filter_by(farmer_id=farmer_id).all()
             schema = FeedsSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific feed record by ID
-            record = Feeds.query.get(id)
+            # Get a specific feed record by ID for the farmer
+            record = Feeds.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = FeedsSchema()
                 return schema.dump(record), 200
             return {'message': 'Feed record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
         schema = FeedsSchema(session=db.session)
@@ -1101,6 +1138,7 @@ class RecordFeedsResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = Feeds.query.get(id)
         if not record:
@@ -1113,7 +1151,6 @@ class RecordFeedsResource(Resource):
             except ValueError:
                 return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
 
-
         schema = FeedsSchema()
         for key, value in args.items():
             if value is not None:
@@ -1121,6 +1158,7 @@ class RecordFeedsResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = Feeds.query.get(id)
         if not record:
@@ -1137,20 +1175,32 @@ class RecordHeatDetectionResource(Resource):
         self.parser.add_argument('detected_by', type=str)
         self.parser.add_argument('notes', type=str)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all heat detection records
-            records = HeatDetection.query.all()
+            # Get all heat detection records for the farmer
+            records = HeatDetection.query.join(Cattle).filter(Cattle.farmer_id == farmer_id).all()
             schema = HeatDetectionSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific heat detection record by ID
-            record = HeatDetection.query.get(id)
+            # Get a specific heat detection record by ID for the farmer
+            record = HeatDetection.query.join(Cattle).filter(Cattle.farmer_id == farmer_id, HeatDetection.id == id).first()
             if record:
                 schema = HeatDetectionSchema()
                 return schema.dump(record), 200
             return {'message': 'Heat detection record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
         schema = HeatDetectionSchema(session=db.session)
@@ -1163,6 +1213,7 @@ class RecordHeatDetectionResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = HeatDetection.query.get(id)
         if not record:
@@ -1182,6 +1233,7 @@ class RecordHeatDetectionResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = HeatDetection.query.get(id)
         if not record:
@@ -1201,20 +1253,32 @@ class RecordPestControlResource(Resource):
         self.parser.add_argument('vet_name', type=str)
         self.parser.add_argument('notes', type=str)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all pest control records
-            records = PestControl.query.all()
+            # Get all pest control records for the farmer
+            records = PestControl.query.join(Cattle).filter(Cattle.farmer_id == farmer_id).all()
             schema = PestControlSchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific pest control record by ID
-            record = PestControl.query.get(id)
+            # Get a specific pest control record by ID for the farmer
+            record = PestControl.query.join(Cattle).filter(Cattle.farmer_id == farmer_id, PestControl.id == id).first()
             if record:
                 schema = PestControlSchema()
                 return schema.dump(record), 200
             return {'message': 'Pest control record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
         schema = PestControlSchema(session=db.session)
@@ -1227,6 +1291,7 @@ class RecordPestControlResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = PestControl.query.get(id)
         if not record:
@@ -1246,6 +1311,7 @@ class RecordPestControlResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = PestControl.query.get(id)
         if not record:
@@ -1253,7 +1319,7 @@ class RecordPestControlResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Pest control record deleted'}, 200
-        
+       
 
 class RecordPregnancyResource(Resource):
     def __init__(self):
@@ -1263,20 +1329,32 @@ class RecordPregnancyResource(Resource):
         self.parser.add_argument('expected_delivery_date', type=str)
         self.parser.add_argument('notes', type=str)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all pregnancy records
-            records = Pregnancy.query.all()
+            # Get all pregnancy records for the farmer
+            records = Pregnancy.query.join(Cattle).filter(Cattle.farmer_id == farmer_id).all()
             schema = PregnancySchema(many=True)
             return schema.dump(records), 200
         else:
-            # Get a specific pregnancy record by ID
-            record = Pregnancy.query.get(id)
+            # Get a specific pregnancy record by ID for the farmer
+            record = Pregnancy.query.join(Cattle).filter(Cattle.farmer_id == farmer_id, Pregnancy.id == id).first()
             if record:
                 schema = PregnancySchema()
                 return schema.dump(record), 200
             return {'message': 'Pregnancy record not found'}, 404
 
+    @login_required
     def post(self):
         data = request.get_json()
         schema = PregnancySchema(session=db.session)
@@ -1289,6 +1367,7 @@ class RecordPregnancyResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
         record = Pregnancy.query.get(id)
         if not record:
@@ -1308,6 +1387,7 @@ class RecordPregnancyResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
         record = Pregnancy.query.get(id)
         if not record:
@@ -1315,6 +1395,7 @@ class RecordPregnancyResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Pregnancy record deleted'}, 200
+
         
 
 class RecordSalesResource(Resource):
@@ -1331,22 +1412,49 @@ class RecordSalesResource(Resource):
         self.parser.add_argument('farmer_id', type=int)
         self.parser.add_argument('cattle_id', type=int)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all milk sales records
-            records = MilkSales.query.all()
+            # Get all milk sales records for the farmer
+            records = MilkSales.query.filter_by(farmer_id=farmer_id).all()
             schema = MilkSalesSchema(many=True)
             return schema.dump(records), 200
         else:
             # Get a specific milk sales record by ID
-            record = MilkSales.query.get(id)
+            record = MilkSales.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = MilkSalesSchema()
                 return schema.dump(record), 200
             return {'message': 'Milk sales record not found'}, 404
 
+    @login_required
     def post(self):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+            worker_id = None
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+            worker_id = current_user.id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         data = request.get_json()
+        data['farmer_id'] = farmer_id
+        data['cattle_id'] = 0
+
         schema = MilkSalesSchema(session=db.session)
         try:
             record = schema.load(data)
@@ -1357,10 +1465,22 @@ class RecordSalesResource(Resource):
             db.session.rollback()
             return {"message": str(e)}, 400
 
+    @login_required
     def put(self, id):
-        record = MilkSales.query.get(id)
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
+        record = MilkSales.query.filter_by(id=id, farmer_id=farmer_id).first()
         if not record:
             return {'message': 'Milk sales record not found'}, 404
+
         args = self.parser.parse_args()
 
         if args['date']:
@@ -1368,7 +1488,7 @@ class RecordSalesResource(Resource):
                 args['date'] = datetime.strptime(args['date'], '%Y-%m-%d').date()
             except ValueError:
                 return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
-            
+
         schema = MilkSalesSchema()
         for key, value in args.items():
             if value is not None:
@@ -1376,14 +1496,25 @@ class RecordSalesResource(Resource):
         db.session.commit()
         return schema.dump(record), 200
 
+    @login_required
     def delete(self, id):
-        record = MilkSales.query.get(id)
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
+        record = MilkSales.query.filter_by(id=id, farmer_id=farmer_id).first()
         if not record:
             return {'message': 'Milk sales record not found'}, 404
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Milk sales record deleted'}, 200
-        
+       
 
 class RecordMedicineResource(Resource):
     def __init__(self):
@@ -1589,15 +1720,26 @@ class RecordMilkProductionResource(Resource):
         self.parser.add_argument('notes', type=str)
         self.parser.add_argument('farmer_id', type=int)
 
+    @login_required
     def get(self, id=None):
+        if current_user.user_type == 'farmer':
+            farmer_id = current_user.id
+        elif current_user.user_type == 'worker':
+            worker = Worker.query.filter_by(id=current_user.id).first()
+            if not worker:
+                return {"error": "Worker not found"}, 404
+            farmer_id = worker.farmer_id
+        else:
+            return {"error": "Invalid user type"}, 400
+
         if id is None:
-            # Get all milk production records
-            records = MilkProduction.query.all()
+            # Get all milk production records for the farmer
+            records = MilkProduction.query.filter_by(farmer_id=farmer_id).all()
             schema = MilkProductionSchema(many=True)
             return schema.dump(records), 200
         else:
             # Get a specific milk production record by ID
-            record = MilkProduction.query.get(id)
+            record = MilkProduction.query.filter_by(id=id, farmer_id=farmer_id).first()
             if record:
                 schema = MilkProductionSchema()
                 return schema.dump(record), 200
@@ -1607,6 +1749,23 @@ class RecordMilkProductionResource(Resource):
         data = request.get_json()
         schema = MilkProductionSchema(session=db.session)
         try:
+            # Assign farmer_id and worker_id based on user type
+            if current_user.user_type == 'farmer':
+                farmer_id = current_user.id
+                worker_id = None
+            elif current_user.user_type == 'worker':
+                worker = Worker.query.filter_by(id=current_user.id).first()
+                if not worker:
+                    return {"error": "Worker not found"}, 404
+                farmer_id = worker.farmer_id
+                worker_id = current_user.id
+            else:
+                return {"error": "Invalid user type"}, 400
+
+            data['farmer_id'] = farmer_id
+            data['recorded_by'] = worker_id
+            data['cattle_id'] = 0  # Set cattle_id to 0
+
             record = schema.load(data)
             db.session.add(record)
             db.session.commit()
@@ -1626,7 +1785,7 @@ class RecordMilkProductionResource(Resource):
                 args['date'] = datetime.strptime(args['date'], '%Y-%m-%d').date()
             except ValueError:
                 return {'message': 'Invalid date format, should be YYYY-MM-DD'}, 400
-            
+
         schema = MilkProductionSchema()
         for key, value in args.items():
             if value is not None:
@@ -1641,7 +1800,6 @@ class RecordMilkProductionResource(Resource):
         db.session.delete(record)
         db.session.commit()
         return {'message': 'Milk production record deleted'}, 200
-
         
 
 class RecordMaintenanceCostResource(Resource):

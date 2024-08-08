@@ -42,39 +42,25 @@
                             <input type="date" id="date" class="form-control" required>
                         </div>
                     
-                        <!--Serial Number-->
+                        <!-- Cattle Serial Number -->
                         <div class="mb-3">
-                            <label class="form-label text-dark fw-bold" for="serialNumber">Serial Number:</label>
-                            <input type="number" class="form-control" id="serialNumber" placeholder="1" required/>
+                            <label for="cattleId" class="form-label text-dark fw-bold">Select Cattle:</label>
+                            <div id="cattleRadioButtons" class="form-check">
+                                <!-- Radio buttons will be dynamically inserted here -->
+                            </div>
                         </div>
                     
-                        <!--Cattle Breed-->
-                        <div class="mb-3">
-                            <label for="breed" class="form-label text-dark fw-bold">Breed:</label>
-                            <select class="form-control" name="breed" id="breed" required>
-                                <option value="Holstein_Friesian">Holstein Friesian</option>
-                                <option value="Jersey">Jersey</option>
-                                <option value="Guernsey">Guernsey</option>
-                                <option value="Brown_Swiss">Brown Swiss</option>
-                                <option value="Ayrshire">Ayrshire</option>
-                                <option value="Milking_Shorthorn">Milking Shorthorn</option>
-                                <option value="Dutch_Belted">Dutch Belted (Lakenvelder)</option>
-                                <option value="Red_White_Holstein">Red and White Holstein</option>
-                                <option value="Montbéliarde">Montbéliarde</option>
-                                <option value="Swedish_Red_White">Swedish Red and White</option>
-                            </select>
-                        </div>
-                    
+                                            
                         <!--Milk Liters-->
                         <div class="mb-3">
                             <label class="form-label text-dark fw-bold" for="milkLiters">Milk In Liters:</label>
-                            <input type="number" class="form-control" id="milkLiters" required/>
+                            <input type="number" class="form-control" id="quantity" required/>
                         </div>
                     
                         <!--Given to Calf-->
                         <div class="mb-3">
                             <label class="form-label text-dark fw-bold" for="givenToCalf">Given to Calf (Liters):</label>
-                            <input type="number" class="form-control" id="givenToCalf"/>
+                            <input type="number" class="form-control" id="givenToCalf" required/>
                         </div>
                     
                         <!--Consumed by Staff-->
@@ -94,11 +80,17 @@
                             <label class="form-label text-dark fw-bold" for="spoiled">Spoiled (Liters):</label>
                             <input type="number" class="form-control" id="spoiled"/>
                         </div>
-                    
-                        <!--Worker Id-->
+
+                        <!--Spoiled-->
                         <div class="mb-3">
-                            <label class="form-label text-dark fw-bold" for="workerId">Worker Number:</label>
-                            <input type="number" class="form-control" id="workerId" placeholder="1" required/>
+                            <label class="form-label text-dark fw-bold" for="pricePerLitre">Price per litre:</label>
+                            <input type="number" class="form-control" id="pricePerLitre"/>
+                        </div>
+                    
+                        <!-- Notes -->
+                        <div class="mb-3">
+                            <label class="form-label text-dark fw-bold" for="notes">Notes:</label>
+                            <textarea class="form-control" id="notes" rows="3"></textarea>
                         </div>
                     
                         <button type="submit" class="btn btn-info" id="submit">Submit</button>
@@ -122,10 +114,11 @@
                         <thead>
                             <tr>
                                 <th class="text-info fw-bold">Date</th>
-                                <th class="text-info fw-bold">Serial Number</th>
-                                <th class="text-info fw-bold">Name</th>
-                                <th class="text-info fw-bold">Breed</th>
-                                <th class="text-info fw-bold">Litres</th>
+                                <th class="text-info fw-bold">Quantity</th>
+                                <th class="text-info fw-bold">Given to calf</th>
+                                <th class="text-info fw-bold">Consumed by staff</th>
+                                <th class="text-info fw-bold">Spillage</th>
+                                <th class="text-info fw-bold">Spoilage</th>
                                 <th class="text-info fw-bold">Delete</th>
                                 
                             </tr>

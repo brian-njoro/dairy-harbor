@@ -1,54 +1,77 @@
 document.addEventListener('DOMContentLoaded', function() {
+	// Define chart options
 	const incomeOptions = {
 	  chart: {
 		type: 'bar',
 		height: 350
 	  },
-	  series: [{
-		name: 'Income',
-		data: [44000, 55000, 41000, 64000, 52000, 53000, 44000, 49000]
-	  }],
+	  series: [],
 	  xaxis: {
-		categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+		categories: []
 	  }
 	};
-
+  
 	const expensesOptions = {
 	  chart: {
 		type: 'bar',
 		height: 350
 	  },
-	  series: [{
-		name: 'Expenses',
-		data: [35000, 42000, 31000, 52000, 45000, 48000, 37000, 41000]
-	  }],
+	  series: [],
 	  xaxis: {
-		categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+		categories: []
 	  }
 	};
-
+  
 	const profitOptions = {
 	  chart: {
 		type: 'bar',
 		height: 350
 	  },
-	  series: [{
-		name: 'Profit',
-		data: [9000, 13000, 10000, 12000, 7000, 5000, 7000, 8000]
-	  }],
+	  series: [],
 	  xaxis: {
-		categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug']
+		categories: []
 	  }
 	};
-
+  
+	// Create charts
 	const incomeHomeChart = new ApexCharts(document.querySelector("#incomeHomeChart"), incomeOptions);
 	const expensesChart = new ApexCharts(document.querySelector("#expenseschart"), expensesOptions);
 	const profitChart = new ApexCharts(document.querySelector("#profitchart"), profitOptions);
-
+  
+	// Render charts
 	incomeHomeChart.render();
 	expensesChart.render();
 	profitChart.render();
-
+  
+	// Function to fetch and update chart data
+	async function updateChartData(chart, endpoint, seriesName) {
+	  try {
+		const response = await fetch(endpoint);
+		const data = await response.json();
+  
+		const categories = data.map(item => item.date);
+		const seriesData = data.map(item => item.amount);
+  
+		chart.updateOptions({
+		  series: [{
+			name: seriesName,
+			data: seriesData
+		  }],
+		  xaxis: {
+			categories: categories
+		  }
+		});
+	  } catch (error) {
+		console.error('Error fetching data:', error);
+	  }
+	}
+  
+	// Update charts with data from APIs
+	updateChartData(incomeHomeChart, '/api/income-data', 'Income');
+	updateChartData(expensesChart, '/api/expenses-data', 'Expenses');
+	updateChartData(profitChart, '/api/milk-sales-data', 'Milk Sales');
+  
+	// Re-render charts when switching tabs
 	document.querySelectorAll('.nav-link').forEach(tab => {
 	  tab.addEventListener('click', function() {
 		setTimeout(() => {
@@ -59,104 +82,4 @@ document.addEventListener('DOMContentLoaded', function() {
 	  });
 	});
   });
-
-
-const options = {
-	chart: {
-	  type: 'bar',
-	  height: 350,
-	  toolbar: {
-		show: false
-	  }
-	},
-	plotOptions: {
-	  bar: {
-		borderRadius: 10,
-		dataLabels: {
-		  position: 'top', // Show data labels at the top
-		},
-	  }
-	},
-	dataLabels: {
-	  enabled: true,
-	  formatter: function (val) {
-		return val;
-	  },
-	  offsetY: -20,
-	  style: {
-		fontSize: '12px',
-		colors: ["#304758"]
-	  }
-	},
-	series: [{
-	  name: 'Total Revenue',
-	  data: [44, 55, 41, 64, 22, 43, 21, 49] // Static values
-	}],
-	xaxis: {
-	  categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-	  position: 'top',
-	  labels: {
-		offsetY: -18,
-	  },
-	  axisBorder: {
-		show: false
-	  },
-	  axisTicks: {
-		show: false
-	  },
-	  crosshairs: {
-		fill: {
-		  type: 'gradient',
-		  gradient: {
-			colorFrom: '#D8E3F0',
-			colorTo: '#BED1E6',
-			stops: [0, 100],
-			opacityFrom: 0.4,
-			opacityTo: 0.5,
-		  }
-		}
-	  },
-	  tooltip: {
-		enabled: true,
-	  }
-	},
-	fill: {
-	  gradient: {
-		shade: 'light',
-		type: "horizontal",
-		shadeIntensity: 0.25,
-		gradientToColors: undefined,
-		inverseColors: true,
-		opacityFrom: 0.85,
-		opacityTo: 0.85,
-		stops: [50, 0, 100, 100]
-	  },
-	},
-	yaxis: {
-	  axisBorder: {
-		show: false
-	  },
-	  axisTicks: {
-		show: false,
-	  },
-	  labels: {
-		show: false,
-		formatter: function (val) {
-		  return val;
-		}
-	  }
-	},
-	title: {
-	  text: 'Monthly Revenue',
-	  floating: true,
-	  offsetY: 330,
-	  align: 'center',
-	  style: {
-		color: '#444'
-	  }
-	}
-  };
-  
-  const chart = new ApexCharts(document.querySelector("#chart"), options);
-  chart.render();
   

@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask import Flask, request, jsonify, session, redirect, url_for,make_response, render_template, current_app
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from flask_migrate import Migrate
 from datetime import datetime, timedelta
 import logging
@@ -31,6 +32,7 @@ from models.models import (
     Equipment,
     Medicine,
     Feeds,
+    PestControl,
     cattle_worker_association
 )
 
@@ -137,6 +139,15 @@ from models.ApiResources import (
     RecordLogMessageResource,
     RecordNotificationResource
 )
+
+from models.schemas import (
+    VaccinationSchema, TreatmentSchema, ArtificialInseminationSchema, NaturalInseminationSchema,
+    DehorningSchema, DewormingSchema, FeedsSchema, HeatDetectionSchema, PestControlSchema, 
+    PregnancySchema, MilkSalesSchema, MedicineSchema, MiscarriageSchema, CalvingSchema,
+    MilkProductionSchema, MaintenanceCostSchema, EquipmentSchema, CattleDeathSchema,
+    LogMessageSchema, NotificationSchema
+)
+
 
 
 def delete_old_photo(old_photo_url):
@@ -778,6 +789,43 @@ def get_inventory_cost_data():
         for item in inventory_items:
             inventory_cost_data.append({'date': item.purchase_date.strftime('%Y-%m-%d'), 'cost': item.price})
     return jsonify(inventory_cost_data)
+
+@app.route('/api/top-procedures-cost', methods=['GET'])
+@login_required
+def get_top_procedures_cost():
+    farmer_id = current_user.id
+    
+    procedures = []
+    
+    # Define the models, schemas, and their relevant columns
+    models_schemas = [
+        (Calving, CalvingSchema, 'calving_date', 'cost'),
+        (Miscarriage, MiscarriageSchema, 'date', 'cost'),
+        (NaturalInsemination, NaturalInseminationSchema, 'date', 'cost'),
+        (ArtificialInsemination, ArtificialInseminationSchema, 'insemination_date', 'cost'),
+        (Treatment, TreatmentSchema, 'date', 'cost'),
+        (Dehorning, DehorningSchema, 'date', 'cost'),
+        (Deworming, DewormingSchema, 'date', 'cost'),
+        (PestControl, PestControlSchema, 'control_date', 'cost'),
+        (Vaccination, VaccinationSchema, 'date', 'cost')
+    ]
+    
+    for model, schema, date_column, cost_column in models_schemas:
+        # Use SQLAlchemy's ORM to query the model
+        query = model.query.filter_by(farmer_id=farmer_id).order_by(desc(getattr(model, date_column))).limit(30).all()
+        schema_instance = schema(many=True)
+        serialized_data = schema_instance.dump(query)
+        for record in serialized_data:
+            procedures.append({
+                'procedure': model.__name__,
+                'date': record[date_column],
+                'cost': record[cost_column]
+            })
+    
+    # Sort the procedures by date and take the top 30
+    procedures = sorted(procedures, key=lambda x: x['date'], reverse=True)[:30]
+    
+    return jsonify(procedures)
 
 
 

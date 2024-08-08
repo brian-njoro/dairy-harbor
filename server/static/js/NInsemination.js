@@ -15,7 +15,7 @@ const updateNinseminationList = async () => {
             row.innerHTML = `
                 <td>${new Date(N_insemination.date).toLocaleDateString()}</td>
                 <td>${N_insemination.cattle_id}</td>
-                <td>${N_insemination.vet_name}</td>
+                <td>${N_insemination.cost}</td>
                 <td>${N_insemination.donorBreed}</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="deleteNinsemination(${N_insemination.id})">Delete</button>
@@ -86,6 +86,8 @@ document.getElementById('CattleNInseminationButton').addEventListener('click', a
     const donorBreed = document.getElementById('donorBreed').value;
     const fatherId = document.getElementById('fatherId').value;
     const notes = document.getElementById('notes').value;
+    const cost = document.getElementById('cost').value;
+
 
     if (!cattleId) {
         alert('Please select a cattle.');
@@ -98,6 +100,7 @@ document.getElementById('CattleNInseminationButton').addEventListener('click', a
         father_id:fatherId,
         date: dateOfNinsemination,
         notes: notes,
+        cost: cost
     };
 
     try {
