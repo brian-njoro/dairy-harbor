@@ -102,7 +102,7 @@ const populateCattleOptions = async () => {
     } catch (error) {
         console.error('Error fetching cattle data:', error);
     }
-};
+};  
 
 // Event listener for the submit button
 document.getElementById('CattleVaccinationButton').addEventListener('click', async () => {

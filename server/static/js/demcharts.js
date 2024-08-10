@@ -13,16 +13,26 @@ document.addEventListener('DOMContentLoaded', async function () {
     const inventoryCostData = await fetchData('/api/inventory-cost-data');
 
     // Extract dates and values
-    const incomeDates = incomeData.map(item => item.date).reverse();
-    const incomeValues = incomeData.map(item => item.amount).reverse();
-    const expenseDates = expensesData.map(item => item.date).reverse();
-    const expenseValues = expensesData.map(item => item.amount).reverse();
-    const milkProductionDates = milkProductionData.map(item => item.date).reverse();
-    const milkProductionValues = milkProductionData.map(item => item.quantity).reverse();
-    const milkSalesDates = milkSalesData.map(item => item.date).reverse();
-    const milkSalesValues = milkSalesData.map(item => item.quantity).reverse();
-    const inventoryCostDates = inventoryCostData.map(item => item.date).reverse();
-    const inventoryCostValues = inventoryCostData.map(item => item.cost).reverse();
+    const incomeDates = incomeData.map(item => item.date);
+    const incomeValues = incomeData.map(item => item.amount);
+    const expenseDates = expensesData.map(item => item.date);
+    const expenseValues = expensesData.map(item => item.amount);
+    const milkProductionDates = milkProductionData.map(item => item.date);
+    const milkProductionValues = milkProductionData.map(item => item.quantity);
+    const milkSalesDates = milkSalesData.map(item => item.date);
+    const milkSalesValues = milkSalesData.map(item => item.quantity);
+    const inventoryCostDates = inventoryCostData.map(item => item.date);
+    const inventoryCostValues = inventoryCostData.map(item => item.cost);
+
+    // Extract values
+    const totalIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
+    const totalExpenses = expensesData.reduce((sum, item) => sum + item.amount, 0);
+    const netProfitLoss = totalIncome - totalExpenses;
+
+    // Update report card values
+    document.getElementById('totalIncome').textContent = `Sh.${totalIncome.toLocaleString()}`;
+    document.getElementById('totalExpenses').textContent = `Sh.${totalExpenses.toLocaleString()}`;
+    document.getElementById('netProfitLoss').textContent = `Sh.${netProfitLoss.toLocaleString()}`;
 
     // Common chart options
     const commonChartOptions = {

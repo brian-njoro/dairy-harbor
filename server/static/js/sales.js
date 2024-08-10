@@ -29,16 +29,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify(data)
             });
 
+
             if (response.ok) {
                 const result = await response.json();
                 appendSaleToList(result);
+
                 // Close the modal
-                const modalCloseButton = document.querySelector('#modalCattleDeworming .btn-close');
+                const modalCloseButton = document.querySelector('#modalMilkSales .btn-close');
                 if (modalCloseButton) {
                     modalCloseButton.click(); // Simulate click on close button
                 } else {
                     console.error('Close button not found in modal');
                 }
+                
                 } else {
                 const error = await response.json();
                 alert('Error: ' + error.message);
@@ -70,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const response = await fetch('/api/milk_sales');
             if (response.ok) {
                 // Close the modal
-                const modalCloseButton = document.querySelector('#modalCattleDeworming .btn-close');
+                const modalCloseButton = document.querySelector('#modalMilkSales .btn-close');
                 if (modalCloseButton) {
                     modalCloseButton.click(); // Simulate click on close button
                 } else {
