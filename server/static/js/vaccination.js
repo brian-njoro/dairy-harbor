@@ -10,11 +10,10 @@ const updateVaccinationList = async () => {
         vaccinationList.innerHTML = ''; // Clear existing list
 
         vaccinations.forEach(vaccination => {
-            const row = document.createElement('tr');
-
+            const row = document.createElement('tr'); 
             row.innerHTML = `
                 <td>${new Date(vaccination.date).toLocaleDateString()}</td>
-                <td>${vaccination.cattle_id}</td>
+                <td>${A_insemination.cattle_id}</td>
                 <td>${vaccination.vet_name}</td>
                 <td>${vaccination.drug}</td>
                 <td>${vaccination.disease}</td>
